@@ -6,10 +6,16 @@ using UnityEngine.UI;
 
 public class State_Home : GameState
 {
-    [SerializeField] private Button onlineButton = null;
+    //[SerializeField] private Button photoButton = null;
+    [SerializeField] private Button garageButton = null;
+    [SerializeField] private Button blackMarketButton = null;
+    [SerializeField] private Button shopButton = null;
+    [SerializeField] private Button loadingBoxButton = null;
     [SerializeField] private Button offlineButton = null;
-    [SerializeField] private Button photoButton = null;
-    [SerializeField] private Button tutorialButton = null;
+    [SerializeField] private Button onlineButton = null;
+    [SerializeField] private Button costumeButton = null;
+    [SerializeField] private Button upgradeButton = null;
+    //[SerializeField] private Button tutorialButton = null;
 
 
 #if OFF
@@ -40,6 +46,11 @@ public class State_Home : GameState
 
         GarageCamera.SetCameraId(1);
 
+        garageButton.onClick.AddListener(() => gameManager.OpenState<State_Garage>());
+        blackMarketButton.onClick.AddListener(() => gameManager.OpenState<State_BlackMarket>());
+        shopButton.onClick.AddListener(() => gameManager.OpenState<State_Shop>());
+        loadingBoxButton.onClick.AddListener(() => gameManager.OpenState<State_LoadingBox>());
+
         offlineButton.onClick.AddListener(() =>
         {
 #if DATABEEN
@@ -56,7 +67,10 @@ public class State_Home : GameState
             gameManager.OpenState<State_LeagueStart>();
         });
 
-        photoButton.onClick.AddListener(() => gameManager.OpenState<State_Upgrade>());
+        //costumeButton.onClick.AddListener(() => gameManager.OpenState<State_Custome>());
+        //upgradeButton.onClick.AddListener(() => gameManager.OpenState<State_Upgrade>());
+
+        //photoButton.onClick.AddListener(() => gameManager.OpenState<State_Upgrade>());
 
         /*tutorialButton.onClick.AddListener(() =>
         {
