@@ -1,0 +1,155 @@
+fileFormatVersion: 2
+guid: 90b241b5e62d31b4a9e850987f47594b
+timeCreated: 1518946051
+licenseType: Pro
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Cylinder01
+    100002: DrawCall_3620
+    100004: DrawCall_3621
+    100006: DrawCall_3622
+    100008: DrawCall_3623
+    100010: DrawCall_3624
+    100012: DrawCall_3625
+    100014: DrawCall_3626
+    100016: DrawCall_3769
+    100018: DrawCall_3770
+    100020: DrawCall_3779
+    100022: DrawCall_3780
+    100024: DrawCall_3781
+    100026: DrawCall_3782
+    100028: Group001
+    100030: //RootNode
+    400000: Cylinder01
+    400002: DrawCall_3620
+    400004: DrawCall_3621
+    400006: DrawCall_3622
+    400008: DrawCall_3623
+    400010: DrawCall_3624
+    400012: DrawCall_3625
+    400014: DrawCall_3626
+    400016: DrawCall_3769
+    400018: DrawCall_3770
+    400020: DrawCall_3779
+    400022: DrawCall_3780
+    400024: DrawCall_3781
+    400026: DrawCall_3782
+    400028: Group001
+    400030: //RootNode
+    2300000: Cylinder01
+    2300002: DrawCall_3620
+    2300004: DrawCall_3621
+    2300006: DrawCall_3622
+    2300008: DrawCall_3623
+    2300010: DrawCall_3624
+    2300012: DrawCall_3625
+    2300014: DrawCall_3626
+    2300016: DrawCall_3769
+    2300018: DrawCall_3770
+    2300020: DrawCall_3779
+    2300022: DrawCall_3780
+    2300024: DrawCall_3781
+    2300026: DrawCall_3782
+    2300028: //RootNode
+    3300000: Cylinder01
+    3300002: DrawCall_3620
+    3300004: DrawCall_3621
+    3300006: DrawCall_3622
+    3300008: DrawCall_3623
+    3300010: DrawCall_3624
+    3300012: DrawCall_3625
+    3300014: DrawCall_3626
+    3300016: DrawCall_3769
+    3300018: DrawCall_3770
+    3300020: DrawCall_3779
+    3300022: DrawCall_3780
+    3300024: DrawCall_3781
+    3300026: DrawCall_3782
+    3300028: //RootNode
+    4300000: DrawCall_3769
+    4300002: DrawCall_3770
+    4300004: DrawCall_3779
+    4300006: DrawCall_3780
+    4300008: DrawCall_3781
+    4300010: DrawCall_3782
+    4300012: DrawCall_3621
+    4300014: DrawCall_3622
+    4300016: DrawCall_3623
+    4300018: DrawCall_3624
+    4300020: DrawCall_3626
+    4300022: DrawCall_3625
+    4300024: DrawCall_3620
+    4300026: Cylinder01
+    7400000: Take 001
+    9500000: //RootNode
+  materials:
+    importMaterials: 0
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 0.01
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

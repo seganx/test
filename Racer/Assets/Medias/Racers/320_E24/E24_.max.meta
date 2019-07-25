@@ -1,0 +1,214 @@
+fileFormatVersion: 2
+guid: e1cbe73aafb7c7346b44795daf523aa5
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: Classic_15_Body
+    100002: Classic_15_Door_L
+    100004: Classic_15_Door_R
+    100006: Classic_15_Glass_F
+    100008: Classic_15_Hood
+    100010: Classic_15_Interior
+    100012: Classic_15_Roof
+    100014: Classic_15_SmallGlass_LC
+    100016: Classic_15_Taillights
+    100018: Classic_15_Trunk
+    100020: //RootNode
+    100022: Particle View 001
+    100024: Cylinder001
+    100026: Cylinder002
+    100028: lg
+    100030: Main
+    100032: FB1
+    100034: FB2
+    100036: FB3
+    100038: RB1
+    100040: RB2
+    100042: RB3
+    100044: SS1
+    100046: SS2
+    100048: SS3
+    400000: Classic_15_Body
+    400002: Classic_15_Door_L
+    400004: Classic_15_Door_R
+    400006: Classic_15_Glass_F
+    400008: Classic_15_Hood
+    400010: Classic_15_Interior
+    400012: Classic_15_Roof
+    400014: Classic_15_SmallGlass_LC
+    400016: Classic_15_Taillights
+    400018: Classic_15_Trunk
+    400020: //RootNode
+    400022: Particle View 001
+    400024: Cylinder001
+    400026: Cylinder002
+    400028: lg
+    400030: Main
+    400032: FB1
+    400034: FB2
+    400036: FB3
+    400038: RB1
+    400040: RB2
+    400042: RB3
+    400044: SS1
+    400046: SS2
+    400048: SS3
+    2300000: Classic_15_Body
+    2300002: Classic_15_Door_L
+    2300004: Classic_15_Door_R
+    2300006: Classic_15_Glass_F
+    2300008: Classic_15_Hood
+    2300010: Classic_15_Interior
+    2300012: Classic_15_Roof
+    2300014: Classic_15_SmallGlass_LC
+    2300016: Classic_15_Taillights
+    2300018: Classic_15_Trunk
+    2300020: Cylinder001
+    2300022: Cylinder002
+    2300024: lg
+    2300026: Main
+    2300028: FB1
+    2300030: FB2
+    2300032: FB3
+    2300034: RB1
+    2300036: RB2
+    2300038: RB3
+    2300040: SS1
+    2300042: SS2
+    2300044: SS3
+    3300000: Classic_15_Body
+    3300002: Classic_15_Door_L
+    3300004: Classic_15_Door_R
+    3300006: Classic_15_Glass_F
+    3300008: Classic_15_Hood
+    3300010: Classic_15_Interior
+    3300012: Classic_15_Roof
+    3300014: Classic_15_SmallGlass_LC
+    3300016: Classic_15_Taillights
+    3300018: Classic_15_Trunk
+    3300020: Cylinder001
+    3300022: Cylinder002
+    3300024: lg
+    3300026: Main
+    3300028: FB1
+    3300030: FB2
+    3300032: FB3
+    3300034: RB1
+    3300036: RB2
+    3300038: RB3
+    3300040: SS1
+    3300042: SS2
+    3300044: SS3
+    4300000: Classic_15_Taillights
+    4300002: Classic_15_Body
+    4300004: Classic_15_Interior
+    4300006: Classic_15_Door_R
+    4300008: Classic_15_Door_L
+    4300010: Classic_15_Roof
+    4300012: Classic_15_Trunk
+    4300014: Classic_15_Hood
+    4300016: Classic_15_Glass_F
+    4300018: Classic_15_SmallGlass_LC
+    4300020: Cylinder001
+    4300022: Cylinder002
+    4300024: lg
+    4300026: Main
+    4300028: RB1
+    4300030: RB2
+    4300032: RB3
+    4300034: FB1
+    4300036: FB2
+    4300038: FB3
+    4300040: SS1
+    4300042: SS2
+    4300044: SS3
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LG
+    second: {fileID: 2100000, guid: d37ff80e96feca543afe33fb6bf76f76, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M1
+    second: {fileID: 2100000, guid: dbbea29bc39b3bd40b09c76ed4d8c9f1, type: 2}
+  materials:
+    importMaterials: 0
+    materialName: 1
+    materialSearch: 1
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 0
+    importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 2
+    normalCalculationMode: 0
+  importAnimation: 0
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 1
+    skeletonHasParents: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

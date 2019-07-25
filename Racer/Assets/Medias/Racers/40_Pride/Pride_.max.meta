@@ -1,0 +1,170 @@
+fileFormatVersion: 2
+guid: 5b3613a9f89a16944861381025ed2067
+timeCreated: 1471355922
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: B_1
+    100002: B_2
+    100004: B_B_1
+    100006: B_F_1
+    100008: G
+    100010: H
+    100012: I_L
+    100014: I_R
+    100016: L_G
+    100018: M
+    100020: //RootNode
+    100022: R
+    100024: T
+    100026: Text002
+    100028: FB
+    100030: Main
+    100032: Mirror
+    100034: RB
+    100036: Rim
+    400000: B_1
+    400002: B_2
+    400004: B_B_1
+    400006: B_F_1
+    400008: G
+    400010: H
+    400012: I_L
+    400014: I_R
+    400016: L_G
+    400018: M
+    400020: //RootNode
+    400022: R
+    400024: T
+    400026: Text002
+    400028: FB
+    400030: Main
+    400032: Mirror
+    400034: RB
+    400036: Rim
+    2300000: B_1
+    2300002: B_2
+    2300004: B_B_1
+    2300006: B_F_1
+    2300008: G
+    2300010: H
+    2300012: I_L
+    2300014: I_R
+    2300016: L_G
+    2300018: M
+    2300020: R
+    2300022: T
+    2300024: FB
+    2300026: Main
+    2300028: Mirror
+    2300030: RB
+    2300032: Rim
+    2300034: //RootNode
+    3300000: B_1
+    3300002: B_2
+    3300004: B_B_1
+    3300006: B_F_1
+    3300008: G
+    3300010: H
+    3300012: I_L
+    3300014: I_R
+    3300016: L_G
+    3300018: M
+    3300020: R
+    3300022: T
+    3300024: FB
+    3300026: Main
+    3300028: Mirror
+    3300030: RB
+    3300032: Rim
+    3300034: //RootNode
+    4300000: R
+    4300002: G
+    4300004: B_F_1
+    4300006: B_2
+    4300008: M
+    4300010: L_G
+    4300012: I_L
+    4300014: T
+    4300016: H
+    4300018: I_R
+    4300020: B_1
+    4300022: B_B_1
+    4300024: Rim
+    4300026: FB
+    4300028: Mirror
+    4300030: Main
+    4300032: RB
+    7400000: Take 001
+    9500000: //RootNode
+  materials:
+    importMaterials: 0
+    materialName: 1
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 0.01
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 2
+  importAnimation: 0
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: vehicle bodies a
+  assetBundleVariant: 

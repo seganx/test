@@ -1,0 +1,246 @@
+fileFormatVersion: 2
+guid: 728f74b8808cdce429dfdad513458acb
+timeCreated: 1471355968
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: B_1
+    100002: B_2
+    100004: B_B_1
+    100006: B_B_2
+    100008: B_F_1
+    100010: B_F_2
+    100012: G
+    100014: Group02
+    100016: Group03
+    100018: Group04
+    100020: Group05
+    100022: H
+    100024: I_L
+    100026: I_R
+    100028: L_G
+    100030: Lastic
+    100032: Lastic01
+    100034: Lastic02
+    100036: Lastic03
+    100038: //RootNode
+    100040: M
+    100042: Object022
+    100044: Object023
+    100046: Object028
+    100048: Object030
+    100050: Object032
+    100052: Object057
+    100054: Object058
+    100056: Object14
+    100058: Object15
+    100060: Object18
+    100062: Object19
+    100064: Plane02
+    100066: T
+    100068: FB
+    100070: Main
+    100072: Mirror
+    100074: RB
+    400000: B_1
+    400002: B_2
+    400004: B_B_1
+    400006: B_B_2
+    400008: B_F_1
+    400010: B_F_2
+    400012: G
+    400014: Group02
+    400016: Group03
+    400018: Group04
+    400020: Group05
+    400022: H
+    400024: I_L
+    400026: I_R
+    400028: L_G
+    400030: Lastic
+    400032: Lastic01
+    400034: Lastic02
+    400036: Lastic03
+    400038: //RootNode
+    400040: M
+    400042: Object022
+    400044: Object023
+    400046: Object028
+    400048: Object030
+    400050: Object032
+    400052: Object057
+    400054: Object058
+    400056: Object14
+    400058: Object15
+    400060: Object18
+    400062: Object19
+    400064: Plane02
+    400066: T
+    400068: FB
+    400070: Main
+    400072: Mirror
+    400074: RB
+    2300000: B_1
+    2300002: B_2
+    2300004: B_B_1
+    2300006: B_B_2
+    2300008: B_F_1
+    2300010: B_F_2
+    2300012: G
+    2300014: H
+    2300016: I_L
+    2300018: I_R
+    2300020: L_G
+    2300022: Lastic
+    2300024: Lastic01
+    2300026: Lastic02
+    2300028: Lastic03
+    2300030: M
+    2300032: Object030
+    2300034: Object032
+    2300036: Object057
+    2300038: Object058
+    2300040: Object14
+    2300042: Object15
+    2300044: Object18
+    2300046: Object19
+    2300048: Plane02
+    2300050: T
+    2300052: FB
+    2300054: Main
+    2300056: Mirror
+    2300058: RB
+    2300060: //RootNode
+    3300000: B_1
+    3300002: B_2
+    3300004: B_B_1
+    3300006: B_B_2
+    3300008: B_F_1
+    3300010: B_F_2
+    3300012: G
+    3300014: H
+    3300016: I_L
+    3300018: I_R
+    3300020: L_G
+    3300022: Lastic
+    3300024: Lastic01
+    3300026: Lastic02
+    3300028: Lastic03
+    3300030: M
+    3300032: Object030
+    3300034: Object032
+    3300036: Object057
+    3300038: Object058
+    3300040: Object14
+    3300042: Object15
+    3300044: Object18
+    3300046: Object19
+    3300048: Plane02
+    3300050: T
+    3300052: FB
+    3300054: Main
+    3300056: Mirror
+    3300058: RB
+    3300060: //RootNode
+    4300000: Plane02
+    4300002: Object19
+    4300004: Lastic02
+    4300006: Object18
+    4300008: Lastic03
+    4300010: Lastic
+    4300012: Object15
+    4300014: Lastic01
+    4300016: Object14
+    4300018: Object030
+    4300020: Object032
+    4300022: G
+    4300024: Object057
+    4300026: Object058
+    4300028: M
+    4300030: B_F_1
+    4300032: L_G
+    4300034: T
+    4300036: I_L
+    4300038: I_R
+    4300040: B_B_2
+    4300042: B_F_2
+    4300044: B_1
+    4300046: H
+    4300048: B_2
+    4300050: B_B_1
+    4300052: Mirror
+    4300054: FB
+    4300056: Main
+    4300058: RB
+    9500000: //RootNode
+  materials:
+    importMaterials: 0
+    materialName: 1
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 0.01
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 2
+  importAnimation: 0
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: vehicle bodies a
+  assetBundleVariant: 

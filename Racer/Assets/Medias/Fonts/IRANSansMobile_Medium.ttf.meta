@@ -1,0 +1,24 @@
+fileFormatVersion: 2
+guid: 4e74089840a765a4cb68c9920336b6af
+timeCreated: 1528287579
+licenseType: Free
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: IRANSansMobile
+  fontNames:
+  - IRANSansMobile
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 3a04989b4f1a5d5448c7e2ec8ddbe088, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

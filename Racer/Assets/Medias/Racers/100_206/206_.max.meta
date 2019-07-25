@@ -1,0 +1,170 @@
+fileFormatVersion: 2
+guid: c3d74d1444272cb4c9f33ddee9cf5d17
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: dBody
+    100004: sBody
+    100006: Mi
+    100008: FB
+    100010: Main
+    100012: RB
+    100014: SS
+    100016: PEUGOT_KIT00_FRONT_BUMPER_A
+    100018: PEUGOT_KIT00_REAR_BUMPER_A
+    100020: FB1
+    100022: FB2
+    100024: RB1
+    100026: RB2
+    100028: t
+    100030: g1
+    100032: g2
+    400000: //RootNode
+    400002: dBody
+    400004: sBody
+    400006: Mi
+    400008: FB
+    400010: Main
+    400012: RB
+    400014: SS
+    400016: PEUGOT_KIT00_FRONT_BUMPER_A
+    400018: PEUGOT_KIT00_REAR_BUMPER_A
+    400020: FB1
+    400022: FB2
+    400024: RB1
+    400026: RB2
+    400028: t
+    400030: g1
+    400032: g2
+    2300000: dBody
+    2300002: sBody
+    2300004: Mi
+    2300006: FB
+    2300008: Main
+    2300010: RB
+    2300012: SS
+    2300014: PEUGOT_KIT00_FRONT_BUMPER_A
+    2300016: PEUGOT_KIT00_REAR_BUMPER_A
+    2300018: FB1
+    2300020: FB2
+    2300022: RB1
+    2300024: RB2
+    2300026: t
+    2300028: g1
+    2300030: g2
+    2300032: //RootNode
+    3300000: dBody
+    3300002: sBody
+    3300004: Mi
+    3300006: FB
+    3300008: Main
+    3300010: RB
+    3300012: SS
+    3300014: PEUGOT_KIT00_FRONT_BUMPER_A
+    3300016: PEUGOT_KIT00_REAR_BUMPER_A
+    3300018: FB1
+    3300020: FB2
+    3300022: RB1
+    3300024: RB2
+    3300026: t
+    3300028: g1
+    3300030: g2
+    3300032: //RootNode
+    4300000: sBody
+    4300002: dBody
+    4300004: Mi
+    4300006: Main
+    4300008: FB
+    4300010: RB
+    4300012: SS
+    4300014: PEUGOT_KIT00_FRONT_BUMPER_A
+    4300016: PEUGOT_KIT00_REAR_BUMPER_A
+    4300018: FB2
+    4300020: RB2
+    4300022: FB1
+    4300024: RB1
+    4300026: t
+    4300028: g1
+    4300030: g2
+    9500000: //RootNode
+  externalObjects: {}
+  materials:
+    importMaterials: 0
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 0.01
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 0
+    importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 2
+    normalCalculationMode: 0
+  importAnimation: 0
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

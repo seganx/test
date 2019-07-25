@@ -1,0 +1,158 @@
+fileFormatVersion: 2
+guid: bb5a9a60e66d9574a97de34da53d49ff
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: Cylinder001
+    100002: Cylinder002
+    100004: Cylinder003
+    100006: Cylinder004
+    100008: Main
+    100010: Plane001
+    100012: //RootNode
+    100014: Sky001
+    100016: body
+    100018: ShadowPlane
+    100020: wheel001
+    100022: wheel002
+    100024: wheel003
+    100026: wheel004
+    400000: Cylinder001
+    400002: Cylinder002
+    400004: Cylinder003
+    400006: Cylinder004
+    400008: Main
+    400010: Plane001
+    400012: //RootNode
+    400014: Sky001
+    400016: body
+    400018: ShadowPlane
+    400020: wheel001
+    400022: wheel002
+    400024: wheel003
+    400026: wheel004
+    2100000: 03 - Default
+    2100002: No Name
+    2100004: M2
+    2100006: G
+    2100008: W1
+    2100010: 01 - Default
+    2100012: M1
+    2300000: Cylinder001
+    2300002: Cylinder002
+    2300004: Cylinder003
+    2300006: Cylinder004
+    2300008: Main
+    2300010: Plane001
+    2300012: body
+    2300014: ShadowPlane
+    2300016: wheel001
+    2300018: wheel002
+    2300020: wheel003
+    2300022: wheel004
+    3300000: Cylinder001
+    3300002: Cylinder002
+    3300004: Cylinder003
+    3300006: Cylinder004
+    3300008: Main
+    3300010: Plane001
+    3300012: body
+    3300014: ShadowPlane
+    3300016: wheel001
+    3300018: wheel002
+    3300020: wheel003
+    3300022: wheel004
+    4300000: Main
+    4300002: Plane001
+    4300004: Cylinder001
+    4300006: Cylinder002
+    4300008: Cylinder003
+    4300010: Cylinder004
+    4300012: ShadowPlane
+    4300014: body
+    4300016: wheel001
+    4300018: wheel002
+    4300020: wheel003
+    4300022: wheel004
+    9500000: //RootNode
+    10800000: Sky001
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

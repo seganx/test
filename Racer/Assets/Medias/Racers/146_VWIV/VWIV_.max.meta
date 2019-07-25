@@ -1,0 +1,244 @@
+fileFormatVersion: 2
+guid: e4dca268d44f976488587ff35dc17a76
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: Classic_16_Body
+    100002: Classic_16_Dashboard
+    100004: Classic_16_Door_L
+    100006: Classic_16_Door_R
+    100008: Classic_16_Hood
+    100010: Classic_16_LightGlass_L
+    100012: Classic_16_LightGlass_R
+    100014: Classic_16_Roof
+    100016: Classic_16_Taillights
+    100018: Classic_16_Trunk
+    100020: Classic_16_Window_B
+    100022: Classic_16_Window_F
+    100024: Classic_16_Window_LB
+    100026: Classic_16_Window_LF
+    100028: Classic_16_Window_RB
+    100030: Classic_16_Window_RF
+    100032: //RootNode
+    100034: Object001
+    100036: g
+    100038: Main
+    100040: Mirror
+    100042: FB1
+    100044: FB2
+    100046: FB3
+    100048: RB1
+    100050: RB2
+    100052: RB3
+    100054: SS2
+    100056: SS3
+    100058: Main001
+    400000: Classic_16_Body
+    400002: Classic_16_Dashboard
+    400004: Classic_16_Door_L
+    400006: Classic_16_Door_R
+    400008: Classic_16_Hood
+    400010: Classic_16_LightGlass_L
+    400012: Classic_16_LightGlass_R
+    400014: Classic_16_Roof
+    400016: Classic_16_Taillights
+    400018: Classic_16_Trunk
+    400020: Classic_16_Window_B
+    400022: Classic_16_Window_F
+    400024: Classic_16_Window_LB
+    400026: Classic_16_Window_LF
+    400028: Classic_16_Window_RB
+    400030: Classic_16_Window_RF
+    400032: //RootNode
+    400034: Object001
+    400036: g
+    400038: Main
+    400040: Mirror
+    400042: FB1
+    400044: FB2
+    400046: FB3
+    400048: RB1
+    400050: RB2
+    400052: RB3
+    400054: SS2
+    400056: SS3
+    400058: Main001
+    2300000: Classic_16_Body
+    2300002: Classic_16_Dashboard
+    2300004: Classic_16_Door_L
+    2300006: Classic_16_Door_R
+    2300008: Classic_16_Hood
+    2300010: Classic_16_LightGlass_L
+    2300012: Classic_16_LightGlass_R
+    2300014: Classic_16_Roof
+    2300016: Classic_16_Taillights
+    2300018: Classic_16_Trunk
+    2300020: Classic_16_Window_B
+    2300022: Classic_16_Window_F
+    2300024: Classic_16_Window_LB
+    2300026: Classic_16_Window_LF
+    2300028: Classic_16_Window_RB
+    2300030: Classic_16_Window_RF
+    2300032: Object001
+    2300034: g
+    2300036: Main
+    2300038: Mirror
+    2300040: FB1
+    2300042: FB2
+    2300044: FB3
+    2300046: RB1
+    2300048: RB2
+    2300050: RB3
+    2300052: SS2
+    2300054: SS3
+    2300056: Main001
+    2300058: //RootNode
+    3300000: Classic_16_Body
+    3300002: Classic_16_Dashboard
+    3300004: Classic_16_Door_L
+    3300006: Classic_16_Door_R
+    3300008: Classic_16_Hood
+    3300010: Classic_16_LightGlass_L
+    3300012: Classic_16_LightGlass_R
+    3300014: Classic_16_Roof
+    3300016: Classic_16_Taillights
+    3300018: Classic_16_Trunk
+    3300020: Classic_16_Window_B
+    3300022: Classic_16_Window_F
+    3300024: Classic_16_Window_LB
+    3300026: Classic_16_Window_LF
+    3300028: Classic_16_Window_RB
+    3300030: Classic_16_Window_RF
+    3300032: Object001
+    3300034: g
+    3300036: Main
+    3300038: Mirror
+    3300040: FB1
+    3300042: FB2
+    3300044: FB3
+    3300046: RB1
+    3300048: RB2
+    3300050: RB3
+    3300052: SS2
+    3300054: SS3
+    3300056: Main001
+    3300058: //RootNode
+    4300000: Classic_16_Body
+    4300002: Classic_16_Taillights
+    4300004: Classic_16_Dashboard
+    4300006: Classic_16_Door_R
+    4300008: Classic_16_Door_L
+    4300010: Classic_16_Hood
+    4300012: Classic_16_Trunk
+    4300014: Classic_16_Roof
+    4300016: Classic_16_Window_F
+    4300018: Classic_16_Window_RF
+    4300020: Classic_16_Window_RB
+    4300022: Classic_16_Window_B
+    4300024: Classic_16_Window_LB
+    4300026: Classic_16_Window_LF
+    4300028: Classic_16_LightGlass_R
+    4300030: Classic_16_LightGlass_L
+    4300032: Object001
+    4300034: Main
+    4300036: Mirror
+    4300038: g
+    4300040: RB1
+    4300042: RB2
+    4300044: RB3
+    4300046: FB1
+    4300048: FB2
+    4300050: FB3
+    4300052: SS2
+    4300054: SS3
+    4300056: Main001
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 01 - Default
+    second: {fileID: 2100000, guid: c5294e92b39c2f14d9873976f0dfc16e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: G
+    second: {fileID: 2100000, guid: f2f558e13f2611e4c9e32637dd8d9700, type: 2}
+  materials:
+    importMaterials: 0
+    materialName: 1
+    materialSearch: 1
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 0
+    importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 2
+    normalCalculationMode: 0
+  importAnimation: 0
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 1
+    skeletonHasParents: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

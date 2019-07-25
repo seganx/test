@@ -1,0 +1,208 @@
+fileFormatVersion: 2
+guid: 161a1ee849f802143b94a4d334a7d86e
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: B_1
+    100004: B_2
+    100006: B_B_1
+    100008: B_B_2
+    100010: B_F_1
+    100012: B_F_2
+    100014: E
+    100016: G
+    100018: H
+    100020: I_R
+    100022: I_R 1
+    100024: L_G
+    100026: M
+    100028: R
+    100030: T
+    100032: Tire01
+    100034: Tire01_MeshPart0
+    100036: Tire01_MeshPart1
+    100038: FB
+    100040: Main
+    100042: Mirror
+    100044: RB
+    100046: Rim
+    100048: Wheel
+    400000: //RootNode
+    400002: B_1
+    400004: B_2
+    400006: B_B_1
+    400008: B_B_2
+    400010: B_F_1
+    400012: B_F_2
+    400014: E
+    400016: G
+    400018: H
+    400020: I_R
+    400022: I_R 1
+    400024: L_G
+    400026: M
+    400028: R
+    400030: T
+    400032: Tire01
+    400034: Tire01_MeshPart0
+    400036: Tire01_MeshPart1
+    400038: FB
+    400040: Main
+    400042: Mirror
+    400044: RB
+    400046: Rim
+    400048: Wheel
+    2300000: B_1
+    2300002: B_2
+    2300004: B_B_1
+    2300006: B_B_2
+    2300008: B_F_1
+    2300010: B_F_2
+    2300012: E
+    2300014: G
+    2300016: H
+    2300018: I_R
+    2300020: I_R 1
+    2300022: L_G
+    2300024: M
+    2300026: R
+    2300028: T
+    2300030: Tire01_MeshPart0
+    2300032: Tire01_MeshPart1
+    2300034: FB
+    2300036: Main
+    2300038: Mirror
+    2300040: RB
+    2300042: Rim
+    2300044: //RootNode
+    2300046: Wheel
+    3300000: B_1
+    3300002: B_2
+    3300004: B_B_1
+    3300006: B_B_2
+    3300008: B_F_1
+    3300010: B_F_2
+    3300012: E
+    3300014: G
+    3300016: H
+    3300018: I_R
+    3300020: I_R 1
+    3300022: L_G
+    3300024: M
+    3300026: R
+    3300028: T
+    3300030: Tire01_MeshPart0
+    3300032: Tire01_MeshPart1
+    3300034: FB
+    3300036: Main
+    3300038: Mirror
+    3300040: RB
+    3300042: Rim
+    3300044: //RootNode
+    3300046: Wheel
+    4300000: Tire01_MeshPart0
+    4300002: Tire01_MeshPart1
+    4300004: G
+    4300006: E
+    4300008: B_F_2
+    4300010: M
+    4300012: L_G
+    4300014: B_F_1
+    4300016: B_B_1
+    4300018: B_B_2
+    4300020: R
+    4300022: B_1
+    4300024: B_2
+    4300026: I_R
+    4300028: T
+    4300030: H
+    4300032: I_R
+    4300034: Mirror
+    4300036: FB
+    4300038: RB
+    4300040: Rim
+    4300042: Main
+    4300044: Wheel
+    7400000: Take 001
+    9500000: //RootNode
+  externalObjects: {}
+  materials:
+    importMaterials: 0
+    materialName: 1
+    materialSearch: 1
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 0.01
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 0
+    importBlendShapes: 0
+    importCameras: 0
+    importLights: 0
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 2
+    normalCalculationMode: 0
+  importAnimation: 0
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: vehicle bodies a
+  assetBundleVariant: 
