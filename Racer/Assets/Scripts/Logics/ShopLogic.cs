@@ -29,7 +29,7 @@ public class ShopLogic : MonoBehaviour
         public static void TryToCreateNewPackage()
         {
             var pack = GlobalConfig.Shop.specialRacerCardPopup;
-            if (pack.sku.IsNullOrEmpty() || pack.price < 1) return;
+            if (pack.sku.IsNullOrEmpty() || pack.price < 1 || Profile.SelectedRacer < 1) return;
 
             var centerId = RacerFactory.Racer.AllConfigs[RewardLogic.FindSelectRacerCenter()].Id;
             var list = Profile.data.racers.FindAll(x => x.id >= centerId && Profile.IsUnlockedRacer(x.id) == false);
