@@ -1,2 +1,2 @@
-# racer2
-a great racing game
+# test
+a simple test 
