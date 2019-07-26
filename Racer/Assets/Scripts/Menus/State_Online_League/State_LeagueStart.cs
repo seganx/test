@@ -52,7 +52,7 @@ public class State_LeagueStart : GameState
         rewardButton.onClick.AddListener(() => gameManager.OpenPopup<Popup_LeaguePrize>());
         leaderboardButton.onClick.AddListener(() => gameManager.OpenState<State_Leaderboards>());
 
-        startButton.onClick.AddListener(() =>
+        startButton.onClick.AddListener(() => gameManager.OpenState<State_Garage>().Setup(() =>
         {
             PlayModel.OfflineMode = false;
             PlayModel.eloScore = Profile.EloScore;
@@ -60,7 +60,7 @@ public class State_LeagueStart : GameState
             PlayModel.selectedMapId = PlayModel.SelectRandomMap();
             PlayModel.maxPlayerCount = 4;
             gameManager.OpenState<State_FindOpponents>();
-        });
+        }));
 
         UiShowHide.ShowAll(transform);
     }

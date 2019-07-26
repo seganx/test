@@ -1,7 +1,7 @@
-﻿using System.Collections;
+﻿using SeganX.Effects;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using SeganX.Effects;
 
 public class GarageRacer : Base
 {
@@ -14,12 +14,8 @@ public class GarageRacer : Base
         var t = System.DateTime.Now;
         water.localEulerAngles = Vector3.up * (t.Minute * 60 + t.Second) * waterSpeed;
 
-
         if (racer == null) return;
-        if (racer.transform.position.y > 0)
-            racer.transform.position = Vector3.MoveTowards(racer.transform.position, Vector3.back * 5, Time.deltaTime * 30);
-        else if (Mathf.Abs(racer.transform.position.z) > 0)
-            racer.transform.position = Vector3.MoveTowards(racer.transform.position, Vector3.zero, Time.deltaTime * 5);
+        racer.transform.position = Vector3.zero;
     }
 
 
