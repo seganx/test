@@ -16,6 +16,8 @@ public class UiShopSpecialPackage : MonoBehaviour
 
     private int packIndex = 0;
     private RacerConfig config = null;
+    private int gems = 0;
+    private int coins = 0;
 
     public UiShopSpecialPackage Setup(int index)
     {
@@ -34,11 +36,13 @@ public class UiShopSpecialPackage : MonoBehaviour
         var pack = GlobalConfig.Shop.specialPackages[index % GlobalConfig.Shop.specialPackages.Count];
         var price = pack.prices[config.GroupId - 1];
         var sku = pack.skus[config.GroupId - 1];
+        gems = pack.gems[config.GroupId - 1];
+        coins = pack.coins[config.GroupId - 1];
 
         GlobalFactory.CreateRacerCard(config.Id, racerCardHolder);
         customeCardsLabel.SetFormatedText(pack.customes);
-        gemsLabel.SetText(pack.gems.ToString("#,0"));
-        coinsLabel.SetText(pack.coins.ToString("#,0"));
+        gemsLabel.SetText(gems.ToString("#,0"));
+        coinsLabel.SetText(coins.ToString("#,0"));
         priceLabel.SetFormatedText(price);
         foreach (var item in discountLabels)
             item.SetFormatedText(pack.discount);
@@ -59,8 +63,8 @@ public class UiShopSpecialPackage : MonoBehaviour
 
     private void DisplayRewards(GlobalConfig.Data.Shop.SpecialPackage pack)
     {
-        Profile.EarnResouce(pack.gems, pack.coins);
-        Popup_Rewards.AddResource(pack.gems, pack.coins);
+        Profile.EarnResouce(gems, coins);
+        Popup_Rewards.AddResource(gems, coins);
 
         Profile.AddRacerCard(config.Id, config.CardCount);
         Popup_Rewards.AddRacerCard(config.Id, config.CardCount);
