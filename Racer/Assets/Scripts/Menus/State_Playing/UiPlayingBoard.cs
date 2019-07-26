@@ -11,6 +11,7 @@ public class UiPlayingBoard : Base
     {
         public Text nameLabel = null;
         public Text numberLabel = null;
+        public Text deltaPositionLabel = null;
         public RectTransform transform = null;
         private PlayerData data = null;
 
