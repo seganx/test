@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class State_BlackMarket : GameState
 {
     [SerializeField] private UiShopRacerCardPackage racerCardPackagePrefab = null;
+    [SerializeField] private Button blackMarketHelpButton = null;
 
     private void Start()
     {
@@ -33,6 +34,10 @@ public class State_BlackMarket : GameState
             else
                 gameManager.OpenPopup<Popup_Confirm>().Setup(111060, false, ok => Back());
         });
+
+        blackMarketHelpButton.onClick.AddListener(() =>
+            {
+            });
     }
 
     private void DisplayItems()
