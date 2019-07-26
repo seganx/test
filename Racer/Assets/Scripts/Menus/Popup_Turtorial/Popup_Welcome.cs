@@ -45,7 +45,7 @@ public class Popup_Welcome : GameState
 
         for (int i = 0; i < preset.rndCards; i++)
         {
-            var racerid = RewardLogic.SelectRacerReward(false);
+            var racerid = RewardLogic.SelectRacerReward();
             Profile.AddRacerCard(racerid, 1);
             Popup_Rewards.AddRacerCard(racerid, 1);
         }
