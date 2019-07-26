@@ -165,8 +165,8 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
             {
                 public string[] skus = { string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty };
                 public int[] prices = { 0, 0, 0, 0, 0, 0 };
-                public int gems = 0;
-                public int coins = 0;
+                public int[] gems = { 0, 0, 0, 0, 0, 0 };
+                public int[] coins = { 0, 0, 0, 0, 0, 0 };
                 public int customes = 0;
                 public int discount = 0;
             }
