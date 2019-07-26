@@ -54,15 +54,23 @@ public class State_LeagueStart : GameState
 
         startButton.onClick.AddListener(() => gameManager.OpenState<State_Garage>().Setup(() =>
         {
-            PlayModel.OfflineMode = false;
-            PlayModel.eloScore = Profile.EloScore;
-            PlayModel.eloPower = Profile.CurrentRacerPower;
-            PlayModel.selectedMapId = PlayModel.SelectRandomMap();
-            PlayModel.maxPlayerCount = 4;
-            gameManager.OpenState<State_FindOpponents>();
+            if (Profile.IsUnlockedRacer(GarageRacer.racer.Id))
+                StartOnlineGame();
+            else
+                gameManager.OpenPopup<Popup_RacerCardInfo>();
         }));
 
         UiShowHide.ShowAll(transform);
+    }
+
+    private void StartOnlineGame()
+    {
+        PlayModel.OfflineMode = false;
+        PlayModel.eloScore = Profile.EloScore;
+        PlayModel.eloPower = Profile.CurrentRacerPower;
+        PlayModel.selectedMapId = PlayModel.SelectRandomMap();
+        PlayModel.maxPlayerCount = 4;
+        gameManager.OpenState<State_FindOpponents>();
     }
 
     private void ClaimRewards()

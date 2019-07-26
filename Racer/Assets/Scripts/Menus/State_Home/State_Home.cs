@@ -7,8 +7,8 @@ using UnityEngine.UI;
 public class State_Home : GameState
 {
     [SerializeField] private Button garageButton = null;
-    [SerializeField] private Button customButton = null;
     [SerializeField] private Button upgradeButton = null;
+    [SerializeField] private Button customButton = null;
     [SerializeField] private Button blackMarketButton = null;
     [SerializeField] private Button shopButton = null;
     [SerializeField] private Button loadingBoxButton = null;
@@ -24,15 +24,28 @@ public class State_Home : GameState
         loadingBoxButton.onClick.AddListener(() => gameManager.OpenState<State_LoadingBox>());
 
         garageButton.onClick.AddListener(() => gameManager.OpenState<State_Garage>().Setup(() => gameManager.OpenState<State_PhotoMode>()));
-        customButton.onClick.AddListener(() => gameManager.OpenState<State_Garage>().Setup(() => gameManager.OpenState<State_Custome>()));
         upgradeButton.onClick.AddListener(() => gameManager.OpenState<State_Garage>().Setup(() => gameManager.OpenState<State_Upgrade>()));
+
+        customButton.onClick.AddListener(() => gameManager.OpenState<State_Garage>().Setup(() =>
+        {
+            if (Profile.IsUnlockedRacer(GarageRacer.racer.Id))
+                gameManager.OpenState<State_Custome>();
+            else
+                gameManager.OpenState<State_PhotoMode>();
+        }));
 
         offlineButton.onClick.AddListener(() =>
         {
 #if DATABEEN
             DataBeen.SendCustomEventData("home", new DataBeenConnection.CustomEventInfo[] { new DataBeenConnection.CustomEventInfo() { key = "select", value = "offline" } });
 #endif
-            gameManager.OpenState<State_Garage>().Setup(() => StartOffline());
+            gameManager.OpenState<State_Garage>().Setup(() =>
+            {
+                if (Profile.IsUnlockedRacer(GarageRacer.racer.Id))
+                    StartOffline();
+                else
+                    gameManager.OpenPopup<Popup_RacerCardInfo>();
+            });
         });
 
         onlineButton.onClick.AddListener(() =>

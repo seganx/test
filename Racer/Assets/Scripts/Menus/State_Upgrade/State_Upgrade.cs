@@ -163,12 +163,11 @@ public class State_Upgrade : GameState
         var nextindex = currindex + step;
         if (nextindex < 0) return;
         if (nextindex >= RacerFactory.Racer.AllConfigs.Count) return;
-        UiShowHide.HideAll(transform);
         var nextId = RacerFactory.Racer.AllConfigs[nextindex].Id;
         GarageRacer.LoadRacer(nextId);
         Profile.SelectedRacer = nextId;
         selectedType = UpgradeType.Null;
-        DelayCall(1, DisplayInfo);
+        DisplayInfo();
     }
 
     private void DisplayInfo()

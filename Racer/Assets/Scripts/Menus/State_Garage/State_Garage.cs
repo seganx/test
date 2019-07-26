@@ -27,6 +27,7 @@ public class State_Garage : GameState
 
     private void Start()
     {
+        UiHeader.Show();
         UiShowHide.ShowAll(transform);
 
         inventoryButton.onClick.AddListener(() => gameManager.OpenPopup<Popup_Confirm>().Setup(111103, false, null));
