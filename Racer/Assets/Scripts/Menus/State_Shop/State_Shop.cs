@@ -53,6 +53,7 @@ public class State_Shop : GameState
             gemsPackagePrefab.Clone<UiShopResourcePackage>().SetupAsGemsPack(i);
         Destroy(gemsPackagePrefab.gameObject);
 
+        UiShopSpecialPackage.ValidateAllRacerId();
         for (int i = 0; i < GlobalConfig.Shop.specialPackages.Count; i++)
             specialPackagePrefab.Clone<UiShopSpecialPackage>().Setup(i);
         Destroy(specialPackagePrefab.gameObject);

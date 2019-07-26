@@ -84,7 +84,7 @@ Shader "SeganX/UI/AlphaGlow"
                     o.col = v.col;
                     o.uv0 = TRANSFORM_TEX(v.uv0, _MainTex);
                     o.uv1 = TRANSFORM_TEX(v.uv0, _MainTex);
-                    o.uv1.x -= _Time.x * 3;
+                    o.uv1.x -= _Time.x * 2.5f;
 
     #ifdef UNITY_HALF_TEXEL_OFFSET
                     o.pos.xy += (_ScreenParams.zw - 1.0)*float2(-1,1);

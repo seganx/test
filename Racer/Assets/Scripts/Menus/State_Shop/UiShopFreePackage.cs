@@ -34,7 +34,7 @@ public class UiShopFreePackage : MonoBehaviour
 
                 case 2:
                     {
-                        var racerid = RewardLogic.SelectRacerReward(false);
+                        var racerid = RewardLogic.SelectRacerReward();
                         Profile.AddRacerCard(racerid, 1);
                         Popup_Rewards.AddRacerCard(racerid, 1);
                     }

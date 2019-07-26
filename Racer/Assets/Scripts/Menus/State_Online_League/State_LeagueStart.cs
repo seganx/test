@@ -78,7 +78,7 @@ public class State_LeagueStart : GameState
             Popup_Rewards.AddResource(league.rewardGem, league.rewardCoin);
             for (int i = 0; i < league.rewardCards; i++)
             {
-                var racerid = RewardLogic.SelectRacerReward(false);
+                var racerid = RewardLogic.SelectRacerReward();
                 Profile.AddRacerCard(racerid, 1);
                 Popup_Rewards.AddRacerCard(racerid, 1);
             }

@@ -68,7 +68,7 @@ public class GlobalFactory : StaticConfig<GlobalFactory>
         {
             var go = GameObject.CreatePrimitive(PrimitiveType.Cube);
 
-            var pr = RewardLogic.SelectProbability(probabilities.lenght, probabilities.center, GlobalConfig.Probabilities.unlockRacerRadius, GlobalConfig.Probabilities.unlockRacerHeightFactor);
+            var pr = RewardLogic.SelectProbability(probabilities.lenght, probabilities.center, GlobalConfig.Probabilities.rewardRacerRadius);
             go.transform.position = new Vector3(pr, list.FindAll(x => Mathf.Approximately(x.position.x, pr)).Count, 0);
             list.Add(go.transform);
         }

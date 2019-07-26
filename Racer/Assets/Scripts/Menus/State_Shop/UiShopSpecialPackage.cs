@@ -6,28 +6,47 @@ using UnityEngine.UI;
 
 public class UiShopSpecialPackage : MonoBehaviour
 {
-    [SerializeField] private LocalText racerCardsLabel = null;
+    [SerializeField] private Transform racerCardHolder = null;
     [SerializeField] private LocalText customeCardsLabel = null;
     [SerializeField] private LocalText gemsLabel = null;
     [SerializeField] private LocalText coinsLabel = null;
-    [SerializeField] private LocalText discountLabel = null;
+    [SerializeField] private LocalText[] discountLabels = null;
     [SerializeField] private LocalText priceLabel = null;
     [SerializeField] private Button purchaseButton = null;
 
+    private int packIndex = 0;
+    private RacerConfig config = null;
+
     public UiShopSpecialPackage Setup(int index)
     {
+        // update config or exit
+        {
+            var racerId = GetRacerId(index);
+            if (racerId == 0)
+            {
+                Destroy(gameObject);
+                return this;
+            }
+            config = RacerFactory.Racer.GetConfig(racerId);
+        }
+        packIndex = index;
+
         var pack = GlobalConfig.Shop.specialPackages[index % GlobalConfig.Shop.specialPackages.Count];
-        racerCardsLabel.SetFormatedText(pack.racerCards);
+        var price = pack.prices[config.GroupId - 1];
+        var sku = pack.skus[config.GroupId - 1];
+
+        GlobalFactory.CreateRacerCard(config.Id, racerCardHolder);
         customeCardsLabel.SetFormatedText(pack.customes);
         gemsLabel.SetText(pack.gems.ToString("#,0"));
         coinsLabel.SetText(pack.coins.ToString("#,0"));
-        discountLabel.SetFormatedText(pack.discount);
-        priceLabel.SetFormatedText(pack.price);
+        priceLabel.SetFormatedText(price);
+        foreach (var item in discountLabels)
+            item.SetFormatedText(pack.discount);
 
         purchaseButton.onClick.AddListener(() =>
         {
             purchaseButton.SetInteractable(false);
-            PurchaseSystem.Purchase(PurchaseProvider.Bazaar, pack.sku, (success, msg) =>
+            PurchaseSystem.Purchase(PurchaseProvider.Bazaar, sku, (success, msg) =>
             {
                 PurchaseSystem.Consume();
                 purchaseButton.SetInteractable(true);
@@ -41,23 +60,71 @@ public class UiShopSpecialPackage : MonoBehaviour
     private void DisplayRewards(GlobalConfig.Data.Shop.SpecialPackage pack)
     {
         Profile.EarnResouce(pack.gems, pack.coins);
-        Popup_Rewards.AddResource(pack.gems,pack.coins);
+        Popup_Rewards.AddResource(pack.gems, pack.coins);
 
-        for (int i = 0; i < pack.racerCards; i++)
-        {
-            var racerid = RewardLogic.SelectRacerReward(true);
-            Profile.AddRacerCard(racerid, 1);
-            Popup_Rewards.AddRacerCard(racerid, 1);
-        }
+        Profile.AddRacerCard(config.Id, config.CardCount);
+        Popup_Rewards.AddRacerCard(config.Id, config.CardCount);
 
         for (int i = 0; i < pack.customes; i++)
         {
-            var custom = RewardLogic.GetCustomReward();
+            var custom = RewardLogic.GetCustomReward(config.Id);
             Profile.AddRacerCustome(custom.type, custom.racerId, custom.customId);
             Popup_Rewards.AddCustomeCard(custom.type, custom.racerId, custom.customId);
         }
 
         Popup_Rewards.Display();
         ProfileLogic.SyncWidthServer(true, done => { });
+        SetRacerId(packIndex, 0);
+        Destroy(gameObject);
+    }
+
+
+    ////////////////////////////////////////////////////////////
+    /// STATIC MEMBERS
+    ////////////////////////////////////////////////////////////
+    public static void ValidateAllRacerId()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            if (GetRacerId(i) != 0) continue;
+            var racerId = SelectRandomRacerId(i);
+            if (racerId == 0) continue;
+            if (IsIdExist(racerId)) racerId = SelectRandomRacerId(i);
+            if (racerId == 0) continue;
+            if (IsIdExist(racerId)) racerId = SelectRandomRacerId(i);
+            if (racerId == 0) continue;
+            if (IsIdExist(racerId)) racerId = SelectRandomRacerId(i);
+            if (racerId == 0) continue;
+            if (IsIdExist(racerId)) continue;
+            SetRacerId(i, racerId);
+        }
+    }
+
+    private static int GetRacerId(int index)
+    {
+        return PlayerPrefsEx.GetInt("UiShopSpecialPackage.RacerId." + index, 0);
+    }
+
+    private static void SetRacerId(int index, int id)
+    {
+        PlayerPrefsEx.SetInt("UiShopSpecialPackage.RacerId." + index, id);
+    }
+
+    private static bool IsIdExist(int Id)
+    {
+        for (int i = 0; i < 10; i++)
+            if (GetRacerId(i) == Id)
+                return true;
+        return false;
+    }
+
+    private static int SelectRandomRacerId(int index)
+    {
+        int center = RewardLogic.FindSelectRacerCenter() + index * GlobalConfig.Probabilities.shopSpecialRacerRadius;
+        var configindex = RewardLogic.SelectProbabilityForward(RacerFactory.Racer.AllConfigs.Count, center, GlobalConfig.Probabilities.shopSpecialRacerRadius, 0.5f);
+        if (configindex < 0 || configindex >= RacerFactory.Racer.AllConfigs.Count) return 0;
+        var config = RacerFactory.Racer.AllConfigs[configindex];
+        if (Profile.IsUnlockedRacer(config.Id)) return 0;
+        return config.Id;
     }
 }

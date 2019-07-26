@@ -163,11 +163,10 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
             [System.Serializable]
             public class SpecialPackage
             {
-                public string sku = string.Empty;
-                public int price = 0;
+                public string[] skus = { string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty };
+                public int[] prices = { 0, 0, 0, 0, 0, 0 };
                 public int gems = 0;
                 public int coins = 0;
-                public int racerCards = 0;
                 public int customes = 0;
                 public int discount = 0;
             }
@@ -243,10 +242,13 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
         [System.Serializable]
         public class Probabilities
         {
-            public int unlockRacerRadius = 3;
-            public float unlockRacerHeightFactor = 0.5f;
-        }
+            public float unlockRacerHeightFactor = 0.5f;  // depricated
+            public int unlockRacerRadius = 3; // depricated
 
+            public int rewardRacerRadius = 3;
+            public int backmarketRacerRadius = 5;
+            public int shopSpecialRacerRadius = 4;
+        }
 
 
         public Update forceUpdate = new Update();

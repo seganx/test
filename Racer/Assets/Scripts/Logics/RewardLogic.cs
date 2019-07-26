@@ -38,7 +38,7 @@ public static class RewardLogic
         var res = new RaceReward();
         switch (chances.RandomOne())
         {
-            case 1: res.racerId = SelectRacerReward(false); break;
+            case 1: res.racerId = SelectRacerReward(); break;
             case 2: res.custome = GetCustomReward(); break;
             case 3: res.gem = gems; break;
         }
@@ -46,28 +46,25 @@ public static class RewardLogic
     }
 
     //! return the index of first locked racer in garage just front of unlocked one
-    public static int FindSelectRacerCenter()
+    public static int FindSelectRacerCenter(int playerIndex = 0)
     {
-        var center = RacerFactory.Racer.AllConfigs.FindIndex(x => x.Id == Profile.SelectedRacer);
+        var center = playerIndex == 0 ? RacerFactory.Racer.AllConfigs.FindIndex(x => x.Id == Profile.SelectedRacer) : playerIndex;
         for (int i = center + 1; i < RacerFactory.Racer.AllConfigs.Count && Profile.IsUnlockedRacer(RacerFactory.Racer.AllConfigs[i].Id); i++)
             center = i;
         return center;
     }
 
-    public static int SelectRacerReward(bool forwardModel)
+    public static int SelectRacerReward()
     {
         var center = FindSelectRacerCenter();
-        center += GlobalConfig.Probabilities.unlockRacerRadius / 2;
-
-        var index = forwardModel ?
-            SelectProbabilityForward(RacerFactory.Racer.AllConfigs.Count, center, GlobalConfig.Probabilities.unlockRacerRadius, GlobalConfig.Probabilities.unlockRacerHeightFactor) :
-            SelectProbability(RacerFactory.Racer.AllConfigs.Count, center, GlobalConfig.Probabilities.unlockRacerRadius, GlobalConfig.Probabilities.unlockRacerHeightFactor);
+        center += GlobalConfig.Probabilities.rewardRacerRadius / 2;
+        var index = SelectProbability(RacerFactory.Racer.AllConfigs.Count, center, GlobalConfig.Probabilities.rewardRacerRadius);
         return RacerFactory.Racer.AllConfigs[index].Id;
     }
 
     public static RacerCustomReward GetCustomReward(int racerId = 0)
     {
-        if (racerId < 1) racerId = SelectRacerReward(false);
+        if (racerId < 1) racerId = SelectRacerReward();
 
         switch (Random.Range(0, 100) % 5)
         {
@@ -96,7 +93,7 @@ public static class RewardLogic
 
 
 
-    public static int SelectProbability(int lenght, int center, int radius, float heightFactor)
+    public static int SelectProbability(int lenght, int center, int radius, float heightFactor = 0.5f)
     {
         var list = new List<int>(lenght * 3);
         for (int i = 0; i < lenght; i++)
@@ -116,7 +113,7 @@ public static class RewardLogic
         return list[index];
     }
 
-    public static int SelectProbabilityForward(int lenght, int center, int radius, float heightFactor)
+    public static int SelectProbabilityForward(int lenght, int center, int radius, float heightFactor = 0.5f)
     {
         var list = new List<int>(lenght * 3);
         for (int i = 0; i < lenght; i++)
