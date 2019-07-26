@@ -12,7 +12,6 @@ public class UiGarageRacerItem : Base
     [SerializeField] private LocalText cardsLabel = null;
     [SerializeField] private LocalText rankLabel = null;
     [SerializeField] private Text nameLabel = null;
-    [SerializeField] private Button unlockButton = null;
 
     public UiGarageRacerItem Setup(RacerConfig config, System.Action<UiGarageRacerItem> callback)
     {
