@@ -40,7 +40,13 @@ public class UiGarageRacerItem : Base
             rankLabel.SetFormatedText(config.ComputePower(racerprofile.level.NitroLevel, racerprofile.level.SteeringLevel, racerprofile.level.BodyLevel), config.MaxPower);
         }
 
-        transform.GetComponent<Button>(true, true).onClick.AddListener(() => callback(this));
+        var button = transform.GetComponent<Button>(true, true);
+        button.onClick.AddListener(() =>
+        {
+            button.SetInteractable(false);
+            callback(this);
+            DelayCall(1, () => button.SetInteractable(true));
+        });
 
         return this;
     }
