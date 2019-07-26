@@ -11,10 +11,6 @@ public class State_Shop : GameState
     [SerializeField] private UiShopSpecialPackage specialPackagePrefab = null;
     [SerializeField] private UiShopSpecialRacerCards specialRacerCardsPackagePrefab = null;
 
-    private void Awake()
-    {
-        specialRacerCardsPackagePrefab.gameObject.SetActive(false);
-    }
 
     private void Start()
     {
@@ -53,24 +49,23 @@ public class State_Shop : GameState
             gemsPackagePrefab.Clone<UiShopResourcePackage>().SetupAsGemsPack(i);
         Destroy(gemsPackagePrefab.gameObject);
 
-        UiShopSpecialPackage.ValidateAllRacerId();
-        for (int i = 0; i < GlobalConfig.Shop.specialPackages.Count; i++)
-            specialPackagePrefab.Clone<UiShopSpecialPackage>().Setup(i);
-        Destroy(specialPackagePrefab.gameObject);
-
-        specialRacerCardsPackagePrefab.gameObject.SetActive(true);
         if (ShopLogic.SpecialRacerPopup.IsAvailable)
-            specialRacerCardsPackagePrefab.Clone<UiShopSpecialRacerCards>().Setup(ShopLogic.SpecialRacerPopup.Package, true).gameObject.SetActive(true);
+            specialRacerCardsPackagePrefab.Clone<UiShopSpecialRacerCards>().Setup(ShopLogic.SpecialRacerPopup.Package, true);
 
         foreach (var item in GlobalConfig.Shop.specialRacerCardPackages)
             if (UiShopSpecialRacerCards.CanDisplay(item, true))
-                specialRacerCardsPackagePrefab.Clone<UiShopSpecialRacerCards>().Setup(item, false).gameObject.SetActive(true);
+                specialRacerCardsPackagePrefab.Clone<UiShopSpecialRacerCards>().Setup(item, false);
 
-        if (specialRacerCardsPackagePrefab.transform.parent.childCount < 3)
-            Destroy(specialRacerCardsPackagePrefab.transform.parent.gameObject);
+        Destroy(specialRacerCardsPackagePrefab.gameObject);
+
+        UiShopSpecialPackage.ValidateAllRacerId();
+        for (int i = 0; i < GlobalConfig.Shop.specialPackages.Count; i++)
+            specialPackagePrefab.Clone<UiShopSpecialPackage>().Setup(i);
+
+        if (specialPackagePrefab.transform.parent.childCount < 4)
+            Destroy(specialPackagePrefab.transform.parent.gameObject);
         else
-            Destroy(specialRacerCardsPackagePrefab.gameObject);
-
+            Destroy(specialPackagePrefab.gameObject);
 
         UiShowHide.ShowAll(transform);
     }
