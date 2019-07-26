@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UiShopFreePackage : MonoBehaviour
+public class UiLoadingBoxFreePackage : MonoBehaviour
 {
     [SerializeField] private LocalText desc = null;
     [SerializeField] private Button purchaseButton = null;

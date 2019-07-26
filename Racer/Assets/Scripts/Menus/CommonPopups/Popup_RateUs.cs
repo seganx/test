@@ -18,6 +18,7 @@ public class Popup_RateUs : GameState
         }
         stars[0].onClick.Invoke();
 
+        sendButton.SetInteractable(false);
         sendButton.onClick.AddListener(OnSendButton);
 
         UiShowHide.ShowAll(transform);
@@ -36,6 +37,8 @@ public class Popup_RateUs : GameState
 
         for (int i = 0; i < stars.Length; i++)
             stars[i].transform.GetChild(0).gameObject.SetActive(i <= index);
+
+        sendButton.SetInteractable(true);
     }
 
     private void OnSendButton()

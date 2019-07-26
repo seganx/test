@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UiShopRacerCardPackage : MonoBehaviour
+public class UiBlackMarketPackage : MonoBehaviour
 {
     [System.Serializable]
-    private class RacerCardPackage
+    private class Package
     {
         public int racerId = 0;
         public int racerCardsCount = 0;
@@ -29,7 +29,7 @@ public class UiShopRacerCardPackage : MonoBehaviour
     [SerializeField] private Button purchaseButton = null;
 
     private int index = 0;
-    private RacerCardPackage pack = null;
+    private Package pack = null;
 
     private void OnEnable()
     {
@@ -41,7 +41,7 @@ public class UiShopRacerCardPackage : MonoBehaviour
         all.Remove(this);
     }
 
-    public UiShopRacerCardPackage Setup(int pindex)
+    public UiBlackMarketPackage Setup(int pindex)
     {
         index = pindex;
         Display();
@@ -87,10 +87,10 @@ public class UiShopRacerCardPackage : MonoBehaviour
     ////////////////////////////////////////////////////////////
     /// STATIC MEMBERS
     ////////////////////////////////////////////////////////////
-    private static List<UiShopRacerCardPackage> all = new List<UiShopRacerCardPackage>();
-    private static List<RacerCardPackage> packages = null;
+    private static List<UiBlackMarketPackage> all = new List<UiBlackMarketPackage>();
+    private static List<Package> packages = null;
 
-    private static RacerCardPackage GetPackage(int index)
+    private static Package GetPackage(int index)
     {
         if (packages == null) LoadPackages();
         return packages[index % packages.Count];
@@ -98,26 +98,36 @@ public class UiShopRacerCardPackage : MonoBehaviour
 
     private static void LoadPackages()
     {
-        packages = PlayerPrefsEx.Deserialize<List<RacerCardPackage>>("RacerCardPackages", null);
+        packages = PlayerPrefsEx.Deserialize<List<Package>>("UiBlackMarketPackage", null);
         if (packages == null) CreatePackages();
     }
 
     private static void SavePackages()
     {
         if (packages == null) return;
-        PlayerPrefsEx.Serialize("RacerCardPackages", packages);
+        PlayerPrefsEx.Serialize("UiBlackMarketPackage", packages);
+    }
+
+    private static RacerConfig SelectRacer()
+    {
+        var config = RacerFactory.Racer.AllConfigs[RewardLogic.SelectProbabilityForward(RacerFactory.Racer.AllConfigs.Count, RewardLogic.FindSelectRacerCenter(), GlobalConfig.Probabilities.backmarketRacerRadius)];
+        while (packages.Exists(x => x.racerId == config.Id))
+            config = RacerFactory.Racer.AllConfigs[RewardLogic.SelectProbabilityForward(RacerFactory.Racer.AllConfigs.Count, RewardLogic.FindSelectRacerCenter(), GlobalConfig.Probabilities.backmarketRacerRadius)];
+        return config;
     }
 
     public static void CreatePackages()
     {
-        packages = new List<RacerCardPackage>(GlobalConfig.Shop.racerCardPackages.Count);
+        packages = new List<Package>(GlobalConfig.Shop.racerCardPackages.Count);
         foreach (var item in GlobalConfig.Shop.racerCardPackages)
         {
-            var config = RacerFactory.Racer.AllConfigs[RewardLogic.SelectProbabilityForward(RacerFactory.Racer.AllConfigs.Count, RewardLogic.FindSelectRacerCenter(), 10, 0.5f)];
-            while (packages.Exists(x => x.racerId == config.Id))
-                config = RacerFactory.Racer.AllConfigs[RewardLogic.SelectProbabilityForward(RacerFactory.Racer.AllConfigs.Count, RewardLogic.FindSelectRacerCenter(), 10, 0.5f)];
+            var config = SelectRacer();
+            if (Profile.IsUnlockedRacer(config.Id)) config = SelectRacer();
+            if (Profile.IsUnlockedRacer(config.Id)) config = SelectRacer();
+            if (Profile.IsUnlockedRacer(config.Id)) config = SelectRacer();
+            if (Profile.IsUnlockedRacer(config.Id)) config = SelectRacer();
 
-            var newpack = new RacerCardPackage();
+            var newpack = new Package();
             newpack.racerId = config.Id;
             newpack.racerCardsCount = config.CardCount;
             newpack.count = newpack.maxCount = item.maxCount;

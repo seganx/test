@@ -29,7 +29,7 @@ public class LegendShopTimerPresenter : TimerPresenter
             {
                 RefreshRemainCount--;
                 UpdateRefreshGui();
-                UiShopRacerCardPackage.CreatePackages();
+                UiBlackMarketPackage.CreatePackages();
             });
         });
         timerText.SetFormatedText(0, 0, 0);
@@ -58,7 +58,7 @@ public class LegendShopTimerPresenter : TimerPresenter
 
     private void RemainedTimeFinished(int remainTime)
     {
-        UiShopRacerCardPackage.CreatePackages();
+        UiBlackMarketPackage.CreatePackages();
         int newTime = GlobalConfig.Shop.racerCardPackageTime + remainTime % GlobalConfig.Shop.racerCardPackageTime;
         if (State_Settings.IsLegendStoreActive)
             NotificationManager.SendWithAppIcon(newTime, NotificationType.LegendStore);

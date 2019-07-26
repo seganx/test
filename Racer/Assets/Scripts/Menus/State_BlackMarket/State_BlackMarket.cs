@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class State_BlackMarket : GameState
 {
-    [SerializeField] private UiShopRacerCardPackage racerCardPackagePrefab = null;
+    [SerializeField] private UiBlackMarketPackage racerCardPackagePrefab = null;
     [SerializeField] private Button blackMarketHelpButton = null;
 
     private void Start()
@@ -44,7 +44,7 @@ public class State_BlackMarket : GameState
     private void DisplayItems()
     {
         for (int i = 0; i < GlobalConfig.Shop.racerCardPackages.Count; i++)
-            racerCardPackagePrefab.Clone<UiShopRacerCardPackage>().Setup(i);
+            racerCardPackagePrefab.Clone<UiBlackMarketPackage>().Setup(i);
         Destroy(racerCardPackagePrefab.gameObject);
 
         UiShowHide.ShowAll(transform);
