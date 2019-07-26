@@ -37,6 +37,7 @@ public class State_BlackMarket : GameState
 
         blackMarketHelpButton.onClick.AddListener(() =>
             {
+                gameManager.OpenPopup<Popup_Confirm>().Setup(111122, true, null);
             });
     }
 
