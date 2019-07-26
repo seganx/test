@@ -6,57 +6,33 @@ using UnityEngine.UI;
 
 public class State_Home : GameState
 {
-    //[SerializeField] private Button photoButton = null;
     [SerializeField] private Button garageButton = null;
+    [SerializeField] private Button customButton = null;
+    [SerializeField] private Button upgradeButton = null;
     [SerializeField] private Button blackMarketButton = null;
     [SerializeField] private Button shopButton = null;
     [SerializeField] private Button loadingBoxButton = null;
     [SerializeField] private Button offlineButton = null;
     [SerializeField] private Button onlineButton = null;
-    [SerializeField] private Button costumeButton = null;
-    [SerializeField] private Button upgradeButton = null;
-    //[SerializeField] private Button tutorialButton = null;
-
-
-#if OFF
-    private bool SeenGameplayTutorial
-    {
-        get { return PlayerPrefs.GetInt("State_Home.Tutorial", 0) == 1; }
-        set { PlayerPrefs.SetInt("State_Home.Tutorial", value ? 1 : 0); }
-    }
-#endif
 
     private void Start()
     {
-#if DATABEEN && OFF
-        DataBeen.SendCustomEventData("home", new DataBeenConnection.CustomEventInfo[] {
-            new DataBeenConnection.CustomEventInfo() { key = "gem", value = Profile.Gem.ToString() },
-            new DataBeenConnection.CustomEventInfo() { key = "coin", value = Profile.Coin.ToString() },
-            new DataBeenConnection.CustomEventInfo() { key = "score", value = Profile.Score.ToString() },
-            new DataBeenConnection.CustomEventInfo() { key = "power", value = Profile.CurrentRacerPower.ToString() },
-        });
-#endif        
-
-#if OFF
-        offlineButton.SetInteractable(SeenGameplayTutorial);
-        onlineButton.SetInteractable(SeenGameplayTutorial);
-        if (SeenGameplayTutorial == false)
-            DelayCall(1, () => tutorialButton.transform.parent.GoToAnchordPosition(-230, 0, 0, 3));
-#endif
-
         GarageCamera.SetCameraId(1);
 
-        garageButton.onClick.AddListener(() => gameManager.OpenState<State_Garage>());
         blackMarketButton.onClick.AddListener(() => gameManager.OpenState<State_BlackMarket>());
         shopButton.onClick.AddListener(() => gameManager.OpenState<State_Shop>());
         loadingBoxButton.onClick.AddListener(() => gameManager.OpenState<State_LoadingBox>());
+
+        garageButton.onClick.AddListener(() => gameManager.OpenState<State_Garage>().Setup(() => gameManager.OpenState<State_PhotoMode>()));
+        customButton.onClick.AddListener(() => gameManager.OpenState<State_Garage>().Setup(() => gameManager.OpenState<State_Custome>()));
+        upgradeButton.onClick.AddListener(() => gameManager.OpenState<State_Garage>().Setup(() => gameManager.OpenState<State_Upgrade>()));
 
         offlineButton.onClick.AddListener(() =>
         {
 #if DATABEEN
             DataBeen.SendCustomEventData("home", new DataBeenConnection.CustomEventInfo[] { new DataBeenConnection.CustomEventInfo() { key = "select", value = "offline" } });
 #endif
-            StartOffline();
+            gameManager.OpenState<State_Garage>().Setup(() => StartOffline());
         });
 
         onlineButton.onClick.AddListener(() =>
@@ -67,21 +43,6 @@ public class State_Home : GameState
             gameManager.OpenState<State_LeagueStart>();
         });
 
-        //costumeButton.onClick.AddListener(() => gameManager.OpenState<State_Custome>());
-        //upgradeButton.onClick.AddListener(() => gameManager.OpenState<State_Upgrade>());
-
-        //photoButton.onClick.AddListener(() => gameManager.OpenState<State_Upgrade>());
-
-        /*tutorialButton.onClick.AddListener(() =>
-        {
-            //SeenGameplayTutorial = true;
-            gameManager.OpenPopup<Popup_GamePlayTutorial>().SetOnClose(() =>
-                {
-                    //offlineButton.SetInteractable(true);
-                    //onlineButton.SetInteractable(true);
-                    DelayCall(1, () => tutorialButton.transform.parent.GoToAnchordPosition(0, 0, 0, 3));
-                });
-        });*/
 
         CheckPreset(() =>
         {

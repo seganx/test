@@ -96,6 +96,11 @@ public class UiBlackMarketPackage : MonoBehaviour
         return packages[index % packages.Count];
     }
 
+    private static bool PackageExist(int id)
+    {
+        return packages.Exists(x => x.racerId == id);
+    }
+
     private static void LoadPackages()
     {
         packages = PlayerPrefsEx.Deserialize<List<Package>>("UiBlackMarketPackage", null);
@@ -110,9 +115,15 @@ public class UiBlackMarketPackage : MonoBehaviour
 
     private static RacerConfig SelectRacer()
     {
-        var config = RacerFactory.Racer.AllConfigs[RewardLogic.SelectProbabilityForward(RacerFactory.Racer.AllConfigs.Count, RewardLogic.FindSelectRacerCenter(), GlobalConfig.Probabilities.backmarketRacerRadius)];
-        while (packages.Exists(x => x.racerId == config.Id))
-            config = RacerFactory.Racer.AllConfigs[RewardLogic.SelectProbabilityForward(RacerFactory.Racer.AllConfigs.Count, RewardLogic.FindSelectRacerCenter(), GlobalConfig.Probabilities.backmarketRacerRadius)];
+        int count = RacerFactory.Racer.AllConfigs.Count;
+        int center = RewardLogic.FindSelectRacerCenter();
+        int radius = GlobalConfig.Probabilities.backmarketRacerRadius;
+        var config = RacerFactory.Racer.AllConfigs[RewardLogic.SelectProbability(count, center, radius)];
+        if (PackageExist(config.Id)) config = RacerFactory.Racer.AllConfigs[RewardLogic.SelectProbability(count, center, radius)];
+        if (PackageExist(config.Id)) config = RacerFactory.Racer.AllConfigs[RewardLogic.SelectProbability(count, center, radius)];
+        if (PackageExist(config.Id)) config = RacerFactory.Racer.AllConfigs[RewardLogic.SelectProbability(count, center, radius)];
+        if (PackageExist(config.Id)) config = RacerFactory.Racer.AllConfigs[RewardLogic.SelectProbability(count, center, radius)];
+        if (PackageExist(config.Id)) config = RacerFactory.Racer.AllConfigs[RewardLogic.SelectProbability(count, center, radius)];
         return config;
     }
 

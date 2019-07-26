@@ -19,6 +19,12 @@ public class State_Garage : GameState
         set { PlayerPrefs.SetFloat("StateGarage.LastPosition", value); }
     }
 
+    public State_Garage Setup(System.Action onNextTask)
+    {
+        OnNextTask = onNextTask;
+        return this;
+    }
+
     private void Start()
     {
         UiShowHide.ShowAll(transform);
@@ -45,7 +51,7 @@ public class State_Garage : GameState
             {
                 Profile.SelectedRacer = car.Id;
                 GarageRacer.LoadRacer(car.Id);
-                gameManager.OpenState<State_Upgrade>();
+                OnNextTask();
             }
             ).rectTransform.anchoredPosition = itempos;
 
@@ -67,4 +73,10 @@ public class State_Garage : GameState
             LastPosition = container.anchoredPosition.x;
         return base.PreClose();
     }
+
+
+    ////////////////////////////////////////////////////////////
+    /// STATIC MEMBERS
+    ////////////////////////////////////////////////////////////
+    private static System.Action OnNextTask = () => gameManager.OpenState<State_Upgrade>();
 }

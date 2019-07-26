@@ -88,7 +88,7 @@ public class UiShopSpecialPackage : MonoBehaviour
     ////////////////////////////////////////////////////////////
     public static void ValidateAllRacerId()
     {
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < GlobalConfig.Shop.specialPackages.Count; i++)
         {
             if (GetRacerId(i) != 0) continue;
             var racerId = SelectRandomRacerId(i);
@@ -116,7 +116,7 @@ public class UiShopSpecialPackage : MonoBehaviour
 
     private static bool IsIdExist(int Id)
     {
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < GlobalConfig.Shop.specialPackages.Count; i++)
             if (GetRacerId(i) == Id)
                 return true;
         return false;
@@ -124,11 +124,20 @@ public class UiShopSpecialPackage : MonoBehaviour
 
     private static int SelectRandomRacerId(int index)
     {
-        int center = RewardLogic.FindSelectRacerCenter() + index * GlobalConfig.Probabilities.shopSpecialRacerRadius;
-        var configindex = RewardLogic.SelectProbabilityForward(RacerFactory.Racer.AllConfigs.Count, center, GlobalConfig.Probabilities.shopSpecialRacerRadius, 0.5f);
+        int radius = GlobalConfig.Probabilities.shopSpecialRacerRadius;
+        int center = RewardLogic.FindSelectRacerCenter() + radius / 2 + index * radius;
+        int count = center + radius;
+        var configindex = RewardLogic.SelectProbability(count, center, radius);
         if (configindex < 0 || configindex >= RacerFactory.Racer.AllConfigs.Count) return 0;
         var config = RacerFactory.Racer.AllConfigs[configindex];
         if (Profile.IsUnlockedRacer(config.Id)) return 0;
         return config.Id;
+    }
+
+    [Console("shop", "special")]
+    public static void ShopSpecialTest()
+    {
+        for (int i = 0; i < GlobalConfig.Shop.specialPackages.Count; i++)
+            SetRacerId(i, 0);
     }
 }
