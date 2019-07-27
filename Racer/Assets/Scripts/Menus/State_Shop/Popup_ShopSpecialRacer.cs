@@ -23,13 +23,11 @@ public class Popup_ShopSpecialRacer : GameState
         priceLabel.SetFormatedText(pack.price.ToString("#,0"));
         discountLabel.SetText(pack.discount.ToString());
 
-
         purchaseButton.onClick.AddListener(() =>
         {
             purchaseButton.SetInteractable(false);
             PurchaseSystem.Purchase(PurchaseProvider.Bazaar, pack.sku, (success, msg) =>
             {
-                PurchaseSystem.Consume();
                 purchaseButton.SetInteractable(true);
                 if (success)
                 {
@@ -38,6 +36,7 @@ public class Popup_ShopSpecialRacer : GameState
                     Profile.AddRacerCard(pack.racerId, pack.cardCount);
                     Popup_Rewards.AddRacerCard(pack.racerId, pack.cardCount);
                     Popup_Rewards.Display();
+                    PurchaseSystem.Consume();
                     ProfileLogic.SyncWidthServer(true, done => { });
                     if (onPurchase != null) onPurchase();
                 }

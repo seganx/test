@@ -11,6 +11,7 @@ public abstract class PlayerPresenter : Base
 
     private VelocityReader velocityReader = new VelocityReader(10);
     private float currGrade = 0;
+    private float changeGradeSpeed = 1;
     private float currSteeringSpeed = 0;
     private float maxSteeringSpeed = 0;
 
@@ -20,7 +21,7 @@ public abstract class PlayerPresenter : Base
     public float SteeringValue { get; set; }
     public bool PlayingHorn { get; set; }
     public int Grade { get { return player.CurrGrade; } }
-    public int Grading { get { return Mathf.Approximately(currGrade, player.CurrGrade) ? 0 : (currGrade < player.CurrGrade ? 1 : -1); } }
+    public float Grading { get { return Mathf.Approximately(currGrade, player.CurrGrade) ? 0 : player.CurrGrade - currGrade; } }
     public float Nitros { get { return player.CurrNitrous; } }
     public bool NitrosReady { get { return Nitros >= 1.0f; } }
 
@@ -77,6 +78,7 @@ public abstract class PlayerPresenter : Base
 
     public virtual void SetGrade(int grade, bool dontBlend = false)
     {
+        changeGradeSpeed = grade - player.CurrGrade > 1 ? 1 : 0.5f;
         player.CurrGrade = grade;
         if (dontBlend) currGrade = grade;
         UpdatePositons();
@@ -119,7 +121,7 @@ public abstract class PlayerPresenter : Base
     {
         if (currGrade != Grade)
         {
-            currGrade = Mathf.MoveTowards(currGrade, Grade, Time.deltaTime * 0.5f);
+            currGrade = Mathf.MoveTowards(currGrade, Grade, Time.deltaTime * changeGradeSpeed);
             if (currGrade == Grade)
                 BroadcastMessage("StopNosAudio", SendMessageOptions.DontRequireReceiver);
         }

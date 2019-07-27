@@ -49,13 +49,13 @@ public class UiShopResourcePackage : MonoBehaviour
             purchaseButton.SetInteractable(false);
             PurchaseSystem.Purchase(PurchaseProvider.Bazaar, pack.sku, (success, msg) =>
             {
-                PurchaseSystem.Consume();
                 purchaseButton.SetInteractable(true);
                 if (success)
                 {
                     Profile.EarnResouce(pack.gems, 0);
                     Popup_Rewards.AddResource(pack.gems, 0);
                     Popup_Rewards.Display();
+                    PurchaseSystem.Consume();
                     ProfileLogic.SyncWidthServer(true, done => { });
                 }
             });

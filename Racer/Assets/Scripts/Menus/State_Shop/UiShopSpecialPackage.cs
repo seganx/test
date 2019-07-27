@@ -52,9 +52,12 @@ public class UiShopSpecialPackage : MonoBehaviour
             purchaseButton.SetInteractable(false);
             PurchaseSystem.Purchase(PurchaseProvider.Bazaar, sku, (success, msg) =>
             {
-                PurchaseSystem.Consume();
                 purchaseButton.SetInteractable(true);
-                if (success) DisplayRewards(pack);
+                if (success)
+                {
+                    DisplayRewards(pack);
+                    PurchaseSystem.Consume();
+                }
             });
         });
 

@@ -39,11 +39,11 @@ public class UiShopSpecialRacerCards : MonoBehaviour
             purchaseButton.SetInteractable(false);
             PurchaseSystem.Purchase(PurchaseProvider.Bazaar, pack.sku, (success, msg) =>
             {
-                PurchaseSystem.Consume();
                 purchaseButton.SetInteractable(true);
                 if (success)
                 {
                     DisplayRewards(pack);
+                    PurchaseSystem.Consume();
                     if (isPopup) ShopLogic.SpecialRacerPopup.Clear();
                 }
             });

@@ -80,6 +80,19 @@ public class UiPlayingBoard : Base
             if (item.IsPlayer)
                 instance.positionLabel.SetFormatedText(i + 1, PlayModel.maxPlayerCount);
         }
+
+        int lastgrade = 0;
+        for (int i = instance.items.LastIndex(); i >= 0; i--)
+        {
+            var item = instance.items[i];
+            if (item.Player != null)
+            {
+                var grade = lastgrade > 0 ? (item.Player.CurrGrade - lastgrade) : 0;
+                item.deltaPositionLabel.text = grade.ToString();
+                lastgrade = item.Player.CurrGrade;
+            }
+            else item.deltaPositionLabel.text = "0";
+        }
     }
 
     private static void UpdateItemColor(PlayerItem item)

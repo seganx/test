@@ -6,7 +6,7 @@ public class UiPlayingTutorial : MonoBehaviour
 {
     [SerializeField] private GameObject[] tutorialObjects;
 
-    void Start()
+    private void Start()
     {
         if (!GetPlayingTutorialShowed(0))
             StartCoroutine(ShowThenHideTutorial(0, 5));
@@ -14,34 +14,38 @@ public class UiPlayingTutorial : MonoBehaviour
         if (!GetPlayingTutorialShowed(1))
             StartCoroutine(ShowThenHideTutorial(1, 13));
 
-        if (GetPlayingTutorialShowed(2))
-            enabled = false;
+        if (GetPlayingTutorialShowed(0) && GetPlayingTutorialShowed(1) && GetPlayingTutorialShowed(2))
+            Destroy(gameObject);
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.T))
+        if (PlayerPresenter.local.NitrosReady)
         {
             StartCoroutine(ShowThenHideTutorial(2));
             enabled = false;
         }
     }
 
-    IEnumerator ShowThenHideTutorial(int index, float delay = 0)
+    private IEnumerator ShowThenHideTutorial(int index, float delay = 0)
     {
         yield return new WaitForSeconds(delay);
         tutorialObjects[index].SetActive(true);
         SetPlayingTutorialShowed(index);
         yield return new WaitForSeconds(5);
         tutorialObjects[index].SetActive(false);
+
+        if (index == 2) Destroy(gameObject);
     }
 
-    string GetPlayingTutorialShowedString(int index) { return "PlayingTutorial_" + index; }
-    bool GetPlayingTutorialShowed(int index)
+    private string GetPlayingTutorialShowedString(int index) { return "PlayingTutorial_" + index; }
+
+    private bool GetPlayingTutorialShowed(int index)
     {
         return PlayerPrefs.GetInt(GetPlayingTutorialShowedString(index), 0) > 0;
     }
-    void SetPlayingTutorialShowed(int index)
+
+    private void SetPlayingTutorialShowed(int index)
     {
         PlayerPrefs.SetInt(GetPlayingTutorialShowedString(index), 1);
     }
