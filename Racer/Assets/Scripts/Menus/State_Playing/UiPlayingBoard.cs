@@ -81,7 +81,13 @@ public class UiPlayingBoard : Base
                 instance.positionLabel.SetFormatedText(i + 1, PlayModel.maxPlayerCount);
         }
 
-        int lastgrade = 0;
+
+        instance.items[0].deltaPositionLabel.text = "+" + (instance.items[0].Grade + (instance.items[1].Player == null ? 0 : instance.items[1].Grade));
+        instance.items[1].deltaPositionLabel.text = "-" + ((instance.items[0].Player == null ? 0 : instance.items[0].Grade) - instance.items[1].Grade);
+        instance.items[2].deltaPositionLabel.text = "-" + ((instance.items[1].Player == null ? 0 : instance.items[1].Grade) - instance.items[2].Grade);
+        instance.items[3].deltaPositionLabel.text = "-" + ((instance.items[2].Player == null ? 0 : instance.items[2].Grade) - instance.items[3].Grade);
+
+#if OFF
         for (int i = instance.items.LastIndex(); i >= 0; i--)
         {
             var item = instance.items[i];
@@ -93,14 +99,15 @@ public class UiPlayingBoard : Base
             }
             else item.deltaPositionLabel.text = "0";
         }
+#endif
     }
 
     private static void UpdateItemColor(PlayerItem item)
     {
         if (item.Player == null) return;
         if (item.Player.IsPlayer)
-            item.nameLabel.color = item.numberLabel.color = Color.green;
+            item.deltaPositionLabel.color = item.nameLabel.color = item.numberLabel.color = Color.green;
         else
-            item.nameLabel.color = item.numberLabel.color = item.IsLeft ? Color.gray : Color.white;
+            item.deltaPositionLabel.color = item.nameLabel.color = item.numberLabel.color = item.IsLeft ? Color.gray : Color.white;
     }
 }

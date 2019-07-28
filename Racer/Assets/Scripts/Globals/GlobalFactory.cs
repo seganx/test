@@ -29,9 +29,19 @@ public class GlobalFactory : StaticConfig<GlobalFactory>
         public Sprite smallIcon = null;
     }
 
+    [System.Serializable]
+    public class FontInfo
+    {
+        public string name = string.Empty;
+        public Font font = null;
+    }
+
+
     [SerializeField] private UiRacerCard racerCardPrefab = null;
     [SerializeField] private PlayersName playersName = new PlayersName();
     [SerializeField] private List<LeagueInfo> leagues = new List<LeagueInfo>();
+    [SerializeField] private List<FontInfo> fonts = new List<FontInfo>();
+
 
     protected override void OnInitialize()
     {
@@ -113,6 +123,14 @@ public class GlobalFactory : StaticConfig<GlobalFactory>
         {
             index = Mathf.Clamp(index, 0, 4);
             return LocalizationService.Get(111050 + index);
+        }
+    }
+
+    public static class Fonts
+    {
+        public static Font Get(int index)
+        {
+            return Instance.fonts[Mathf.Clamp(index, 0, Instance.fonts.LastIndex())].font;
         }
     }
 
