@@ -82,7 +82,7 @@ public class UiPlayingBoard : Base
         }
 
 
-        instance.items[0].deltaPositionLabel.text = "+" + (instance.items[0].Grade + (instance.items[1].Player == null ? 0 : instance.items[1].Grade));
+        instance.items[0].deltaPositionLabel.text = "+" + (instance.items[0].Grade - (instance.items[1].Player == null ? 0 : instance.items[1].Grade));
         instance.items[1].deltaPositionLabel.text = "-" + ((instance.items[0].Player == null ? 0 : instance.items[0].Grade) - instance.items[1].Grade);
         instance.items[2].deltaPositionLabel.text = "-" + ((instance.items[1].Player == null ? 0 : instance.items[1].Grade) - instance.items[2].Grade);
         instance.items[3].deltaPositionLabel.text = "-" + ((instance.items[2].Player == null ? 0 : instance.items[2].Grade) - instance.items[3].Grade);

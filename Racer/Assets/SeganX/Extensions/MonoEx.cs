@@ -236,6 +236,14 @@ public static class MonoEx
         return lines.Length;
     }
 
+    public static string SubString(this string self, int startIndex, int count)
+    {
+        if (self == null) return string.Empty;
+        if (startIndex >= self.Length) return string.Empty;
+        if (startIndex + count >= self.Length) count = self.Length - startIndex;
+        return self.Substring(startIndex, count);
+    }
+
     public static string CleanFromCode(this string self)
     {
         return (self == null) ? null : self.Replace('"', '\'');

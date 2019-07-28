@@ -64,7 +64,7 @@ public static class RewardLogic
 
     public static RacerCustomReward GetCustomReward(int racerId = 0)
     {
-        if (racerId < 1) racerId = SelectRacerReward();
+        if (racerId < 1) racerId = Profile.Data.racers.RandomOne().id;
 
         switch (Random.Range(0, 100) % 5)
         {
