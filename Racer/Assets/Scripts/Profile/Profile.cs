@@ -97,13 +97,14 @@ public static class Profile
         get { return data; }
         set
         {
-            if (value.version == 1)
+            if (value != null && value.data != null && value.version == 1)
             {
                 foreach (var item in value.racers)
                     if (IsReadyToUnlock(item))
                         item.unlock = 1;
                 value.version = 2;
             }
+
             data = value;
         }
     }
@@ -169,7 +170,7 @@ public static class Profile
 
     public static bool IsUnlockingRacer(int id)
     {
-        return IsReadyToUnlock(GetRacer(id));        
+        return IsReadyToUnlock(GetRacer(id));
     }
 
     private static bool IsReadyToUnlock(RacerProfile rp)
