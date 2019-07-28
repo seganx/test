@@ -9,7 +9,12 @@ public class TimerManager : Base
 {
     private const string serializeKey = "TimerManager.Timers";
 
-    public enum Type { AdTimer = 1, FreeShopItemTimer = 2, FullFuelTimer = 3, StartDiscountTimer = 4, FinishDiscountTimer = 5, LegendShopActivatorTimer = 6, LegendShopTimer = 7, LeagueStartTimer = 8, LeagueEndTimer = 9, RacerSpecialOfferTimer = 10 } // don't change the values!
+    public enum Type // don't change the values!
+    {
+        AdTimer = 1, FreeShopItemTimer = 2, FullFuelTimer = 3, StartDiscountTimer = 4, FinishDiscountTimer = 5,
+        LegendShopActivatorTimer = 6, LegendShopTimer = 7, LeagueStartTimer = 8, LeagueEndTimer = 9, RacerSpecialOfferTimer = 10,
+        CombinedShopItemTimer = 11
+    }
 
     [Serializable]
     public class Timer
@@ -125,6 +130,11 @@ public class TimerManager : Base
     {
         SetTimer(Type.FreeShopItemTimer, GlobalConfig.Shop.freePackage.nextTime);
         SetTimer(Type.LegendShopActivatorTimer, GlobalConfig.Shop.racerCardPackageTime);
+
+        SetTimer(Type.CombinedShopItemTimer, GlobalConfig.Shop.combinedPackagesNextTime);
+        // call your function here
+
+        //
     }
 
     static string timerManagerInitOnceString = "TimerManagerInitOnce";

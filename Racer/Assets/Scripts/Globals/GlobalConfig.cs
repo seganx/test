@@ -170,7 +170,7 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
                 public int customes = 0;
                 public int discount = 0;
             }
-            
+
             [System.Serializable]
             public class GemPackage
             {
@@ -210,6 +210,7 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
             public int instaToGem = 100;
             public int nicknamePrice = 1200;
             public int racerCardPackageTime = 0;
+            public int combinedPackagesNextTime = 0;
             public int[] racerCardPackageRefreshPrices = new int[] { 200, 80, 20 };
 
             public List<RacerCardPackage> racerCardPackages = new List<RacerCardPackage>();
