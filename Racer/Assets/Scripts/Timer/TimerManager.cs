@@ -21,11 +21,11 @@ public class TimerManager : Base
     private void Awake()
     {
         IsTimeValid = false;
-        timers = PlayerPrefsEx.Deserialize(serializeKey, new Dictionary<Type, Timer>());
+        timers = PlayerPrefsEx.DeserializeBinary(serializeKey, new Dictionary<Type, Timer>());
         foreach (Type timerType in Enum.GetValues(typeof(Type)))
             if (!timers.ContainsKey(timerType))
                 timers.Add(timerType, new Timer());
-        PlayerPrefsEx.Serialize(serializeKey, timers);
+        PlayerPrefsEx.SerializeBinary(serializeKey, timers);
 
         StartCoroutine(TryValidateTime());
     }
@@ -77,7 +77,7 @@ public class TimerManager : Base
         timers[timerType].startTime = startTime == 0 ? ServerSeconds : startTime;
         timers[timerType].duration = duration;
 
-        PlayerPrefsEx.Serialize(serializeKey, timers);
+        PlayerPrefsEx.SerializeBinary(serializeKey, timers);
     }
 
     public static void ValidateTime()

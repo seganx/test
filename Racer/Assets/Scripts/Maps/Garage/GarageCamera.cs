@@ -10,6 +10,10 @@ public class GarageCamera : MonoBehaviour
     public Vector3 lightDirection = Vector3.down;
     public float lightIntensity = 1;
 
+#if UNITY_EDITOR
+    public bool autoComputeSpherical = true;
+#endif
+
     protected Vector3 destSpherical = Vector3.one;
 
     public int Id { set; get; }
@@ -40,7 +44,7 @@ public class GarageCamera : MonoBehaviour
         if (currentId != Id) return;
 
 #if UNITY_EDITOR
-        if (Id > 0)
+        if (autoComputeSpherical)
         {
             ComputeSpherical();
             DestTarget = transform.position + transform.forward * transform.position.magnitude;

@@ -57,17 +57,22 @@ public class ProfileData
     /// HELPER CLASSES
     /////////////////////////////////////////////////////////////////////
     [System.Serializable]
-    public class NetBaseData
+    public class NetDataBase
+    {
+        public int ver = 2; 
+    }
+
+    [System.Serializable]
+    public class NetDataArrays : NetDataBase
     {
         public List<string> a1 = new List<string>();
         public List<RacerProfile> a2 = new List<RacerProfile>();
     }
 
     [System.Serializable]
-    public class NetData : NetBaseData
+    public class NetData : NetDataArrays
     {
         public int mod = 0;
-        public int ver = 1;
         public CryptoInt i1 = 0;
         public CryptoInt i2 = 0;
         public CryptoInt i3 = 0;
@@ -85,11 +90,11 @@ public class ProfileData
             if (a1.Count != other.a1.Count) return false;
             if (a2.Count != other.a2.Count) return false;
 
-            var thistmp = new NetBaseData();
+            var thistmp = new NetDataArrays();
             thistmp.a1 = a1;
             thistmp.a2 = a2;
 
-            var othertmp = new NetBaseData();
+            var othertmp = new NetDataArrays();
             othertmp.a1 = other.a1;
             othertmp.a2 = other.a2;
 

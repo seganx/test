@@ -131,11 +131,6 @@ public class RacerConfig : ScriptableObject
         return res.ToInt();
     }
 
-    public bool IsUnlocked(int playersCard)
-    {
-        return CardCount <= playersCard;
-    }
-
     public void Awake()
     {
         Id = name.Split('_')[0].ToInt(-1);

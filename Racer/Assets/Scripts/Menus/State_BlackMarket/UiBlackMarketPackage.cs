@@ -103,14 +103,14 @@ public class UiBlackMarketPackage : MonoBehaviour
 
     private static void LoadPackages()
     {
-        packages = PlayerPrefsEx.Deserialize<List<Package>>("UiBlackMarketPackage", null);
+        packages = PlayerPrefsEx.DeserializeBinary<List<Package>>("UiBlackMarketPackage", null);
         if (packages == null) CreatePackages();
     }
 
     private static void SavePackages()
     {
         if (packages == null) return;
-        PlayerPrefsEx.Serialize("UiBlackMarketPackage", packages);
+        PlayerPrefsEx.SerializeBinary("UiBlackMarketPackage", packages);
     }
 
     private static RacerConfig SelectRacer()

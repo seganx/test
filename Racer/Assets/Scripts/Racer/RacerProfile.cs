@@ -58,27 +58,13 @@ public class RacerLevelData
 }
 
 [System.Serializable]
-public class VersionRacerProfile
-{
-    public int ver = 1;
-}
-
-[System.Serializable]
-public class RacerProfile : VersionRacerProfile
+public class RacerProfile
 {
     public int id = 0;
     public int cards = 0;
+    public byte unlock = 0;
     public RacerLevelData level = new RacerLevelData();
     public RacerCustomData custom = new RacerCustomData();
-
-    public static RacerProfile FromJson(string json)
-    {
-        var version = JsonUtility.FromJson<VersionRacerProfile>(json);
-        if (version.ver == 1)
-            return JsonUtility.FromJson<RacerProfile>(json);
-        else
-            return new RacerProfile();
-    }
 
     public static string GetCustomeSKU(RacerCustomeType type, int racerId, int customeId)
     {

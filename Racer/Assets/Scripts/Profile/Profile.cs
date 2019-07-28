@@ -2,7 +2,7 @@
 
 public static class Profile
 {
-    public static ProfileData data = new ProfileData();
+    private static ProfileData data = new ProfileData();
 
     public static bool IsFirstSession { get; set; }
 
@@ -71,7 +71,6 @@ public static class Profile
         get { return Score; }
     }
 
-
     public static int CurrentRacerPower
     {
         get
@@ -93,6 +92,32 @@ public static class Profile
         set { if (value) data.socials |= 2; }
     }
 
+    public static ProfileData Data
+    {
+        get { return data; }
+        set
+        {
+            if (value.version == 1)
+            {
+                foreach (var item in value.racers)
+                    if (IsReadyToUnlock(item))
+                        item.unlock = 1;
+                value.version = 2;
+            }
+            data = value;
+        }
+    }
+
+    public static bool IsUnlockingRacerExist
+    {
+        get
+        {
+            foreach (var item in data.racers)
+                if (IsReadyToUnlock(item))
+                    return true;
+            return false;
+        }
+    }
 
     public static bool SpendGem(int value)
     {
@@ -142,12 +167,33 @@ public static class Profile
         data.AddPurchasedItem(type, racerId, customId);
     }
 
+    public static bool IsUnlockingRacer(int id)
+    {
+        return IsReadyToUnlock(GetRacer(id));        
+    }
+
+    private static bool IsReadyToUnlock(RacerProfile rp)
+    {
+        if (rp == null || rp.unlock == 1) return false;
+        var rc = RacerFactory.Racer.GetConfig(rp.id);
+        return rc.CardCount <= rp.cards;
+    }
+
+    public static bool UnlockRacer(int id)
+    {
+        var rp = GetRacer(id);
+        if (rp == null) return false;
+        var rc = RacerFactory.Racer.GetConfig(id);
+        if (rc.CardCount <= rp.cards) rp.unlock = 1;
+        return rp.unlock == 1;
+    }
+
     public static bool IsUnlockedRacer(int id)
     {
         var rp = GetRacer(id);
         if (rp == null) return false;
         var rc = RacerFactory.Racer.GetConfig(id);
-        return rc.IsUnlocked(rp.cards);
+        return rc.CardCount <= rp.cards;
     }
 
     public static bool IsUnlockedCustome(RacerCustomeType type, int racerId, int customId)

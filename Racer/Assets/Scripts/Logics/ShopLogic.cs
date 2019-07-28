@@ -32,7 +32,7 @@ public class ShopLogic : MonoBehaviour
             if (pack.sku.IsNullOrEmpty() || pack.price < 1 || Profile.SelectedRacer < 1) return;
 
             var centerId = RacerFactory.Racer.AllConfigs[RewardLogic.FindSelectRacerCenter()].Id;
-            var list = Profile.data.racers.FindAll(x => x.id >= centerId && Profile.IsUnlockedRacer(x.id) == false);
+            var list = Profile.Data.racers.FindAll(x => x.id >= centerId && Profile.IsUnlockedRacer(x.id) == false);
             if (list.Count < 1) return;
 
             var racerprofile = list.FindMax(x => x.cards);

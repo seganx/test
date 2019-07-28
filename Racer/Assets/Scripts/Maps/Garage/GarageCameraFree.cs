@@ -58,7 +58,12 @@ public class GarageCameraFree : GarageCamera
         {
             isMultiTouch = true;
             isOneTouch = true;
-            destSpherical.z += Time.deltaTime * rotationSpeed;
+            if (rotationSpeed > 0)
+            {
+                destSpherical.z += Time.deltaTime * rotationSpeed;
+                destSpherical.y = 1.5f + 0.2f * Mathf.Sin(Time.time * rotationSpeed * 0.35f);
+                destSpherical.x = 7;
+            }
         }
 
         destSpherical.x += Input.mouseScrollDelta.y;

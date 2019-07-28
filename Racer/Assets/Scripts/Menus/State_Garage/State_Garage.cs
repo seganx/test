@@ -50,9 +50,16 @@ public class State_Garage : GameState
 
             itemPrefab.Clone<UiGarageRacerItem>().Setup(car, uitem =>
             {
-                Profile.SelectedRacer = car.Id;
                 GarageRacer.LoadRacer(car.Id);
-                OnNextTask();
+                if (Profile.IsUnlockingRacer(car.Id) && Profile.UnlockRacer(car.Id))
+                {
+                    gameManager.OpenState<State_UnlockRacer>().Setup(car.Id);
+                }
+                else
+                {
+                    Profile.SelectedRacer = car.Id;
+                    OnNextTask();
+                }
             }
             ).rectTransform.anchoredPosition = itempos;
 

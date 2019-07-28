@@ -12,6 +12,7 @@ public class UiGarageRacerItem : Base
     [SerializeField] private LocalText cardsLabel = null;
     [SerializeField] private LocalText rankLabel = null;
     [SerializeField] private Text nameLabel = null;
+    [SerializeField] private GameObject unlockButton = null;
 
     public UiGarageRacerItem Setup(RacerConfig config, System.Action<UiGarageRacerItem> callback)
     {
@@ -31,13 +32,16 @@ public class UiGarageRacerItem : Base
         }
         else
         {
-            var unlocked = config.IsUnlocked(racerprofile.cards);
+            var unlocking = Profile.IsUnlockingRacer(config.Id);
+            var unlocked = Profile.IsUnlockedRacer(config.Id);
+
             backgImage.SetColorAlpha(unlocked ? 1 : 0);
             racerImage.SetColorAlpha(1);
             cardsImage.SetColorAlpha(1);
             cardsImage.gameObject.SetActive(unlocked == false);
             cardsLabel.SetFormatedText(racerprofile.cards, config.CardCount);
             rankLabel.SetFormatedText(config.ComputePower(racerprofile.level.NitroLevel, racerprofile.level.SteeringLevel, racerprofile.level.BodyLevel), config.MaxPower);
+            unlockButton.SetActive(unlocking);
         }
 
         var button = transform.GetComponent<Button>(true, true);

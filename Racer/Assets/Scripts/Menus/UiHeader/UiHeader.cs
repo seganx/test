@@ -11,6 +11,7 @@ public class UiHeader : Base
     [SerializeField] private Button backButton = null;
     [SerializeField] private Button statsButton = null;
     [SerializeField] private Button garageButton = null;
+    [SerializeField] private GameObject garageNotif = null;
     [SerializeField] private LocalText gemLabel = null;
     [SerializeField] private LocalText coinLabel = null;
     [SerializeField] private Button shopButton = null;
@@ -59,6 +60,7 @@ public class UiHeader : Base
             scoreLabel.SetText(Profile.Score.ToString("#,0"));
             gemLabel.SetText(Profile.Gem.ToString("#,0"));
             coinLabel.SetText(Profile.Coin.ToString("#,0"));
+            garageNotif.SetActive(Profile.IsUnlockingRacerExist);
 
             syncCount++;
             if (syncCount % 2 == 0)

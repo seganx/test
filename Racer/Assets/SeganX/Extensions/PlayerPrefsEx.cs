@@ -1,8 +1,8 @@
-﻿using UnityEngine;
-using System.IO;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using UnityEngine;
 
 namespace SeganX
 {
@@ -101,22 +101,52 @@ namespace SeganX
 
         public static void Serialize(string key, object value)
         {
+            var json = JsonUtility.ToJson(value);
+            SaveData(EncryptString(key) + ".seganx", Encrypt(json.GetBytes(), Core.CryptoKey));
+        }
+
+        public static T Deserialize<T>(string key, T defaultValue)
+        {
+            byte[] data = LoadData(EncryptString(key) + ".seganx");
+            if (data != null && data.Length > 0)
+            {
+                string json = System.Text.Encoding.UTF8.GetString(Decrypt(data, Core.CryptoKey));
+                return JsonUtility.FromJson<T>(json);
+            }
+            return DeserializeBinary(key, defaultValue);
+        }
+
+        public static void SerializeBinary(string key, object value)
+        {
             MemoryStream stream = new MemoryStream();
             BinaryFormatter fmter = new BinaryFormatter();
             fmter.Serialize(stream, value);
             SaveData(key + ".seganx", Encrypt(stream.GetBuffer(), Core.CryptoKey));
         }
 
-        public static T Deserialize<T>(string key, T defaultValue)
+        public static T DeserializeBinary<T>(string key, T defaultValue)
         {
             byte[] data = LoadData(key + ".seganx");
             if (data != null && data.Length > 0)
             {
-                MemoryStream stream = new MemoryStream(Decrypt(data, Core.CryptoKey));
-                BinaryFormatter fmter = new BinaryFormatter();
-                return (T)fmter.Deserialize(stream);
+                try
+                {
+                    MemoryStream stream = new MemoryStream(Decrypt(data, Core.CryptoKey));
+                    BinaryFormatter fmter = new BinaryFormatter();
+                    return (T)fmter.Deserialize(stream);
+                }
+                catch { }
             }
-            else return defaultValue;
+            return defaultValue;
+        }
+
+        public static void Delete(string key)
+        {
+            var path = Application.persistentDataPath + "/" + key + ".seganx";
+            if (File.Exists(path))
+                File.Delete(path);
+            else
+                PlayerPrefs.DeleteKey(EncryptString(key));
         }
 
         public static void ClearData()

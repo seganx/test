@@ -160,12 +160,12 @@
                         {
                             float spec = pow(max(0, dot(i.norm, normalize(lightDir + viewDir))), _SpecularPower1) * _SpecularAtten1;
                             res.rgb = lerp(res.rgb, _LightColor0.rgb, spec);
-                            res.a = max(res.a, spec);
+                            res.a = max(res.a, pow(spec, 6) * 1.5f);
 
                             if (_MetalPower1 > 0.01f)
                             {
                                 fixed metal = tex2D(_MetalTex, i.uv2).a;
-                                res.rgb += spec * _LightColor0.rgb * metal * _MetalPower1;
+                                res.rgb += pow(spec, 0.6f) * _LightColor0.rgb * metal * _MetalPower1;
                             }
                         }
                     }

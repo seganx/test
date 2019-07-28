@@ -25,7 +25,7 @@ public class ProfileLogic : MonoBehaviour
     ////////////////////////////////////////////////////////
     private static ProfileData.NetData lastdata = new ProfileData.NetData();
 
-    public static bool Synced { get { return Profile.data.data.IsEqualTo(lastdata); } }
+    public static bool Synced { get { return Profile.Data.data.IsEqualTo(lastdata); } }
 
     private static bool IsGlobalConfigUpdated { get; set; }
     private static bool IsLoggedIn { get; set; }
@@ -81,11 +81,11 @@ public class ProfileLogic : MonoBehaviour
 
     private static void SyncProfile(bool sendProfile, ProfileData newprofile, System.Action<bool> nextTask)
     {
-        if (Profile.data.userId == newprofile.userId)
+        if (Profile.Data.userId == newprofile.userId)
         {
-            var selfdata = Profile.data.data;
-            Profile.data = newprofile;
-            Profile.data.data = selfdata;
+            var selfdata = Profile.Data.data;
+            Profile.Data = newprofile;
+            Profile.Data.data = selfdata;
             SendProfileData(sendProfile, nextTask);
         }
         else if (Profile.UserId.IsNullOrEmpty())
@@ -97,7 +97,7 @@ public class ProfileLogic : MonoBehaviour
                 {
                     if (yes)
                     {
-                        Profile.data = newprofile;
+                        Profile.Data = newprofile;
                         Game.Instance.OpenPopup<Popup_Confirm>().Setup(111068, false, ok =>
                         {
                             PlayerPrefs.DeleteAll();
@@ -108,18 +108,18 @@ public class ProfileLogic : MonoBehaviour
                     }
                     else
                     {
-                        var selfdata = Profile.data.data;
-                        Profile.data = newprofile;
-                        Profile.data.data = selfdata;
+                        var selfdata = Profile.Data.data;
+                        Profile.Data = newprofile;
+                        Profile.Data.data = selfdata;
                         SendProfileData(sendProfile, nextTask);
                     }
                 });
             }
             else
             {
-                var selfdata = Profile.data.data;
-                Profile.data = newprofile;
-                Profile.data.data = selfdata;
+                var selfdata = Profile.Data.data;
+                Profile.Data = newprofile;
+                Profile.Data.data = selfdata;
                 SendProfileData(sendProfile, nextTask);
             }
         }
@@ -130,7 +130,7 @@ public class ProfileLogic : MonoBehaviour
             {
                 PlayerPrefs.DeleteAll();
                 PlayerPrefsEx.ClearData();
-                Profile.data = new ProfileData();
+                Profile.Data = new ProfileData();
                 Application.Quit();
 
                 //  I don't know if it works. but let it be for sure :)
@@ -148,12 +148,12 @@ public class ProfileLogic : MonoBehaviour
             return;
         }
 
-        Profile.data.modified++;
-        Network.SendProfile(Profile.data.data, sendmsg =>
+        Profile.Data.modified++;
+        Network.SendProfile(Profile.Data.data, sendmsg =>
         {
             if (sendmsg == Network.Message.ok)
             {
-                lastdata = Profile.data.data.CloneSerialized<ProfileData.NetData>();
+                lastdata = Profile.Data.data.CloneSerialized<ProfileData.NetData>();
                 nextTask(true);
             }
             else nextTask(false);
@@ -162,14 +162,13 @@ public class ProfileLogic : MonoBehaviour
 
     private static void SaveToLocal()
     {
-        PlayerPrefsEx.Serialize("ProfileLogic.Data", Profile.data);
+        PlayerPrefsEx.Serialize("ProfileLogic.Data", Profile.Data);
         PlayerPrefsEx.Serialize("ProfileLogic.LastData", lastdata);
     }
 
     private static void LoadFromLocal()
     {
-        Profile.data = PlayerPrefsEx.Deserialize("ProfileLogic.Data", new ProfileData());
+        Profile.Data = PlayerPrefsEx.Deserialize("ProfileLogic.Data", new ProfileData());
         lastdata = PlayerPrefsEx.Deserialize("ProfileLogic.LastData", new ProfileData.NetData());
     }
-
 }
