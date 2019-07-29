@@ -117,7 +117,7 @@ public abstract class PlayerPresenter : Base
 
     public virtual void OnCrashed()
     {
-        player.CurrNitrous = Mathf.Clamp01(Nitros - (1.0f - player.RacerBody * 0.1f));
+        player.CurrNitrous = Mathf.Max(0.0f, Nitros - (1.0f - player.RacerBody * 0.1f));
         BroadcastMessage("PlayCrashAudio", SendMessageOptions.DontRequireReceiver);
     }
 

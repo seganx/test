@@ -19,8 +19,6 @@ public class BotPresenter : Base
         {
             defaultSteering = Random.Range(0, 100) > 50 ? 1 : -1;
             yield return waitWhile;
-            if (CanControl && player.NitrosReady && Random.Range(0, 100) < useNosChance) //Random.Range(0, 100) < GlobalConfig.Race.bots.useNitroChance)
-                player.UseNitrous();
         }
     }
 
@@ -40,6 +38,9 @@ public class BotPresenter : Base
             player.SteeringValue = isleft ? 1 : -1;
         else
             player.SteeringValue = Mathf.MoveTowards(player.SteeringValue, 0, Time.deltaTime * 2);
+
+        if (player.NitrosReady) // && Random.Range(0, 100) < useNosChance) //Random.Range(0, 100) < GlobalConfig.Race.bots.useNitroChance)
+            player.UseNitrous();
     }
 
     private bool WatchOut(bool right)
@@ -75,7 +76,7 @@ public class BotPresenter : Base
             var contactor = bot.transform.GetComponent<RacerCollisionContact>(true, true);
             if (contactor)
             {
-                contactor.NosChance = GlobalConfig.Race.bots.nosChance;
+                contactor.NosChance = useNosChance;// GlobalConfig.Race.bots.nosChance;
                 contactor.NosMaxDistanceOffset = 10;
             }
         }

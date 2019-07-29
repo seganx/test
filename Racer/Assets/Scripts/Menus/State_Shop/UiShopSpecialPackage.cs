@@ -97,7 +97,6 @@ public class UiShopSpecialPackage : MonoBehaviour
     {
         for (int i = 0; i < GlobalConfig.Shop.combinedPackages.Count; i++)
         {
-            if (GetRacerId(i) != 0) continue;
             var racerId = SelectRandomRacerId(i);
             if (racerId == 0) continue;
             if (IsIdExist(racerId)) racerId = SelectRandomRacerId(i);
