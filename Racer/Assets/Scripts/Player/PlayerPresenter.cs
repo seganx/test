@@ -88,7 +88,8 @@ public abstract class PlayerPresenter : Base
 
     public virtual void AddNitors()
     {
-        var value = Mathf.Clamp01(Nitros + player.RacerNitrous * 0.1f);
+        if (NitrosReady) return;
+        var value = Nitros + player.RacerNitrous * 0.1f;
         player.CurrNitrous = value;
     }
 
@@ -96,7 +97,9 @@ public abstract class PlayerPresenter : Base
     {
         if (NitrosReady)
         {
-            player.CurrNitrous = 0;
+            Debug.Log("Use CurrNitrous: " + player.CurrNitrous);
+            player.CurrNitrous = Mathf.Clamp(player.CurrNitrous - 1, 0, 1);
+            Debug.Log("Curr CurrNitrous: " + player.CurrNitrous);
             SetGrade(Grade + 1);
             BroadcastMessage("StartNitors", SendMessageOptions.DontRequireReceiver);
         }
