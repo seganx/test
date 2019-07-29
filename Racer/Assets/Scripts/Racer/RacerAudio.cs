@@ -86,6 +86,7 @@ public class RacerAudio : Base
         if (turboAudiosSources.Length > 0 && Random.value > .3f)
             turboAudiosSources[Random.Range(0, turboAudiosSources.Length)].Play();
         yield return new WaitForSeconds(.4f);
+        racer.BroadcastMessage("Shifting", SendMessageOptions.DontRequireReceiver);
         shiftAudioSources[Random.Range(0, shiftAudioSources.Length)].Play();
         yield return new WaitForSeconds(.4f);
         isShifting = false;
@@ -172,7 +173,7 @@ public class RacerAudio : Base
         crashAudioSources[Random.Range(0, crashAudioSources.Length)].Play();
     }
 
-    public void PlayNosAudio()
+    public void StartNitors()
     {
         isUsingNos = true;
         nosStartAudioSrouce.Play();
@@ -183,7 +184,7 @@ public class RacerAudio : Base
         });
     }
 
-    public void StopNosAudio()
+    public void StopNitors()
     {
         if (isUsingNos)
         {

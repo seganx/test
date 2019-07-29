@@ -39,6 +39,8 @@ public class GlobalFactory : StaticConfig<GlobalFactory>
 
     [SerializeField] private UiRacerCard racerCardPrefab = null;
     [SerializeField] private TextMesh racerPlate = null;
+    [SerializeField] private ParticleSystem racerShiftingParticle = null;
+    [SerializeField] private ParticleSystem racerNitrosParticle = null;
     [SerializeField] private PlayersName playersName = new PlayersName();
     [SerializeField] private List<LeagueInfo> leagues = new List<LeagueInfo>();
     [SerializeField] private List<FontInfo> fonts = new List<FontInfo>();
@@ -110,6 +112,22 @@ public class GlobalFactory : StaticConfig<GlobalFactory>
     {
         var res = Instance.racerPlate.Clone<TextMesh>(parent);
         res.transform.localPosition = Vector3.right * 0.02f;
+        res.transform.localRotation = Quaternion.identity;
+        return res;
+    }
+
+    public static ParticleSystem CreateRacerShiftingParticle(Transform parent)
+    {
+        var res = Instance.racerShiftingParticle.Clone<ParticleSystem>(parent);
+        res.transform.localPosition = Vector3.zero;
+        res.transform.localRotation = Quaternion.identity;
+        return res;
+    }
+
+    public static ParticleSystem CreateRacerNitrosParticle(Transform parent)
+    {
+        var res = Instance.racerNitrosParticle.Clone<ParticleSystem>(parent);
+        res.transform.localPosition = Vector3.zero;
         res.transform.localRotation = Quaternion.identity;
         return res;
     }

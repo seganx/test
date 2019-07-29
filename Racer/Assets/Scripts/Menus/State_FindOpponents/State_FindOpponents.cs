@@ -74,7 +74,7 @@ public class State_FindOpponents : GameState
                         else if (PlayNetwork.IsMaster)
                         {
                             state = State.StartCounting;
-                            PlayNetwork.Start(PlayModel.OfflineMode ? 10 : 3);
+                            PlayNetwork.Start(10);
                         }
                     }
 
@@ -131,19 +131,28 @@ public class State_FindOpponents : GameState
 #endif
         }
 
-        DisplayPlayersInfo();
+        StartCoroutine(DisplayPlayersInfo());
     }
 
-    private void DisplayPlayersInfo()
+    private IEnumerator DisplayPlayersInfo()
     {
+        yield return new WaitForSeconds(1);
+
+        searchbar.SetActive(false);
+        playersInfoBar.SetActive(true);
+
+        if (PlayerPresenter.allPlayers.Count < PlayModel.maxPlayerCount)
+            yield return new WaitForSeconds(1);
+        if (PlayerPresenter.allPlayers.Count < PlayModel.maxPlayerCount)
+            yield return new WaitForSeconds(1);
+
+        opponentInfo.gameObject.SetActive(false);
         foreach (var player in PlayerPresenter.allPlayers)
         {
             if (player.IsPlayer) continue;
-            opponentInfo.Clone<UiFindOpponentsPlayerInfo>().Setup(player);
+            opponentInfo.Clone<UiFindOpponentsPlayerInfo>().Setup(player).gameObject.SetActive(true);
         }
         Destroy(opponentInfo.gameObject);
-        searchbar.SetActive(false);
-        playersInfoBar.SetActive(true);
     }
 
     private void PlayGame()
@@ -157,6 +166,7 @@ public class State_FindOpponents : GameState
 
     private void ExitToMainMenu()
     {
+        Game.LoadMap(0);
         Game.Instance.ClosePopup(true);
         Game.Instance.OpenState<State_Home>(true);
     }
