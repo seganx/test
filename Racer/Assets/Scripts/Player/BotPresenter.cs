@@ -62,7 +62,7 @@ public class BotPresenter : Base
             useNosChance = Mathf.Clamp(50 + Mathf.RoundToInt(powerDiff / 4f), 0, 100);
             Debug.Log("Player Skill: " + Profile.Skill + " Racer Power: " + Profile.CurrentRacerPower + " Bot NosChance: " + useNosChance);
         }
-        else useNosChance = 0;
+        else useNosChance = GlobalConfig.Race.bots.nosChance;
 
         if (count > 0 && PhotonNetwork.isMasterClient == false) return;
 
@@ -76,7 +76,7 @@ public class BotPresenter : Base
             var contactor = bot.transform.GetComponent<RacerCollisionContact>(true, true);
             if (contactor)
             {
-                contactor.NosChance = useNosChance;// GlobalConfig.Race.bots.nosChance;
+                contactor.NosChance = useNosChance;
                 contactor.NosMaxDistanceOffset = 10;
             }
         }
