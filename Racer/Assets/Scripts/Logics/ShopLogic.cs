@@ -44,8 +44,8 @@ public class ShopLogic : MonoBehaviour
             CurrentPackage = new GlobalConfig.Data.Shop.SpecialRacerCardPackage();
             CurrentPackage.cardCount = racerCardsCount;
             CurrentPackage.discount = pack.discount;
-            CurrentPackage.price = pack.prices[Mathf.Clamp(config.GroupId, 0, pack.prices.LastIndex())];
-            CurrentPackage.sku = pack.skus[Mathf.Clamp(config.GroupId, 0, pack.skus.LastIndex())];
+            CurrentPackage.price = pack.prices[Mathf.Clamp(config.GroupId - 1, 0, pack.prices.LastIndex())];
+            CurrentPackage.sku = pack.skus[Mathf.Clamp(config.GroupId - 1, 0, pack.skus.LastIndex())];
             CurrentPackage.racerId = racerprofile.id;
 
             TimerManager.SetTimer(TimerManager.Type.RacerSpecialOfferTimer, pack.durationTime);
