@@ -35,7 +35,7 @@ public class Popup_ShopSpecialRacer : GameState
                     ShopLogic.SpecialRacerPopup.Clear();
                     Profile.AddRacerCard(pack.racerId, pack.cardCount);
                     Popup_Rewards.AddRacerCard(pack.racerId, pack.cardCount);
-                    Popup_Rewards.Display();
+                    Popup_Rewards.Display().DisplayPurchaseReward();
                     PurchaseSystem.Consume();
                     ProfileLogic.SyncWidthServer(true, done => { });
                     if (onPurchase != null) onPurchase();

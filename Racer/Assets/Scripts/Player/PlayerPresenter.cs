@@ -74,6 +74,7 @@ public abstract class PlayerPresenter : Base
         racer.SetupCustom(player.RacerCustom).SetupCameras(isplayer);
         maxSteeringSpeed = player.RacerSteering;
         if (isplayer) racer.gameObject.AddComponent<AudioListener>();
+        racer.BroadcastMessage("SetPlateText", player.name, SendMessageOptions.DontRequireReceiver);
     }
 
     public virtual void SetGrade(int grade, bool dontBlend = false)

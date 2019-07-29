@@ -79,7 +79,7 @@ public class UiShopSpecialPackage : MonoBehaviour
             Popup_Rewards.AddCustomeCard(custom.type, custom.racerId, custom.customId);
         }
 
-        Popup_Rewards.Display();
+        Popup_Rewards.Display().DisplayPurchaseReward();
         ProfileLogic.SyncWidthServer(true, done => { });
         SetRacerId(packIndex, 0);
         Destroy(gameObject);

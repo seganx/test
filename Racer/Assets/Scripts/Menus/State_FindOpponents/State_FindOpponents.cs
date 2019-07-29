@@ -8,33 +8,21 @@ public class State_FindOpponents : GameState
 {
     private enum State { Waiting, StartCounting, Counting, Started }
 
-    [SerializeField] private Image racerIcon = null;
-    [SerializeField] private Text racerName = null;
-    [SerializeField] private LocalText racerPower = null;
-    [SerializeField] private LocalText scoreValue = null;
-    [SerializeField] private Image leagueImage = null;
-    [SerializeField] private GameObject searchbar = null;
     [SerializeField] private LocalText countDownText = null;
     [SerializeField] private LocalText pingLabel = null;
     [SerializeField] private LocalText tipsLabel = null;
+    [SerializeField] private GameObject searchbar = null;
+    [SerializeField] private GameObject playersInfoBar = null;
+    [SerializeField] private UiFindOpponentsPlayerInfo playerInfo = null;
+    [SerializeField] private UiFindOpponentsPlayerInfo opponentInfo = null;
 
+
+    private PlayerData playerData = null;
     private int grade = 0;
     private float waitTime = 0;
     private State state = State.Waiting;
     private int lastPlayersCount = 0;
     private bool waitFirst = true;
-
-    public static bool WaitMore
-    {
-        get { return PlayerPrefs.GetInt("State_FindOpponents.WaitMore", 0) > 0; }
-        set { PlayerPrefs.SetInt("State_FindOpponents.WaitMore", value ? 1 : 0); }
-    }
-
-    private int TipsNumber
-    {
-        get { return PlayerPrefs.GetInt("State_FindOpponents.TipsNumber", 0); }
-        set { PlayerPrefs.SetInt("State_FindOpponents.TipsNumber", value); }
-    }
 
     private IEnumerator Start()
     {
@@ -49,17 +37,13 @@ public class State_FindOpponents : GameState
         OnNetworkError);
 
         searchbar.SetActive(PlayModel.OfflineMode == false);
+        playersInfoBar.SetActive(false);
 
-        var racerconfig = RacerFactory.Racer.GetConfig(Profile.SelectedRacer);
-        racerIcon.sprite = racerconfig.icon;
-        racerName.text = racerconfig.Name;
-        racerPower.SetText(racerconfig.ComputePower(Profile.CurrentRacer.level.NitroLevel, Profile.CurrentRacer.level.SteeringLevel, Profile.CurrentRacer.level.BodyLevel).ToString("0"));
+        playerData = new PlayerData(Profile.Name, Profile.Score, Profile.Position, Profile.CurrentRacer);
+        playerInfo.Setup(playerData);
 
-        scoreValue.SetText(Profile.Score.ToString());
-        leagueImage.sprite = GlobalFactory.League.GetBigIcon(Profile.League);
-
+        // entring loop
         int tipsCounter = 1;
-
         while (true)
         {
             int ping = PhotonNetwork.GetPing();
@@ -71,36 +55,6 @@ public class State_FindOpponents : GameState
             yield return new WaitForSeconds(1);
         }
     }
-
-    private void StartGame(double startTime)
-    {
-        StableRandom.Initialize(Mathf.RoundToInt((float)startTime));
-        Game.LoadMap(PlayNetwork.RoomMapId);
-
-        var nplayer = new PlayerData(Profile.Name, Profile.Score, Profile.CurrentRacer);
-        PlayerPresenterOnline.CreateOnline(nplayer, grade, false);
-
-        var botcount = PlayModel.maxPlayerCount - PlayNetwork.PlayersCount;
-        BotPresenter.InitializeBots(botcount);
-
-        RacerCameraConfig.Instance.currentMode = RacerCamera.Mode.StickingFollower;
-        state = State.Counting;
-
-        if (PlayModel.OfflineMode == false)
-        {
-            Profile.Score -= 1;
-            Network.SendScore(Profile.Score);
-            FuelTimerPresenter.ReduceFuel();
-
-#if DATABEEN
-            DataBeen.SendCustomEventData("game", new DataBeenConnection.CustomEventInfo[] {
-                new DataBeenConnection.CustomEventInfo() { key = "started", value = "true" },
-                new DataBeenConnection.CustomEventInfo() { key = "bots", value = botcount.ToString() },
-            });
-#endif
-        }
-    }
-
 
     private void LateUpdate()
     {
@@ -150,6 +104,48 @@ public class State_FindOpponents : GameState
         }
     }
 
+    private void StartGame(double startTime)
+    {
+        StableRandom.Initialize(Mathf.RoundToInt((float)startTime));
+        Game.LoadMap(PlayNetwork.RoomMapId);
+
+        PlayerPresenterOnline.CreateOnline(playerData, grade, false);
+
+        var botcount = PlayModel.maxPlayerCount - PlayNetwork.PlayersCount;
+        BotPresenter.InitializeBots(botcount);
+
+        RacerCameraConfig.Instance.currentMode = RacerCamera.Mode.StickingFollower;
+        state = State.Counting;
+
+        if (PlayModel.OfflineMode == false)
+        {
+            Profile.Score -= 1;
+            Network.SendScore(Profile.Score);
+            FuelTimerPresenter.ReduceFuel();
+
+#if DATABEEN
+            DataBeen.SendCustomEventData("game", new DataBeenConnection.CustomEventInfo[] {
+                new DataBeenConnection.CustomEventInfo() { key = "started", value = "true" },
+                new DataBeenConnection.CustomEventInfo() { key = "bots", value = botcount.ToString() },
+            });
+#endif
+        }
+
+        DisplayPlayersInfo();
+    }
+
+    private void DisplayPlayersInfo()
+    {
+        foreach (var player in PlayerPresenter.allPlayers)
+        {
+            if (player.IsPlayer) continue;
+            opponentInfo.Clone<UiFindOpponentsPlayerInfo>().Setup(player);
+        }
+        Destroy(opponentInfo.gameObject);
+        searchbar.SetActive(false);
+        playersInfoBar.SetActive(true);
+    }
+
     private void PlayGame()
     {
         state = State.Started;
@@ -174,6 +170,18 @@ public class State_FindOpponents : GameState
     ////////////////////////////////////////////////////////
     /// STATIC MEMBER
     ////////////////////////////////////////////////////////
+    public static bool WaitMore
+    {
+        get { return PlayerPrefs.GetInt("State_FindOpponents.WaitMore", 0) > 0; }
+        set { PlayerPrefs.SetInt("State_FindOpponents.WaitMore", value ? 1 : 0); }
+    }
+
+    private static int TipsNumber
+    {
+        get { return PlayerPrefs.GetInt("State_FindOpponents.TipsNumber", 0); }
+        set { PlayerPrefs.SetInt("State_FindOpponents.TipsNumber", value); }
+    }
+
     private static void OnNetworkError(PlayNetwork.Error error)
     {
         switch (error)

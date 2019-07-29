@@ -60,7 +60,7 @@ public class UiShopSpecialRacerCards : MonoBehaviour
             Popup_Rewards.AddRacerCard(pack.racerId, 1);
         }
 
-        Popup_Rewards.Display();
+        Popup_Rewards.Display().DisplayPurchaseReward();
         ProfileLogic.SyncWidthServer(true, done => { });
     }
 

@@ -67,7 +67,9 @@ public class BotPresenter : Base
 
         for (int i = 0; i < count; i++)
         {
-            var pdata = new PlayerData(GlobalFactory.GetRandomName() + " bot", Random.Range(Profile.Score - 50, Profile.Score + 50), CreateRandomRacerProfile());
+            var botScore = Random.Range(Profile.Score - 50, Profile.Score + 50);
+            var botRank = Random.Range(Profile.Position - 50, Profile.Position + 50);
+            var pdata = new PlayerData(GlobalFactory.GetRandomName() + " bot", botScore, botRank, CreateRandomRacerProfile());
             var seed = (int)(PlayNetwork.RoomSeed % 4) + (PlayNetwork.PlayersCount + i + 1);
             var bot = PlayerPresenterOnline.CreateOnline(pdata, 10 - seed % 4, true).GetComponent<BotPresenter>();
             var contactor = bot.transform.GetComponent<RacerCollisionContact>(true, true);

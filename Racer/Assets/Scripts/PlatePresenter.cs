@@ -4,9 +4,15 @@ using UnityEngine;
 
 public class PlatePresenter : Base
 {
-    private void Start()
+    private TextMesh caption = null;
+
+    private void Awake()
     {
-        var text = GlobalFactory.CreateRacerPlate(transform);
-        //text.SetText(Profile.Name.SubString(0, 11));
+        caption = GlobalFactory.CreateRacerPlate(transform);
+    }
+
+    public void SetPlateText(string text)
+    {
+        caption.SetText(text.SubString(0, 11));
     }
 }

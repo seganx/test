@@ -16,6 +16,7 @@ public class PlayerData : VersionPlayerData
     public RacerCustomData rc = null;
     public string name = string.Empty;
 
+    public int Rank { get { return id[1]; } set { id[1] = value; } }
     public int Score { get { return id[1]; } set { id[1] = value; } }
     public int RacerId { get { return id[2]; } set { id[2] = value; } }
     public int RacerPower { get { return id[3]; } set { id[3] = value; } }
@@ -30,9 +31,10 @@ public class PlayerData : VersionPlayerData
     public int CurrPosition { get; set; }
     public float CurrNitrous { get; set; }
 
-    public PlayerData (string playerName, int score, RacerProfile racer)
+    public PlayerData (string playerName, int score, int rank, RacerProfile racer)
     {
         name = playerName;
+        Rank = rank;
         Score = score;
         RacerId = racer.id;
         RacerCustom = racer.custom;
@@ -49,6 +51,6 @@ public class PlayerData : VersionPlayerData
         if (version.ver == 1)
             return JsonUtility.FromJson<PlayerData>(json);
         else
-            return new PlayerData(string.Empty, 0, new RacerProfile());
+            return new PlayerData(string.Empty, 0, 0, new RacerProfile());
     }
 }

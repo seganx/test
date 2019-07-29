@@ -64,7 +64,7 @@ public class Popup_RaceResult : GameState
                 Profile.AddRacerCustome(raceReward.custome.type, raceReward.custome.racerId, raceReward.custome.customId);
                 Popup_Rewards.AddCustomeCard(raceReward.custome.type, raceReward.custome.racerId, raceReward.custome.customId);
             }
-            Popup_Rewards.Display(onNextTask).DisplayDesc(rewardsList[0].coins, rewardsList[1].coins, rewardsList[2].coins, rewardsList[3].coins);
+            Popup_Rewards.Display(onNextTask).DisplayRacerReward(rewardsList[0].coins, rewardsList[1].coins, rewardsList[2].coins, rewardsList[3].coins);
         });
 
         Popup_RateUs.SetPlayerInjoy(playerCurPosition < 1);

@@ -28,7 +28,7 @@ public class UiShopResourcePackage : MonoBehaviour
             {
                 Profile.EarnResouce(0, pack.coins);
                 Popup_Rewards.AddResource(0, pack.coins);
-                Popup_Rewards.Display();
+                Popup_Rewards.Display().DisplayPurchaseReward();
             });
         });
 
@@ -54,7 +54,7 @@ public class UiShopResourcePackage : MonoBehaviour
                 {
                     Profile.EarnResouce(pack.gems, 0);
                     Popup_Rewards.AddResource(pack.gems, 0);
-                    Popup_Rewards.Display();
+                    Popup_Rewards.Display().DisplayPurchaseReward();
                     PurchaseSystem.Consume();
                     ProfileLogic.SyncWidthServer(true, done => { });
                 }

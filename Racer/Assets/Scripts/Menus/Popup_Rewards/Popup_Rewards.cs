@@ -6,7 +6,9 @@ using UnityEngine;
 
 public class Popup_Rewards : GameState
 {
-    [SerializeField] private LocalText raceRewardDesc = null;
+    [SerializeField] private GameObject titleReward = null;
+    [SerializeField] private LocalText titleRaceReward = null;
+    [SerializeField] private LocalText titlePurchaseReward = null;
     [SerializeField] private UiRewardItemResource gemItem = null;
     [SerializeField] private UiRewardItemResource coinItem = null;
     [SerializeField] private UiRewardRacerCard racerCardPrefab = null;
@@ -17,7 +19,9 @@ public class Popup_Rewards : GameState
 
     private void Awake()
     {
-        raceRewardDesc.gameObject.SetActive(false);
+        titleReward.gameObject.SetActive(true);
+        titleRaceReward.gameObject.SetActive(false);
+        titlePurchaseReward.gameObject.SetActive(false);
         gemItem.gameObject.SetActive(false);
         coinItem.gameObject.SetActive(false);
         racerCardPrefab.gameObject.SetActive(false);
@@ -65,10 +69,17 @@ public class Popup_Rewards : GameState
         return this;
     }
 
-    public Popup_Rewards DisplayDesc(params object[] args)
+    public Popup_Rewards DisplayRacerReward(params object[] args)
     {
-        raceRewardDesc.gameObject.SetActive(true);
-        raceRewardDesc.SetFormatedText(args);
+        titleRaceReward.gameObject.SetActive(true);
+        titleRaceReward.SetFormatedText(args);
+        return this;
+    }
+
+    public Popup_Rewards DisplayPurchaseReward()
+    {
+        titleReward.SetActive(false);
+        titlePurchaseReward.gameObject.SetActive(true);
         return this;
     }
 
