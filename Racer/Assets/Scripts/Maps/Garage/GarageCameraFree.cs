@@ -61,7 +61,7 @@ public class GarageCameraFree : GarageCamera
             if (rotationSpeed > 0)
             {
                 destSpherical.z += Time.deltaTime * rotationSpeed;
-                destSpherical.y += 0.002f * Mathf.Sin(Time.time * rotationSpeed * 0.35f);
+                destSpherical.y += Mathf.Sin(Time.time * rotationSpeed * 2) * Time.deltaTime * rotationSpeed * 0.5f;
                 destSpherical.x = Mathf.MoveTowards(destSpherical.x, 10, Time.deltaTime * 0.1f);
             }
         }

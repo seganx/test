@@ -11,12 +11,12 @@ public class ShopLogic : MonoBehaviour
         private static bool PopupWasUsed = false;
         private static GlobalConfig.Data.Shop.SpecialRacerCardPackage CurrentPackage = null;
 
-        public static bool IsAvailable { get { return PopupWasUsed == false && CurrentPackage != null; } }
+        public static bool IsAvailable { get { return PopupWasUsed == false && CurrentPackage != null && CurrentPackage.price > 0; } }
         public static bool AutoDisplay { get { return PopupWasUsed == false && PopupWasDisplayed == false; } }
 
         public static GlobalConfig.Data.Shop.SpecialRacerCardPackage Package
         {
-            get { return PopupWasUsed ? null : CurrentPackage; }
+            get { return PopupWasUsed || CurrentPackage == null || CurrentPackage.price < 1 ? null : CurrentPackage; }
         }
 
         public static void Display(System.Action onPurchase)
@@ -29,22 +29,23 @@ public class ShopLogic : MonoBehaviour
         public static void TryToCreateNewPackage()
         {
             var pack = GlobalConfig.Shop.specialRacerCardPopup;
-            if (pack.sku.IsNullOrEmpty() || pack.price < 1 || Profile.SelectedRacer < 1) return;
+            if (pack.skus.IsNullOrEmpty() || pack.prices.Length < 1 || Profile.SelectedRacer < 1) return;
 
             var centerId = RacerFactory.Racer.AllConfigs[RewardLogic.FindSelectRacerCenter()].Id;
             var list = Profile.Data.racers.FindAll(x => x.id >= centerId && Profile.IsUnlockedRacer(x.id) == false);
             if (list.Count < 1) return;
 
             var racerprofile = list.FindMax(x => x.cards);
-            int racerCardsCount = RacerFactory.Racer.GetConfig(racerprofile.id).CardCount;
+            var config = RacerFactory.Racer.GetConfig(racerprofile.id);
+            int racerCardsCount = config.CardCount;
             int condition = racerCardsCount * pack.minCardFactor / 100;
             if (racerprofile.cards < condition) return;
 
             CurrentPackage = new GlobalConfig.Data.Shop.SpecialRacerCardPackage();
             CurrentPackage.cardCount = racerCardsCount;
             CurrentPackage.discount = pack.discount;
-            CurrentPackage.price = pack.price;
-            CurrentPackage.sku = pack.sku;
+            CurrentPackage.price = pack.prices[Mathf.Clamp(config.GroupId, 0, pack.prices.LastIndex())];
+            CurrentPackage.sku = pack.skus[Mathf.Clamp(config.GroupId, 0, pack.skus.LastIndex())];
             CurrentPackage.racerId = racerprofile.id;
 
             TimerManager.SetTimer(TimerManager.Type.RacerSpecialOfferTimer, pack.durationTime);

@@ -33,7 +33,7 @@ public class UiShopSpecialPackage : MonoBehaviour
         }
         packIndex = index;
 
-        var pack = GlobalConfig.Shop.specialPackages[index % GlobalConfig.Shop.specialPackages.Count];
+        var pack = GlobalConfig.Shop.combinedPackages[index % GlobalConfig.Shop.combinedPackages.Count];
         var price = pack.prices[config.GroupId - 1];
         var sku = pack.skus[config.GroupId - 1];
         gems = pack.gems[config.GroupId - 1];
@@ -57,6 +57,10 @@ public class UiShopSpecialPackage : MonoBehaviour
                 {
                     DisplayRewards(pack);
                     PurchaseSystem.Consume();
+                    if (transform.parent.childCount > 2)
+                        Destroy(gameObject);
+                    else
+                        Destroy(transform.parent.gameObject);
                 }
             });
         });
@@ -91,7 +95,7 @@ public class UiShopSpecialPackage : MonoBehaviour
     ////////////////////////////////////////////////////////////
     public static void ValidateAllRacerId()
     {
-        for (int i = 0; i < GlobalConfig.Shop.specialPackages.Count; i++)
+        for (int i = 0; i < GlobalConfig.Shop.combinedPackages.Count; i++)
         {
             if (GetRacerId(i) != 0) continue;
             var racerId = SelectRandomRacerId(i);
@@ -119,7 +123,7 @@ public class UiShopSpecialPackage : MonoBehaviour
 
     private static bool IsIdExist(int Id)
     {
-        for (int i = 0; i < GlobalConfig.Shop.specialPackages.Count; i++)
+        for (int i = 0; i < GlobalConfig.Shop.combinedPackages.Count; i++)
             if (GetRacerId(i) == Id)
                 return true;
         return false;
@@ -140,7 +144,7 @@ public class UiShopSpecialPackage : MonoBehaviour
     [Console("shop", "special")]
     public static void ShopSpecialTest()
     {
-        for (int i = 0; i < GlobalConfig.Shop.specialPackages.Count; i++)
+        for (int i = 0; i < GlobalConfig.Shop.combinedPackages.Count; i++)
             SetRacerId(i, 0);
     }
 }

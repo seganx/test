@@ -25,7 +25,7 @@ public class LegendShopTimerPresenter : TimerPresenter
         UpdateRefreshGui();
         refreshBuyButton.onClick.AddListener(() =>
         {
-            Game.SpendGem(GlobalConfig.Shop.racerCardPackageRefreshPrices[RefreshRemainCount - 1], () =>
+            Game.SpendGem(GlobalConfig.Shop.blackMarketRefreshPrices[RefreshRemainCount - 1], () =>
             {
                 RefreshRemainCount--;
                 UpdateRefreshGui();
@@ -40,12 +40,12 @@ public class LegendShopTimerPresenter : TimerPresenter
         if (RefreshRemainCount > 0)
         {
             refreshBuyButton.SetInteractable(true);
-            refreshPriceText.SetText(GlobalConfig.Shop.racerCardPackageRefreshPrices[RefreshRemainCount - 1].ToString());
+            refreshPriceText.SetText(GlobalConfig.Shop.blackMarketRefreshPrices[RefreshRemainCount - 1].ToString());
         }
         else
             refreshBuyButton.SetInteractable(false);
 
-        refreshRemainCounterText.SetFormatedText(RefreshRemainCount, GlobalConfig.Shop.racerCardPackageRefreshPrices.Length);
+        refreshRemainCounterText.SetFormatedText(RefreshRemainCount, GlobalConfig.Shop.blackMarketRefreshPrices.Length);
     }
 
     public override void UpdateTimerText(int remainTime)

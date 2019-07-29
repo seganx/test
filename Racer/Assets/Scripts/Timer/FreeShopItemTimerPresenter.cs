@@ -19,8 +19,8 @@ public class FreeShopItemTimerPresenter : TimerPresenter
         getButton.onClick.AddListener(() =>
         {
             if (State_Settings.IsFreePackageNotificationActive)
-                NotificationManager.SendWithAppIcon(GlobalConfig.Shop.freePackage.nextTime, NotificationType.FreePackage);
-            StartTimer(GlobalConfig.Shop.freePackage.nextTime);
+                NotificationManager.SendWithAppIcon(GlobalConfig.Shop.loadingBoxPackage.nextTime, NotificationType.FreePackage);
+            StartTimer(GlobalConfig.Shop.loadingBoxPackage.nextTime);
         });
     }
 

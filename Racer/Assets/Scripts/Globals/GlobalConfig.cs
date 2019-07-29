@@ -124,7 +124,7 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
         public class Shop
         {
             [System.Serializable]
-            public class RacerCardPackage
+            public class BlackMarketPackage
             {
                 public int maxCount = 0;
                 public float basePriceFactor = 0;
@@ -145,10 +145,8 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
             [System.Serializable]
             public class SpecialRacerCardPopup
             {
-                public string sku = string.Empty;
                 public string[] skus = { string.Empty, string.Empty, string.Empty, string.Empty, string.Empty };
                 public int[] prices = { 0, 0, 0, 0, 0 };
-                public int price = 0;
                 public int discount = 0;
                 public int durationTime = 172800;
                 public int minCardFactor = 100;
@@ -213,11 +211,11 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
             public int nicknamePrice = 1200;
             public int racerCardPackageTime = 0;
             public int combinedPackagesNextTime = 0;
-            public int[] racerCardPackageRefreshPrices = new int[] { 200, 80, 20 };
+            public int[] blackMarketRefreshPrices = new int[] { 200, 80, 20 };
 
-            public List<RacerCardPackage> racerCardPackages = new List<RacerCardPackage>();
-            public FreePackage freePackage = new FreePackage();
-            public List<SpecialPackage> specialPackages = new List<SpecialPackage>();
+            public List<BlackMarketPackage> blackMarketPackages = new List<BlackMarketPackage>();
+            public FreePackage loadingBoxPackage = new FreePackage();
+            public List<SpecialPackage> combinedPackages = new List<SpecialPackage>();
             public List<SpecialRacerCardPackage> specialRacerCardPackages = new List<SpecialRacerCardPackage>();
             public SpecialRacerCardPopup specialRacerCardPopup = new SpecialRacerCardPopup();
             public List<CoinPackage> coinPackages = new List<CoinPackage>();

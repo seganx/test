@@ -17,8 +17,10 @@ public class CombiedShopItemTimerPresenter : TimerPresenter
 
     public override void UpdateTimerText(int remainTime)
     {
-        if (remainTime >= 0)
+        if (remainTime > 0)
             timerText.SetFormatedText(remainTime / 3600, remainTime % 3600 / 60, remainTime % 60);
+        else
+            Destroy(transform.parent.gameObject);
     }
 
     public override void SetActiveTimerObjects(bool active)

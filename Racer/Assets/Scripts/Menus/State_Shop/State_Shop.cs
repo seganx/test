@@ -11,6 +11,11 @@ public class State_Shop : GameState
     [SerializeField] private UiShopSpecialPackage specialPackagePrefab = null;
     [SerializeField] private UiShopSpecialRacerCards specialRacerCardsPackagePrefab = null;
 
+    private void Awake()
+    {
+        specialPackagePrefab.gameObject.SetActive(false);
+        specialRacerCardsPackagePrefab.gameObject.SetActive(false);
+    }
 
     private void Start()
     {
@@ -50,17 +55,16 @@ public class State_Shop : GameState
         Destroy(gemsPackagePrefab.gameObject);
 
         if (ShopLogic.SpecialRacerPopup.IsAvailable)
-            specialRacerCardsPackagePrefab.Clone<UiShopSpecialRacerCards>().Setup(ShopLogic.SpecialRacerPopup.Package, true);
+            specialRacerCardsPackagePrefab.Clone<UiShopSpecialRacerCards>().Setup(ShopLogic.SpecialRacerPopup.Package, true).gameObject.SetActive(true);
 
         foreach (var item in GlobalConfig.Shop.specialRacerCardPackages)
             if (UiShopSpecialRacerCards.CanDisplay(item, true))
-                specialRacerCardsPackagePrefab.Clone<UiShopSpecialRacerCards>().Setup(item, false);
+                specialRacerCardsPackagePrefab.Clone<UiShopSpecialRacerCards>().Setup(item, false).gameObject.SetActive(true);
 
         Destroy(specialRacerCardsPackagePrefab.gameObject);
 
-        UiShopSpecialPackage.ValidateAllRacerId();
-        for (int i = 0; i < GlobalConfig.Shop.specialPackages.Count; i++)
-            specialPackagePrefab.Clone<UiShopSpecialPackage>().Setup(i);
+        for (int i = 0; i < GlobalConfig.Shop.combinedPackages.Count; i++)
+            specialPackagePrefab.Clone<UiShopSpecialPackage>().Setup(i).gameObject.SetActive(true);
 
         if (specialPackagePrefab.transform.parent.childCount < 4)
             Destroy(specialPackagePrefab.transform.parent.gameObject);

@@ -11,14 +11,14 @@ public class UiLoadingBoxFreePackage : MonoBehaviour
 
     private void Start()
     {
-        desc.SetFormatedText(GlobalConfig.Shop.freePackage.nextTime / 3600);
+        desc.SetFormatedText(GlobalConfig.Shop.loadingBoxPackage.nextTime / 3600);
         purchaseButton.onClick.AddListener(() =>
         {
             switch (Random.Range(0, 100) % 4)
             {
                 case 0:
                     {
-                        var gems = GlobalConfig.Shop.freePackage.gemValues.RandomOne();
+                        var gems = GlobalConfig.Shop.loadingBoxPackage.gemValues.RandomOne();
                         Profile.EarnResouce(gems, 0);
                         Popup_Rewards.AddResource(gems, 0);
                     }
@@ -26,7 +26,7 @@ public class UiLoadingBoxFreePackage : MonoBehaviour
 
                 case 1:
                     {
-                        var coins = GlobalConfig.Shop.freePackage.coinValues.RandomOne();
+                        var coins = GlobalConfig.Shop.loadingBoxPackage.coinValues.RandomOne();
                         Profile.EarnResouce(0, coins);
                         Popup_Rewards.AddResource(0, coins);
                     }

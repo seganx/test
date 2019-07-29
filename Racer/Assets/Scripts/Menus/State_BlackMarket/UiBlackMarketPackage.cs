@@ -129,8 +129,8 @@ public class UiBlackMarketPackage : MonoBehaviour
 
     public static void CreatePackages()
     {
-        packages = new List<Package>(GlobalConfig.Shop.racerCardPackages.Count);
-        foreach (var item in GlobalConfig.Shop.racerCardPackages)
+        packages = new List<Package>(GlobalConfig.Shop.blackMarketPackages.Count);
+        foreach (var item in GlobalConfig.Shop.blackMarketPackages)
         {
             var config = SelectRacer();
             if (Profile.IsUnlockedRacer(config.Id)) config = SelectRacer();

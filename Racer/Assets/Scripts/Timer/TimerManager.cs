@@ -128,13 +128,11 @@ public class TimerManager : Base
 
     private static void InitDefaultValues()
     {
-        SetTimer(Type.FreeShopItemTimer, GlobalConfig.Shop.freePackage.nextTime);
+        SetTimer(Type.FreeShopItemTimer, GlobalConfig.Shop.loadingBoxPackage.nextTime);
         SetTimer(Type.LegendShopActivatorTimer, GlobalConfig.Shop.racerCardPackageTime);
 
         SetTimer(Type.CombinedShopItemTimer, GlobalConfig.Shop.combinedPackagesNextTime);
-        // call your function here
-
-        //
+        UiShopSpecialPackage.ValidateAllRacerId();
     }
 
     static string timerManagerInitOnceString = "TimerManagerInitOnce";

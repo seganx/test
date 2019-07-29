@@ -9,11 +9,11 @@ public class CombiedShopItemTimerLogic : TimerPresenter
 {
     public override void UpdateTimerText(int remainTime)
     {
-        // call your function here
-
-        //
         if (remainTime < 0)
+        {
             StartTimer(GlobalConfig.Shop.combinedPackagesNextTime);
+            UiShopSpecialPackage.ValidateAllRacerId();
+        }
     }
 
     public override void SetActiveTimerObjects(bool active)
