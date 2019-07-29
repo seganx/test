@@ -97,9 +97,7 @@ public abstract class PlayerPresenter : Base
     {
         if (NitrosReady)
         {
-            Debug.Log("Use CurrNitrous: " + player.CurrNitrous);
             player.CurrNitrous = Mathf.Clamp(player.CurrNitrous - 1, 0, 1);
-            Debug.Log("Curr CurrNitrous: " + player.CurrNitrous);
             SetGrade(Grade + 1);
             BroadcastMessage("StartNitors", SendMessageOptions.DontRequireReceiver);
         }
