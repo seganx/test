@@ -146,6 +146,8 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
             public class SpecialRacerCardPopup
             {
                 public string sku = string.Empty;
+                public string[] skus = { string.Empty, string.Empty, string.Empty, string.Empty, string.Empty };
+                public int[] prices = { 0, 0, 0, 0, 0 };
                 public int price = 0;
                 public int discount = 0;
                 public int durationTime = 172800;
