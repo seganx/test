@@ -50,7 +50,7 @@ public class PlayerPresenterOnline : PlayerPresenter
         racer.AutoSteeringWheel = true;
         racer.AutoWheelRotation = true;
         if (local == this)
-            transform.GetChild(0).ScaleLocalPosition(1, racer.Size.y / 1.279f, 0.6f + 0.4f * (racer.Size.z / 3.4f));
+            transform.GetChild(0).ScaleLocalPosition(1, racer.Size.y / 1.279f, 0.5f + 0.4f * (racer.Size.z / 3.4f));
 
         //  initialize presneter
         base.SetGrade(playerGrade, true);
