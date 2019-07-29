@@ -58,7 +58,7 @@ public class BotPresenter : Base
         if (count == PlayModel.maxPlayerCount - 1)
         {
             var powerDiff = Profile.Skill - Profile.CurrentRacerPower;
-            useNosChance = Mathf.Min(50, powerDiff - 50);
+            useNosChance = Mathf.Clamp(50 + Mathf.RoundToInt(powerDiff / 4f), 0, 100);
             Debug.Log("Player Skill: " + Profile.Skill + " Racer Power: " + Profile.CurrentRacerPower + " Bot NosChance: " + useNosChance);
         }
         else useNosChance = 0;
