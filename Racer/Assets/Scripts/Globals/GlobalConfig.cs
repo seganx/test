@@ -243,9 +243,6 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
         [System.Serializable]
         public class Probabilities
         {
-            public float unlockRacerHeightFactor = 0.5f;  // depricated
-            public int unlockRacerRadius = 3; // depricated
-
             public int rewardRacerRadius = 3;
             public int backmarketRacerRadius = 5;
             public int shopSpecialRacerRadius = 4;

@@ -128,7 +128,7 @@ public class UiShopSpecialPackage : MonoBehaviour
     private static int SelectRandomRacerId(int index)
     {
         int radius = GlobalConfig.Probabilities.shopSpecialRacerRadius;
-        int center = RewardLogic.FindSelectRacerCenter() + radius / 2 + index * radius;
+        int center = RewardLogic.FindSelectRacerCenter() + index * (radius + 1);
         int count = center + radius;
         var configindex = RewardLogic.SelectProbability(count, center, radius);
         if (configindex < 0 || configindex >= RacerFactory.Racer.AllConfigs.Count) return 0;
