@@ -98,7 +98,7 @@ public abstract class PlayerPresenter : Base
         {
             player.CurrNitrous = 0;
             SetGrade(Grade + 1);
-            BroadcastMessage("PlayNosAudio", SendMessageOptions.DontRequireReceiver);
+            BroadcastMessage("StartNitors", SendMessageOptions.DontRequireReceiver);
         }
     }
 
@@ -124,7 +124,7 @@ public abstract class PlayerPresenter : Base
         {
             currGrade = Mathf.MoveTowards(currGrade, Grade, Time.deltaTime * changeGradeSpeed);
             if (currGrade == Grade)
-                BroadcastMessage("StopNosAudio", SendMessageOptions.DontRequireReceiver);
+                BroadcastMessage("StopNitors", SendMessageOptions.DontRequireReceiver);
         }
         UpdateForwardPosition();
         UpdateSteeringPosition();
