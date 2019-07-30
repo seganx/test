@@ -127,7 +127,7 @@ public class BotPresenter : Base
         float m = radius / height;
         for (int h = 0; h <= height; h++)
         {
-            int rad = Mathf.FloorToInt(radius - m * h);
+            int rad = Mathf.CeilToInt(radius - m * h);
             for (int r = center - rad * 2; r <= center + rad; r++)  // increase radius to select prev racers
                 if (r.Between(0, lenght - 1))
                     list.Add(r);

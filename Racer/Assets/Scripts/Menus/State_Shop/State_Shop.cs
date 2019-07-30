@@ -54,22 +54,21 @@ public class State_Shop : GameState
             gemsPackagePrefab.Clone<UiShopResourcePackage>().SetupAsGemsPack(i);
         Destroy(gemsPackagePrefab.gameObject);
 
-        if (ShopLogic.SpecialRacerPopup.IsAvailable)
-            specialRacerCardsPackagePrefab.Clone<UiShopSpecialRacerCards>().Setup(ShopLogic.SpecialRacerPopup.Package, true).gameObject.SetActive(true);
+        {
+            if (ShopLogic.SpecialRacerPopup.IsAvailable)
+                specialRacerCardsPackagePrefab.Clone<UiShopSpecialRacerCards>().Setup(ShopLogic.SpecialRacerPopup.Package, true).gameObject.SetActive(true);
 
-        foreach (var item in GlobalConfig.Shop.specialRacerCardPackages)
-            if (UiShopSpecialRacerCards.CanDisplay(item, true))
-                specialRacerCardsPackagePrefab.Clone<UiShopSpecialRacerCards>().Setup(item, false).gameObject.SetActive(true);
+            foreach (var item in GlobalConfig.Shop.specialRacerCardPackages)
+                if (UiShopSpecialRacerCards.CanDisplay(item, true))
+                    specialRacerCardsPackagePrefab.Clone<UiShopSpecialRacerCards>().Setup(item, false).gameObject.SetActive(true);
+            Destroy(specialRacerCardsPackagePrefab.gameObject);
+        }
 
-        Destroy(specialRacerCardsPackagePrefab.gameObject);
-
+        UiShopSpecialPackage.ValidateAllRacerId();
         for (int i = 0; i < GlobalConfig.Shop.combinedPackages.Count; i++)
-            specialPackagePrefab.Clone<UiShopSpecialPackage>().Setup(i).gameObject.SetActive(true);
-
-        if (specialPackagePrefab.transform.parent.childCount < 4)
-            Destroy(specialPackagePrefab.transform.parent.gameObject);
-        else
-            Destroy(specialPackagePrefab.gameObject);
+            if (UiShopSpecialPackage.CanDisplay(i))
+                specialPackagePrefab.Clone<UiShopSpecialPackage>().Setup(i).gameObject.SetActive(true);
+        Destroy(specialPackagePrefab.gameObject);
 
         UiShowHide.ShowAll(transform);
     }

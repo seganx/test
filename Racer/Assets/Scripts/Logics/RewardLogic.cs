@@ -48,7 +48,8 @@ public static class RewardLogic
     //! return the index of first locked racer in garage just front of unlocked one
     public static int FindSelectRacerCenter(int playerIndex = 0)
     {
-        var center = playerIndex == 0 ? RacerFactory.Racer.AllConfigs.FindIndex(x => x.Id == Profile.SelectedRacer) : playerIndex;
+        var playerselected = Profile.SelectedRacer > 0 ? Profile.SelectedRacer : 0;
+        var center = playerIndex == 0 ? RacerFactory.Racer.AllConfigs.FindIndex(x => x.Id == playerselected) : playerIndex;
         for (int i = center + 1; i < RacerFactory.Racer.AllConfigs.Count && Profile.IsUnlockedRacer(RacerFactory.Racer.AllConfigs[i].Id); i++)
             center = i;
         return center;
@@ -103,7 +104,7 @@ public static class RewardLogic
         float m = radius / height;
         for (int h = 0; h <= height; h++)
         {
-            int rad = Mathf.FloorToInt(radius - m * h);
+            int rad = Mathf.CeilToInt(radius - m * h);
             for (int r = center - rad; r <= center + rad; r++)
                 if (r.Between(0, lenght - 1))
                     list.Add(r);
@@ -123,7 +124,7 @@ public static class RewardLogic
         float m = radius / height;
         for (int h = 0; h <= height; h++)
         {
-            int rad = Mathf.FloorToInt(radius - m * h) * 2;
+            int rad = Mathf.CeilToInt(radius - m * h) * 2;
             for (int r = center; r <= center + rad; r++)
                 if (r.Between(0, lenght - 1))
                     list.Add(r);

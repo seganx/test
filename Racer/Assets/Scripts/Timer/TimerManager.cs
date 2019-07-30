@@ -132,7 +132,6 @@ public class TimerManager : Base
         SetTimer(Type.LegendShopActivatorTimer, GlobalConfig.Shop.racerCardPackageTime);
 
         SetTimer(Type.CombinedShopItemTimer, GlobalConfig.Shop.combinedPackagesNextTime);
-        UiShopSpecialPackage.ValidateAllRacerId();
     }
 
     static string timerManagerInitOnceString = "TimerManagerInitOnce";

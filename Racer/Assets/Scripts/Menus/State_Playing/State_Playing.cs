@@ -34,7 +34,7 @@ public class State_Playing : GameState
 
     private void Update()
     {
-#if UNITY_EDITOR
+#if UNITY_EDITOR1
         QualitySettings.vSyncCount = 0;  // VSync must be disabled
         Application.targetFrameRate = Random.Range(10, 30);
 #endif

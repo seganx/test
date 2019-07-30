@@ -21,17 +21,9 @@ public class UiShopSpecialPackage : MonoBehaviour
 
     public UiShopSpecialPackage Setup(int index)
     {
-        // update config or exit
-        {
-            var racerId = GetRacerId(index);
-            if (racerId == 0)
-            {
-                Destroy(gameObject);
-                return this;
-            }
-            config = RacerFactory.Racer.GetConfig(racerId);
-        }
         packIndex = index;
+        var racerId = GetRacerId(index);
+        config = RacerFactory.Racer.GetConfig(racerId);
 
         var pack = GlobalConfig.Shop.combinedPackages[index % GlobalConfig.Shop.combinedPackages.Count];
         var price = pack.prices[config.GroupId - 1];
@@ -57,10 +49,7 @@ public class UiShopSpecialPackage : MonoBehaviour
                 {
                     DisplayRewards(pack);
                     PurchaseSystem.Consume();
-                    if (transform.parent.childCount > 2)
-                        Destroy(gameObject);
-                    else
-                        Destroy(transform.parent.gameObject);
+                    Destroy(gameObject);
                 }
             });
         });
@@ -85,8 +74,9 @@ public class UiShopSpecialPackage : MonoBehaviour
 
         Popup_Rewards.Display().DisplayPurchaseReward();
         ProfileLogic.SyncWidthServer(true, done => { });
-        SetRacerId(packIndex, 0);
         Destroy(gameObject);
+
+        SetRacerId(packIndex, -1); // set that the package has been purchased
     }
 
 
@@ -97,6 +87,7 @@ public class UiShopSpecialPackage : MonoBehaviour
     {
         for (int i = 0; i < GlobalConfig.Shop.combinedPackages.Count; i++)
         {
+            if (GetRacerId(i) != 0) continue;
             var racerId = SelectRandomRacerId(i);
             if (racerId == 0) continue;
             if (IsIdExist(racerId)) racerId = SelectRandomRacerId(i);
@@ -108,6 +99,12 @@ public class UiShopSpecialPackage : MonoBehaviour
             if (IsIdExist(racerId)) continue;
             SetRacerId(i, racerId);
         }
+    }
+
+    public static void RefreshAllRacerId()
+    {
+        for (int i = 0; i < GlobalConfig.Shop.combinedPackages.Count; i++)
+            SetRacerId(i, 0);
     }
 
     private static int GetRacerId(int index)
@@ -138,6 +135,17 @@ public class UiShopSpecialPackage : MonoBehaviour
         var config = RacerFactory.Racer.AllConfigs[configindex];
         if (Profile.IsUnlockedRacer(config.Id)) return 0;
         return config.Id;
+    }
+
+    public static bool CanDisplay(int index)
+    {
+        var racerId = GetRacerId(index);
+        if (racerId <= 0) return false;
+
+        var config = RacerFactory.Racer.GetConfig(racerId);
+        if (config == null) return false;
+
+        return true;
     }
 
     [Console("shop", "special")]

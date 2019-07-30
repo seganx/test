@@ -75,8 +75,6 @@ public class RacerSpecialOfferTimerPresenter : TimerPresenter
             specialOfferButton.gameObject.SetActive(false);
         else if (popup)
             popup.Back();
-        else if (transform.parent.childCount < 3)
-            Destroy(transform.parent.gameObject);
         else
             Destroy(transform.gameObject);
     }

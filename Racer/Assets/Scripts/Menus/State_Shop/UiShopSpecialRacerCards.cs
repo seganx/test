@@ -45,11 +45,7 @@ public class UiShopSpecialRacerCards : MonoBehaviour
                     DisplayRewards(pack);
                     PurchaseSystem.Consume();
                     if (isPopup) ShopLogic.SpecialRacerPopup.Clear();
-                    if (transform.parent.childCount > 2)
-                        Destroy(gameObject);
-                    else
-                        Destroy(transform.parent.gameObject);
-
+                    Destroy(gameObject);
                 }
             });
         });
