@@ -76,6 +76,8 @@ public class State_Playing : GameState
 #endif
                 PlayerPresenter.local.SteeringValue = InputManager.Left.isPointerDown ? -1 : (InputManager.Right.isPointerDown ? 1 : 0);
 
+            RacerCamera.steeringValue = PlayerPresenter.local.SteeringValue;
+
 #if UNITY_EDITOR || UNITY_STANDALONE
             if (PlayerPresenter.local.NitrosReady && Input.GetKeyDown(KeyCode.LeftShift))
             {

@@ -9,6 +9,7 @@ public class RacerCamera : MonoBehaviour
 
     public static float fovScale = 1;
     public static Vector3 offset = Vector3.zero;
+    public static float steeringValue = 0;
 
     public Mode mode = Mode.QuadCopter;
 
