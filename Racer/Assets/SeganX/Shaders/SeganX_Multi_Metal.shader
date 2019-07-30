@@ -160,7 +160,7 @@
                         {
                             float spec = pow(max(0, dot(i.norm, normalize(lightDir + viewDir))), _SpecularPower1) * _SpecularAtten1;
                             res.rgb = lerp(res.rgb, _LightColor0.rgb, spec);
-                            res.a = max(res.a, pow(spec, 6) * 1.5f);
+                            res.a = max(res.a, pow(spec, 10) * 5);
 
                             if (_MetalPower1 > 0.01f)
                             {

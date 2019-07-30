@@ -55,7 +55,7 @@
 
             half4 skybox_frag(v2f i, sampler2D smp, half4 smpDecode)
             {
-                return half4(tex2D(smp, i.texcoord).rgb, bloomSpecular * skyBloom);
+                return half4(tex2D(smp, i.texcoord).rgb, skyBloom);
             }
             ENDCG
 

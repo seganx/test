@@ -8,6 +8,7 @@ public class RacerCamera : MonoBehaviour
     public enum Mode { Off, StickingFollower, QuadCopter, Cinematic, Driver, Front, SideLeft, SideRight }
 
     public static float fovScale = 1;
+    public static Vector3 offset = Vector3.zero;
 
     public Mode mode = Mode.QuadCopter;
 
@@ -78,18 +79,20 @@ public class RacerCamera : MonoBehaviour
 
     private void StickingFollower()
     {
-        cameraOrigin.x = transform.position.x;
-        cameraOrigin = cameraOrigin.LerpTo(transform.position, config.stickyFollower.originBlendSpeed * Time.deltaTime);
+        var pos = transform.position + offset;
+
+        cameraOrigin.x = pos.x;
+        cameraOrigin = cameraOrigin.LerpTo(pos, config.stickyFollower.originBlendSpeed * Time.deltaTime);
         cameraTarget = cameraTarget.LerpTo(presenter.racer.cameraTargetTransform.position + config.stickyFollower.targetOffset, config.stickyFollower.targetBlendSpeed * Time.deltaTime);
 
         cameraBounce.x = Mathf.Lerp(cameraBounce.x, presenter.racer.transform.localPosition.x, config.stickyFollower.originBlendSpeed.x * Time.deltaTime);
         cameraForward = cameraTarget - cameraOrigin - cameraBounce;
 
-        cameraBounce.z = Mathf.Lerp(cameraBounce.z, (transform.position.z - cameraOrigin.z) * config.stickyFollower.bounce, 5 * Time.deltaTime);
+        cameraBounce.z = Mathf.Lerp(cameraBounce.z, (pos.z - cameraOrigin.z) * config.stickyFollower.bounce, 5 * Time.deltaTime);
         cameraPosition = cameraOrigin + cameraBounce;
 
         //cameraForward = transform.forward;
-        //cameraPosition = transform.position;
+        //cameraPosition = pos;
 
         ApplyToCamera(config.stickyFollower.blendToThis, config.stickyFollower.fieldOfView);
     }

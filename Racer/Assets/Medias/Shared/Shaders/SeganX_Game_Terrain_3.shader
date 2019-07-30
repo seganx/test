@@ -94,7 +94,7 @@
                     fixed3 ambient = (i.norm.y > 0) ? lerp(unity_AmbientEquator.rgb, unity_AmbientSky.rgb, i.norm.y) : lerp(unity_AmbientEquator.rgb, unity_AmbientGround.rgb, -i.norm.y);
                     res.rgb *= lerp(ambient, _LightColor0.rgb, dl);
 
-                    res.a = bloomSpecular;
+                    res.a = bloomSpecular * _Color.a;
                     UNITY_APPLY_FOG(i.fogCoord, res);
                     return res;
                 }

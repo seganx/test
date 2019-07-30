@@ -17,6 +17,7 @@ public class State_Playing : GameState
     private bool allowUserHandle = true;
     private int timerAudioPlayed = -1;
     private bool isGamePaused = false;
+    private int cameraMode = 0;
 
     private void Start()
     {
@@ -47,6 +48,8 @@ public class State_Playing : GameState
 
         foreach (var player in PlayerPresenter.all)
             player.ForwardValue = currForwardPosition;
+
+        RacerCamera.offset.z = Mathf.Lerp(RacerCamera.offset.z, -cameraMode * 0.5f, Time.deltaTime);
 
         var remainedTime = Mathf.Max(0, PlayModel.maxGameTime - PlayNetwork.PlayTime);
         timeLabel.text = Utilities.TimeToString(remainedTime, 3);
@@ -97,6 +100,9 @@ public class State_Playing : GameState
 
     public void OnCameraButton()
     {
+        RacerCameraConfig.Instance.currentMode = RacerCamera.Mode.StickingFollower;
+        cameraMode = (cameraMode + 1) % 3;
+#if OFF
         switch (RacerCameraConfig.Instance.currentMode)
         {
             case RacerCamera.Mode.StickingFollower: RacerCameraConfig.Instance.currentMode = RacerCamera.Mode.QuadCopter; break;
@@ -105,6 +111,7 @@ public class State_Playing : GameState
                 //case RacerCamera.Mode.Driver: RacerCameraConfig.Instance.currentMode = RacerCamera.Mode.Front; break;
                 //case RacerCamera.Mode.Front: RacerCameraConfig.Instance.currentMode = RacerCamera.Mode.StickingFollower; break;
         }
+#endif
     }
 
     private void DisplayFinalCamera()
