@@ -78,6 +78,7 @@ public class RacerCamera : MonoBehaviour
         }
     }
 
+    float tempCamHorizontalPos, camHorizontalDelta;
     private void StickingFollower()
     {
         var pos = transform.position + offset;
@@ -86,8 +87,25 @@ public class RacerCamera : MonoBehaviour
         cameraOrigin = cameraOrigin.LerpTo(pos, config.stickyFollower.originBlendSpeed * Time.deltaTime);
         cameraTarget = cameraTarget.LerpTo(presenter.racer.cameraTargetTransform.position + config.stickyFollower.targetOffset, config.stickyFollower.targetBlendSpeed * Time.deltaTime);
 
-        cameraBounce.x = Mathf.Lerp(cameraBounce.x, presenter.racer.transform.localPosition.x, config.stickyFollower.originBlendSpeed.x * Time.deltaTime);
+        //cameraBounce.x = Mathf.Lerp(cameraBounce.x, presenter.racer.transform.localPosition.x, config.stickyFollower.originBlendSpeed.x * Time.deltaTime);
+
+        tempCamHorizontalPos = Mathf.Lerp(cameraBounce.x, presenter.racer.transform.localPosition.x, config.stickyFollower.originBlendSpeed.x * Time.deltaTime);
+        if(steeringValue >= 1)
+        {
+            if (camHorizontalDelta > tempCamHorizontalPos - presenter.racer.transform.localPosition.x)
+                camHorizontalDelta = tempCamHorizontalPos - presenter.racer.transform.localPosition.x;
+        }
+        else if (steeringValue <= -1)
+        {
+            if (camHorizontalDelta < tempCamHorizontalPos - presenter.racer.transform.localPosition.x)
+                camHorizontalDelta = tempCamHorizontalPos - presenter.racer.transform.localPosition.x;
+        }
+        else
+            camHorizontalDelta = tempCamHorizontalPos - presenter.racer.transform.localPosition.x;
+        cameraBounce.x = presenter.racer.transform.localPosition.x + camHorizontalDelta;
+
         cameraForward = cameraTarget - cameraOrigin - cameraBounce;
+
 
         cameraBounce.z = Mathf.Lerp(cameraBounce.z, (pos.z - cameraOrigin.z) * config.stickyFollower.bounce, 5 * Time.deltaTime);
         cameraPosition = cameraOrigin + cameraBounce;
