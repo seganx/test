@@ -52,7 +52,7 @@ public class State_Upgrade : GameState
     [SerializeField] private Text racerName = null;
     [SerializeField] private LocalText racerPower = null;
     [SerializeField] private LocalText racerPowerPlus = null;
-    [SerializeField] private Button costumButton = null;
+    [SerializeField] private Button customeButton = null;
     [SerializeField] private UpgradableMenu[] upgradeMenus = null;
     [SerializeField] private CarNavigation navigation = null;
     [SerializeField] private UpgradWindow upgradeWindow = null;
@@ -147,7 +147,7 @@ public class State_Upgrade : GameState
         UiHeader.Show();
         GarageCamera.SetCameraId(2);
 
-        costumButton.onClick.AddListener(() => gameManager.OpenState<State_Custome>());
+        customeButton.onClick.AddListener(() => gameManager.OpenState<State_Custome>());
         photoButton.onClick.AddListener(() => gameManager.OpenState<State_PhotoMode>());
         navigation.prev.onClick.AddListener(() => DisplayNextCar(-1));
         navigation.next.onClick.AddListener(() => DisplayNextCar(1));
@@ -180,7 +180,7 @@ public class State_Upgrade : GameState
 
         if (Profile.IsUnlockedRacer(config.Id))
         {
-            costumButton.gameObject.SetActive(true);
+            //customeButton.gameObject.SetActive(true);
             lockedBar.showhide.Hide();
         }
         else
@@ -190,7 +190,7 @@ public class State_Upgrade : GameState
 #if UNITY_EDITOR
             //      costumButton.gameObject.SetActive(false);
 #else
-            costumButton.gameObject.SetActive(false);
+            //costumButton.gameObject.SetActive(false);
 #endif
 
             lockedBar.showhide.Show();

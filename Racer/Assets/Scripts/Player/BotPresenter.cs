@@ -59,7 +59,7 @@ public class BotPresenter : Base
         if (count == PlayModel.maxPlayerCount - 1)
         {
             var powerDiff = Profile.Skill - Profile.CurrentRacerPower;
-            useNosChance = Mathf.Clamp(50 + Mathf.RoundToInt(powerDiff / 4f), 0, 100);
+            useNosChance = Mathf.Clamp(30 + Mathf.RoundToInt(powerDiff / 1f), 0, 100);
             Debug.Log("Player Skill: " + Profile.Skill + " Racer Power: " + Profile.CurrentRacerPower + " Bot NosChance: " + useNosChance);
         }
         else useNosChance = GlobalConfig.Race.bots.nosChance;
@@ -84,7 +84,7 @@ public class BotPresenter : Base
 
     private static RacerProfile CreateRandomRacerProfile()
     {
-        int targetSkill = Profile.CurrentRacerPower;
+        int targetSkill = Profile.Skill;
 
         var res = new RacerProfile() { id = SelectRacer(targetSkill) };
         var config = RacerFactory.Racer.GetConfig(res.id);
@@ -92,9 +92,9 @@ public class BotPresenter : Base
         res.level.Level = Profile.CurrentRacer.level.Level;
 
         var maxUpgradeLevel = RacerGlobalConfigs.Data.maxUpgradeLevel[res.level.Level] + 1;
-        res.level.NitroLevel = maxUpgradeLevel;
-        res.level.BodyLevel = maxUpgradeLevel;
-        res.level.SteeringLevel = maxUpgradeLevel;
+        res.level.NitroLevel = Random.Range(0, maxUpgradeLevel / 2);
+        res.level.BodyLevel = Random.Range(0, maxUpgradeLevel / 2);
+        res.level.SteeringLevel = Random.Range(0, maxUpgradeLevel / 2);
 
         res.custom = config.DefaultRacerCustom;
         res.custom.BodyColor = RacerFactory.Colors.AllColors.RandomOne().id;
@@ -109,10 +109,10 @@ public class BotPresenter : Base
 
     private static int SelectRacer(int targetPower)
     {
-        var list = RacerFactory.Racer.AllConfigs.FindAll(x => x.MinPower.Between(targetPower - 50, targetPower + 150));
+        var list = RacerFactory.Racer.AllConfigs.FindAll(x => x.MinPower.Between(targetPower - 200, targetPower + 100));
         if (list.Count < 1) list = RacerFactory.Racer.AllConfigs;
         var center = list.FindIndex(x => x.Id == Profile.SelectedRacer);
-        var index = SelectProbability(list.Count, center, 4, 0.5f);
+        var index = SelectProbability(list.Count, center - 1, 4, 0.5f);
         return list[index].Id;
     }
 

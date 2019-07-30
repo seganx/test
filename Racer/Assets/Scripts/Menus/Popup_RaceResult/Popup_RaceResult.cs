@@ -36,7 +36,7 @@ public class Popup_RaceResult : GameState
 
             Profile.Skill += 2 * PlayModel.maxPlayerCount - 4 * playerCurPosition;
         }
-        else Profile.Skill += PlayModel.maxPlayerCount - 2 * playerCurPosition;
+        else Profile.Skill += 2 * PlayModel.maxPlayerCount - 4 * playerCurPosition;
         
 
         nextButton.onClick.AddListener(() =>
