@@ -34,6 +34,11 @@ public class State_Playing : GameState
 
     private void Update()
     {
+#if UNITY_EDITOR
+        QualitySettings.vSyncCount = 0;  // VSync must be disabled
+        Application.targetFrameRate = Random.Range(10, 30);
+#endif
+
         if (PlayerPresenter.local == null || PlayNetwork.IsJoined == false) return;
 
         //  compute racers speed
@@ -49,7 +54,7 @@ public class State_Playing : GameState
         foreach (var player in PlayerPresenter.all)
             player.ForwardValue = currForwardPosition;
 
-        RacerCamera.offset.z = Mathf.Lerp(RacerCamera.offset.z, -cameraMode * 0.5f, Time.deltaTime);
+        RacerCamera.offset.z = Mathf.Lerp(RacerCamera.offset.z, -cameraMode * 0.6f, Time.deltaTime * 3);
 
         var remainedTime = Mathf.Max(0, PlayModel.maxGameTime - PlayNetwork.PlayTime);
         timeLabel.text = Utilities.TimeToString(remainedTime, 3);
