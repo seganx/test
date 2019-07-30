@@ -20,7 +20,7 @@ public class RacerAudio : Base
 
 
     RacerPresenter racer = null;
-    VelocityReader vreader = new VelocityReader(4);
+    VelocityReader vreader = new VelocityReader();
 
     private void Awake()
     {
@@ -85,8 +85,8 @@ public class RacerAudio : Base
         curGear++;
         if (turboAudiosSources.Length > 0 && Random.value > .3f)
             turboAudiosSources[Random.Range(0, turboAudiosSources.Length)].Play();
-        yield return new WaitForSeconds(.4f);
         racer.BroadcastMessage("Shifting", SendMessageOptions.DontRequireReceiver);
+        yield return new WaitForSeconds(.4f);
         shiftAudioSources[Random.Range(0, shiftAudioSources.Length)].Play();
         yield return new WaitForSeconds(.4f);
         isShifting = false;
@@ -100,7 +100,7 @@ public class RacerAudio : Base
 
         vreader.Update(Vector3.one.Scale(racer.transform.localPosition.x, 0, transform.position.z));
         curSpeed.x = vreader.x;
-        curSpeed.z = vreader.z;
+        curSpeed.z = vreader.value.magnitude;
 
         if (curGear == 1 && curSpeed.z > firstShiftUpSpeed)
             StartCoroutine(ShiftUp());

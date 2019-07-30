@@ -9,7 +9,7 @@ public abstract class PlayerPresenter : Base
     [HideInInspector] public PlayerData player = null;
     [HideInInspector] public RacerPresenter racer = null;
 
-    private VelocityReader velocityReader = new VelocityReader(10);
+    private VelocityReader velocityReader = new VelocityReader();
     private float currGrade = 0;
     private float changeGradeSpeed = 1;
     private float currSteeringSpeed = 0;

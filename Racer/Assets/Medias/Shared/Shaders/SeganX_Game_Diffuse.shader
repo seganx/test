@@ -3,7 +3,7 @@
     Properties
     {
         _MainTex("Diffuse Texture", 2D) = "white" {}
-        _DiffColor("Diffuse Color", Color) = (1,1,1,1)
+        _Color("Diffuse Color", Color) = (1,1,1,1)
         _ColorStrength("Color Strength", Float) = 1
 
         [Enum(ON,1,OFF,0)]	            _ZWrite("Z Write", Int) = 1
@@ -63,20 +63,20 @@
                 }
 
 
-                fixed4 _DiffColor;
+                fixed4 _Color;
                 float _ColorStrength;
                 uniform float bloomSpecular;
 
                 fixed4 frag(v2f i) : SV_Target
                 {
-                    fixed4 res = tex2D(_MainTex, i.uv0) *_DiffColor * _ColorStrength;
+                    fixed4 res = tex2D(_MainTex, i.uv0) * _Color * _ColorStrength;
 
                     half dl = max(0, dot(i.norm, _WorldSpaceLightPos0.xyz));
                     fixed3 ambient = (i.norm.y > 0) ? lerp(unity_AmbientEquator.rgb, unity_AmbientSky.rgb, i.norm.y) : lerp(unity_AmbientEquator.rgb, unity_AmbientGround.rgb, -i.norm.y);
                     res.rgb *= lerp(ambient, _LightColor0.rgb, dl);
 
                     UNITY_APPLY_FOG(i.fogCoord, res);
-                    res.a = bloomSpecular;
+                    res.a = bloomSpecular * _Color.a;
                     return res;
                 }
                 ENDCG

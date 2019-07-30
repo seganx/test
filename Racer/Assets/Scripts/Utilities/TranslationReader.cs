@@ -3,18 +3,12 @@
 public class VelocityReader
 {
     private Vector3 lastPosition = Vector2.zero;
-    internal float lerpSpeed = 5;
     private bool init = true;
 
     public Vector3 value { get; private set; }
     public float x { get { return value.x; } }
     public float y { get { return value.y; } }
     public float z { get { return value.z; } }
-
-    public VelocityReader(float lerpSpeed)
-    {
-        this.lerpSpeed = lerpSpeed;
-    }
 
     public void Update(Vector3 position)
     {
@@ -57,8 +51,10 @@ public class VelocityReader
 
 public class AcceleraReader
 {
-    public VelocityReader velocity = new VelocityReader(5);
+    public VelocityReader velocity = new VelocityReader();
+
     private Vector3 lastVelocity = Vector3.zero;
+    private float lerpSpeed = 5;
 
     public Vector3 value { get; private set; }
     public float x { get { return value.x; } }
@@ -67,13 +63,13 @@ public class AcceleraReader
 
     public AcceleraReader(float lerpSpeed)
     {
-        velocity = new VelocityReader(lerpSpeed);
+        this.lerpSpeed = lerpSpeed;
     }
 
     public void Update(Vector3 position)
     {
         velocity.Update(position);
-        value = velocity - lastVelocity;
+        value = Vector3.MoveTowards(value, (velocity - lastVelocity) / Time.deltaTime, Time.deltaTime * lerpSpeed);
         lastVelocity = velocity;
     }
 
