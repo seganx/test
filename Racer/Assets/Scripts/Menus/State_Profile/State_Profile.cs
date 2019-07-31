@@ -77,7 +77,7 @@ public class State_Profile : GameState
         var nickname = nicknameInput.text.Trim().CleanFromCode().CleanForPersian();
         if (nickname.HasContent(3))
         {
-            if (BadWordsFinder.HasBadWord(nickname) == false)
+            if (BadWordsFinder.HasBadWord(nickname) == false || nickname.IsLetterOrDigit() == false)
             {
                 Popup_Loading.Display();
                 Network.SendNickname(nickname, msg =>

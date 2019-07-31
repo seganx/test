@@ -11,8 +11,9 @@ public class Popup_RacerCardInfo : GameState
     [SerializeField] private LocalText cardsCountLabel = null;
     [SerializeField] private LocalText neededCardsLabel = null;
     [SerializeField] private Button onlineButton = null;
-    [SerializeField] private Button freeButton = null;
     [SerializeField] private Button shopButton = null;
+    [SerializeField] private Button freeButton = null;
+    [SerializeField] private Button blackMarketButton = null;
 
     private void Start()
     {
@@ -22,16 +23,22 @@ public class Popup_RacerCardInfo : GameState
             gameManager.OpenState<State_LeagueStart>();
         });
 
-        freeButton.onClick.AddListener(() =>
+        shopButton.onClick.AddListener(() =>
         {
             Back();
             gameManager.OpenState<State_Shop>();
         });
 
-        shopButton.onClick.AddListener(() =>
+        freeButton.onClick.AddListener(() =>
         {
             Back();
-            gameManager.OpenState<State_Shop>();
+            gameManager.OpenState<State_LoadingBox>();
+        });
+
+        blackMarketButton.onClick.AddListener(() =>
+        {
+            Back();
+            gameManager.OpenState<State_BlackMarket>();
         });
 
         var config = RacerFactory.Racer.GetConfig(GarageRacer.racer.Id);

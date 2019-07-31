@@ -1,18 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
-using UnityEngine.Internal;
 
 public class RacerPresenter : MonoBehaviour
 {
-#if UNITY_EDITOR
-    [ContextMenu("ApplyPrefab")]
-    public void ApplyPrefab()
-    {
-        PrefabUtility.ReplacePrefab(gameObject, PrefabUtility.GetPrefabParent(this), ReplacePrefabOptions.ConnectToPrefab);
-    }
-#endif
     [System.Serializable]
     public class BluePrint
     {

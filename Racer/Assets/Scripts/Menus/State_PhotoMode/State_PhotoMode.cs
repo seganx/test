@@ -7,6 +7,15 @@ using UnityEngine.UI;
 
 public class State_PhotoMode : GameState
 {
+    [System.Serializable]
+    public class LockedBar
+    {
+        public LocalText cardsCountLabel = null;
+        public LocalText descLabel = null;
+        public Button cardButton = null;
+        public UiShowHide showhide = null;
+    }
+
     [SerializeField] private GameObject upPanel = null;
     [SerializeField] private GameObject effectPanel = null;
     [SerializeField] private Button prevEffectButton = null;
@@ -15,6 +24,7 @@ public class State_PhotoMode : GameState
     [SerializeField] private Button screenshotButton = null;
     [SerializeField] private GameObject screenshotButtonLabel = null;
     [SerializeField] private GameObject screenshotButtonImage = null;
+    [SerializeField] private LockedBar lockedBar = null;
 
     private static bool RewardLabelVisible
     {
@@ -49,6 +59,22 @@ public class State_PhotoMode : GameState
             else*/
             StartCoroutine(TakeScreenShot());
         });
+
+        lockedBar.cardButton.onClick.AddListener(() => gameManager.OpenPopup<Popup_RacerCardInfo>());
+
+
+        if (Profile.IsUnlockedRacer(GarageRacer.racer.Id))
+        {
+            lockedBar.showhide.Hide();
+        }
+        else
+        {
+            var config = RacerFactory.Racer.GetConfig(GarageRacer.racer.Id);
+            var racerprofile = Profile.GetRacer(config.Id);
+            lockedBar.descLabel.SetFormatedText(Mathf.Clamp(config.CardCount - (racerprofile != null ? racerprofile.cards : 0), 0, config.CardCount));
+            lockedBar.cardsCountLabel.SetFormatedText(racerprofile != null ? racerprofile.cards : 0, config.CardCount);
+            lockedBar.showhide.Show();
+        }
     }
 
     private void SetScreenshotButtonLabel(bool visible)

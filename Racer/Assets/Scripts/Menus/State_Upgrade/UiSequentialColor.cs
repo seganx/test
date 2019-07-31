@@ -12,10 +12,18 @@ public class UiSequentialColor : MonoBehaviour
 
     private MaskableGraphic[] graphics = null;
 
-    private IEnumerator Start()
+    private void Awake()
     {
-        graphics = objects.GetComponentsInChildren<MaskableGraphic>();
+        graphics = objects.GetComponentsInChildren<MaskableGraphic>();        
+    }
 
+    private void OnEnable()
+    {
+        StartCoroutine(Animate());
+    }
+
+    private IEnumerator Animate()
+    {
         var waitTime = new WaitForSeconds(interval);
         int index = 0;
         while (true)

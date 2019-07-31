@@ -168,6 +168,7 @@ public class ProfileLogic : MonoBehaviour
 
     private static void LoadFromLocal()
     {
+        Debug.Log("Loading Profile From Device ...");
         Profile.Data = PlayerPrefsEx.Deserialize("ProfileLogic.Data", new ProfileData());
         lastdata = PlayerPrefsEx.Deserialize("ProfileLogic.LastData", new ProfileData.NetData());
     }

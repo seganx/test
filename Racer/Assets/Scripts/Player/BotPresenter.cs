@@ -53,9 +53,12 @@ public class BotPresenter : Base
     ////////////////////////////////////////////////////////////////////////////////////
     //  STATIC MEMEBRS
     ////////////////////////////////////////////////////////////////////////////////////
-    private static int useNosChance = 0;
+    public static int currentCount = 0;
+    public static int useNosChance = 0;
     public static void InitializeBots(int count)
     {
+        currentCount = 0;
+
         if (count == PlayModel.maxPlayerCount - 1)
         {
             var powerDiff = Profile.Skill - Profile.CurrentRacerPower;
@@ -80,6 +83,7 @@ public class BotPresenter : Base
                 contactor.NosMaxDistanceOffset = 10;
             }
         }
+        currentCount = count;
     }
 
     private static RacerProfile CreateRandomRacerProfile()

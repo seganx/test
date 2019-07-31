@@ -60,6 +60,7 @@ public class RacerLevelData
 [System.Serializable]
 public class RacerProfile
 {
+    public int ver = 0; // Depricated! remove this for next update
     public int id = 0;
     public int cards = 0;
     public byte unlock = 0;

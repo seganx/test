@@ -20,6 +20,12 @@ public static class RewardLogic
 
     private static List<int> chances = new List<int>(100);
 
+    public static bool IsFirstRace
+    {
+        get { return PlayerPrefs.GetInt("RewardLogic.IsFirstRace", 0) > 0; }
+        set { PlayerPrefs.SetInt("RewardLogic.IsFirstRace", value ? 1 : 0); }
+    }
+
     public static RaceReward GetRaceReward(int racerCardChance, int customeChance, int gemChance, int gems)
     {
         // select reward by chance

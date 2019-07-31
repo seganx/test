@@ -107,12 +107,17 @@ namespace SeganX
 
         public static T Deserialize<T>(string key, T defaultValue)
         {
-            byte[] data = LoadData(EncryptString(key) + ".seganx");
+            var filename = EncryptString(key) + ".seganx";
+            Debug.Log("Deserialize : Try to loading data fram " + filename);
+            byte[] data = LoadData(filename);
             if (data != null && data.Length > 0)
             {
+                Debug.Log("Deserialize : Data loaded " + data.Length + " size");
                 string json = System.Text.Encoding.UTF8.GetString(Decrypt(data, Core.CryptoKey));
+                Debug.Log("Deserialize : Json Decrypted " + json);
                 return JsonUtility.FromJson<T>(json);
             }
+            Debug.Log("Deserialize : File not found for " + filename);
             return DeserializeBinary(key, defaultValue);
         }
 
@@ -126,17 +131,24 @@ namespace SeganX
 
         public static T DeserializeBinary<T>(string key, T defaultValue)
         {
+            var filename = key + ".seganx";
+            Debug.Log("DeserializeBinary : Try to loading data fram " + filename);
             byte[] data = LoadData(key + ".seganx");
             if (data != null && data.Length > 0)
             {
+                Debug.Log("DeserializeBinary : Data loaded " + data.Length + " size");
                 try
                 {
                     MemoryStream stream = new MemoryStream(Decrypt(data, Core.CryptoKey));
                     BinaryFormatter fmter = new BinaryFormatter();
                     return (T)fmter.Deserialize(stream);
                 }
-                catch { }
+                catch (System.Exception e)
+                {
+                    Debug.LogWarning("DeserializeBinary: " + e.Message);
+                }
             }
+            Debug.Log("DeserializeBinary : File not found for " + filename);
             return defaultValue;
         }
 

@@ -25,6 +25,17 @@ public class Popup_RaceResult : GameState
     {
         playerCurPosition = PlayerPresenter.local.player.CurrPosition;
 
+#if DATABEEN
+        if (RewardLogic.IsFirstRace)
+        {
+            RewardLogic.IsFirstRace = false;
+            DataBeen.SendCustomEventData("first_race", new DataBeenConnection.CustomEventInfo[] {
+                new DataBeenConnection.CustomEventInfo() { key = "result " + BotPresenter.currentCount + " bot", value = playerCurPosition.ToString() },
+            });
+        }
+
+#endif
+
         //  update player score
         if (PlayModel.OfflineMode == false)
         {
@@ -37,7 +48,7 @@ public class Popup_RaceResult : GameState
             Profile.Skill += 2 * PlayModel.maxPlayerCount - 4 * playerCurPosition;
         }
         else Profile.Skill += 2 * PlayModel.maxPlayerCount - 4 * playerCurPosition;
-        
+
 
         nextButton.onClick.AddListener(() =>
         {

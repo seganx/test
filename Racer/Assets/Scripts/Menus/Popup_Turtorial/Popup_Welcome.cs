@@ -14,6 +14,7 @@ public class Popup_Welcome : GameState
     private IEnumerator Start()
     {
         Profile.IsFirstSession = true;
+        RewardLogic.IsFirstRace = true;
         UiShowHide.ShowAll(transform);
         nextButton.gameObject.SetActive(false);
         yield return new WaitWhile(() => CameraFX_Optimizer.IsRunning);
@@ -40,6 +41,7 @@ public class Popup_Welcome : GameState
 
         var racerconfig = RacerFactory.Racer.GetConfig(preset.racerId);
         Profile.AddRacerCard(preset.racerId, racerconfig.CardCount);
+        Profile.UnlockRacer(preset.racerId);
         Popup_Rewards.AddRacerCard(preset.racerId, racerconfig.CardCount);
         Profile.SelectedRacer = preset.racerId;
 

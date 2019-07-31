@@ -254,6 +254,16 @@ public static class MonoEx
         return (self == null) ? null : self.Replace('ي', 'ی');
     }
 
+    public static bool IsLetterOrDigit(this string self)
+    {
+        if (self == null || self.Length < 1) return false;
+        for (int i = 0; i < self.Length; i++)
+            if (char.IsLetterOrDigit(self[i]) == false)
+                return false;
+        return true;
+    }
+
+
     public static string Persian(this string self, bool force = true)
     {
         if (!force && !self.IsRtl())
