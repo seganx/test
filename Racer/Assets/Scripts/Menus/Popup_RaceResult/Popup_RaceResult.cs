@@ -65,12 +65,12 @@ public class Popup_RaceResult : GameState
                 Profile.EarnResouce(raceReward.gem, 0);
                 Popup_Rewards.AddResource(raceReward.gem, 0);
             }
-            else if (raceReward.racerId > 0)
+            if (raceReward.racerId > 0)
             {
                 Profile.AddRacerCard(raceReward.racerId, 1);
                 Popup_Rewards.AddRacerCard(raceReward.racerId, 1);
             }
-            else if (raceReward.custome != null)
+            if (raceReward.custome != null)
             {
                 Profile.AddRacerCustome(raceReward.custome.type, raceReward.custome.racerId, raceReward.custome.customId);
                 Popup_Rewards.AddCustomeCard(raceReward.custome.type, raceReward.custome.racerId, raceReward.custome.customId);
