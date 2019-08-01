@@ -18,7 +18,7 @@ public static class RewardLogic
         public RacerCustomReward custome = null;
     }
 
-    private static List<int> chances = new List<int>(100);
+    //private static List<int> chances = new List<int>(100);
 
     public static bool IsFirstRace
     {
@@ -28,6 +28,15 @@ public static class RewardLogic
 
     public static RaceReward GetRaceReward(int racerCardChance, int customeChance, int gemChance, int gems)
     {
+        var res = new RaceReward();
+        if (Random.Range(0, 100) < gemChance)
+            res.gem = gems;
+        if (Random.Range(0, 100) < racerCardChance)
+            res.racerId = SelectRacerReward();
+        if (Random.Range(0, 100) < customeChance)
+            res.custome = GetCustomReward();
+
+        /*
         // select reward by chance
         chances.Clear();
         var nullchance = 100 - (racerCardChance + customeChance + gemChance);
@@ -47,7 +56,7 @@ public static class RewardLogic
             case 1: res.racerId = SelectRacerReward(); break;
             case 2: res.custome = GetCustomReward(); break;
             case 3: res.gem = gems; break;
-        }
+        }*/
         return res;
     }
 
