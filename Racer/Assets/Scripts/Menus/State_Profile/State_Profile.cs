@@ -72,7 +72,8 @@ public class State_Profile : GameState
         }
     }
 
-    private void OnSendNickname()
+    [Console("profile", "sendname")]
+    public void OnSendNickname()
     {
         var nickname = nicknameInput.text.Trim().CleanFromCode().CleanForPersian();
         if (nickname.HasContent(3))

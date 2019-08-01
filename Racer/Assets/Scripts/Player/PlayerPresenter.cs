@@ -124,8 +124,11 @@ public abstract class PlayerPresenter : Base
         if (currGrade != Grade)
         {
             currGrade = Mathf.MoveTowards(currGrade, Grade, Time.deltaTime * changeGradeSpeed);
-            if (currGrade == Grade)
+            if (Mathf.Approximately(currGrade, Grade))
+            {
+                currGrade = Grade;
                 BroadcastMessage("StopNitors", SendMessageOptions.DontRequireReceiver);
+            }
         }
         UpdateForwardPosition();
         UpdateSteeringPosition();
@@ -144,7 +147,7 @@ public abstract class PlayerPresenter : Base
 
         allPlayers.Sort((x, y) => y.CurrGrade - x.CurrGrade);
         int index = allPlayers.FindIndex(x => x.CurrGrade == grade);
-        if (index < 1) return grade++;
+        if (index < 1) return grade + 1;
 
         var nextgrade = allPlayers[index - 1].CurrGrade;
         if (Mathf.Abs(nextgrade - grade) == 1)

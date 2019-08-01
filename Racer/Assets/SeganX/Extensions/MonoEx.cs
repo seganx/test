@@ -258,7 +258,7 @@ public static class MonoEx
     {
         if (self == null || self.Length < 1) return false;
         for (int i = 0; i < self.Length; i++)
-            if (char.IsLetterOrDigit(self[i]) == false)
+            if (char.IsLetterOrDigit(self[i]) == false || char.IsSymbol(self[i]) || char.IsControl(self[i]))
                 return false;
         return true;
     }
