@@ -102,9 +102,9 @@ public class PlayerPresenterOnline : PlayerPresenter
 
     public override void SetGrade(int grade, bool dontBlend = false)
     {
-        if (grade != Grade && ValidateGrade(this, grade))
+        if (grade > Grade)
         {
-            rpcSetGrade[0] = grade;
+            rpcSetGrade[0] = Grade;
             photonView.RPC("NetMasterSetGrade", PhotonTargets.MasterClient, rpcSetGrade);
         }
     }
@@ -114,7 +114,7 @@ public class PlayerPresenterOnline : PlayerPresenter
     {
         if (PhotonNetwork.isMasterClient)
         {
-            rpcSetGrade[0] = grade > Grade ? FindNextFreeGrade(grade) : FindPrevFreeGrade(grade);
+            rpcSetGrade[0] = FindNextFreeGrade(grade);
             photonView.RPC("NetSetGrade", PhotonTargets.All, rpcSetGrade);
         }
     }

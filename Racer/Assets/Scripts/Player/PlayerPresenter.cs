@@ -140,25 +140,20 @@ public abstract class PlayerPresenter : Base
 
     public static int FindNextFreeGrade(int grade)
     {
-        if (all.Count < 2) return grade;
-        if (all.Exists(x => x.Grade == grade))
-            return FindNextFreeGrade(grade + 1);
-        return grade;
-    }
+        if (allPlayers.Count < 2) return grade + 1;
 
-    public static int FindPrevFreeGrade(int grade)
-    {
-        if (all.Count < 2) return grade;
-        if (all.Exists(x => x.Grade == grade))
-            return FindPrevFreeGrade(grade - 1);
-        return grade;
-    }
+        allPlayers.Sort((x, y) => y.CurrGrade - x.CurrGrade);
+        int index = allPlayers.FindIndex(x => x.CurrGrade == grade);
+        if (index < 1) return grade++;
 
-    public static bool ValidateGrade(PlayerPresenter player, int grade)
-    {
-        if (grade > player.Grade) return true;
-        int mingrade = all.FindMin(x => x == player ? 999 : x.Grade).Grade - 2;
-        return grade >= mingrade;
+        var nextgrade = allPlayers[index - 1].CurrGrade;
+        if (Mathf.Abs(nextgrade - grade) == 1)
+        {
+            while (allPlayers.Exists(x => x.CurrGrade == grade))
+                grade++;
+            return grade;
+        }
+        else return nextgrade - 1;
     }
 
     private static void UpdatePositons()
