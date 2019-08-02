@@ -72,13 +72,12 @@ public class State_Profile : GameState
         }
     }
 
-    [Console("profile", "sendname")]
     public void OnSendNickname()
     {
         var nickname = nicknameInput.text.Trim().CleanFromCode().CleanForPersian();
         if (nickname.HasContent(3))
         {
-            if (BadWordsFinder.HasBadWord(nickname) == false || nickname.IsLetterOrDigit() == false)
+            if (nickname.IsLetterOrDigit() && BadWordsFinder.HasBadWord(nickname) == false)
             {
                 Popup_Loading.Display();
                 Network.SendNickname(nickname, msg =>
@@ -94,5 +93,12 @@ public class State_Profile : GameState
             }
             else gameManager.OpenPopup<Popup_Confirm>().Setup(111121, false, null);
         }
+    }
+
+    [Console("profile", "sendname")]
+    public static void SendNickname()
+    {
+        if (gameManager.CurrentState is State_Profile)
+            gameManager.CurrentState.As<State_Profile>().OnSendNickname();
     }
 }

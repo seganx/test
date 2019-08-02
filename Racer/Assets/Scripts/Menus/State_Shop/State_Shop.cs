@@ -19,6 +19,7 @@ public class State_Shop : GameState
 
     private void Start()
     {
+        UiHeader.Show();
         Popup_Loading.Display();
         ProfileLogic.SyncWidthServer(false, success =>
         {
