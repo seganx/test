@@ -8,6 +8,7 @@ public class BotPresenter : Base
     private PlayerPresenterOnline player = null;
 
     private int defaultSteering = 1;
+    private float nosTimer = 0;
     private bool CanControl { get { return player.player.IsPlayer || PlayNetwork.IsMaster; } }
 
     private IEnumerator Start()
@@ -39,8 +40,15 @@ public class BotPresenter : Base
         else
             player.SteeringValue = Mathf.MoveTowards(player.SteeringValue, 0, Time.deltaTime * 2);
 
-        if (player.NitrosReady) // && Random.Range(0, 100) < useNosChance) //Random.Range(0, 100) < GlobalConfig.Race.bots.useNitroChance)
-            player.UseNitrous();
+        if (player.NitrosReady)
+        {
+            nosTimer += Time.fixedDeltaTime;
+            if (nosTimer >= 1)
+            {
+                nosTimer = 0;
+                player.UseNitrous();
+            }
+        }
     }
 
     private bool WatchOut(bool right)
