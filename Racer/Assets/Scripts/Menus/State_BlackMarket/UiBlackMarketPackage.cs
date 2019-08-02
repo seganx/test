@@ -113,30 +113,38 @@ public class UiBlackMarketPackage : MonoBehaviour
         PlayerPrefsEx.SerializeBinary("UiBlackMarketPackage", packages);
     }
 
-    private static RacerConfig SelectRacer()
+    private static int SelectRandomRacerId(int index)
     {
-        int count = RacerFactory.Racer.AllConfigs.Count;
-        int center = RewardLogic.FindSelectRacerCenter();
-        int radius = GlobalConfig.Probabilities.backmarketRacerRadius;
-        var config = RacerFactory.Racer.AllConfigs[RewardLogic.SelectProbability(count, center, radius)];
-        if (PackageExist(config.Id)) config = RacerFactory.Racer.AllConfigs[RewardLogic.SelectProbability(count, center, radius)];
-        if (PackageExist(config.Id)) config = RacerFactory.Racer.AllConfigs[RewardLogic.SelectProbability(count, center, radius)];
-        if (PackageExist(config.Id)) config = RacerFactory.Racer.AllConfigs[RewardLogic.SelectProbability(count, center, radius)];
-        if (PackageExist(config.Id)) config = RacerFactory.Racer.AllConfigs[RewardLogic.SelectProbability(count, center, radius)];
-        if (PackageExist(config.Id)) config = RacerFactory.Racer.AllConfigs[RewardLogic.SelectProbability(count, center, radius)];
-        return config;
+        int radius = GlobalConfig.Probabilities.blackmarketRacerRadius;
+        int center = RewardLogic.FindSelectRacerCenter() + index * (radius + 3);
+        int count = center + radius;
+        var configindex = RewardLogic.SelectProbability(count, center, radius);
+        if (configindex < 0 || configindex >= RacerFactory.Racer.AllConfigs.Count) return 0;
+        var config = RacerFactory.Racer.AllConfigs[configindex];
+        if (PackageExist(config.Id) || Profile.IsUnlockedRacer(config.Id)) return 0;
+        return config.Id;
+    }
+
+    private static RacerConfig SelectRacer(int index)
+    {
+        var id = SelectRandomRacerId(index);
+        if (id == 0) id = SelectRandomRacerId(index);
+        if (id == 0) id = SelectRandomRacerId(index);
+        if (id == 0) id = SelectRandomRacerId(index);
+        if (id == 0) id = SelectRandomRacerId(index);
+        if (id == 0) id = SelectRandomRacerId(index);
+        if (id == 0) id = SelectRandomRacerId(index);
+        return RacerFactory.Racer.GetConfig(id);
     }
 
     public static void CreatePackages()
     {
         packages = new List<Package>(GlobalConfig.Shop.blackMarketPackages.Count);
-        foreach (var item in GlobalConfig.Shop.blackMarketPackages)
+        for (int i = 0; i < GlobalConfig.Shop.blackMarketPackages.Count; i++)
         {
-            var config = SelectRacer();
-            if (Profile.IsUnlockedRacer(config.Id)) config = SelectRacer();
-            if (Profile.IsUnlockedRacer(config.Id)) config = SelectRacer();
-            if (Profile.IsUnlockedRacer(config.Id)) config = SelectRacer();
-            if (Profile.IsUnlockedRacer(config.Id)) config = SelectRacer();
+            var item = GlobalConfig.Shop.blackMarketPackages[i];
+            var config = SelectRacer(i);
+            if (config == null) continue;
 
             var newpack = new Package();
             newpack.racerId = config.Id;

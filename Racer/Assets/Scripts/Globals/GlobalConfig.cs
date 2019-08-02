@@ -244,7 +244,7 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
         public class Probabilities
         {
             public int rewardRacerRadius = 3;
-            public int backmarketRacerRadius = 5;
+            public int blackmarketRacerRadius = 5;
             public int shopSpecialRacerRadius = 4;
         }
 
