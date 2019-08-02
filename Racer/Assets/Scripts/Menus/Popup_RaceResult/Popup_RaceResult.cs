@@ -56,25 +56,27 @@ public class Popup_RaceResult : GameState
 
             var rewardsList = PlayModel.OfflineMode ? GlobalConfig.Race.rewardsOffline : GlobalConfig.Race.rewardsOnline;
             var preward = rewardsList[Mathf.Clamp(playerCurPosition, 0, rewardsList.Count - 1)];
-            Profile.EarnResouce(0, preward.coins);
-            Popup_Rewards.AddResource(0, preward.coins);
 
             var raceReward = RewardLogic.GetRaceReward(preward.racerCardChance, preward.customeChance, preward.gemChance, preward.gems);
-            if (raceReward.gem > 0)
+            if (raceReward.custome != null)
             {
-                Profile.EarnResouce(raceReward.gem, 0);
-                Popup_Rewards.AddResource(raceReward.gem, 0);
+                Profile.AddRacerCustome(raceReward.custome.type, raceReward.custome.racerId, raceReward.custome.customId);
+                Popup_Rewards.AddCustomeCard(raceReward.custome.type, raceReward.custome.racerId, raceReward.custome.customId);
             }
             if (raceReward.racerId > 0)
             {
                 Profile.AddRacerCard(raceReward.racerId, 1);
                 Popup_Rewards.AddRacerCard(raceReward.racerId, 1);
             }
-            if (raceReward.custome != null)
+            if (raceReward.gem > 0)
             {
-                Profile.AddRacerCustome(raceReward.custome.type, raceReward.custome.racerId, raceReward.custome.customId);
-                Popup_Rewards.AddCustomeCard(raceReward.custome.type, raceReward.custome.racerId, raceReward.custome.customId);
+                Profile.EarnResouce(raceReward.gem, 0);
+                Popup_Rewards.AddResource(raceReward.gem, 0);
             }
+
+            Profile.EarnResouce(0, preward.coins);
+            Popup_Rewards.AddResource(0, preward.coins);
+
             Popup_Rewards.Display(onNextTask).DisplayRacerReward(rewardsList[0].coins, rewardsList[1].coins, rewardsList[2].coins, rewardsList[3].coins);
         });
 

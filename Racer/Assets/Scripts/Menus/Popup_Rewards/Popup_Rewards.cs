@@ -9,8 +9,9 @@ public class Popup_Rewards : GameState
     [SerializeField] private GameObject titleReward = null;
     [SerializeField] private LocalText titleRaceReward = null;
     [SerializeField] private LocalText titlePurchaseReward = null;
-    [SerializeField] private UiRewardItemResource gemItem = null;
-    [SerializeField] private UiRewardItemResource coinItem = null;
+    [SerializeField] private Transform rewardContent = null;
+    [SerializeField] private UiRewardItemResource gemPrefab = null;
+    [SerializeField] private UiRewardItemResource coinPrefab = null;
     [SerializeField] private UiRewardRacerCard racerCardPrefab = null;
     [SerializeField] private UiRewardCustomeCard racerCustomePrefab = null;
 
@@ -22,15 +23,29 @@ public class Popup_Rewards : GameState
         titleReward.gameObject.SetActive(true);
         titleRaceReward.gameObject.SetActive(false);
         titlePurchaseReward.gameObject.SetActive(false);
-        gemItem.gameObject.SetActive(false);
-        coinItem.gameObject.SetActive(false);
-        racerCardPrefab.gameObject.SetActive(false);
-        racerCustomePrefab.gameObject.SetActive(false);
+
+        for (int i = 0; i < rewardContent.childCount; i++)
+            rewardContent.GetChild(i).gameObject.SetActive(false);
     }
 
-    private void Start()
+    private IEnumerator Start()
     {
+        for (int i = 0; i < rewardContent.childCount; i++)
+            rewardContent.GetChild(i).gameObject.SetActive(false);
+
         UiShowHide.ShowAll(transform);
+
+        var waitTime = new WaitForSeconds(0.5f);
+        for (int i = 0; i < rewardContent.childCount; i++)
+        {
+            var item = rewardContent.GetChild(i);
+            if (gemPrefab && gemPrefab.transform == item) continue;
+            if (coinPrefab && coinPrefab.transform == item) continue;
+            if (racerCardPrefab && racerCardPrefab.transform == item) continue;
+            if (racerCustomePrefab && racerCustomePrefab.transform == item) continue;
+            yield return waitTime;
+            item.gameObject.SetActive(true);
+        }
     }
 
     public override void Back()
@@ -47,25 +62,25 @@ public class Popup_Rewards : GameState
 
     private Popup_Rewards DisplayGems(int value)
     {
-        DelayCall(delayitem += 0.5f, () => gemItem.Setup(value).gameObject.SetActive(true));
+        gemPrefab.Clone<UiRewardItemResource>().Setup(value).transform.SetAsLastSibling();
         return this;
     }
 
     private Popup_Rewards DisplayCoins(int value)
     {
-        DelayCall(delayitem += 1.0f, () => coinItem.Setup(value).gameObject.SetActive(true));
+        coinPrefab.Clone<UiRewardItemResource>().Setup(value).transform.SetAsLastSibling();
         return this;
     }
 
     private Popup_Rewards DisplayRacerCard(int racerId, int count)
     {
-        DelayCall(delayitem += 0.75f, () => racerCardPrefab.Clone<UiRewardRacerCard>().Setup(racerId, count).gameObject.SetActive(true));
+        racerCardPrefab.Clone<UiRewardRacerCard>().Setup(racerId, count).transform.SetAsLastSibling();
         return this;
     }
 
     private Popup_Rewards DisplayAddCustomeCard(RacerCustomeType type, int racerId, int customeId)
     {
-        DelayCall(delayitem += 0.75f, () => racerCustomePrefab.Clone<UiRewardCustomeCard>().Setup(type, racerId, customeId).gameObject.SetActive(true));
+        racerCustomePrefab.Clone<UiRewardCustomeCard>().Setup(type, racerId, customeId).transform.SetAsLastSibling();
         return this;
     }
 

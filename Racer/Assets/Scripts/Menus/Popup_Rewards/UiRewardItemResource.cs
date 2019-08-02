@@ -13,7 +13,6 @@ public class UiRewardItemResource : MonoBehaviour
     {
         value = resouce;
         resourceLabel.SetText("0");
-        transform.SetAsLastSibling();
         return this;
     }
 
