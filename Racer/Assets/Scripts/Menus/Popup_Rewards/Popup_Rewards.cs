@@ -16,7 +16,6 @@ public class Popup_Rewards : GameState
     [SerializeField] private UiRewardCustomeCard racerCustomePrefab = null;
 
     private System.Action onNextTaskFunc = null;
-    private float delayitem = 0;
 
     private void Awake()
     {
@@ -151,6 +150,7 @@ public class Popup_Rewards : GameState
             if (item.gems > 0) page.DisplayGems(item.gems);
             if (item.coins > 0) page.DisplayCoins(item.coins);
         }
+
         rewards.Clear();
         return page;
     }
