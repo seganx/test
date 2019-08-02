@@ -129,12 +129,12 @@ public class Popup_Rewards : GameState
         var page = gameManager.OpenPopup<Popup_Rewards>().SetCallback(onNextTask);
         foreach (var item in rewards)
         {
-            if (item.gems > 0) page.DisplayGems(item.gems);
-            if (item.coins > 0) page.DisplayCoins(item.coins);
+            if (item.racerid > 0 && item.count > 0)
+                page.DisplayRacerCard(item.racerid, item.count);
             if (item.customeType != RacerCustomeType.None)
                 page.DisplayAddCustomeCard(item.customeType, item.racerid, item.customid);
-            else if (item.racerid > 0 && item.count > 0)
-                page.DisplayRacerCard(item.racerid, item.count);
+            if (item.gems > 0) page.DisplayGems(item.gems);
+            if (item.coins > 0) page.DisplayCoins(item.coins);
         }
         rewards.Clear();
         return page;

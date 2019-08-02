@@ -80,7 +80,11 @@ public static class RewardLogic
 
     public static RacerCustomReward GetCustomReward(int racerId = 0)
     {
-        if (racerId < 1) racerId = Profile.Data.racers.RandomOne().id;
+        if (racerId < 1)
+        {
+            var config = RacerFactory.Racer.AllConfigs.FindAll(x => Profile.IsUnlockedRacer(x.Id)).RandomOne();
+            racerId = config != null ? config.Id : Profile.SelectedRacer;
+        }
 
         switch (Random.Range(0, 100) % 5)
         {
