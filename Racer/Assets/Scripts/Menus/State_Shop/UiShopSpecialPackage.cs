@@ -89,14 +89,10 @@ public class UiShopSpecialPackage : MonoBehaviour
         {
             if (GetRacerId(i) != 0) continue;
             var racerId = SelectRandomRacerId(i);
-            if (racerId == 0) continue;
-            if (IsIdExist(racerId)) racerId = SelectRandomRacerId(i);
-            if (racerId == 0) continue;
-            if (IsIdExist(racerId)) racerId = SelectRandomRacerId(i);
-            if (racerId == 0) continue;
-            if (IsIdExist(racerId)) racerId = SelectRandomRacerId(i);
-            if (racerId == 0) continue;
-            if (IsIdExist(racerId)) continue;
+            if (racerId == 0 || IsIdExist(racerId)) racerId = SelectRandomRacerId(i);
+            if (racerId == 0 || IsIdExist(racerId)) racerId = SelectRandomRacerId(i);
+            if (racerId == 0 || IsIdExist(racerId)) racerId = SelectRandomRacerId(i);
+            if (racerId == 0 || IsIdExist(racerId)) continue;
             SetRacerId(i, racerId);
         }
     }
