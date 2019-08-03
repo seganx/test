@@ -37,7 +37,7 @@ public class State_PhotoMode : GameState
         UiHeader.Hide();
         GarageCamera.SetCameraId(0);
         GarageRacer.SetRacerWheelsSpeed(0.02f);
-        GarageRacer.SetRacerWheelsAngle(-30);
+        GarageRacer.SetRacerWheelsAngle(30);
         UiShowHide.ShowAll(transform);
 
         if (CameraFX.Activated)

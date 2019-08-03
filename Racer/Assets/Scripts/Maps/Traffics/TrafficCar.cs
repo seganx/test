@@ -23,7 +23,7 @@ public class TrafficCar : MonoBehaviour
         pos = PlayerPresenter.local.ForwardValue + GlobalConfig.Race.traffics.startDistance + distanceVariance;
         nights.SetActive(false);
 
-        var carcolor = Color.HSVToRGB(color / 1000.0f, 1, 0.5f);
+        var carcolor = Color.HSVToRGB(color / 1000.0f, 0.7f, 0.7f);
         meshes.Clear();
         transform.GetComponentsInChildren(true, meshes);
         foreach (var item in meshes)
