@@ -13,6 +13,7 @@
         [Header(Material id 1)]
         _DiffColor1("1: Diffuse Color (alpha x vertex.color)", Color) = (1,1,1,1)
         _VinylColor("1: Vinyl Color", Color) = (1,1,1,1)
+        _GlossColor("Gloss Color", Color) = (1,1,1,1)
         _Reflection1("1: Reflection", Range(0, 1)) = 0.5
         [Space]
         _SpecularAtten1("1: Specular", Range(0, 2)) = 0.75
@@ -34,6 +35,8 @@
         _SpecularAtten3("3: Specular", Range(0, 2)) = 0.5
         _SpecularPower3("3: Specular Power", Range(5, 200)) = 50
         _MetalPower3("3: MetalPower", Range(0, 2)) = 1.5
+        
+            
     }
 
         SubShader
@@ -102,6 +105,7 @@
 
 
                 fixed4 _VinylColor;
+                fixed4 _GlossColor;
                 fixed4 _DiffColor1;
                 fixed4 _DiffColor3;
                 fixed4 _DiffColor2;
@@ -146,26 +150,34 @@
                     }
 
                     half3 viewDir = normalize(UnityWorldSpaceViewDir(i.wrl));
+                    float refresnel = 0.27f + 1 - dot(viewDir, i.norm);
                     if (matId == 1)
                     {
                         if (_Reflection1 > 0.001f)
                         {
+                            float totalcolor = _DiffColor1.r + _DiffColor1.g + _DiffColor1.b;
+                            float corrector = 1 - totalcolor / 7;
+
                             float cube = UNITY_SAMPLE_TEXCUBE(unity_SpecCube0, reflect(-viewDir, i.norm)).r;
                             cube *= cube;
-                            res.a = max(res.a, cube * (1 - (res.r + res.g + res.b) / 7));
-                            res.rgb += cube * _Reflection1;
+                            res.a = max(res.a, cube * corrector * refresnel);
+                            res.rgb += refresnel * cube * _Reflection1;
                         }
 
                         if (_SpecularAtten1 > 0.01f)
                         {
-                            float spec = pow(max(0, dot(i.norm, normalize(lightDir + viewDir))), _SpecularPower1) * _SpecularAtten1;
-                            res.rgb = lerp(res.rgb, _LightColor0.rgb, spec);
-                            res.a = max(res.a, pow(spec, 10) * 5);
+                            float spec = max(0, dot(i.norm, normalize(lightDir + viewDir)));
+
+                            if (_MetalPower1 > 0.01f)
+                                res.rgb += _GlossColor.rgb * pow(spec, 10) * _SpecularAtten1;
+
+                            res.rgb = lerp(res.rgb, _LightColor0.rgb, pow(spec, _SpecularPower1 * 2) * _SpecularAtten1);
+                            res.a = max(res.a, pow(spec, _SpecularPower1 * 80) * 8);
 
                             if (_MetalPower1 > 0.01f)
                             {
                                 fixed metal = tex2D(_MetalTex, i.uv2).a;
-                                res.rgb += pow(spec, 0.6f) * _LightColor0.rgb * metal * _MetalPower1;
+                                res.rgb += pow(spec, 30) * _LightColor0.rgb * metal *_MetalPower1;
                             }
                         }
                     }

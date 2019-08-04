@@ -19,6 +19,15 @@ public class ColorPaletteEditor : Editor
             list.Add(new ColorPalette.GameColor() { id = maxid, color = Color.white });
         }
 
+        cp.glossCurve = EditorGUILayout.CurveField("Gloss color H curve", cp.glossCurve);        
+
+        if (GUILayout.Button("Compute all glosses"))
+        {
+            foreach (var item in list)
+                item.gloss = ColorPalette.ComputeGloss(item.color, cp.glossCurve);
+        }
+
+
         for (int i = 0; i < list.Count; i++)
         {
             var item = list[i];
@@ -35,7 +44,16 @@ public class ColorPaletteEditor : Editor
                     item.id = newid;
             }
 
-            item.color = EditorGUILayout.ColorField(item.color);
+            var newcolor = EditorGUILayout.ColorField(item.color);
+            if (item.color != newcolor)
+            {
+                item.color = newcolor;
+                item.gloss = ColorPalette.ComputeGloss(newcolor, cp.glossCurve);
+            }
+
+            item.gloss = EditorGUILayout.ColorField(item.gloss);
+
+
             if (GUILayout.Button("X", GUILayout.Width(EditorGUIUtility.singleLineHeight * 1.2f)))
             {
                 list.RemoveAt(i--);

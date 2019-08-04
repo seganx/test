@@ -227,6 +227,7 @@ public static class RacerFactory
         public static void SetDiffuseColor(int id, Material dest, int matId, bool alpha)
         {
             RacerMaterial.SetDiffuseColor(dest, matId, Palette.GetColorById(id), alpha);
+            RacerMaterial.SetGlossColor(dest, Palette.GetGlossById(id));
         }
 
         public static Color GetById(int id)

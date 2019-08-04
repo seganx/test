@@ -61,4 +61,12 @@ public static class RacerMaterial
         if (dest.HasProperty("_VinylColor"))
             dest.SetColor("_VinylColor", color);
     }
+
+    public static void SetGlossColor(Material dest, Color color)
+    {
+        if (dest.HasProperty("_GlossColor"))
+            dest.SetColor("_GlossColor", color);
+    }
+
 }
+
