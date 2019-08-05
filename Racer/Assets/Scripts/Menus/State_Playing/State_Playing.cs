@@ -11,9 +11,6 @@ public class State_Playing : GameState
     [SerializeField] private AudioSource[] timerAudios = null;
 
     private float forwardSpeedDelta = 0;
-    private float maxForwardSpeed = 0;
-    private float currForwardSpeed = 0;
-    private float currForwardPosition = 100;
     private bool allowUserHandle = true;
     private int timerAudioPlayed = -1;
     private bool isGamePaused = false;
@@ -23,8 +20,7 @@ public class State_Playing : GameState
     {
         UiShowHide.ShowAll(transform);
         gameManager.OpenPopup<Popup_PlayingCountDown>();
-        maxForwardSpeed = PlayModel.maxForwardSpeed;
-        forwardSpeedDelta = maxForwardSpeed - PlayModel.minForwardSpeed;
+        forwardSpeedDelta = PlayModel.maxForwardSpeed - PlayModel.minForwardSpeed;
         DelayCall(0.1f, () =>
         {
             foreach (var player in PlayerPresenter.all)
@@ -34,29 +30,21 @@ public class State_Playing : GameState
 
     private void Update()
     {
-#if UNITY_EDITOR1
-        QualitySettings.vSyncCount = 0;  // VSync must be disabled
-        Application.targetFrameRate = Random.Range(10, 30);
-#endif
-
         if (PlayerPresenter.local == null || PlayNetwork.IsJoined == false) return;
 
         //  compute racers speed
         {
             float x = PlayNetwork.PlayTime / GlobalConfig.Race.maxTime;
             float y = Mathf.Clamp01(1 - Mathf.Pow(x - 1, 4));
-            currForwardSpeed = Mathf.Min(y * forwardSpeedDelta + PlayModel.minForwardSpeed, maxForwardSpeed);
-            currForwardPosition += currForwardSpeed * Time.deltaTime;
-            RacerCollisionContact.currSpeed = currForwardSpeed * 0.5f;
-            RoadSpeedPresenter.CurrentSpeed = currForwardSpeed;
+            PlayModel.CurrentPlaying.speed = Mathf.Min(y * forwardSpeedDelta + PlayModel.minForwardSpeed, PlayModel.maxForwardSpeed);
+            PlayModel.CurrentPlaying.forwardPosition += PlayModel.CurrentPlaying.speed * Time.deltaTime;
         }
 
-        foreach (var player in PlayerPresenter.all)
-            player.ForwardValue = currForwardPosition;
+        PlayModel.CurrentPlaying.playerForwardPosition = PlayerPresenter.local.transform.position.z;
 
         RacerCamera.offset.z = Mathf.Lerp(RacerCamera.offset.z, -cameraMode * 0.6f, Time.deltaTime * 3);
 
-        var remainedTime = Mathf.Max(0, PlayModel.maxGameTime - PlayNetwork.PlayTime);
+        var remainedTime = Mathf.Max(0, PlayModel.maxPlayTime - PlayNetwork.PlayTime);
         timeLabel.text = Utilities.TimeToString(remainedTime, 3);
 
         if (remainedTime < 11 && timerAudioPlayed != Mathf.FloorToInt(remainedTime))
@@ -94,7 +82,7 @@ public class State_Playing : GameState
 
             PlayerPresenter.local.Horn(InputManager.Horn.isPointerDown);
 
-            if (PlayNetwork.PlayTime > PlayModel.maxGameTime)
+            if (PlayNetwork.PlayTime > PlayModel.maxPlayTime)
             {
                 UiShowHide.HideAll(transform);
                 allowUserHandle = false;
@@ -148,8 +136,8 @@ public class State_Playing : GameState
     private void OnApplicationPause(bool pause)
     {
         if (pause)
-            isGamePaused = PlayNetwork.PlayTime < PlayModel.maxGameTime;
-        else if (isGamePaused && PlayNetwork.PlayTime > PlayModel.maxGameTime)
+            isGamePaused = PlayNetwork.PlayTime < PlayModel.maxPlayTime;
+        else if (isGamePaused && PlayNetwork.PlayTime > PlayModel.maxPlayTime)
             ExitToMainMenu();
     }
 }

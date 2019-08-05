@@ -77,10 +77,8 @@ public class State_Home : GameState
 
     private void StartOffline()
     {
-        PlayModel.OfflineMode = true;
-        PlayModel.eloScore = 0;
-        PlayModel.eloPower = 0;
-        PlayModel.selectedMapId = PlayModel.SelectRandomMap();
+        PlayModel.mode = PlayModel.Mode.Campain;
+        PlayModel.mapId = PlayModel.SelectRandomMap();
         PlayModel.maxPlayerCount = 4;
 
         gameManager.OpenState<State_FindOpponents>();

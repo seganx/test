@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class RacerCollisionContact : MonoBehaviour
 {
-    public static float currSpeed = 0;
-
     private PlayerPresenter player = null;
     private TrafficCar trafficCar = null;
     private float trafficDistance = float.MaxValue;
@@ -39,7 +37,7 @@ public class RacerCollisionContact : MonoBehaviour
 
         var rigid = other.transform.GetComponent<Rigidbody>();
         rigid.useGravity = true;
-        rigid.AddForceAtPosition(Vector3.forward * currSpeed * 1.5f + Vector3.up * 7, other.contacts[0].point, ForceMode.Impulse);
+        rigid.AddForceAtPosition(Vector3.forward * PlayModel.CurrentPlaying.speed * 0.75f + Vector3.up * 7, other.contacts[0].point, ForceMode.Impulse);
 
         other.transform.GetComponentInParent<TrafficCar>().Shoot();
     }

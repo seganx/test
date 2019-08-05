@@ -6,7 +6,7 @@ public class TrafficsGenerator : MonoBehaviour
 {
     private int lastline = 5;
 
-    private int currPosition { get { return Mathf.RoundToInt(PlayerPresenter.local.ForwardValue); } }
+    private int currPosition { get { return Mathf.RoundToInt(PlayModel.CurrentPlaying.playerForwardPosition); } }
 
     private void OnEnable()
     {
@@ -22,7 +22,7 @@ public class TrafficsGenerator : MonoBehaviour
     {
         yield return new WaitForSeconds(5);
 
-        var maxDistance = Mathf.RoundToInt(GlobalConfig.Race.traffics.baseDistance + GlobalConfig.Race.traffics.speedFactor * PlayModel.maxForwardSpeed);
+        var maxDistance = Mathf.RoundToInt(PlayModel.Traffic.baseDistance + PlayModel.Traffic.distanceRatio * PlayModel.maxForwardSpeed);
         var lastseed = currPosition / maxDistance;
         var waitTime = new WaitForSeconds(0.1f);
         while (true)

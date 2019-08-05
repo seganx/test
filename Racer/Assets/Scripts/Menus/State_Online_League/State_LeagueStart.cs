@@ -66,11 +66,14 @@ public class State_LeagueStart : GameState
 
     private void StartOnlineGame()
     {
-        PlayModel.OfflineMode = false;
-        PlayModel.eloScore = Profile.EloScore;
-        PlayModel.eloPower = Profile.CurrentRacerPower;
-        PlayModel.selectedMapId = PlayModel.SelectRandomMap();
-        PlayModel.maxPlayerCount = 4;
+        PlayNetwork.IsOffline = false;
+        PlayNetwork.EloScore = Profile.EloScore;
+        PlayNetwork.EloPower = Profile.CurrentRacerPower;
+        PlayNetwork.MapId = PlayModel.mapId = PlayModel.SelectRandomMap();
+        PlayNetwork.MaxPlayerCount = PlayModel.maxPlayerCount = 4;
+        PlayModel.maxPlayTime = GlobalConfig.Race.maxTime;
+        PlayModel.Traffic.baseDistance = GlobalConfig.Race.traffics.baseDistance;
+        PlayModel.Traffic.distanceRatio = GlobalConfig.Race.traffics.speedFactor;
         gameManager.OpenState<State_FindOpponents>();
     }
 

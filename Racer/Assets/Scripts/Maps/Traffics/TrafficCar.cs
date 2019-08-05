@@ -20,10 +20,10 @@ public class TrafficCar : MonoBehaviour
     {
         canMove = true;
         this.line = line;
-        pos = PlayerPresenter.local.ForwardValue + GlobalConfig.Race.traffics.startDistance + distanceVariance;
+        pos = PlayModel.CurrentPlaying.playerForwardPosition + GlobalConfig.Race.traffics.startDistance + distanceVariance;
         nights.SetActive(false);
 
-        var carcolor = Color.HSVToRGB(color / 1000.0f, 0.7f, 0.7f);
+        var carcolor = Color.HSVToRGB(color / 1000.0f, 0.65f, 0.75f);
         meshes.Clear();
         transform.GetComponentsInChildren(true, meshes);
         foreach (var item in meshes)
@@ -62,11 +62,8 @@ public class TrafficCar : MonoBehaviour
             transform.position = RoadPresenter.GetPositionByDistance(pos) + transform.right * line;
         }
 
-        if (PlayerPresenter.local != null)
-        {
-            var distance = PlayerPresenter.local.transform.position.z - body.position.z;
-            if (distance > 50) Destroy(gameObject);
-        }
+        var distance = PlayModel.CurrentPlaying.playerForwardPosition - body.position.z;
+        if (distance > 50) Destroy(gameObject);
     }
 
     private void Reset()

@@ -36,7 +36,7 @@ public class State_FindOpponents : GameState
         StartGame,
         OnNetworkError);
 
-        searchbar.SetActive(PlayModel.OfflineMode == false);
+        searchbar.SetActive(PlayModel.IsOnline);
         playersInfoBar.SetActive(false);
 
         playerData = new PlayerData(Profile.Name, Profile.Score, Profile.Position, Profile.CurrentRacer);
@@ -63,7 +63,7 @@ public class State_FindOpponents : GameState
             case State.Waiting:
                 {
                     waitTime += Time.deltaTime;
-                    if (PlayModel.OfflineMode || waitTime > GlobalConfig.MatchMaking.joinTimeout || PlayNetwork.PlayersCount == PlayModel.maxPlayerCount)
+                    if (PlayModel.IsOnline == false || waitTime > GlobalConfig.MatchMaking.joinTimeout || PlayNetwork.PlayersCount == PlayModel.maxPlayerCount)
                     {
                         if (waitFirst && WaitMore && PlayNetwork.PlayersCount < 2)
                         {
@@ -107,7 +107,7 @@ public class State_FindOpponents : GameState
     private void StartGame(double startTime)
     {
         StableRandom.Initialize(Mathf.RoundToInt((float)startTime));
-        Game.LoadMap(PlayNetwork.RoomMapId);
+        Game.LoadMap(PlayNetwork.MapId);
 
         PlayerPresenterOnline.CreateOnline(playerData, grade, false);
 
@@ -117,7 +117,7 @@ public class State_FindOpponents : GameState
         RacerCameraConfig.Instance.currentMode = RacerCamera.Mode.StickingFollower;
         state = State.Counting;
 
-        if (PlayModel.OfflineMode == false)
+        if (PlayModel.IsOnline)
         {
             Profile.Score -= 1;
             Network.SendScore(Profile.Score);
@@ -158,7 +158,6 @@ public class State_FindOpponents : GameState
     private void PlayGame()
     {
         state = State.Started;
-        PlayModel.maxGameTime = GlobalConfig.Race.maxTime;
         PlayModel.minForwardSpeed = GlobalConfig.Race.startSpeed;
         PlayModel.maxForwardSpeed = PlayerPresenterOnline.FindMaxGameSpeed();
         gameManager.OpenState<State_Playing>(true);

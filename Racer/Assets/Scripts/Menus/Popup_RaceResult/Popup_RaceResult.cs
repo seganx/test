@@ -37,7 +37,7 @@ public class Popup_RaceResult : GameState
 #endif
 
         //  update player score
-        if (PlayModel.OfflineMode == false)
+        if (PlayModel.IsOnline)
         {
             playerCurScore = Profile.Score + 1;
             playerCurLeague = Profile.League;
@@ -54,7 +54,7 @@ public class Popup_RaceResult : GameState
         {
             base.Back();
 
-            var rewardsList = PlayModel.OfflineMode ? GlobalConfig.Race.rewardsOffline : GlobalConfig.Race.rewardsOnline;
+            var rewardsList = PlayModel.IsOnline ? GlobalConfig.Race.rewardsOnline : GlobalConfig.Race.rewardsOffline;
             var preward = rewardsList[Mathf.Clamp(playerCurPosition, 0, rewardsList.Count - 1)];
 
             var raceReward = RewardLogic.GetRaceReward(preward.racerCardChance, preward.customeChance, preward.gemChance, preward.gems);
@@ -96,7 +96,7 @@ public class Popup_RaceResult : GameState
         }
         Destroy(prefabItem.gameObject);
 
-        if (PlayModel.OfflineMode)
+        if (PlayModel.IsOnline == false)
         {
             prevLeagueIcon.transform.parent.gameObject.SetActive(false);
             currLeagueIcon.transform.parent.gameObject.SetActive(false);

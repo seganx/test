@@ -35,28 +35,6 @@ public static class RewardLogic
             res.racerId = SelectRacerReward();
         if (Random.Range(0, 100) < customeChance)
             res.custome = GetCustomReward();
-
-        /*
-        // select reward by chance
-        chances.Clear();
-        var nullchance = 100 - (racerCardChance + customeChance + gemChance);
-        for (int i = 0; i < nullchance; i++)
-            chances.Add(0);
-        for (int i = 0; i < racerCardChance; i++)
-            chances.Add(1);
-        for (int i = 0; i < customeChance; i++)
-            chances.Add(2);
-        for (int i = 0; i < gemChance; i++)
-            chances.Add(3);
-
-        //  create reward
-        var res = new RaceReward();
-        switch (chances.RandomOne())
-        {
-            case 1: res.racerId = SelectRacerReward(); break;
-            case 2: res.custome = GetCustomReward(); break;
-            case 3: res.gem = gems; break;
-        }*/
         return res;
     }
 

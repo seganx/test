@@ -5,8 +5,6 @@ using UnityEngine;
 [DefaultExecutionOrder(3000)]
 public class RoadSpeedPresenter : MonoBehaviour
 {
-    public static float CurrentSpeed = 0;
-
     public Renderer roadRenderer = null;
 
     private void Reset()
@@ -22,7 +20,7 @@ public class RoadSpeedPresenter : MonoBehaviour
 
     private void Update()
     {
-        var speed = Mathf.Clamp01(CurrentSpeed / 100);
+        var speed = Mathf.Clamp01(PlayModel.CurrentPlaying.speed / 100);
         roadRenderer.material.SetFloat("_Speed", speed);
     }
 }

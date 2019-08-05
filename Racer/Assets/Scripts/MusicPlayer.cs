@@ -17,7 +17,7 @@ public class MusicPlayer : Base
         float delay = 0;
 
         if (!isMenuMusic)
-            delay = PlayModel.OfflineMode ? 10 : 3;
+            delay = 10;
 
         DelayCall(delay, () =>
         {

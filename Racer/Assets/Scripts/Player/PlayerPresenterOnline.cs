@@ -20,12 +20,14 @@ public class PlayerPresenterOnline : PlayerPresenter
     protected override void OnEnable()
     {
         base.OnEnable();
+        UiPlayingBoard.AddPlayer(player);
         PlayNetwork.OnEventCall += OnNetworkEvent;
     }
 
     protected override void OnDisable()
     {
         base.OnDisable();
+        UiPlayingBoard.RemovePlayer(player);
         PlayNetwork.OnEventCall -= OnNetworkEvent;
     }
 
@@ -56,7 +58,12 @@ public class PlayerPresenterOnline : PlayerPresenter
         base.SetGrade(playerGrade, true);
         if (photonView.isMine)
         {
-            if (PlayModel.OfflineMode)
+            if (PlayModel.IsOnline)
+            {
+                racer.boxCollider.isTrigger = !player.IsPlayer;
+                racer.boxCollider.gameObject.AddComponent<RacerCollisionContact>();
+            }
+            else
             {
                 racer.boxCollider.isTrigger = false;
                 racer.bodyTransform.gameObject.AddComponent<RacerCollisionContact>();
@@ -65,11 +72,6 @@ public class PlayerPresenterOnline : PlayerPresenter
                 rigid.useGravity = false;
                 rigid.constraints = RigidbodyConstraints.FreezeAll;
                 rigid.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
-            }
-            else
-            {
-                racer.boxCollider.isTrigger = !player.IsPlayer;
-                racer.boxCollider.gameObject.AddComponent<RacerCollisionContact>();
             }
         }
         else racer.boxCollider.isTrigger = true;
@@ -123,6 +125,7 @@ public class PlayerPresenterOnline : PlayerPresenter
     private void NetSetGrade(int grade)
     {
         base.SetGrade(grade);
+        UiPlayingBoard.UpdatePositions();
     }
 
     public override void Horn(bool play)
