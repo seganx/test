@@ -13,6 +13,7 @@ public class UiShopSpecialPackage : MonoBehaviour
     [SerializeField] private LocalText[] discountLabels = null;
     [SerializeField] private LocalText priceLabel = null;
     [SerializeField] private Button purchaseButton = null;
+    [SerializeField] private Image racerImage = null;
 
     private int packIndex = 0;
     private RacerConfig config = null;
