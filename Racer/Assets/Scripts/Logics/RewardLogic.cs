@@ -39,13 +39,18 @@ public static class RewardLogic
     }
 
     //! return the index of first locked racer in garage just front of unlocked one
-    public static int FindSelectRacerCenter(int playerIndex = 0)
+    public static int FindSelectRacerCenter()
     {
-        var playerselected = Profile.SelectedRacer > 0 ? Profile.SelectedRacer : 0;
-        var center = playerIndex == 0 ? RacerFactory.Racer.AllConfigs.FindIndex(x => x.Id == playerselected) : playerIndex;
-        for (int i = center + 1; i < RacerFactory.Racer.AllConfigs.Count && Profile.IsUnlockedRacer(RacerFactory.Racer.AllConfigs[i].Id); i++)
-            center = i;
-        return center;
+        bool lastunlocked = false;
+        var list = RacerFactory.Racer.AllConfigs;
+        for (int i = 0; i < list.Count; i++)
+        {
+            if (Profile.IsUnlockedRacer(list[i].Id))
+                lastunlocked = true;
+            else if (lastunlocked)
+                return i;
+        }
+        return 0;
     }
 
     public static int SelectRacerReward()
