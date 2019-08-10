@@ -31,18 +31,21 @@ public class State_Playing : GameState
     private void Update()
     {
         if (PlayerPresenter.local == null || PlayNetwork.IsJoined == false) return;
+        float deltaTime = Time.deltaTime;
 
         //  compute racers speed
         {
             float x = PlayNetwork.PlayTime / GlobalConfig.Race.maxTime;
             float y = Mathf.Clamp01(1 - Mathf.Pow(x - 1, 4));
             PlayModel.CurrentPlaying.speed = Mathf.Min(y * forwardSpeedDelta + PlayModel.minForwardSpeed, PlayModel.maxForwardSpeed);
-            PlayModel.CurrentPlaying.forwardPosition += PlayModel.CurrentPlaying.speed * Time.deltaTime;
+            PlayModel.CurrentPlaying.forwardPosition += PlayModel.CurrentPlaying.speed * deltaTime;
         }
 
+        PlayerPresenter.UpdateAll(deltaTime);
         PlayModel.CurrentPlaying.playerForwardPosition = PlayerPresenter.local.transform.position.z;
 
-        RacerCamera.offset.z = Mathf.Lerp(RacerCamera.offset.z, -cameraMode * 0.6f, Time.deltaTime * 3);
+        RacerCamera.offset.z = Mathf.Lerp(RacerCamera.offset.z, -cameraMode * 0.6f, deltaTime * 3);
+        RacerCamera.UpdateAll(deltaTime);
 
         var remainedTime = Mathf.Max(0, PlayModel.maxPlayTime - PlayNetwork.PlayTime);
         timeLabel.text = Utilities.TimeToString(remainedTime, 3);

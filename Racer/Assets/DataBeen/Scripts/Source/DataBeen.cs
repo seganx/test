@@ -39,7 +39,7 @@ public class DataBeen : MonoBehaviour {
         PacketsIdentity.OnInitialized += OnInited;
         PacketsIdentity.Init();
         StartCoroutine(_StartSaving());
-        ReleaseLocationCatcher();
+        //ReleaseLocationCatcher();
     }
 
     public void ReleaseLocationCatcher()

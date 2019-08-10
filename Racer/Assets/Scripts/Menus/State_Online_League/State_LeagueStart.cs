@@ -66,6 +66,7 @@ public class State_LeagueStart : GameState
 
     private void StartOnlineGame()
     {
+        PlayModel.mode = PlayModel.Mode.Online;
         PlayNetwork.IsOffline = false;
         PlayNetwork.EloScore = Profile.EloScore;
         PlayNetwork.EloPower = Profile.CurrentRacerPower;

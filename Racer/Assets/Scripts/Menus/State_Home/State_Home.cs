@@ -78,8 +78,15 @@ public class State_Home : GameState
     private void StartOffline()
     {
         PlayModel.mode = PlayModel.Mode.Campain;
-        PlayModel.mapId = PlayModel.SelectRandomMap();
-        PlayModel.maxPlayerCount = 4;
+
+        PlayNetwork.IsOffline = true;
+        PlayNetwork.EloScore = Profile.EloScore;
+        PlayNetwork.EloPower = Profile.CurrentRacerPower;
+        PlayNetwork.MapId = PlayModel.mapId = PlayModel.SelectRandomMap();
+        PlayNetwork.MaxPlayerCount = PlayModel.maxPlayerCount = 4;
+        PlayModel.maxPlayTime = GlobalConfig.Race.maxTime;
+        PlayModel.Traffic.baseDistance = GlobalConfig.Race.traffics.baseDistance;
+        PlayModel.Traffic.distanceRatio = GlobalConfig.Race.traffics.speedFactor;
 
         gameManager.OpenState<State_FindOpponents>();
     }

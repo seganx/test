@@ -77,11 +77,11 @@ public class PlayerPresenterOnline : PlayerPresenter
         else racer.boxCollider.isTrigger = true;
     }
 
-    public override void UpdateSteeringPosition()
+    public override void UpdateSteeringPosition(float deltaTime)
     {
         if (photonView.isMine)
         {
-            base.UpdateSteeringPosition();
+            base.UpdateSteeringPosition(deltaTime);
 
             if (eventFloats[1] != racer.transform.localPosition.x)
             {
@@ -97,7 +97,7 @@ public class PlayerPresenterOnline : PlayerPresenter
         else
         {
             var localPos = racer.transform.localPosition;
-            localPos.x = Mathf.Clamp(Mathf.Lerp(localPos.x, SteeringValue, Time.deltaTime * 10), -RoadPresenter.RoadWidth, RoadPresenter.RoadWidth);
+            localPos.x = Mathf.Clamp(Mathf.Lerp(localPos.x, SteeringValue, deltaTime * 10), -RoadPresenter.RoadWidth, RoadPresenter.RoadWidth);
             racer.transform.localPosition = localPos;
         }
     }
