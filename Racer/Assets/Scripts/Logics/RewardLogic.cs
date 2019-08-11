@@ -65,8 +65,9 @@ public static class RewardLogic
     {
         if (racerId < 1)
         {
-            var config = RacerFactory.Racer.AllConfigs.FindAll(x => Profile.IsUnlockedRacer(x.Id)).RandomOne();
-            racerId = config != null ? config.Id : Profile.SelectedRacer;
+            //var config = RacerFactory.Racer.AllConfigs.FindAll(x => Profile.IsUnlockedRacer(x.Id)).RandomOne();
+            //racerId = config != null ? config.Id : Profile.SelectedRacer;
+            racerId = Profile.SelectedRacer;
         }
 
         switch (Random.Range(0, 100) % 5)

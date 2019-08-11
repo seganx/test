@@ -33,6 +33,7 @@ public class UiShopSpecialPackage : MonoBehaviour
         coins = pack.coins[config.GroupId - 1];
 
         //GlobalFactory.CreateRacerCard(config.Id, racerCardHolder);
+        Destroy(racerCardHolder.gameObject);
         racerImage.sprite = config.icon;
         customeCardsLabel.SetFormatedText(pack.customes);
         gemsLabel.SetText(gems.ToString("#,0"));

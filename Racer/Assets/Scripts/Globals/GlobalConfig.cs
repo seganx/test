@@ -115,9 +115,11 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
         {
             public int startScore = 0;
             public int startRank = 0;
+            public int startGroup = 0;
             public int rewardGem = 0;
             public int rewardCoin = 0;
             public int rewardCards = 0;
+            public Vector2Int cardsGroups = new Vector2Int(0, 20);
         }
 
         [System.Serializable]
@@ -153,11 +155,13 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
             }
 
             [System.Serializable]
-            public class FreePackage
+            public class LoadingBox
             {
                 public int nextTime = 0;
+                public int dailyCount = 0;
                 public List<int> gemValues = new List<int>();
                 public List<int> coinValues = new List<int>();
+                public Vector2Int cardsGroups = new Vector2Int(0, 20);
             }
 
             [System.Serializable]
@@ -214,7 +218,7 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
             public int[] blackMarketRefreshPrices = new int[] { 200, 80, 20 };
 
             public List<BlackMarketPackage> blackMarketPackages = new List<BlackMarketPackage>();
-            public FreePackage loadingBoxPackage = new FreePackage();
+            public List<LoadingBox> loadingBoxPackage = new List<LoadingBox>();
             public List<SpecialPackage> combinedPackages = new List<SpecialPackage>();
             public List<SpecialRacerCardPackage> specialRacerCardPackages = new List<SpecialRacerCardPackage>();
             public SpecialRacerCardPopup specialRacerCardPopup = new SpecialRacerCardPopup();
@@ -296,7 +300,7 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
     {
         var filename = UnityEditor.EditorUtility.SaveFilePanel("Save exported data", System.IO.Path.GetDirectoryName(Application.dataPath), "config", "txt");
         if (filename.HasContent(4))
-            System.IO.File.WriteAllText(filename, JsonUtilityEx.ToJson(data), System.Text.Encoding.UTF8);
+            System.IO.File.WriteAllText(filename, JsonUtility.ToJson(data, false), System.Text.Encoding.UTF8);
     }
 #endif
 
@@ -336,7 +340,7 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
         }
 #endif
 
-        var newdata = JsonUtilityEx.FromJson<Data>(json, false);
+        var newdata = JsonUtility.FromJson<Data>(json);
         if (newdata == null) return false;
 
         //  set new data

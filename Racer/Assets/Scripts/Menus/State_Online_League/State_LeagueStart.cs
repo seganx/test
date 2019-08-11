@@ -89,9 +89,11 @@ public class State_LeagueStart : GameState
             var league = GlobalConfig.Leagues.GetByIndex(lindex);
             Profile.EarnResouce(league.rewardGem, league.rewardCoin);
             Popup_Rewards.AddResource(league.rewardGem, league.rewardCoin);
+
+            var list = RacerFactory.Racer.AllConfigs.FindAll(x => x.GroupId.Between(league.cardsGroups.x, league.cardsGroups.y));
             for (int i = 0; i < league.rewardCards; i++)
             {
-                var racerid = RewardLogic.SelectRacerReward();
+                var racerid = list.RandomOne().Id;
                 Profile.AddRacerCard(racerid, 1);
                 Popup_Rewards.AddRacerCard(racerid, 1);
             }

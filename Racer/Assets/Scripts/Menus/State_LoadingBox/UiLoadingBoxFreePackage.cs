@@ -6,19 +6,58 @@ using UnityEngine.UI;
 
 public class UiLoadingBoxFreePackage : MonoBehaviour
 {
+    [SerializeField] private int index = 0;
     [SerializeField] private LocalText desc = null;
     [SerializeField] private Button purchaseButton = null;
 
+    private bool IsSameDay
+    {
+        get { return PlayerPrefsEx.GetInt(name + ".day", 0) == TimerManager.ServerTime.DayOfYear; }
+        set { if (value) PlayerPrefsEx.SetInt(name + ".day", TimerManager.ServerTime.DayOfYear); }
+    }
+
+    private int UseCount
+    {
+        get { return PlayerPrefsEx.GetInt(name + ".used", 0); }
+        set { PlayerPrefsEx.SetInt(name + ".used", value); }
+    }
+
     private void Start()
     {
-        desc.SetFormatedText(GlobalConfig.Shop.loadingBoxPackage.nextTime / 3600);
+        var data = index < GlobalConfig.Shop.loadingBoxPackage.Count ? GlobalConfig.Shop.loadingBoxPackage[index] : null;
+        if (data != null)
+        {
+            if (IsSameDay)
+            {
+                if (UseCount >= data.dailyCount)
+                    data = null;
+            }
+            else
+            {
+                IsSameDay = true;
+                UseCount = 0;
+            }
+        }
+
+        if (data == null)
+            Destroy(gameObject);
+        else
+            Setup(data);
+    }
+
+    private UiLoadingBoxFreePackage Setup(GlobalConfig.Data.Shop.LoadingBox data)
+    {
+        desc.SetFormatedText(data.nextTime > 3600 ? data.nextTime / 3600 : data.nextTime / 60);
+
         purchaseButton.onClick.AddListener(() =>
         {
+            UseCount++;
+
             switch (Random.Range(0, 100) % 4)
             {
                 case 0:
                     {
-                        var gems = GlobalConfig.Shop.loadingBoxPackage.gemValues.RandomOne();
+                        var gems = data.gemValues.RandomOne();
                         Profile.EarnResouce(gems, 0);
                         Popup_Rewards.AddResource(gems, 0);
                     }
@@ -26,7 +65,7 @@ public class UiLoadingBoxFreePackage : MonoBehaviour
 
                 case 1:
                     {
-                        var coins = GlobalConfig.Shop.loadingBoxPackage.coinValues.RandomOne();
+                        var coins = data.coinValues.RandomOne();
                         Profile.EarnResouce(0, coins);
                         Popup_Rewards.AddResource(0, coins);
                     }
@@ -34,7 +73,8 @@ public class UiLoadingBoxFreePackage : MonoBehaviour
 
                 case 2:
                     {
-                        var racerid = RewardLogic.SelectRacerReward();
+                        var list = RacerFactory.Racer.AllConfigs.FindAll(x => x.GroupId.Between(data.cardsGroups.x, data.cardsGroups.y));
+                        var racerid = list.Count > 0 ? list.RandomOne().Id : RewardLogic.SelectRacerReward();
                         Profile.AddRacerCard(racerid, 1);
                         Popup_Rewards.AddRacerCard(racerid, 1);
                     }
@@ -51,5 +91,7 @@ public class UiLoadingBoxFreePackage : MonoBehaviour
 
             Popup_Rewards.Display();
         });
+
+        return this;
     }
 }
