@@ -66,11 +66,15 @@ public class State_LeagueStart : GameState
 
     private void StartOnlineGame()
     {
-        PlayModel.OfflineMode = false;
-        PlayModel.eloScore = Profile.EloScore;
-        PlayModel.eloPower = Profile.CurrentRacerPower;
-        PlayModel.selectedMapId = PlayModel.SelectRandomMap();
-        PlayModel.maxPlayerCount = 4;
+        PlayModel.mode = PlayModel.Mode.Online;
+        PlayNetwork.IsOffline = false;
+        PlayNetwork.EloScore = Profile.EloScore;
+        PlayNetwork.EloPower = Profile.CurrentRacerPower;
+        PlayNetwork.MapId = PlayModel.mapId = PlayModel.SelectRandomMap();
+        PlayNetwork.MaxPlayerCount = PlayModel.maxPlayerCount = 4;
+        PlayModel.maxPlayTime = GlobalConfig.Race.maxTime;
+        PlayModel.Traffic.baseDistance = GlobalConfig.Race.traffics.baseDistance;
+        PlayModel.Traffic.distanceRatio = GlobalConfig.Race.traffics.speedFactor;
         gameManager.OpenState<State_FindOpponents>();
     }
 
@@ -85,9 +89,11 @@ public class State_LeagueStart : GameState
             var league = GlobalConfig.Leagues.GetByIndex(lindex);
             Profile.EarnResouce(league.rewardGem, league.rewardCoin);
             Popup_Rewards.AddResource(league.rewardGem, league.rewardCoin);
+
+            var list = RacerFactory.Racer.AllConfigs.FindAll(x => x.GroupId.Between(league.cardsGroups.x, league.cardsGroups.y));
             for (int i = 0; i < league.rewardCards; i++)
             {
-                var racerid = RewardLogic.SelectRacerReward();
+                var racerid = list.RandomOne().Id;
                 Profile.AddRacerCard(racerid, 1);
                 Popup_Rewards.AddRacerCard(racerid, 1);
             }

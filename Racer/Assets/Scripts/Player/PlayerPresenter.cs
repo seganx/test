@@ -9,7 +9,6 @@ public abstract class PlayerPresenter : Base
     [HideInInspector] public PlayerData player = null;
     [HideInInspector] public RacerPresenter racer = null;
 
-    private VelocityReader velocityReader = new VelocityReader();
     private float currGrade = 0;
     private float changeGradeSpeed = 1;
     private float currSteeringSpeed = 0;
@@ -17,7 +16,6 @@ public abstract class PlayerPresenter : Base
 
     public virtual bool IsInactive { get { return false; } }
     public virtual bool IsMine { get { return true; } }
-    public float ForwardValue { get; set; }
     public float SteeringValue { get; set; }
     public bool PlayingHorn { get; set; }
     public int Grade { get { return player.CurrGrade; } }
@@ -25,35 +23,36 @@ public abstract class PlayerPresenter : Base
     public float Nitros { get { return player.CurrNitrous; } }
     public bool NitrosReady { get { return Nitros >= 1.0f; } }
 
+
     protected virtual void OnEnable()
     {
         all.Add(this);
         allPlayers.Add(player);
-        UiPlayingBoard.AddPlayer(player);
+        UpdatePositons();
     }
 
     protected virtual void OnDisable()
     {
         player.CurrGrade = -100 * all.Count;
         all.Remove(this);
-        UiPlayingBoard.RemovePlayer(player);
+        UpdatePositons();
         if (all.Count < 2) allPlayers.Clear();
     }
 
-    public virtual void UpdateForwardPosition()
+    public virtual float UpdateForwardPosition(float deltaTime)
     {
-        var pos = ForwardValue + currGrade * GlobalConfig.Race.racerDistance;
+        var pos = PlayModel.CurrentPlaying.forwardPosition + currGrade * GlobalConfig.Race.racerDistance;
         transform.position = RoadPresenter.GetPositionByDistance(pos);
-        transform.forward = Vector3.Lerp(transform.forward, RoadPresenter.GetForwardByDistance(pos), Time.deltaTime * 10);
+        transform.forward = Vector3.Lerp(transform.forward, RoadPresenter.GetForwardByDistance(pos), deltaTime * 10);
+        return pos;
     }
 
-    public virtual void UpdateSteeringPosition()
+    public virtual void UpdateSteeringPosition(float deltaTime)
     {
-        velocityReader.Update(racer.transform.position);
-        var stdest = Mathf.Clamp01(velocityReader.z / 30.0f) * SteeringValue * maxSteeringSpeed;
-        currSteeringSpeed = Mathf.MoveTowards(currSteeringSpeed, stdest, maxSteeringSpeed * Time.deltaTime * 3/** (Mathf.Abs(stdest) > Mathf.Epsilon ? 5 : 5)*/);
+        var stdest = Mathf.Clamp01(PlayModel.CurrentPlaying.speed / 30.0f) * SteeringValue * maxSteeringSpeed;
+        currSteeringSpeed = Mathf.MoveTowards(currSteeringSpeed, stdest, maxSteeringSpeed * deltaTime * 3);
         var localPos = racer.transform.localPosition;
-        localPos.x = localPos.x + currSteeringSpeed * Time.deltaTime;
+        localPos.x = localPos.x + currSteeringSpeed * deltaTime;
         if (localPos.x > RoadPresenter.RoadWidth)
         {
             localPos.x = RoadPresenter.RoadWidth;
@@ -77,15 +76,6 @@ public abstract class PlayerPresenter : Base
         racer.BroadcastMessage("SetPlateText", player.name, SendMessageOptions.DontRequireReceiver);
     }
 
-    public virtual void SetGrade(int grade, bool dontBlend = false)
-    {
-        changeGradeSpeed = grade - player.CurrGrade > 1 ? 1 : 0.5f;
-        player.CurrGrade = grade;
-        if (dontBlend) currGrade = grade;
-        UpdatePositons();
-        UiPlayingBoard.UpdatePositions();
-    }
-
     public virtual void AddNitors()
     {
         if (NitrosReady) return;
@@ -99,7 +89,6 @@ public abstract class PlayerPresenter : Base
         {
             player.CurrNitrous = Mathf.Clamp(player.CurrNitrous - 1, 0, 1);
             SetGrade(Grade + 1);
-            BroadcastMessage("StartNitors", SendMessageOptions.DontRequireReceiver);
         }
     }
 
@@ -119,27 +108,44 @@ public abstract class PlayerPresenter : Base
         BroadcastMessage("PlayCrashAudio", SendMessageOptions.DontRequireReceiver);
     }
 
-    public virtual void Update()
+    public virtual void SetGrade(int grade, bool dontBlend = false)
+    {
+        changeGradeSpeed = grade - player.CurrGrade > 1 ? 1 : 0.5f;
+        player.CurrGrade = grade;
+        if (dontBlend) currGrade = grade;
+        UpdatePositons();
+
+        if (Mathf.Approximately(currGrade, Grade) == false)
+            BroadcastMessage("StartNitors", SendMessageOptions.DontRequireReceiver);
+    }
+
+    public virtual void PlayingUpdate(float deltaTime)
     {
         if (currGrade != Grade)
         {
-            currGrade = Mathf.MoveTowards(currGrade, Grade, Time.deltaTime * changeGradeSpeed);
+            currGrade = Mathf.MoveTowards(currGrade, Grade, deltaTime * changeGradeSpeed);
             if (Mathf.Approximately(currGrade, Grade))
             {
                 currGrade = Grade;
                 BroadcastMessage("StopNitors", SendMessageOptions.DontRequireReceiver);
             }
         }
-        UpdateForwardPosition();
-        UpdateSteeringPosition();
+        UpdateForwardPosition(deltaTime);
+        UpdateSteeringPosition(deltaTime);
     }
 
     ////////////////////////////////////////////////////////////
     /// STATIC MEMBERS
     ////////////////////////////////////////////////////////////
-    public static List<PlayerData> allPlayers = new List<PlayerData>();
-    public static List<PlayerPresenter> all = new List<PlayerPresenter>();
+    public static List<PlayerData> allPlayers = new List<PlayerData>(10);
+    public static List<PlayerPresenter> all = new List<PlayerPresenter>(10);
     public static PlayerPresenter local = null;
+
+    public static void UpdateAll(float deltaTime)
+    {
+        for (int i = 0; i < all.Count; i++)
+            all[i].PlayingUpdate(deltaTime);
+    }
 
     public static int FindNextFreeGrade(int grade)
     {

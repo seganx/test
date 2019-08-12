@@ -116,7 +116,7 @@ public class UiBlackMarketPackage : MonoBehaviour
     private static int SelectRandomRacerId(int index)
     {
         int radius = GlobalConfig.Probabilities.blackmarketRacerRadius;
-        int center = RewardLogic.FindSelectRacerCenter() + index * (radius + 3);
+        int center = RewardLogic.FindSelectRacerCenter() + index * (radius + 2);
         int count = center + radius;
         var configindex = RewardLogic.SelectProbability(count, center, radius);
         if (configindex < 0 || configindex >= RacerFactory.Racer.AllConfigs.Count) return 0;

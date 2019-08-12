@@ -35,39 +35,22 @@ public static class RewardLogic
             res.racerId = SelectRacerReward();
         if (Random.Range(0, 100) < customeChance)
             res.custome = GetCustomReward();
-
-        /*
-        // select reward by chance
-        chances.Clear();
-        var nullchance = 100 - (racerCardChance + customeChance + gemChance);
-        for (int i = 0; i < nullchance; i++)
-            chances.Add(0);
-        for (int i = 0; i < racerCardChance; i++)
-            chances.Add(1);
-        for (int i = 0; i < customeChance; i++)
-            chances.Add(2);
-        for (int i = 0; i < gemChance; i++)
-            chances.Add(3);
-
-        //  create reward
-        var res = new RaceReward();
-        switch (chances.RandomOne())
-        {
-            case 1: res.racerId = SelectRacerReward(); break;
-            case 2: res.custome = GetCustomReward(); break;
-            case 3: res.gem = gems; break;
-        }*/
         return res;
     }
 
     //! return the index of first locked racer in garage just front of unlocked one
-    public static int FindSelectRacerCenter(int playerIndex = 0)
+    public static int FindSelectRacerCenter()
     {
-        var playerselected = Profile.SelectedRacer > 0 ? Profile.SelectedRacer : 0;
-        var center = playerIndex == 0 ? RacerFactory.Racer.AllConfigs.FindIndex(x => x.Id == playerselected) : playerIndex;
-        for (int i = center + 1; i < RacerFactory.Racer.AllConfigs.Count && Profile.IsUnlockedRacer(RacerFactory.Racer.AllConfigs[i].Id); i++)
-            center = i;
-        return center;
+        bool lastunlocked = false;
+        var list = RacerFactory.Racer.AllConfigs;
+        for (int i = 0; i < list.Count; i++)
+        {
+            if (Profile.IsUnlockedRacer(list[i].Id))
+                lastunlocked = true;
+            else if (lastunlocked)
+                return i;
+        }
+        return 0;
     }
 
     public static int SelectRacerReward()
@@ -82,8 +65,9 @@ public static class RewardLogic
     {
         if (racerId < 1)
         {
-            var config = RacerFactory.Racer.AllConfigs.FindAll(x => Profile.IsUnlockedRacer(x.Id)).RandomOne();
-            racerId = config != null ? config.Id : Profile.SelectedRacer;
+            //var config = RacerFactory.Racer.AllConfigs.FindAll(x => Profile.IsUnlockedRacer(x.Id)).RandomOne();
+            //racerId = config != null ? config.Id : Profile.SelectedRacer;
+            racerId = Profile.SelectedRacer;
         }
 
         switch (Random.Range(0, 100) % 5)

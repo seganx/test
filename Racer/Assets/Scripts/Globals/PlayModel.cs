@@ -4,20 +4,36 @@ using UnityEngine;
 
 public static class PlayModel
 {
-    private const int mapCount = 3;
+    public enum Mode { Online, Campain, Quests, FreeDrive }
 
-    public static bool OfflineMode = false;
-    public static int eloScore = 1;
-    public static int eloPower = 1;
+    public static Mode mode = Mode.Online;
+
+    public static int mapId = 1;
+    public static int skyId = 0;
+    public static int weatherId = 0;
+
     public static byte maxPlayerCount = 4;
-    public static float maxGameTime = 60;
+    public static float maxPlayTime = 60;
     public static float minForwardSpeed = 50;
     public static float maxForwardSpeed = 100;
-    public static int selectedMapId
+
+    public static class CurrentPlaying
     {
-        get { return PlayerPrefs.GetInt("PlayModel.SelectedMapId", 1); }
-        set { PlayerPrefs.SetInt("PlayModel.SelectedMapId", value); }
+        public static float speed = 0;
+        public static float forwardPosition = 0;
+        public static float playerForwardPosition = 0;
     }
+
+    public static class Traffic
+    {
+        public static float baseDistance = 0;
+        public static float distanceRatio = 0;
+    }
+
+    public static bool IsOnline { get { return mode == Mode.Online; } }
+    public static bool IsCampain { get { return mode == Mode.Campain; } }
+    public static bool IsQuests { get { return mode == Mode.Quests; } }
+    public static bool IsFreeDrive { get { return mode == Mode.FreeDrive; } }
 
     public static int SelectRandomMap()
     {

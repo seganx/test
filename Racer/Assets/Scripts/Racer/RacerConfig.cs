@@ -43,8 +43,8 @@ public class RacerConfig : ScriptableObject
                 HoodColor = defaultBodyColorId,
                 RimColor = 10,
                 VinylColor = 10,
-                WindowColor = 60,
-                LightsColor = 20,
+                WindowColor = 70,
+                LightsColor = 70,
                 Height = 1,
                 ColorModel = 1
             };

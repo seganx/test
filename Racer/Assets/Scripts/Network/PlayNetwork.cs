@@ -25,13 +25,6 @@ public class PlayNetwork : MonoBehaviour
         Rotation = 4,
     }
 
-    private static int joinGap = 0;
-    private static int roomMapId = 0;
-    private static double roomInitTime = 0;
-    private static double playInitTime = 0;
-    private static string VersionedName { get { return GlobalConfig.Photon.name + GlobalConfig.Photon.version; } }
-
-
     #region Network Mono
     private void OnEnable()
     {
@@ -56,7 +49,7 @@ public class PlayNetwork : MonoBehaviour
     #region Network Starting
     public void OnConnectedToMaster()
     {
-        if (PlayModel.OfflineMode == false)
+        if (IsOffline == false)
         {
             joinGap = GlobalConfig.MatchMaking.eloScoreGap;
             JoinRoom();
@@ -69,8 +62,8 @@ public class PlayNetwork : MonoBehaviour
         TypedLobby sqlLobby = new TypedLobby("myLobby", LobbyType.SqlLobby);
         var sqlLobbyFilter = string.Format("C0 = \"{0}\" AND C1 >= {1} AND C1 <= {2} AND C2 >= {3} AND C2 <= {4}",
             VersionedName,
-            PlayModel.eloScore - joinGap, PlayModel.eloScore + joinGap,
-            PlayModel.eloPower - GlobalConfig.MatchMaking.eloPowerGap, PlayModel.eloPower + GlobalConfig.MatchMaking.eloPowerGap);
+            EloScore - joinGap, EloScore + joinGap,
+            EloPower - GlobalConfig.MatchMaking.eloPowerGap, EloPower + GlobalConfig.MatchMaking.eloPowerGap);
         var joined = PhotonNetwork.JoinRandomRoom(null, 0, MatchmakingMode.FillRoom, sqlLobby, sqlLobbyFilter);
         print("PhotonNetwork.JoinRandomRoom(): " + joined);
     }
@@ -89,18 +82,17 @@ public class PlayNetwork : MonoBehaviour
     {
         var roomProperies = new ExitGames.Client.Photon.Hashtable();
         roomProperies.Add("t", PhotonNetwork.time);
-        roomProperies.Add("m", PlayModel.selectedMapId);
+        roomProperies.Add("m", MapId);
         roomProperies.Add("C0", VersionedName);
-        roomProperies.Add("C1", PlayModel.eloScore);
-        roomProperies.Add("C2", PlayModel.eloPower);
+        roomProperies.Add("C1", EloScore);
+        roomProperies.Add("C2", EloPower);
 
-        RoomOptions roomOptions = new RoomOptions
-        {
-            MaxPlayers = PlayModel.maxPlayerCount,
-            PlayerTtl = 1,
-            CustomRoomProperties = roomProperies,
-            CustomRoomPropertiesForLobby = new string[] { "C0", "C1", "C2" }
-        };
+        RoomOptions roomOptions = new RoomOptions();
+        roomOptions.MaxPlayers = MaxPlayerCount;
+        roomOptions.PlayerTtl = 1;
+        roomOptions.CustomRoomProperties = roomProperies;
+        roomOptions.CustomRoomPropertiesForLobby = new string[] { "C0", "C1", "C2" };
+
 
         TypedLobby sqlLobby = new TypedLobby("myLobby", LobbyType.SqlLobby);
         PhotonNetwork.CreateRoom(null, roomOptions, sqlLobby);
@@ -111,7 +103,7 @@ public class PlayNetwork : MonoBehaviour
         if (callbackConnect != null)
         {
             roomInitTime = (double)PhotonNetwork.room.CustomProperties["t"];
-            roomMapId = (int)PhotonNetwork.room.CustomProperties["m"];
+            MapId = (int)PhotonNetwork.room.CustomProperties["m"];
             callbackConnect();
             callbackConnect = null;
         }
@@ -119,7 +111,7 @@ public class PlayNetwork : MonoBehaviour
 
     public void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
     {
-        if (PhotonNetwork.room.PlayerCount == PlayModel.maxPlayerCount)
+        if (PhotonNetwork.room.PlayerCount == MaxPlayerCount)
         {
             PhotonNetwork.room.IsVisible = false;
             PhotonNetwork.room.IsOpen = false;
@@ -188,23 +180,26 @@ public class PlayNetwork : MonoBehaviour
     ///////////////////////////////////////////////////////////////////////////////////
     //  STATIC MEMBERS
     ///////////////////////////////////////////////////////////////////////////////////
-    public static event EventCallback OnEventCall;
+    private static int joinGap = 0;
+    private static double roomInitTime = 0;
+    private static double playInitTime = 0;
+    private static string VersionedName { get { return GlobalConfig.Photon.name + GlobalConfig.Photon.version; } }
 
+    public static event EventCallback OnEventCall;
     private static System.Action callbackConnect = null;
     private static System.Action callbackDisconnect = null;
     private static System.Action<double> callbackStart = null;
     private static System.Action<Error> callbackError = null;
 
-
+    public static byte MaxPlayerCount { get; set; }
+    public static int MapId { get; set; }
+    public static int EloScore { get; set; }
+    public static int EloPower { get; set; }
+    public static bool IsOffline { get; set; }
     public static bool IsJoined { get { return PhotonNetwork.inRoom; } }
     public static bool IsMaster { get { return PhotonNetwork.isMasterClient; } }
     public static int PlayerId { get { return PhotonNetwork.player.ID; } }
     public static int PlayersCount { get { return PhotonNetwork.room == null ? 0 : PhotonNetwork.room.PlayerCount; } }
-
-    public static int RoomMapId
-    {
-        get { return roomMapId; }
-    }
 
     public static long RoomSeed
     {
@@ -238,7 +233,7 @@ public class PlayNetwork : MonoBehaviour
         callbackError = onError;
 
         PhotonNetwork.AuthValues = new AuthenticationValues(Profile.UserId);
-        if (PlayModel.OfflineMode)
+        if (IsOffline)
             PhotonNetwork.offlineMode = true;
         else
             PhotonNetwork.ConnectUsingSettings(GlobalConfig.Photon.version);
@@ -261,7 +256,7 @@ public class PlayNetwork : MonoBehaviour
         {
             double timeValue = PhotonNetwork.time + nextTime;
 
-            if (PlayModel.OfflineMode)
+            if (IsOffline)
             {
                 InitPlayTime(timeValue);
             }

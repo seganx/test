@@ -7,20 +7,27 @@ using LocalPush;
 
 public class FreeShopItemTimerPresenter : TimerPresenter
 {
-    [SerializeField] private Button getButton;
-    [SerializeField] private GameObject deactiveButtonGameObject;
-    [SerializeField] private LocalText timerText;
+    [SerializeField] private int index = 0;
+    [SerializeField] private Button getButton = null;
+    [SerializeField] private GameObject deactiveButtonGameObject = null;
+    [SerializeField] private LocalText timerText = null;
 
     public override void Start()
     {
+        if (index >= GlobalConfig.Shop.loadingBoxPackage.Count)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         base.Start();
         timerText.SetFormatedText(0, 0, 0);
 
         getButton.onClick.AddListener(() =>
         {
             if (State_Settings.IsFreePackageNotificationActive)
-                NotificationManager.SendWithAppIcon(GlobalConfig.Shop.loadingBoxPackage.nextTime, NotificationType.FreePackage);
-            StartTimer(GlobalConfig.Shop.loadingBoxPackage.nextTime);
+                NotificationManager.SendWithAppIcon(GlobalConfig.Shop.loadingBoxPackage[index].nextTime, NotificationType.FreePackage);
+            StartTimer(GlobalConfig.Shop.loadingBoxPackage[index].nextTime);
         });
     }
 

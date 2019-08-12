@@ -11,9 +11,9 @@ public class TimerManager : Base
 
     public enum Type // don't change the values!
     {
-        AdTimer = 1, FreeShopItemTimer = 2, FullFuelTimer = 3, StartDiscountTimer = 4, FinishDiscountTimer = 5,
+        AdTimer = 1, LoadingBoxItem0 = 2, FullFuelTimer = 3, StartDiscountTimer = 4, FinishDiscountTimer = 5,
         LegendShopActivatorTimer = 6, LegendShopTimer = 7, LeagueStartTimer = 8, LeagueEndTimer = 9, RacerSpecialOfferTimer = 10,
-        CombinedShopItemTimer = 11
+        CombinedShopItemTimer = 11, LoadingBoxItem1 = 12
     }
 
     [Serializable]
@@ -128,7 +128,8 @@ public class TimerManager : Base
 
     private static void InitDefaultValues()
     {
-        SetTimer(Type.FreeShopItemTimer, GlobalConfig.Shop.loadingBoxPackage.nextTime);
+        SetTimer(Type.LoadingBoxItem0, GlobalConfig.Shop.loadingBoxPackage[0].nextTime);
+        SetTimer(Type.LoadingBoxItem1, GlobalConfig.Shop.loadingBoxPackage[1].nextTime);
         SetTimer(Type.LegendShopActivatorTimer, GlobalConfig.Shop.racerCardPackageTime);
 
         SetTimer(Type.CombinedShopItemTimer, GlobalConfig.Shop.combinedPackagesNextTime);
