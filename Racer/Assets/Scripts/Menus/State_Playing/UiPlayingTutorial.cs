@@ -32,7 +32,7 @@ public class UiPlayingTutorial : MonoBehaviour
         yield return new WaitForSeconds(delay);
         tutorialObjects[index].SetActive(true);
         SetPlayingTutorialShowed(index);
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(6);
         tutorialObjects[index].SetActive(false);
 
         if (index == 2) Destroy(gameObject);
