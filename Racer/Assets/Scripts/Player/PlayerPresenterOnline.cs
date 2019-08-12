@@ -58,6 +58,8 @@ public class PlayerPresenterOnline : PlayerPresenter
         base.SetGrade(playerGrade, true);
         if (photonView.isMine)
         {
+            racer.gameObject.AddComponent<RacerTrafficCounter>();
+
             if (PlayModel.IsOnline)
             {
                 racer.boxCollider.isTrigger = !player.IsPlayer;

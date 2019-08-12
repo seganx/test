@@ -19,6 +19,7 @@ public class State_Playing : GameState
     private void Start()
     {
         UiShowHide.ShowAll(transform);
+        RacerCamera.offset.z = -10;
         gameManager.OpenPopup<Popup_PlayingCountDown>();
         forwardSpeedDelta = PlayModel.maxForwardSpeed - PlayModel.minForwardSpeed;
         DelayCall(0.1f, () =>

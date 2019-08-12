@@ -214,4 +214,28 @@ public static class Profile
         data.data = new ProfileData.NetData();
         data.modified = modified;
     }
+
+
+    public static class Stats
+    {
+        public static class Traffics
+        {
+            public static int TotalPassed
+            {
+                get { return PlayerPrefsEx.GetInt("Profile.TotalTrafficPassed", 1); }
+                set { PlayerPrefsEx.SetInt("Profile.TotalTrafficPassed", value); }
+            }
+
+            public static int TotalSuccessed
+            {
+                get { return PlayerPrefsEx.GetInt("Profile.TotalTrafficFailed", 0); }
+                set { PlayerPrefsEx.SetInt("Profile.TotalTrafficFailed", value); }
+            }
+
+            public static int TotalFailed
+            {
+                get { return TotalPassed - TotalSuccessed; }
+            }
+        }
+    }
 }

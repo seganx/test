@@ -8,7 +8,17 @@ public class RacerTrafficCounter : MonoBehaviour
     private TrafficCar trafficCar = null;
 
     public int NosChance { get; set; }
-    public float NosMaxDistanceOffset { get; set; }
+    public float NosMaxDistance { get; set; }
+    public int TotalTrafficPassed { get; set; }
+    public int TotalTrafficFailed { get; set; }
+    public int TotalTrafficSuccess { get { return TotalTrafficPassed - TotalTrafficFailed; } }
+
+
+    private void Awake()
+    {
+        NosChance = 100;
+        NosMaxDistance = GlobalConfig.Race.nosMaxDistance;
+    }
 
     private void Start()
     {
@@ -33,9 +43,14 @@ public class RacerTrafficCounter : MonoBehaviour
         }
         else if (candid == null && trafficCar != null)
         {
+            TotalTrafficPassed++;
+
             var disx = Mathf.Abs(racer.transform.position.x - trafficCar.transform.position.x) - (racer.Size.x + trafficCar.Size.x) * 0.5f;
-            if (disx < GlobalConfig.Race.nosMaxDistance + NosMaxDistanceOffset && Random.Range(0, 100) < NosChance)
+            if (disx < NosMaxDistance && Random.Range(0, 100) < NosChance)
                 SendMessageUpwards("AddNitors", SendMessageOptions.DontRequireReceiver);
+            else
+                TotalTrafficFailed++;
+
             trafficCar = null;
         }
     }

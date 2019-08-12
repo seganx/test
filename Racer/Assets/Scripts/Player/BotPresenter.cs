@@ -6,7 +6,6 @@ using UnityEngine;
 public class BotPresenter : Base
 {
     private PlayerPresenterOnline player = null;
-
     private int defaultSteering = 1;
     private float nosTimer = 0;
     private bool CanControl { get { return player.player.IsPlayer || PlayNetwork.IsMaster; } }
@@ -16,6 +15,12 @@ public class BotPresenter : Base
         player = GetComponent<PlayerPresenterOnline>();
 
         var waitWhile = new WaitForSeconds(2);
+        yield return waitWhile;
+
+        var tc = GetComponentInChildren<RacerTrafficCounter>();
+        tc.NosMaxDistance = 100;
+        tc.NosChance = ComputeNosChance();
+
         while (true)
         {
             defaultSteering = Random.Range(0, 100) > 50 ? 1 : -1;
@@ -61,44 +66,37 @@ public class BotPresenter : Base
     ////////////////////////////////////////////////////////////////////////////////////
     //  STATIC MEMEBRS
     ////////////////////////////////////////////////////////////////////////////////////
-    public static int currentCount = 0;
-    public static int useNosChance = 0;
     public static void InitializeBots(int count)
     {
-        currentCount = 0;
-
-        if (count == PlayModel.maxPlayerCount - 1)
-        {
-            var powerDiff = Profile.Skill - Profile.CurrentRacerPower;
-            useNosChance = Mathf.Clamp(30 + Mathf.RoundToInt(powerDiff / 1f), 0, 100);
-            Debug.Log("Player Skill: " + Profile.Skill + " Racer Power: " + Profile.CurrentRacerPower + " Bot NosChance: " + useNosChance);
-        }
-        else useNosChance = GlobalConfig.Race.bots.nosChance;
-
-        if (count > 0 && PhotonNetwork.isMasterClient == false) return;
-
         for (int i = 0; i < count; i++)
         {
             var botScore = Random.Range(Profile.Score - 50, Profile.Score + 50);
             var botRank = Random.Range(Profile.Position - 50, Profile.Position + 50);
-            var pdata = new PlayerData(GlobalFactory.GetRandomName() + " bot", botScore, botRank, CreateRandomRacerProfile());
+            var pdata = new PlayerData(GlobalFactory.GetRandomName(), botScore, botRank, CreateRandomRacerProfile(i));
             var seed = (int)(PlayNetwork.RoomSeed % 4) + (PlayNetwork.PlayersCount + i + 1);
-            var bot = PlayerPresenterOnline.CreateOnline(pdata, 10 - seed % 4, true).GetComponent<BotPresenter>();
-            var contactor = bot.transform.GetComponent<RacerCollisionContact>(true, true);
-            if (contactor)
-            {
-                contactor.NosChance = useNosChance;
-                contactor.NosMaxDistanceOffset = 10;
-            }
+            PlayerPresenterOnline.CreateOnline(pdata, 10 - seed % 4, true);
         }
-        currentCount = count;
     }
 
-    private static RacerProfile CreateRandomRacerProfile()
+    private static RacerProfile CreateRandomRacerProfile(int index)
     {
-        int targetSkill = Profile.Skill;
+        int targetPower = 0;
+        if (index == 0)
+        {
+            targetPower = Profile.CurrentRacerPower;
+        }
+        else if (index == 1)
+        {
+            var factor = GlobalConfig.Race.bots.powers[RacerFactory.Racer.GetConfig(Profile.SelectedRacer).GroupId];
+            targetPower = factor.x * Profile.Score + factor.y;
+        }
+        else
+        {
+            var factor = GlobalConfig.Race.bots.powers[0];
+            targetPower = factor.x * Profile.Score + factor.y;
+        }
 
-        var res = new RacerProfile() { id = SelectRacer(targetSkill) };
+        var res = new RacerProfile() { id = SelectRacer(targetPower) };
         var config = RacerFactory.Racer.GetConfig(res.id);
         res.cards = config.CardCount;
         res.level.Level = Profile.CurrentRacer.level.Level;
@@ -147,5 +145,11 @@ public class BotPresenter : Base
 
         var index = Random.Range(0, list.Count);
         return list[index];
+    }
+
+    private static int ComputeNosChance()
+    {
+        var v = Mathf.Max(0, Profile.Stats.Traffics.TotalSuccessed - Profile.Stats.Traffics.TotalFailed);
+        return v / (Profile.Stats.Traffics.TotalPassed + 1);
     }
 }

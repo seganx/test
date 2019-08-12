@@ -111,8 +111,8 @@ public class State_FindOpponents : GameState
 
         PlayerPresenterOnline.CreateOnline(playerData, grade, false);
 
-        var botcount = PlayModel.maxPlayerCount - PlayNetwork.PlayersCount;
-        BotPresenter.InitializeBots(botcount);
+        if (PhotonNetwork.isMasterClient)
+            BotPresenter.InitializeBots(PlayModel.maxPlayerCount - PlayNetwork.PlayersCount);
 
         RacerCameraConfig.Instance.currentMode = RacerCamera.Mode.StickingFollower;
         state = State.Counting;
