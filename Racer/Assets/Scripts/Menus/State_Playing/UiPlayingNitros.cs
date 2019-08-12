@@ -6,19 +6,17 @@ using UnityEngine.UI;
 
 public class UiPlayingNitros : MonoBehaviour
 {
-    public static float lastNitros = 0;
-
     [SerializeField] private Image nitrosBar = null;
     [SerializeField] private Text nitrosChangeLabel = null;
     [SerializeField] private Color nitrosBarFullColor = Color.red;
     [SerializeField] private InputScreenButton nitrosButtons = null;
     [SerializeField] private AudioSource nosFullAudio = null;
 
-
     private Color nitrosBarDefaultColor = Color.yellow;
     private Color nitrosChangeLabelColor = Color.yellow;
     private float grading = 0;
     private float gradingLength = 1;
+    private float lastNitros = 0;
 
     private bool NitrosButtonsActive
     {
@@ -38,11 +36,16 @@ public class UiPlayingNitros : MonoBehaviour
         nitrosChangeLabelColor = nitrosChangeLabel.color;
         nitrosBar.fillAmount = 0;
         NitrosButtonsActive = false;
+
+        for (int i = 0; i < PlayerPresenter.allPlayers.Count; i++)
+            PlayerPresenter.allPlayers[i].CurrNitrous = i / 4.0f;
     }
 
     // Update is called once per frame
     private void Update()
     {
+        HandleInput();
+
         if (PlayerPresenter.local.Grading > grading)
             gradingLength = PlayerPresenter.local.Grading - grading;
         grading = PlayerPresenter.local.Grading;
@@ -70,6 +73,22 @@ public class UiPlayingNitros : MonoBehaviour
                 nitrosChangeLabelColor = Color.red;
             }
             lastNitros = PlayerPresenter.local.Nitros;
+        }
+    }
+
+    private void HandleInput()
+    {
+        if (PlayerPresenter.local.NitrosReady == false) return;
+
+
+        if (InputManager.Boost.isPointerDown || UiPlayingGesture.UseNitors
+#if UNITY_EDITOR || UNITY_STANDALONE
+                || Input.GetKeyDown(KeyCode.LeftShift)
+#endif
+        )
+        {
+            PlayerPresenter.local.UseNitrous();
+            lastNitros = 0;
         }
     }
 }

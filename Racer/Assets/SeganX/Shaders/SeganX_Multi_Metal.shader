@@ -139,8 +139,7 @@
                 float4 frag(v2f i) : SV_Target
                 {
                     //  extract material id from vertex color
-                    uint matId = (round(i.colr.r * 255) / 10) - 1;
-  
+                    uint matId = (round(i.colr.r * 255) / 10) - 1;  
 
                     // compute parametres based on material id
                     fixed4 diffcolor = matlerp(matId, _DiffColor1, _DiffColor2, _DiffColor3);
@@ -169,15 +168,12 @@
                         fixed3 ambient = (i.norm.y > 0) ? lerp(unity_AmbientEquator.rgb, unity_AmbientSky.rgb, i.norm.y) : lerp(unity_AmbientEquator.rgb, unity_AmbientGround.rgb, -i.norm.y);
                         res.rgb *= lerp(ambient, _LightColor0.rgb, dl);
                     }
-
+                    
                     // apply reflection
                     {
-                        float totalcolor = diffcolor.r + diffcolor.g + diffcolor.b;
-                        float corrector = 1 - totalcolor / 7;
-
                         float cube = UNITY_SAMPLE_TEXCUBE(unity_SpecCube0, reflect(-viewDir, i.norm)).r;
                         cube *= cube;
-                        res.a = max(res.a, cube * corrector * refresnel * reflection);
+                        res.a = max(res.a, cube * refresnel * reflection);
                         res.rgb += refresnel * cube * reflection;
                     }
 

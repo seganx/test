@@ -10,15 +10,15 @@ public class TrafficCar : MonoBehaviour
 
     private float pos;
     private float line;
-    private bool canMove;
     private static List<MeshRenderer> meshes = new List<MeshRenderer>(5);
     private BoxCollider boxCollider = null;
 
+    public bool CanMove { get; private set; }
     public Vector3 Size { get { return boxCollider != null ? boxCollider.size : Vector3.one; } }
 
     public TrafficCar Setup(int color, float line, float distanceVariance)
     {
-        canMove = true;
+        CanMove = true;
         this.line = line;
         pos = PlayModel.CurrentPlaying.playerForwardPosition + GlobalConfig.Race.traffics.startDistance + distanceVariance;
         nights.SetActive(false);
@@ -39,9 +39,19 @@ public class TrafficCar : MonoBehaviour
 
     public TrafficCar Shoot()
     {
-        canMove = false;
+        CanMove = false;
         shadow.SetActive(false);
         return this;
+    }
+
+    private void OnEnable()
+    {
+        all.Add(this);
+    }
+
+    private void OnDisable()
+    {
+        all.Remove(this);
     }
 
     private void Awake()
@@ -55,7 +65,7 @@ public class TrafficCar : MonoBehaviour
 
     private void Update()
     {
-        if (canMove)
+        if (CanMove)
         {
             pos += GlobalConfig.Race.traffics.carsSpeed * Time.deltaTime;
             transform.forward = Vector3.Lerp(transform.forward, RoadPresenter.GetForwardByDistance(pos), Time.deltaTime * 10);
@@ -72,4 +82,10 @@ public class TrafficCar : MonoBehaviour
         shadow = body.FindRecursive("Shadow").gameObject;
         nights = body.FindRecursive("NightObjs").gameObject;
     }
+
+
+    ////////////////////////////////////////////////////////////
+    /// STATIC MEMBERS
+    ////////////////////////////////////////////////////////////
+    public static List<TrafficCar> all = new List<TrafficCar>(30);
 }

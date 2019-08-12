@@ -26,14 +26,14 @@ public class RacerCollisionContact : MonoBehaviour
     {
         if (other.gameObject.layer != 9) return;
         other.gameObject.layer = 0;
-        player.OnCrashed();
+        SendMessageUpwards("OnCrashed", SendMessageOptions.DontRequireReceiver);
     }
 
     private void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.layer != 9) return;
         other.gameObject.layer = 0;
-        player.OnCrashed();
+        SendMessageUpwards("OnCrashed", SendMessageOptions.DontRequireReceiver);
 
         var rigid = other.transform.GetComponent<Rigidbody>();
         rigid.useGravity = true;
@@ -82,11 +82,4 @@ public class RacerCollisionContact : MonoBehaviour
         var disx = Mathf.Abs(player.racer.transform.position.x - trafficCar.transform.position.x) - (player.racer.Size.x + trafficCar.Size.x) * 0.5f;
         if (disx < trafficDistance) trafficDistance = disx;
     }
-
-#if OFF
-    private void OnApplicationPause(bool pause)
-    {
-        undamageTime = 0;
-    }
-#endif
 }
