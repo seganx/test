@@ -14,6 +14,7 @@ public class Popup_LeaguePrize : GameState
     [SerializeField] private LocalText gemLabel = null;
     [SerializeField] private LocalText coinLabel = null;
     [SerializeField] private LocalText cardsLabel = null;
+    [SerializeField] private LocalText cardsGroupLabel = null;
     [SerializeField] private LocalText descLabel = null;
     [SerializeField] private Transform[] smallIcons = null;
     [SerializeField] private RectTransform selectedIcon = null;
@@ -47,7 +48,9 @@ public class Popup_LeaguePrize : GameState
         gemLabel.SetFormatedText(league.rewardGem);
         coinLabel.SetFormatedText(league.rewardCoin);
         cardsLabel.SetFormatedText(league.rewardCards);
-        descLabel.SetText(LocalizationService.Get(111130 + index));
+        cardsGroupLabel.SetText(league.cardsGroups.x.ToString());
+        //descLabel.SetText(LocalizationService.Get(111130 + index));
+        descLabel.SetFormatedText(league.cardsGroups.x, league.rewardCards);
 
         scoreLabel.gameObject.SetActive(index > 0 && index < 5);
         topXLabel.gameObject.SetActive(index >= 5 && index < 10);

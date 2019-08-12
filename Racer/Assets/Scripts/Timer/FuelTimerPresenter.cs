@@ -31,10 +31,12 @@ public class FuelTimerPresenter : TimerPresenter
             {
                 FuelCount = GlobalConfig.Recharg.count;
                 UpdateFuelCountText();
-                NotificationManager.Cancel(NotificationType.FullFuel);
-                SkipTimer();
+                UpdateFuelNotification();
             });
         });
+
+        if (TimerManager.GetRemainTime(TimerManager.Type.FullFuelTimer) > GlobalConfig.Recharg.time)
+            TimerManager.SetTimer(TimerManager.Type.FullFuelTimer, GlobalConfig.Recharg.time);
 
         UpdateFuelCountText();
 
@@ -45,17 +47,12 @@ public class FuelTimerPresenter : TimerPresenter
     public static void ReduceFuel()
     {
         FuelCount--;
-        if (FuelCount <= 0)
-        {
-            if (State_Settings.IsFullFuelActiveNotificationActive)
-                NotificationManager.SendWithAppIcon(GlobalConfig.Recharg.time, NotificationType.FullFuel);
-            TimerManager.SetTimer(TimerManager.Type.FullFuelTimer, GlobalConfig.Recharg.time);
-            //StartTimer(GlobalConfig.Recharg.time);
-        }
+        UpdateFuelNotification();
     }
 
     void UpdateFuelCountText()
     {
+        timerGameObject.SetActive(FuelCount < GlobalConfig.Recharg.count);
         fuelCountText.SetFormatedText(FuelCount, GlobalConfig.Recharg.count);
     }
 
@@ -76,15 +73,21 @@ public class FuelTimerPresenter : TimerPresenter
         }
         else
         {
+            /*
             if (FuelCount <= 0)
             {
-                FuelCount = GlobalConfig.Recharg.count;
-                UpdateFuelCountText();
-
                 if (popup_TimerSkip)
                     popup_TimerSkip.Back();
                 // if Popup_TimerSkip is open, close it
-            }
+            }*/
+
+            FuelCount++;
+            FuelCount += -(remainTime / GlobalConfig.Recharg.time);
+            FuelCount = Mathf.Min(FuelCount, GlobalConfig.Recharg.count);
+            int newTime = GlobalConfig.Recharg.time + remainTime % GlobalConfig.Recharg.time;
+            StartTimer(newTime);
+            UpdateFuelCountText();
+            UpdateFuelNotification();
         }
     }
 
@@ -94,13 +97,19 @@ public class FuelTimerPresenter : TimerPresenter
         {
             startButton.gameObject.SetActive(true);
             timerSkipButton.gameObject.SetActive(false);
-            timerGameObject.SetActive(false);
         }
         else
         {
             startButton.gameObject.SetActive(!active);
             timerSkipButton.gameObject.SetActive(active);
-            timerGameObject.SetActive(active);
         }
+    }
+
+    static void UpdateFuelNotification()
+    {
+        if (State_Settings.IsFullFuelActiveNotificationActive && FuelCount < 7)
+            NotificationManager.SendWithAppIcon(GlobalConfig.Recharg.time * (GlobalConfig.Recharg.count - FuelCount), NotificationType.FullFuel);
+        else
+            NotificationManager.Cancel(NotificationType.FullFuel);
     }
 }

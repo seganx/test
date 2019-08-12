@@ -14,6 +14,7 @@ public class State_Home : GameState
     [SerializeField] private Button loadingBoxButton = null;
     [SerializeField] private Button offlineButton = null;
     [SerializeField] private Button onlineButton = null;
+    [SerializeField] private Button storyButton = null;
 
     private void Start()
     {
@@ -54,6 +55,15 @@ public class State_Home : GameState
             DataBeen.SendCustomEventData("home", new DataBeenConnection.CustomEventInfo[] { new DataBeenConnection.CustomEventInfo() { key = "select", value = "online" } });
 #endif
             gameManager.OpenState<State_LeagueStart>();
+        });
+
+        storyButton.onClick.AddListener(() =>
+        {
+#if DATABEEN
+            DataBeen.SendCustomEventData("home", new DataBeenConnection.CustomEventInfo[] { new DataBeenConnection.CustomEventInfo() { key = "select", value = "story" } });
+#endif
+            gameManager.OpenPopup<Popup_Confirm>().Setup(111103, true, null);
+
         });
 
 
