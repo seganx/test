@@ -107,7 +107,7 @@ public class FuelTimerPresenter : TimerPresenter
 
     static void UpdateFuelNotification()
     {
-        if (State_Settings.IsFullFuelActiveNotificationActive && FuelCount < 7)
+        if (State_Settings.IsFullFuelActiveNotificationActive && FuelCount < GlobalConfig.Recharg.count / 2)
             NotificationManager.SendWithAppIcon(GlobalConfig.Recharg.time * (GlobalConfig.Recharg.count - FuelCount), NotificationType.FullFuel);
         else
             NotificationManager.Cancel(NotificationType.FullFuel);
