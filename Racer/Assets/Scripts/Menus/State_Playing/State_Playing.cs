@@ -69,20 +69,6 @@ public class State_Playing : GameState
 
             RacerCamera.steeringValue = PlayerPresenter.local.SteeringValue;
 
-#if UNITY_EDITOR || UNITY_STANDALONE
-            if (PlayerPresenter.local.NitrosReady && Input.GetKeyDown(KeyCode.LeftShift))
-            {
-                PlayerPresenter.local.UseNitrous();
-                UiPlayingNitros.lastNitros = 0;
-            }
-            else
-#endif
-            if (PlayerPresenter.local.NitrosReady && InputManager.Boost.isPointerDown)
-            {
-                PlayerPresenter.local.UseNitrous();
-                UiPlayingNitros.lastNitros = 0;
-            }
-
             PlayerPresenter.local.Horn(InputManager.Horn.isPointerDown);
 
             if (PlayNetwork.PlayTime > PlayModel.maxPlayTime)
@@ -100,16 +86,6 @@ public class State_Playing : GameState
     {
         RacerCameraConfig.Instance.currentMode = RacerCamera.Mode.StickingFollower;
         cameraMode = (cameraMode + 1) % 3;
-#if OFF
-        switch (RacerCameraConfig.Instance.currentMode)
-        {
-            case RacerCamera.Mode.StickingFollower: RacerCameraConfig.Instance.currentMode = RacerCamera.Mode.QuadCopter; break;
-            case RacerCamera.Mode.QuadCopter: RacerCameraConfig.Instance.currentMode = RacerCamera.Mode.Cinematic; break;
-            case RacerCamera.Mode.Cinematic: RacerCameraConfig.Instance.currentMode = RacerCamera.Mode.StickingFollower; break;
-                //case RacerCamera.Mode.Driver: RacerCameraConfig.Instance.currentMode = RacerCamera.Mode.Front; break;
-                //case RacerCamera.Mode.Front: RacerCameraConfig.Instance.currentMode = RacerCamera.Mode.StickingFollower; break;
-        }
-#endif
     }
 
     private void DisplayFinalCamera()
