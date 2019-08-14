@@ -11,12 +11,14 @@ public class UiPlayingNitros : MonoBehaviour
     [SerializeField] private Color nitrosBarFullColor = Color.red;
     [SerializeField] private InputScreenButton nitrosButtons = null;
     [SerializeField] private AudioSource nosFullAudio = null;
+    [SerializeField] private RectTransform nitrosHint = null;
 
     private Color nitrosBarDefaultColor = Color.yellow;
     private Color nitrosChangeLabelColor = Color.yellow;
     private float grading = 0;
     private float gradingLength = 1;
     private float lastNitros = 0;
+    private float nitrosHintTimer = 0;
 
     private bool NitrosButtonsActive
     {
@@ -24,7 +26,6 @@ public class UiPlayingNitros : MonoBehaviour
         {
             if (value && nitrosButtons.intractable != value)
                 nosFullAudio.Play();
-
             nitrosButtons.intractable = value;
         }
     }
@@ -45,6 +46,7 @@ public class UiPlayingNitros : MonoBehaviour
     private void Update()
     {
         HandleInput();
+        HandleNitorsHint();
 
         if (PlayerPresenter.local.Grading > grading)
             gradingLength = PlayerPresenter.local.Grading - grading;
@@ -89,6 +91,25 @@ public class UiPlayingNitros : MonoBehaviour
         {
             PlayerPresenter.local.UseNitrous();
             lastNitros = 0;
+        }
+    }
+
+    private void HandleNitorsHint()
+    {
+        if (PlayerPresenter.local.NitrosReady)
+        {
+            nitrosHintTimer += Time.deltaTime;
+            if (nitrosHintTimer > 5)
+            {
+                nitrosHintTimer = 0;
+                nitrosHint.SetAnchordPositionX(Random.Range(-200.0f, 200.0f));
+                nitrosHint.gameObject.SetActive(true);
+            }
+        }
+        else
+        {
+            nitrosHintTimer = 0;
+            nitrosHint.gameObject.SetActive(false);
         }
     }
 }

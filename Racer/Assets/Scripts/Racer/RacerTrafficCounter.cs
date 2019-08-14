@@ -46,13 +46,16 @@ public class RacerTrafficCounter : MonoBehaviour
         }
         else if (candid == null && trafficCar != null)
         {
-            var disx = Mathf.Abs(transform.position.x - trafficCar.transform.position.x) - (racerWidth + trafficCar.Width) * 0.5f;
+            if (trafficCar.CanMove)
+            {
+                var disx = Mathf.Abs(transform.position.x - trafficCar.transform.position.x) - (racerWidth + trafficCar.Width) * 0.5f;
 
-            TotalTrafficPassed++;
-            if (disx < NosMaxDistance && Random.Range(0, 100) < EarnNosChance)
-                SendMessageUpwards("AddNitors", SendMessageOptions.DontRequireReceiver);
-            else
-                TotalTrafficFailed++;
+                TotalTrafficPassed++;
+                if (disx < NosMaxDistance && Random.Range(0, 100) < EarnNosChance)
+                    SendMessageUpwards("AddNitors", SendMessageOptions.DontRequireReceiver);
+                else
+                    TotalTrafficFailed++;
+            }
 
             trafficCar = null;
         }
