@@ -45,6 +45,10 @@ public class Popup_RaceResult : GameState
             Profile.Score = playerCurScore + playerAddScore;
             Network.SendScore(Profile.Score);
 
+            var tcounter = PlayerPresenter.local.racer.GetComponent<RacerTrafficCounter>();
+            Profile.Stats.Traffics.TotalPassed = tcounter.TotalTrafficPassed;
+            Profile.Stats.Traffics.TotalSuccessed = tcounter.TotalTrafficSuccess;
+
             Profile.Skill += 2 * PlayModel.maxPlayerCount - 4 * playerCurPosition;
         }
         else Profile.Skill += 2 * PlayModel.maxPlayerCount - 4 * playerCurPosition;

@@ -38,15 +38,13 @@ public class UiPlayingTutorial : MonoBehaviour
         if (index == 2) Destroy(gameObject);
     }
 
-    private string GetPlayingTutorialShowedString(int index) { return "PlayingTutorial_" + index; }
-
     private bool GetPlayingTutorialShowed(int index)
     {
-        return PlayerPrefs.GetInt(GetPlayingTutorialShowedString(index), 0) > 0;
+        return PlayerPrefs.GetInt("PlayingTutorial_" + index, 0) > 0;
     }
 
     private void SetPlayingTutorialShowed(int index)
     {
-        PlayerPrefs.SetInt(GetPlayingTutorialShowedString(index), 1);
+        PlayerPrefs.SetInt("PlayingTutorial_" + index, 1);
     }
 }

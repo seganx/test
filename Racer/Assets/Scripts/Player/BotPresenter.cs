@@ -149,7 +149,6 @@ public class BotPresenter : Base
 
     private static int ComputeNosChance()
     {
-        var v = Mathf.Max(0, Profile.Stats.Traffics.TotalSuccessed - Profile.Stats.Traffics.TotalFailed);
-        return v / (Profile.Stats.Traffics.TotalPassed + 1);
+        return 100 * Profile.Stats.Traffics.TotalSuccessed / Profile.Stats.Traffics.TotalPassed;
     }
 }

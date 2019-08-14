@@ -231,11 +231,6 @@ public static class Profile
                 get { return PlayerPrefsEx.GetInt("Profile.TotalTrafficFailed", 0); }
                 set { PlayerPrefsEx.SetInt("Profile.TotalTrafficFailed", value); }
             }
-
-            public static int TotalFailed
-            {
-                get { return TotalPassed - TotalSuccessed; }
-            }
         }
     }
 }
