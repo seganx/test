@@ -8,32 +8,30 @@ public class TrafficCar : MonoBehaviour
     [SerializeField] private GameObject shadow = null;
     [SerializeField] private GameObject nights = null;
 
-    private float pos;
+    private float forwardPosition;
     private float line;
     private static List<MeshRenderer> meshes = new List<MeshRenderer>(5);
-    private BoxCollider boxCollider = null;
 
     public bool CanMove { get; private set; }
-    public Vector3 Size { get { return boxCollider != null ? boxCollider.size : Vector3.one; } }
+    public float Width { get; private set; }
 
     public TrafficCar Setup(int color, float line, float distanceVariance)
     {
         CanMove = true;
         this.line = line;
-        pos = PlayModel.CurrentPlaying.playerForwardPosition + GlobalConfig.Race.traffics.startDistance + distanceVariance;
+        forwardPosition = PlayModel.CurrentPlaying.playerForwardPosition + GlobalConfig.Race.traffics.startDistance + distanceVariance;
         nights.SetActive(false);
 
         var carcolor = Color.HSVToRGB(color / 1000.0f, 0.65f, 0.75f);
+        return SetColor(carcolor);
+    }
+
+    public TrafficCar SetColor(Color color)
+    {
         meshes.Clear();
         transform.GetComponentsInChildren(true, meshes);
-        foreach (var item in meshes)
-        {
-            if (item.material.HasProperty("_CarColor"))
-            {
-                item.material.SetColor("_CarColor", carcolor);
-                break;
-            }
-        }
+        for (int i = 0; i < meshes.Count; i++)
+            meshes[i].material.color = color;
         return this;
     }
 
@@ -60,16 +58,17 @@ public class TrafficCar : MonoBehaviour
         rigid.interpolation = RigidbodyInterpolation.Interpolate;
         rigid.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
 
-        boxCollider = body.GetComponent<BoxCollider>(true, true);
+        var boxCollider = body.GetComponent<BoxCollider>(true, true);
+        Width = (boxCollider != null) ? boxCollider.size.x : 0;
     }
 
     private void Update()
     {
         if (CanMove)
         {
-            pos += GlobalConfig.Race.traffics.carsSpeed * Time.deltaTime;
-            transform.forward = Vector3.Lerp(transform.forward, RoadPresenter.GetForwardByDistance(pos), Time.deltaTime * 10);
-            transform.position = RoadPresenter.GetPositionByDistance(pos) + transform.right * line;
+            forwardPosition += GlobalConfig.Race.traffics.carsSpeed * Time.deltaTime;
+            transform.forward = Vector3.Lerp(transform.forward, RoadPresenter.GetForwardByDistance(forwardPosition), Time.deltaTime * 10);
+            transform.position = RoadPresenter.GetPositionByDistance(forwardPosition) + transform.right * line;
         }
 
         var distance = PlayModel.CurrentPlaying.playerForwardPosition - body.position.z;

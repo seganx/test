@@ -26,6 +26,7 @@ public class State_FindOpponents : GameState
 
     private IEnumerator Start()
     {
+        GarageCamera.SetCameraId(1);
         UiHeader.Hide();
 
         PlayNetwork.Connect(() =>

@@ -10,6 +10,7 @@ public class State_BlackMarket : GameState
 
     private void Start()
     {
+        GarageCamera.SetCameraId(1);
         UiHeader.Show();
         Popup_Loading.Display();
         ProfileLogic.SyncWidthServer(false, success =>

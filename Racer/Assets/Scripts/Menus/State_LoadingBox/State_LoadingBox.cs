@@ -8,6 +8,7 @@ public class State_LoadingBox : GameState
 {
     private void Start()
     {
+        GarageCamera.SetCameraId(1);
         UiHeader.Show();
         UiShowHide.ShowAll(transform);
     }

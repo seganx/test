@@ -19,7 +19,7 @@ public class BotPresenter : Base
 
         var tc = GetComponentInChildren<RacerTrafficCounter>();
         tc.NosMaxDistance = 100;
-        tc.NosChance = ComputeNosChance();
+        tc.EarnNosChance = ComputeNosChance();
 
         while (true)
         {
@@ -88,12 +88,12 @@ public class BotPresenter : Base
         else if (index == 1)
         {
             var factor = GlobalConfig.Race.bots.powers[RacerFactory.Racer.GetConfig(Profile.SelectedRacer).GroupId];
-            targetPower = factor.x * Profile.Score + factor.y;
+            targetPower = Mathf.RoundToInt(factor.x * Profile.Score + factor.y);
         }
         else
         {
             var factor = GlobalConfig.Race.bots.powers[0];
-            targetPower = factor.x * Profile.Score + factor.y;
+            targetPower = Mathf.RoundToInt(factor.x * Profile.Score + factor.y);
         }
 
         var res = new RacerProfile() { id = SelectRacer(targetPower) };

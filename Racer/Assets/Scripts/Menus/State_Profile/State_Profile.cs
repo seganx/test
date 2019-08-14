@@ -62,6 +62,7 @@ public class State_Profile : GameState
             });
         });
 
+        GarageCamera.SetCameraId(1);
         UiShowHide.ShowAll(transform);
 
         var waitFor = new WaitForSeconds(0.5f);

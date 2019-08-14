@@ -8,7 +8,10 @@ public class UiLoadingBoxFreePackage : MonoBehaviour
 {
     [SerializeField] private int index = 0;
     [SerializeField] private LocalText desc = null;
+    [SerializeField] private LocalText remainedLabel = null;
     [SerializeField] private Button purchaseButton = null;
+
+    private GlobalConfig.Data.Shop.LoadingBox data = null;
 
     private bool IsSameDay
     {
@@ -24,34 +27,23 @@ public class UiLoadingBoxFreePackage : MonoBehaviour
 
     private void Start()
     {
-        var data = index < GlobalConfig.Shop.loadingBoxPackage.Count ? GlobalConfig.Shop.loadingBoxPackage[index] : null;
+        data = index < GlobalConfig.Shop.loadingBoxPackage.Count ? GlobalConfig.Shop.loadingBoxPackage[index] : null;
         if (data != null)
         {
-            if (IsSameDay)
-            {
-                if (UseCount >= data.dailyCount)
-                    data = null;
-            }
-            else
+            if (IsSameDay == false)
             {
                 IsSameDay = true;
                 UseCount = 0;
             }
+
+            UpdateVisual();
         }
-
-        if (data == null)
-            Destroy(gameObject);
-        else
-            Setup(data);
-    }
-
-    private UiLoadingBoxFreePackage Setup(GlobalConfig.Data.Shop.LoadingBox data)
-    {
-        desc.SetFormatedText(data.nextTime > 3600 ? data.nextTime / 3600 : data.nextTime / 60);
+        else Destroy(gameObject);
 
         purchaseButton.onClick.AddListener(() =>
         {
             UseCount++;
+            UpdateVisual();
 
             switch (Random.Range(0, 100) % 4)
             {
@@ -91,7 +83,17 @@ public class UiLoadingBoxFreePackage : MonoBehaviour
 
             Popup_Rewards.Display();
         });
+    }
 
-        return this;
+    private void UpdateVisual()
+    {
+        desc.SetFormatedText(data.nextTime > 3600 ? data.nextTime / 3600 : data.nextTime / 60);
+        purchaseButton.SetInteractable(UseCount < data.dailyCount);
+
+        if (remainedLabel)
+        {
+            var ramained = Mathf.Max(0, data.dailyCount - UseCount);
+            remainedLabel.SetFormatedText(ramained, data.dailyCount);
+        }
     }
 }

@@ -27,6 +27,7 @@ public class State_Garage : GameState
 
     private void Start()
     {
+        GarageCamera.SetCameraId(1);
         UiHeader.Show();
         UiShowHide.ShowAll(transform);
 

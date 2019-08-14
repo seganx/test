@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class RacerTrafficCounter : MonoBehaviour
 {
-    private RacerPresenter racer = null;
     private TrafficCar trafficCar = null;
+    private float racerWidth = 0;
 
-    public int NosChance { get; set; }
+    public int EarnNosChance { get; set; }
     public float NosMaxDistance { get; set; }
     public int TotalTrafficPassed { get; set; }
     public int TotalTrafficFailed { get; set; }
@@ -16,15 +16,18 @@ public class RacerTrafficCounter : MonoBehaviour
 
     private void Awake()
     {
-        NosChance = 100;
+        EarnNosChance = 100;
         NosMaxDistance = GlobalConfig.Race.nosMaxDistance;
     }
 
     private void Start()
     {
-        racer = GetComponent<RacerPresenter>();
+        var racer = GetComponent<RacerPresenter>();
         if (racer == null) GetComponentInParent<RacerPresenter>();
-        if (racer == null) Destroy(this);
+        if (racer == null)
+            Destroy(this);
+        else
+            racerWidth = racer.Size.x;
     }
 
     private void FixedUpdate()
@@ -43,10 +46,10 @@ public class RacerTrafficCounter : MonoBehaviour
         }
         else if (candid == null && trafficCar != null)
         {
-            TotalTrafficPassed++;
+            var disx = Mathf.Abs(transform.position.x - trafficCar.transform.position.x) - (racerWidth + trafficCar.Width) * 0.5f;
 
-            var disx = Mathf.Abs(racer.transform.position.x - trafficCar.transform.position.x) - (racer.Size.x + trafficCar.Size.x) * 0.5f;
-            if (disx < NosMaxDistance && Random.Range(0, 100) < NosChance)
+            TotalTrafficPassed++;
+            if (disx < NosMaxDistance && Random.Range(0, 100) < EarnNosChance)
                 SendMessageUpwards("AddNitors", SendMessageOptions.DontRequireReceiver);
             else
                 TotalTrafficFailed++;
