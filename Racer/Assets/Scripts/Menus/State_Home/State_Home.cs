@@ -15,6 +15,7 @@ public class State_Home : GameState
     [SerializeField] private Button offlineButton = null;
     [SerializeField] private Button onlineButton = null;
     [SerializeField] private Button storyButton = null;
+    [SerializeField] private Button gameToturialButton = null;
 
     private void Start()
     {
@@ -66,6 +67,7 @@ public class State_Home : GameState
 
         });
 
+        gameToturialButton.onClick.AddListener(() => gameManager.OpenState<State_GameToturial>());
 
         CheckPreset(() =>
         {
