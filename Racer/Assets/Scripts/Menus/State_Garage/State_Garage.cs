@@ -26,10 +26,11 @@ public class State_Garage : GameState
 
         if (targetGroup > 0)
         {
-            var cars = RacerFactory.Racer.AllConfigs.FindAll(x => x.GroupId == targetGroup);
+            cars = RacerFactory.Racer.AllConfigs.FindAll(x => x.GroupId == targetGroup);
             if (cars.Exists(x => Profile.IsUnlockedRacer(x.Id)) == false)
                 cars.AddRange(RacerFactory.Racer.AllConfigs.FindAll(x => x.GroupId == targetGroup - 1));
 
+            descLabel.gameObject.SetActive(true);
             descLabel.SetFormatedText(targetGroup);
         }
         else
