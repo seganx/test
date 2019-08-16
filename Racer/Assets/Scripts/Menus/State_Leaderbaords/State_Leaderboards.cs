@@ -17,6 +17,7 @@ public class State_Leaderboards : GameState
 
     private void Start()
     {
+        UiHeader.Show();
         UiShowHide.ShowAll(transform);
 
         playerLeagueIcon.sprite = GlobalFactory.League.GetBigIcon(Profile.League);

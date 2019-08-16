@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class State_Garage : GameState
 {
     [SerializeField] private Button inventoryButton = null;
+    [SerializeField] private LocalText descLabel = null;
     [SerializeField] private RectTransform separatorPrefab = null;
     [SerializeField] private UiGarageRacerItem itemPrefab = null;
     [SerializeField] private float itemSpace = 20;
@@ -19,9 +20,25 @@ public class State_Garage : GameState
         set { PlayerPrefs.SetFloat("StateGarage.LastPosition", value); }
     }
 
-    public State_Garage Setup(System.Action onNextTask)
+    public State_Garage Setup(int targetGroup, System.Action onNextTask)
     {
         OnNextTask = onNextTask;
+
+        if (targetGroup > 0)
+        {
+            var cars = RacerFactory.Racer.AllConfigs.FindAll(x => x.GroupId == targetGroup);
+            if (cars.Exists(x => Profile.IsUnlockedRacer(x.Id)) == false)
+                cars.AddRange(RacerFactory.Racer.AllConfigs.FindAll(x => x.GroupId == targetGroup - 1));
+
+            descLabel.SetFormatedText(targetGroup);
+        }
+        else
+        {
+            cars = null;
+
+            descLabel.gameObject.SetActive(false);
+        }
+
         return this;
     }
 
@@ -33,7 +50,9 @@ public class State_Garage : GameState
 
         inventoryButton.onClick.AddListener(() => gameManager.OpenPopup<Popup_Confirm>().Setup(111103, false, null));
 
-        var cars = RacerFactory.Racer.AllConfigs;
+        if (cars == null || cars.Count < 1)
+            cars = RacerFactory.Racer.AllConfigs;
+
         cars.Sort((x, y) => x.GroupId == y.GroupId ? x.Id - y.Id : x.GroupId - y.GroupId);
 
         int lastgroupid = -1;
@@ -88,4 +107,5 @@ public class State_Garage : GameState
     /// STATIC MEMBERS
     ////////////////////////////////////////////////////////////
     private static System.Action OnNextTask = () => gameManager.OpenState<State_Upgrade>();
+    private static List<RacerConfig> cars = null;
 }

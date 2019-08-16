@@ -43,6 +43,25 @@ public class GarageRacer : Base
         GarageCamera.radiusFactor = racer.Size.magnitude / 4.41f;
     }
 
+    public static void LoadRacer(RacerProfile profile)
+    {
+        if (profile == null) return;
+        if (racer != null && racer.Id == profile.id) return;
+        if (racer != null) Destroy(racer.gameObject);
+
+        var config = RacerFactory.Racer.AllConfigs.Find(x => x.Id == profile.id);
+        if (config == null) return;
+
+        racer = RacerFactory.Racer.Create(profile.id, GameMap.Current.transform);
+        if (racer == null) return;
+
+        racer.SetupCustom(profile.custom).SetupCameras(false);
+        racer.transform.SetLocalPositionAndRotation(Vector3.back * 10 + Vector3.up * 10, Quaternion.identity);
+        racer.AutoWheelRotation = true;
+
+        GarageCamera.radiusFactor = racer.Size.magnitude / 4.41f;
+    }
+
     public static void SetRacerWheelsSpeed(float wheelSpeed)
     {
         racer.AutoWheelRotation = false;

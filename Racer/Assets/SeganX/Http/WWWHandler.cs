@@ -66,7 +66,11 @@ namespace SeganX
             yield return new WaitUntil(() => req.isDone || (Time.time - ret) > requestTimeout);
 
             //  print the result
-            Debug.Log("Downloaded " + res.downloadedBytes + " Bytes from " + res.method + " " + url + "\nHeader: " + res.GetResponseHeaders().GetStringDebug() + "\nError" + res.error + "\n" + res.downloadHandler.text);
+            Debug.Log(
+                "Downloaded " + res.downloadedBytes + " Bytes from " + res.method + " " + url + 
+                "\nHeader: " + res.GetResponseHeaders().GetStringDebug() + 
+                "\nError" + (res.error.HasContent() ? res.error : "No error") + 
+                "\n" + res.downloadHandler.text);
 
             callback(res);
         }

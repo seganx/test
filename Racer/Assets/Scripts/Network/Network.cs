@@ -152,6 +152,19 @@ public static class Network
         });
     }
 
+    public static void GetPlayerInfo(string profileId, System.Action<ProfileData.NetData> callback)
+    {
+        DownloadData<string>(address + "Players/GetPlayerInfo?profileId=" + profileId, null, (msg, res) =>
+        {
+            if (res.HasContent())
+            {
+                var dejson = Utilities.DecompressString(res.Split('.')[0], string.Empty);
+                var data = JsonUtilityEx.FromJson<ProfileData.NetData>(dejson);
+                callback(data);
+            }
+            else callback(null);
+        });
+    }
 
     public static class Message
     {
