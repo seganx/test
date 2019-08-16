@@ -25,10 +25,10 @@ public class State_Home : GameState
         shopButton.onClick.AddListener(() => gameManager.OpenState<State_Shop>());
         loadingBoxButton.onClick.AddListener(() => gameManager.OpenState<State_LoadingBox>());
 
-        garageButton.onClick.AddListener(() => gameManager.OpenState<State_Garage>().Setup(() => gameManager.OpenState<State_PhotoMode>()));
-        upgradeButton.onClick.AddListener(() => gameManager.OpenState<State_Garage>().Setup(() => gameManager.OpenState<State_Upgrade>()));
+        garageButton.onClick.AddListener(() => gameManager.OpenState<State_Garage>().Setup(0, () => gameManager.OpenState<State_PhotoMode>()));
+        upgradeButton.onClick.AddListener(() => gameManager.OpenState<State_Garage>().Setup(0, () => gameManager.OpenState<State_Upgrade>()));
 
-        customButton.onClick.AddListener(() => gameManager.OpenState<State_Garage>().Setup(() =>
+        customButton.onClick.AddListener(() => gameManager.OpenState<State_Garage>().Setup(0, () =>
         {
             if (Profile.IsUnlockedRacer(GarageRacer.racer.Id))
                 gameManager.OpenState<State_Custome>();
@@ -41,7 +41,7 @@ public class State_Home : GameState
 #if DATABEEN
             DataBeen.SendCustomEventData("home", new DataBeenConnection.CustomEventInfo[] { new DataBeenConnection.CustomEventInfo() { key = "select", value = "offline" } });
 #endif
-            gameManager.OpenState<State_Garage>().Setup(() =>
+            gameManager.OpenState<State_Garage>().Setup(0, () =>
             {
                 if (Profile.IsUnlockedRacer(GarageRacer.racer.Id))
                     StartOffline();

@@ -54,7 +54,8 @@ public class State_LeagueStart : GameState
         rewardButton.onClick.AddListener(() => gameManager.OpenPopup<Popup_LeaguePrize>());
         leaderboardButton.onClick.AddListener(() => gameManager.OpenState<State_Leaderboards>());
 
-        startButton.onClick.AddListener(() => gameManager.OpenState<State_Garage>().Setup(() =>
+        var leagueInfo = GlobalConfig.Leagues.GetByIndex(Profile.League);
+        startButton.onClick.AddListener(() => gameManager.OpenState<State_Garage>().Setup(leagueInfo.startGroup, () =>
         {
             if (Profile.IsUnlockedRacer(GarageRacer.racer.Id))
                 StartOnlineGame();
