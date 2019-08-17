@@ -41,7 +41,7 @@ public abstract class PlayerPresenter : Base
 
     public virtual float UpdateForwardPosition(float deltaTime)
     {
-        var pos = PlayModel.CurrentPlaying.forwardPosition + currGrade * GlobalConfig.Race.racerDistance;
+        var pos = RaceModel.stats.forwardPosition + currGrade * GlobalConfig.Race.racerDistance;
         transform.position = RoadPresenter.GetPositionByDistance(pos);
         transform.forward = Vector3.Lerp(transform.forward, RoadPresenter.GetForwardByDistance(pos), deltaTime * 10);
         return pos;
@@ -49,7 +49,7 @@ public abstract class PlayerPresenter : Base
 
     public virtual void UpdateSteeringPosition(float deltaTime)
     {
-        var stdest = Mathf.Clamp01(PlayModel.CurrentPlaying.speed / 30.0f) * SteeringValue * maxSteeringSpeed;
+        var stdest = Mathf.Clamp01(RaceModel.stats.speed / 30.0f) * SteeringValue * maxSteeringSpeed;
         currSteeringSpeed = Mathf.MoveTowards(currSteeringSpeed, stdest, maxSteeringSpeed * deltaTime * 3);
         var localPos = racer.transform.localPosition;
         localPos.x = localPos.x + currSteeringSpeed * deltaTime;

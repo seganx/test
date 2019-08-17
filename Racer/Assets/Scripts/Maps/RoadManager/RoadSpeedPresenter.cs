@@ -20,7 +20,7 @@ public class RoadSpeedPresenter : MonoBehaviour
 
     private void Update()
     {
-        var speed = Mathf.Clamp01(PlayModel.CurrentPlaying.speed / 100);
+        var speed = Mathf.Clamp01(RaceModel.stats.speed / 100);
         roadRenderer.material.SetFloat("_Speed", speed);
     }
 }

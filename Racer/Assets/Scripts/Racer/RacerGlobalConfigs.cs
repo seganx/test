@@ -13,6 +13,7 @@ public class RacerGlobalConfigs : StaticConfig<RacerGlobalConfigs>
         public int groupId = 0;
         public int cardCount = 0;
         public int price = 0;
+        public float speedBaseValue = 0;
         public float nitroBaseValue = 0;
         public float steeringBaseValue = 0;
         public float bodyBaseValue = 0;
@@ -21,19 +22,18 @@ public class RacerGlobalConfigs : StaticConfig<RacerGlobalConfigs>
     [System.Serializable]
     public class ConfigData
     {
-        public float nitroUpgradeRatio = 0;
-        public float steeringUpgradeRatio = 0;
-        public float bodyUpgradeRatio = 0;
+        public float speedPowerRatio = 0;
         public float nitroPowerRatio = 0;
         public float steeringPowerRatio = 0;
         public float bodyPowerRatio = 0;
+        public List<float> speedUpgradeValue = new List<float>();
         public List<float> nitroUpgradeValue = new List<float>();
         public List<float> steeringUpgradeValue = new List<float>();
         public List<float> bodyUpgradeValue = new List<float>();
         public List<int> maxUpgradeLevel = new List<int> { 8, 5, 3 };
         public List<Racer> racers = new List<Racer>();
 
-        public int TotalUpgradeLevels { get { return maxUpgradeLevel[0] + maxUpgradeLevel[1] + maxUpgradeLevel[3]; } }
+        public int TotalUpgradeLevels { get { return maxUpgradeLevel[0] + maxUpgradeLevel[1] + maxUpgradeLevel[2]; } }
     }
 
     public ConfigData data = new ConfigData();
@@ -42,21 +42,6 @@ public class RacerGlobalConfigs : StaticConfig<RacerGlobalConfigs>
     {
         data = LoadData(data);
     }
-
-#if UNITY_EDITOR
-    private void OnValidate()
-    {
-        if (data.maxUpgradeLevel.Count < 5)
-            data.maxUpgradeLevel = new List<int>(5) { 8, 5, 3, 1, 1 };
-
-        while (data.nitroUpgradeValue.Count < data.TotalUpgradeLevels)
-            data.nitroUpgradeValue.Add(data.nitroUpgradeValue.Count);
-        while (data.steeringUpgradeValue.Count < data.TotalUpgradeLevels)
-            data.steeringUpgradeValue.Add(data.steeringUpgradeValue.Count);
-        while (data.bodyUpgradeValue.Count < data.TotalUpgradeLevels)
-            data.bodyUpgradeValue.Add(data.bodyUpgradeValue.Count);
-    }
-#endif
 
     ////////////////////////////////////////////////////////////
     /// STATIC MEMBERS
@@ -82,6 +67,7 @@ public class RacerGlobalConfigs : StaticConfig<RacerGlobalConfigs>
     public Vector3 editorGroupParam = Vector3.zero;
     public Vector3 editorCardsParam = Vector3.zero;
     public Vector3 editorPriceParam = Vector3.zero;
+    public Vector3 editorSpeedParam = Vector3.zero;
     public Vector3 editorNitroParam = Vector3.zero;
     public Vector3 editorSteeringParam = Vector3.zero;
     public Vector3 editorBodyParam = Vector3.zero;

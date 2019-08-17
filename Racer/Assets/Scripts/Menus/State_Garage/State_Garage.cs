@@ -20,7 +20,7 @@ public class State_Garage : GameState
         set { PlayerPrefs.SetFloat("StateGarage.LastPosition", value); }
     }
 
-    public State_Garage Setup(int targetGroup, System.Action onNextTask)
+    public State_Garage Setup(int targetGroup, System.Action<RacerConfig> onNextTask)
     {
         OnNextTask = onNextTask;
 
@@ -33,14 +33,14 @@ public class State_Garage : GameState
             descLabel.gameObject.SetActive(true);
             descLabel.SetFormatedText(targetGroup);
         }
-        else
-        {
-            cars = null;
-
-            descLabel.gameObject.SetActive(false);
-        }
+        else cars = null;
 
         return this;
+    }
+
+    private void Awake()
+    {
+        descLabel.gameObject.SetActive(false);
     }
 
     private void Start()
@@ -79,7 +79,7 @@ public class State_Garage : GameState
                 else
                 {
                     Profile.SelectedRacer = car.Id;
-                    OnNextTask();
+                    OnNextTask(car);
                 }
             }
             ).rectTransform.anchoredPosition = itempos;
@@ -107,6 +107,6 @@ public class State_Garage : GameState
     ////////////////////////////////////////////////////////////
     /// STATIC MEMBERS
     ////////////////////////////////////////////////////////////
-    private static System.Action OnNextTask = () => gameManager.OpenState<State_Upgrade>();
+    private static System.Action<RacerConfig> OnNextTask = carid => gameManager.OpenState<State_Upgrade>();
     private static List<RacerConfig> cars = null;
 }

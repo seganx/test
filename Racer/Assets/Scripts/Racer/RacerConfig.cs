@@ -107,19 +107,19 @@ public class RacerConfig : ScriptableObject
     public float ComputeNitro(int upgradeLevel)
     {
         upgradeLevel = Mathf.Clamp(upgradeLevel, 0, MaxUpgradeLevel);
-        return data.nitroBaseValue + RacerGlobalConfigs.Data.nitroUpgradeRatio * RacerGlobalConfigs.Data.nitroUpgradeValue[upgradeLevel];
+        return data.nitroBaseValue + RacerGlobalConfigs.Data.nitroUpgradeValue[upgradeLevel];
     }
 
     public float ComputeSteering(int upgradeLevel)
     {
         upgradeLevel = Mathf.Clamp(upgradeLevel, 0, MaxUpgradeLevel);
-        return data.steeringBaseValue + RacerGlobalConfigs.Data.steeringUpgradeRatio * RacerGlobalConfigs.Data.steeringUpgradeValue[upgradeLevel];
+        return data.steeringBaseValue + RacerGlobalConfigs.Data.steeringUpgradeValue[upgradeLevel];
     }
 
     public float ComputeBody(int upgradeLevel)
     {
         upgradeLevel = Mathf.Clamp(upgradeLevel, 0, MaxUpgradeLevel);
-        return data.bodyBaseValue + RacerGlobalConfigs.Data.bodyUpgradeRatio * RacerGlobalConfigs.Data.bodyUpgradeValue[upgradeLevel];
+        return data.bodyBaseValue + RacerGlobalConfigs.Data.bodyUpgradeValue[upgradeLevel];
     }
 
     public int ComputePower(int nitroLevel, int steeringLevel, int bodyLevel)

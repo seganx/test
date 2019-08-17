@@ -55,28 +55,38 @@ public class State_LeagueStart : GameState
         leaderboardButton.onClick.AddListener(() => gameManager.OpenState<State_Leaderboards>());
 
         var leagueInfo = GlobalConfig.Leagues.GetByIndex(Profile.League);
-        startButton.onClick.AddListener(() => gameManager.OpenState<State_Garage>().Setup(leagueInfo.startGroup, () =>
+        startButton.onClick.AddListener(() => gameManager.OpenState<State_Garage>().Setup(leagueInfo.startGroup, rconfig =>
         {
-            if (Profile.IsUnlockedRacer(GarageRacer.racer.Id))
-                StartOnlineGame();
-            else
-                gameManager.OpenPopup<Popup_RacerCardInfo>();
+            if (Profile.IsUnlockedRacer(rconfig.Id))
+            {
+                if (rconfig.GroupId != leagueInfo.startGroup)
+                {
+
+                }
+                else StartOnlineGame(leagueInfo.startGroup);
+            }
+            else gameManager.OpenPopup<Popup_RacerCardInfo>();
         }));
 
         UiShowHide.ShowAll(transform);
     }
 
-    private void StartOnlineGame()
+    private void StartOnlineGame(int racegroup)
     {
-        PlayModel.mode = PlayModel.Mode.Online;
+        RaceModel.mode = RaceModel.Mode.Online;
+        RaceModel.specs.mapId = RaceModel.SelectRandomMap();
+        RaceModel.specs.racersGroup = racegroup;
+        RaceModel.specs.maxPlayerCount = 4;
+        RaceModel.specs.maxPlayTime = GlobalConfig.Race.maxTime;
+        RaceModel.traffic.baseDistance = GlobalConfig.Race.traffics.baseDistance;
+        RaceModel.traffic.distanceRatio = GlobalConfig.Race.traffics.speedFactor;
+
         PlayNetwork.IsOffline = false;
         PlayNetwork.EloScore = Profile.EloScore;
         PlayNetwork.EloPower = Profile.CurrentRacerPower;
-        PlayNetwork.MapId = PlayModel.mapId = PlayModel.SelectRandomMap();
-        PlayNetwork.MaxPlayerCount = PlayModel.maxPlayerCount = 4;
-        PlayModel.maxPlayTime = GlobalConfig.Race.maxTime;
-        PlayModel.Traffic.baseDistance = GlobalConfig.Race.traffics.baseDistance;
-        PlayModel.Traffic.distanceRatio = GlobalConfig.Race.traffics.speedFactor;
+        PlayNetwork.MapId = RaceModel.specs.mapId;
+        PlayNetwork.MaxPlayerCount = RaceModel.specs.maxPlayerCount;
+
         gameManager.OpenState<State_FindOpponents>();
     }
 

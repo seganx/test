@@ -37,7 +37,7 @@ public class State_FindOpponents : GameState
         StartGame,
         OnNetworkError);
 
-        searchbar.SetActive(PlayModel.IsOnline);
+        searchbar.SetActive(RaceModel.IsOnline);
         playersInfoBar.SetActive(false);
 
         playerData = new PlayerData(Profile.Name, Profile.Score, Profile.Position, Profile.CurrentRacer);
@@ -64,7 +64,7 @@ public class State_FindOpponents : GameState
             case State.Waiting:
                 {
                     waitTime += Time.deltaTime;
-                    if (PlayModel.IsOnline == false || waitTime > GlobalConfig.MatchMaking.joinTimeout || PlayNetwork.PlayersCount == PlayModel.maxPlayerCount)
+                    if (RaceModel.IsOnline == false || waitTime > GlobalConfig.MatchMaking.joinTimeout || PlayNetwork.PlayersCount == RaceModel.specs.maxPlayerCount)
                     {
                         if (waitFirst && WaitMore && PlayNetwork.PlayersCount < 2)
                         {
@@ -113,12 +113,12 @@ public class State_FindOpponents : GameState
         PlayerPresenterOnline.CreateOnline(playerData, grade, false);
 
         if (PhotonNetwork.isMasterClient)
-            BotPresenter.InitializeBots(PlayModel.maxPlayerCount - PlayNetwork.PlayersCount);
+            BotPresenter.InitializeBots(RaceModel.specs.maxPlayerCount - PlayNetwork.PlayersCount);
 
         RacerCameraConfig.Instance.currentMode = RacerCamera.Mode.StickingFollower;
         state = State.Counting;
 
-        if (PlayModel.IsOnline)
+        if (RaceModel.IsOnline)
         {
             Profile.Score -= 1;
             Network.SendScore(Profile.Score);
@@ -142,9 +142,9 @@ public class State_FindOpponents : GameState
         searchbar.SetActive(false);
         playersInfoBar.SetActive(true);
 
-        if (PlayerPresenter.allPlayers.Count < PlayModel.maxPlayerCount)
+        if (PlayerPresenter.allPlayers.Count < RaceModel.specs.maxPlayerCount)
             yield return new WaitForSeconds(1);
-        if (PlayerPresenter.allPlayers.Count < PlayModel.maxPlayerCount)
+        if (PlayerPresenter.allPlayers.Count < RaceModel.specs.maxPlayerCount)
             yield return new WaitForSeconds(1);
 
         opponentInfo.gameObject.SetActive(false);
@@ -159,8 +159,8 @@ public class State_FindOpponents : GameState
     private void PlayGame()
     {
         state = State.Started;
-        PlayModel.minForwardSpeed = GlobalConfig.Race.startSpeed;
-        PlayModel.maxForwardSpeed = PlayerPresenterOnline.FindMaxGameSpeed();
+        RaceModel.specs.minForwardSpeed = GlobalConfig.Race.startSpeed;
+        RaceModel.specs.maxForwardSpeed = PlayerPresenterOnline.FindMaxGameSpeed();
         gameManager.OpenState<State_Playing>(true);
     }
 

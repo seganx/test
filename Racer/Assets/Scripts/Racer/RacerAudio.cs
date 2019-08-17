@@ -159,7 +159,7 @@ public class RacerAudio : Base
         }
         else
         {
-            float p = 1 + (curSpeed.z - (PlayModel.minForwardSpeed + (PlayModel.maxForwardSpeed / gearsCount) * (curGear - 1))) / 40f;
+            float p = 1 + (curSpeed.z - (RaceModel.specs.minForwardSpeed + (RaceModel.specs.maxForwardSpeed / gearsCount) * (curGear - 1))) / 40f;
             engineSpeedUpAudioSource.pitch = Mathf.Lerp(engineSpeedUpAudioSource.pitch, p, Time.deltaTime * 10f);
             engineSpeedUpAudioSource.volume = Mathf.Lerp(engineSpeedUpAudioSource.volume, 1 * AUDIO_RATIO, Time.deltaTime * 5f);
 

@@ -21,7 +21,7 @@ public class UiRaceResultItem : MonoBehaviour
         racerLabel.text = racerName;
         powerLabel.SetText(racerPower.ToString("#,0"));
         scoreLabel.SetText(score.ToString());
-        addScoreLabel.gameObject.SetActive(PlayModel.IsOnline);
+        addScoreLabel.gameObject.SetActive(RaceModel.IsOnline);
         addScoreLabel.SetText((addscore > 0 ? "+" : string.Empty) + addscore);
         if (addscore < 0) addScoreLabel.target.color = Color.red;
         int league = GlobalConfig.Leagues.GetIndex(score, 0);

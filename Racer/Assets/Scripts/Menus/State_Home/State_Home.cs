@@ -25,12 +25,12 @@ public class State_Home : GameState
         shopButton.onClick.AddListener(() => gameManager.OpenState<State_Shop>());
         loadingBoxButton.onClick.AddListener(() => gameManager.OpenState<State_LoadingBox>());
 
-        garageButton.onClick.AddListener(() => gameManager.OpenState<State_Garage>().Setup(0, () => gameManager.OpenState<State_PhotoMode>()));
-        upgradeButton.onClick.AddListener(() => gameManager.OpenState<State_Garage>().Setup(0, () => gameManager.OpenState<State_Upgrade>()));
+        garageButton.onClick.AddListener(() => gameManager.OpenState<State_Garage>().Setup(0, rc => gameManager.OpenState<State_PhotoMode>()));
+        upgradeButton.onClick.AddListener(() => gameManager.OpenState<State_Garage>().Setup(0, rc => gameManager.OpenState<State_Upgrade>()));
 
-        customButton.onClick.AddListener(() => gameManager.OpenState<State_Garage>().Setup(0, () =>
+        customButton.onClick.AddListener(() => gameManager.OpenState<State_Garage>().Setup(0, rc =>
         {
-            if (Profile.IsUnlockedRacer(GarageRacer.racer.Id))
+            if (Profile.IsUnlockedRacer(rc.Id))
                 gameManager.OpenState<State_Custome>();
             else
                 gameManager.OpenState<State_PhotoMode>();
@@ -41,9 +41,9 @@ public class State_Home : GameState
 #if DATABEEN
             DataBeen.SendCustomEventData("home", new DataBeenConnection.CustomEventInfo[] { new DataBeenConnection.CustomEventInfo() { key = "select", value = "offline" } });
 #endif
-            gameManager.OpenState<State_Garage>().Setup(0, () =>
+            gameManager.OpenState<State_Garage>().Setup(0, rc =>
             {
-                if (Profile.IsUnlockedRacer(GarageRacer.racer.Id))
+                if (Profile.IsUnlockedRacer(rc.Id))
                     StartOffline();
                 else
                     gameManager.OpenPopup<Popup_RacerCardInfo>();
@@ -89,16 +89,19 @@ public class State_Home : GameState
 
     private void StartOffline()
     {
-        PlayModel.mode = PlayModel.Mode.Campain;
+        RaceModel.mode = RaceModel.Mode.Campain;
+        RaceModel.Reset();
+        RaceModel.specs.mapId = RaceModel.SelectRandomMap();
+        RaceModel.specs.maxPlayerCount = 4;
+        RaceModel.specs.maxPlayTime = GlobalConfig.Race.maxTime;
+        RaceModel.traffic.baseDistance = GlobalConfig.Race.traffics.baseDistance;
+        RaceModel.traffic.distanceRatio = GlobalConfig.Race.traffics.speedFactor;
 
         PlayNetwork.IsOffline = true;
         PlayNetwork.EloScore = Profile.EloScore;
         PlayNetwork.EloPower = Profile.CurrentRacerPower;
-        PlayNetwork.MapId = PlayModel.mapId = PlayModel.SelectRandomMap();
-        PlayNetwork.MaxPlayerCount = PlayModel.maxPlayerCount = 4;
-        PlayModel.maxPlayTime = GlobalConfig.Race.maxTime;
-        PlayModel.Traffic.baseDistance = GlobalConfig.Race.traffics.baseDistance;
-        PlayModel.Traffic.distanceRatio = GlobalConfig.Race.traffics.speedFactor;
+        PlayNetwork.MapId = RaceModel.specs.mapId;
+        PlayNetwork.MaxPlayerCount = RaceModel.specs.maxPlayerCount;
 
         gameManager.OpenState<State_FindOpponents>();
     }

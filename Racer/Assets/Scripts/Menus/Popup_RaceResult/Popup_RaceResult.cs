@@ -16,14 +16,10 @@ public class Popup_RaceResult : GameState
     [SerializeField] private LocalText nextScoreLabel = null;
     [SerializeField] private LocalText addScoreLabel = null;
     [SerializeField] private Button nextButton = null;
-    private int playerCurLeague = 0;
-    private int playerCurPosition = 0;
-    private int playerCurScore = 0;
-    private int playerAddScore = 0;
 
     public Popup_RaceResult Setup(System.Action onNextTask)
     {
-        playerCurPosition = PlayerPresenter.local.player.CurrPosition;
+        RaceLogic.OnRaceFinished();
 
 #if DATABEEN
         if (RewardLogic.IsFirstRace)
@@ -36,30 +32,12 @@ public class Popup_RaceResult : GameState
 
 #endif
 
-        //  update player score
-        if (PlayModel.IsOnline)
-        {
-            playerCurScore = Profile.Score + 1;
-            playerCurLeague = Profile.League;
-            playerAddScore = GlobalConfig.Race.positionScore[playerCurPosition];
-            Profile.Score = playerCurScore + playerAddScore;
-            Network.SendScore(Profile.Score);
-
-            var tcounter = PlayerPresenter.local.racer.GetComponent<RacerTrafficCounter>();
-            Profile.Stats.Traffics.TotalPassed = tcounter.TotalTrafficPassed;
-            Profile.Stats.Traffics.TotalSuccessed = tcounter.TotalTrafficSuccess;
-
-            Profile.Skill += 2 * PlayModel.maxPlayerCount - 4 * playerCurPosition;
-        }
-        else Profile.Skill += 2 * PlayModel.maxPlayerCount - 4 * playerCurPosition;
-
-
         nextButton.onClick.AddListener(() =>
         {
             base.Back();
 
-            var rewardsList = PlayModel.IsOnline ? GlobalConfig.Race.rewardsOnline : GlobalConfig.Race.rewardsOffline;
-            var preward = rewardsList[Mathf.Clamp(playerCurPosition, 0, rewardsList.Count - 1)];
+            var rewardsList = RaceModel.IsOnline ? GlobalConfig.Race.rewardsOnline : GlobalConfig.Race.rewardsOffline;
+            var preward = rewardsList[Mathf.Clamp(RaceModel.stats.playerPosition, 0, rewardsList.Count - 1)];
 
             var raceReward = RewardLogic.GetRaceReward(preward.racerCardChance, preward.customeChance, preward.gemChance, preward.gems);
             if (raceReward.custome != null)
@@ -84,13 +62,13 @@ public class Popup_RaceResult : GameState
             Popup_Rewards.Display(onNextTask).DisplayRacerReward(rewardsList[0].coins, rewardsList[1].coins, rewardsList[2].coins, rewardsList[3].coins);
         });
 
-        Popup_RateUs.SetPlayerInjoy(playerCurPosition < 1);
+        Popup_RateUs.SetPlayerInjoy(RaceModel.stats.playerPosition < 1);
         return this;
     }
 
     private void Start()
     {
-        positionLabel.SetFormatedText(playerCurPosition + 1);
+        positionLabel.SetFormatedText(RaceModel.stats.playerPosition + 1);
         foreach (var player in PlayerPresenter.allPlayers)
         {
             var rac = RacerFactory.Racer.GetConfig(player.RacerId);
@@ -100,7 +78,7 @@ public class Popup_RaceResult : GameState
         }
         Destroy(prefabItem.gameObject);
 
-        if (PlayModel.IsOnline == false)
+        if (RaceModel.IsOnline == false)
         {
             prevLeagueIcon.transform.parent.gameObject.SetActive(false);
             currLeagueIcon.transform.parent.gameObject.SetActive(false);
@@ -114,9 +92,9 @@ public class Popup_RaceResult : GameState
     private void DisplayLeagues()
     {
         //  display prev league
-        if (playerCurLeague > 0)
+        if (RaceLogic.onlineResult.lastLeague > 0)
         {
-            var prevIndex = playerCurLeague - 1;
+            var prevIndex = RaceLogic.onlineResult.lastLeague - 1;
             var prevLeague = GlobalConfig.Leagues.GetByIndex(prevIndex);
             prevLeagueIcon.sprite = GlobalFactory.League.GetBigIcon(prevIndex);
             prevScoreLabel.SetText(prevLeague.startRank > 0 ? prevLeague.startRank.ToString("#,0") : prevLeague.startScore.ToString("#,0"));
@@ -125,17 +103,17 @@ public class Popup_RaceResult : GameState
 
         //  display current league
         {
-            var currLeague = GlobalConfig.Leagues.GetByIndex(playerCurLeague);
-            currLeagueIcon.sprite = GlobalFactory.League.GetBigIcon(playerCurLeague);
-            currScoreLabel.SetText(currLeague.startRank > 0 ? Profile.PositionString : playerCurScore.ToString("#,0"));
-            addScoreLabel.gameObject.SetActive(playerAddScore > 0 && currLeague.startRank == 0);
-            addScoreLabel.SetText(playerAddScore.ToString());
+            var currLeague = GlobalConfig.Leagues.GetByIndex(RaceLogic.onlineResult.lastLeague);
+            currLeagueIcon.sprite = GlobalFactory.League.GetBigIcon(RaceLogic.onlineResult.lastLeague);
+            currScoreLabel.SetText(currLeague.startRank > 0 ? Profile.PositionString : RaceLogic.onlineResult.lastScore.ToString("#,0"));
+            addScoreLabel.gameObject.SetActive(RaceLogic.onlineResult.rewardScore > 0 && currLeague.startRank == 0);
+            addScoreLabel.SetText(RaceLogic.onlineResult.rewardScore.ToString());
         }
 
         //  display next league
-        if (playerCurLeague < GlobalConfig.Leagues.list.Count - 1)
+        if (RaceLogic.onlineResult.lastLeague < GlobalConfig.Leagues.list.Count - 1)
         {
-            var nextIndex = playerCurLeague + 1;
+            var nextIndex = RaceLogic.onlineResult.lastLeague + 1;
             var nextLeague = GlobalConfig.Leagues.GetByIndex(nextIndex);
             nextLeagueIcon.sprite = GlobalFactory.League.GetBigIcon(nextIndex);
             nextScoreLabel.SetText(nextLeague.startRank > 0 ? nextLeague.startRank.ToString("#,0") : nextLeague.startScore.ToString("#,0"));

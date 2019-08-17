@@ -30,12 +30,6 @@ public static class Profile
         set { data.score = value; }
     }
 
-    public static int Skill
-    {
-        get { return data.skill > 1 ? data.skill : CurrentRacerPower; }
-        set { data.skill = value; }
-    }
-
     public static int Position
     {
         get { return data.position.Value > 0 ? data.position.Value : 1318976853 - data.score; }
@@ -213,24 +207,5 @@ public static class Profile
     {
         data.data = new ProfileData.NetData();
         data.modified = modified;
-    }
-
-
-    public static class Stats
-    {
-        public static class Traffics
-        {
-            public static int TotalPassed
-            {
-                get { return PlayerPrefsEx.GetInt("Profile.TotalTrafficPassed", 1); }
-                set { PlayerPrefsEx.SetInt("Profile.TotalTrafficPassed", value); }
-            }
-
-            public static int TotalSuccessed
-            {
-                get { return PlayerPrefsEx.GetInt("Profile.TotalTrafficFailed", 0); }
-                set { PlayerPrefsEx.SetInt("Profile.TotalTrafficFailed", value); }
-            }
-        }
     }
 }
