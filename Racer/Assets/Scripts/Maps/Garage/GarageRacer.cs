@@ -46,7 +46,6 @@ public class GarageRacer : Base
     public static void LoadRacer(RacerProfile profile)
     {
         if (profile == null) return;
-        if (racer != null && racer.Id == profile.id) return;
         if (racer != null) Destroy(racer.gameObject);
 
         var config = RacerFactory.Racer.AllConfigs.Find(x => x.Id == profile.id);

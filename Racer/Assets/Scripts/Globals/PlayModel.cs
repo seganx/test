@@ -67,8 +67,10 @@ public static class RaceModel
         return 2;
     }
 
-    public static void Reset()
+    public static void Reset(Mode raceMode)
     {
+        mode = raceMode;
+
         specs = new Specifications();
         stats = new Stats();
         traffic = new Traffic();
