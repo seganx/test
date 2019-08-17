@@ -9,7 +9,8 @@ using LocalPush;
 public class UiLoadingBoxFreePackage : TimerPresenter
 {
     [SerializeField] private int index = 0;
-    [SerializeField] private LocalText desc = null;
+    [SerializeField] private LocalText dealyDesc = null;
+    [SerializeField] private LocalText countDesc = null;
     [SerializeField] private LocalText remainedLabel = null;
 
     [SerializeField] private Button getButton = null;
@@ -139,8 +140,11 @@ public class UiLoadingBoxFreePackage : TimerPresenter
 
     private void UpdateVisual()
     {
-        desc.SetFormatedText(data.nextTime > 3600 ? data.nextTime / 3600 : data.nextTime / 60);
-        //purchaseButton.SetInteractable(UseCount < data.dailyCount);
+        if (dealyDesc)
+            dealyDesc.SetFormatedText(data.nextTime > 3600 ? data.nextTime / 3600 : data.nextTime / 60);
+
+        if (countDesc)
+            countDesc.SetFormatedText(data.dailyCount);
 
         if (remainedLabel)
         {
