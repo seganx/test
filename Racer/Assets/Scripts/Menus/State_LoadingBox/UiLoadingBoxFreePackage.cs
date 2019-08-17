@@ -45,30 +45,23 @@ public class UiLoadingBoxFreePackage : TimerPresenter
         {
             UseCount++;
 
+            int newTime = 0;
             if (data.dailyCount > UseCount)
-            {
-                if (State_Settings.IsFreePackageNotificationActive)
-                    NotificationManager.SendWithAppIcon(GlobalConfig.Shop.loadingBoxPackage[index].nextTime, NotificationType.FreePackage);
-                StartTimer(GlobalConfig.Shop.loadingBoxPackage[index].nextTime);
-
-            }
+                newTime = GlobalConfig.Shop.loadingBoxPackage[index].nextTime;
             else
             {
                 DateTime now = TimerManager.ServerTime;
-                int hours = 0, minutes = 0, seconds = 0, newTime = 0;
+                int hours = 0, minutes = 0, seconds = 0;
                 hours = (24 - now.Hour) - 1;
                 minutes = (60 - now.Minute) - 1;
                 seconds = (60 - now.Second - 1);
 
                 newTime = seconds + (minutes * 60) + (hours * 3600);
-
-                if (State_Settings.IsFreePackageNotificationActive)
-                    NotificationManager.SendWithAppIcon(newTime, NotificationType.FreePackage);
-                StartTimer(newTime);
             }
 
-
-
+            if (State_Settings.IsFreePackageNotificationActive)
+                NotificationManager.SendWithAppIcon(newTime, NotificationType.FreePackage);
+            StartTimer(newTime);
 
             UpdateVisual();
 
