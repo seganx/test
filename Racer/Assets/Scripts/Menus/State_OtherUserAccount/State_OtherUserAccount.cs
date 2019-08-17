@@ -70,4 +70,10 @@ public class State_OtherUserAccount : GameState
         if (GarageRacer.racer != null)
             GarageRacer.racer.BroadcastMessage("SetPlateText", playerName, SendMessageOptions.DontRequireReceiver);
     }
+
+    public override float PreClose()
+    {
+        GarageRacer.LoadRacer(0);
+        return base.PreClose();
+    }
 }

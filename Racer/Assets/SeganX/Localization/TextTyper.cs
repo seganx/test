@@ -12,7 +12,7 @@ namespace SeganX
         [SerializeField] private Text target = null;
 
         private string text = string.Empty;
-        private WaitForSeconds typeDelay = new WaitForSeconds(0.07f);
+        private WaitForSeconds typeDelay = new WaitForSeconds(0.04f);
 
         private bool IsChanged
         {

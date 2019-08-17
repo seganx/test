@@ -30,7 +30,11 @@ public static class RaceLogic
         onlineResult = new OnlineResult();
         onlineResult.lastScore = Profile.Score + 1;
         onlineResult.lastLeague = Profile.League;
-        onlineResult.rewardScore = GlobalConfig.Race.positionScore[RaceModel.stats.playerPosition];
+
+        if (RaceModel.specs.racersGroup == PlayerPresenter.local.racer.GroupId)
+            onlineResult.rewardScore = GlobalConfig.Race.positionScore[RaceModel.stats.playerPosition];
+        else
+            onlineResult.rewardScore = 0;
 
         Profile.Score = onlineResult.newScore;
         Network.SendScore(Profile.Score);

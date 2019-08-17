@@ -61,7 +61,11 @@ public class State_LeagueStart : GameState
             {
                 if (rconfig.GroupId != leagueInfo.startGroup)
                 {
-
+                    var str = string.Format(LocalizationService.Get(111141), leagueInfo.startGroup);
+                    gameManager.OpenPopup<Popup_Confirm>().Setup(str, true, isok =>
+                    {
+                        if (isok) StartOnlineGame(leagueInfo.startGroup);
+                    });
                 }
                 else StartOnlineGame(leagueInfo.startGroup);
             }
@@ -73,7 +77,8 @@ public class State_LeagueStart : GameState
 
     private void StartOnlineGame(int racegroup)
     {
-        RaceModel.mode = RaceModel.Mode.Online;
+        RaceModel.Reset(RaceModel.Mode.Online);
+
         RaceModel.specs.mapId = RaceModel.SelectRandomMap();
         RaceModel.specs.racersGroup = racegroup;
         RaceModel.specs.maxPlayerCount = 4;
