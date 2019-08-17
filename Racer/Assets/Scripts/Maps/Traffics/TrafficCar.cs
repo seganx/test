@@ -19,7 +19,7 @@ public class TrafficCar : MonoBehaviour
     {
         CanMove = true;
         this.line = line;
-        forwardPosition = PlayModel.CurrentPlaying.playerForwardPosition + GlobalConfig.Race.traffics.startDistance + distanceVariance;
+        forwardPosition = RaceModel.stats.playerForwardPosition + GlobalConfig.Race.traffics.startDistance + distanceVariance;
         nights.SetActive(false);
 
         var carcolor = Color.HSVToRGB(color / 1000.0f, 0.65f, 0.75f);
@@ -71,7 +71,7 @@ public class TrafficCar : MonoBehaviour
             transform.position = RoadPresenter.GetPositionByDistance(forwardPosition) + transform.right * line;
         }
 
-        var distance = PlayModel.CurrentPlaying.playerForwardPosition - body.position.z;
+        var distance = RaceModel.stats.playerForwardPosition - body.position.z;
         if (distance > 50) Destroy(gameObject);
     }
 

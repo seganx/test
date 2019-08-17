@@ -60,7 +60,7 @@ public class PlayerPresenterOnline : PlayerPresenter
         {
             racer.gameObject.AddComponent<RacerTrafficCounter>();
 
-            if (PlayModel.IsOnline)
+            if (RaceModel.IsOnline)
             {
                 racer.boxCollider.isTrigger = !player.IsPlayer;
                 racer.boxCollider.gameObject.AddComponent<RacerCollisionContact>();

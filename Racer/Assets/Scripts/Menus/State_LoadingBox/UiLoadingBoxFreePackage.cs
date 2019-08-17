@@ -19,7 +19,7 @@ public class UiLoadingBoxFreePackage : MonoBehaviour
         set { if (value) PlayerPrefsEx.SetInt(name + ".day", TimerManager.ServerTime.DayOfYear); }
     }
 
-    private int UseCount
+    public int UseCount
     {
         get { return PlayerPrefsEx.GetInt(name + ".used", 0); }
         set { PlayerPrefsEx.SetInt(name + ".used", value); }

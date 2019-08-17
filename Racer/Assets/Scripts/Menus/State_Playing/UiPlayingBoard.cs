@@ -78,7 +78,7 @@ public class UiPlayingBoard : Base
             item.numberLabel.text = (i + 1) + ".";
             UpdateItemColor(item);
             if (item.IsPlayer)
-                instance.positionLabel.SetFormatedText(i + 1, PlayModel.maxPlayerCount);
+                instance.positionLabel.SetFormatedText(i + 1, RaceModel.specs.maxPlayerCount);
         }
 
 

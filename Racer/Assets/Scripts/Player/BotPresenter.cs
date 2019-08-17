@@ -60,7 +60,7 @@ public class BotPresenter : Base
     {
         var pos = (right ? transform.right : -transform.right) * player.racer.Size.x * 0.5f;
         RaycastHit hit;
-        return Physics.Raycast(player.racer.transform.position + pos, transform.forward, out hit, GlobalConfig.Race.bots.rayDistance + GlobalConfig.Race.bots.raySpeedFactor * PlayModel.maxForwardSpeed, 1 << 9);
+        return Physics.Raycast(player.racer.transform.position + pos, transform.forward, out hit, GlobalConfig.Race.bots.rayDistance + GlobalConfig.Race.bots.raySpeedFactor * RaceModel.specs.maxForwardSpeed, 1 << 9);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////
@@ -149,6 +149,6 @@ public class BotPresenter : Base
 
     private static int ComputeNosChance()
     {
-        return 100 * Profile.Stats.Traffics.TotalSuccessed / Profile.Stats.Traffics.TotalPassed;
+        return 100 * RaceModel.stats.TotalSuccessed / RaceModel.stats.TotalPassed;
     }
 }

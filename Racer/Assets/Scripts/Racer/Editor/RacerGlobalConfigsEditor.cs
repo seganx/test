@@ -1,9 +1,9 @@
-﻿using System.Collections;
+﻿using SeganX;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
-using System.IO;
-using SeganX;
 
 [CustomEditor(typeof(RacerGlobalConfigs))]
 public class RacerGlobalConfigsEditor : Editor
@@ -25,6 +25,21 @@ public class RacerGlobalConfigsEditor : Editor
 
         //  remove removed items
         curr.data.racers.RemoveAll(x => racers.Exists(y => x.id == y.Id) == false);
+
+        if (curr.data.maxUpgradeLevel.Count < 5)
+            curr.data.maxUpgradeLevel = new List<int>(5) { 8, 5, 3, 1, 1 };
+
+        while (curr.data.speedUpgradeValue.Count < curr.data.TotalUpgradeLevels)
+            curr.data.speedUpgradeValue.Add(curr.data.speedUpgradeValue.Count);
+
+        while (curr.data.nitroUpgradeValue.Count < curr.data.TotalUpgradeLevels)
+            curr.data.nitroUpgradeValue.Add(curr.data.nitroUpgradeValue.Count);
+
+        while (curr.data.steeringUpgradeValue.Count < curr.data.TotalUpgradeLevels)
+            curr.data.steeringUpgradeValue.Add(curr.data.steeringUpgradeValue.Count);
+
+        while (curr.data.bodyUpgradeValue.Count < curr.data.TotalUpgradeLevels)
+            curr.data.bodyUpgradeValue.Add(curr.data.bodyUpgradeValue.Count);
     }
 
     public override void OnInspectorGUI()
@@ -44,29 +59,21 @@ public class RacerGlobalConfigsEditor : Editor
         EditorGUILayout.EndHorizontal();
         EditorGUILayout.Space();
 
-        EditorGUILayout.BeginHorizontal("box");
-        EditorGUILayout.LabelField("Upgrade Ratio:", GUILayout.MinWidth(100));
-        EditorGUILayout.LabelField("Nitro", GUILayout.MaxWidth(35));
-        obj.data.nitroUpgradeRatio = EditorGUILayout.DelayedFloatField(obj.data.nitroUpgradeRatio, GUILayout.MaxWidth(40));
-        EditorGUILayout.Space();
-        EditorGUILayout.LabelField("Steering", GUILayout.MaxWidth(55));
-        obj.data.steeringUpgradeRatio = EditorGUILayout.DelayedFloatField(obj.data.steeringUpgradeRatio, GUILayout.MaxWidth(40));
-        EditorGUILayout.Space();
-        EditorGUILayout.LabelField("Body", GUILayout.MaxWidth(35));
-        obj.data.bodyUpgradeRatio = EditorGUILayout.DelayedFloatField(obj.data.bodyUpgradeRatio, GUILayout.MaxWidth(40));
-        EditorGUILayout.EndHorizontal();
-
+        const float wint = 35;
         EditorGUILayout.Space();
         EditorGUILayout.BeginHorizontal("box");
         EditorGUILayout.LabelField("Power Ratio:", GUILayout.MinWidth(100));
-        EditorGUILayout.LabelField("Nitro", GUILayout.MaxWidth(35));
-        obj.data.nitroPowerRatio = EditorGUILayout.DelayedFloatField(obj.data.nitroPowerRatio, GUILayout.MaxWidth(40));
+        EditorGUILayout.LabelField("Speed", GUILayout.MaxWidth(40));
+        obj.data.speedPowerRatio = EditorGUILayout.DelayedFloatField(obj.data.speedPowerRatio, GUILayout.MaxWidth(wint));
+        EditorGUILayout.Space();
+        EditorGUILayout.LabelField("Nitro", GUILayout.MaxWidth(30));
+        obj.data.nitroPowerRatio = EditorGUILayout.DelayedFloatField(obj.data.nitroPowerRatio, GUILayout.MaxWidth(wint));
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("Steering", GUILayout.MaxWidth(55));
-        obj.data.steeringPowerRatio = EditorGUILayout.DelayedFloatField(obj.data.steeringPowerRatio, GUILayout.MaxWidth(40));
+        obj.data.steeringPowerRatio = EditorGUILayout.DelayedFloatField(obj.data.steeringPowerRatio, GUILayout.MaxWidth(wint));
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("Body", GUILayout.MaxWidth(35));
-        obj.data.bodyPowerRatio = EditorGUILayout.DelayedFloatField(obj.data.bodyPowerRatio, GUILayout.MaxWidth(40));
+        obj.data.bodyPowerRatio = EditorGUILayout.DelayedFloatField(obj.data.bodyPowerRatio, GUILayout.MaxWidth(wint));
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.Space();
@@ -98,16 +105,18 @@ public class RacerGlobalConfigsEditor : Editor
         foldUpgradeGrid = EditorGUILayout.Foldout(foldUpgradeGrid, "Upgrades");
         if (foldUpgradeGrid)
         {
-            var wint = 100;
+            const float wint = 100;
             GUILayout.BeginHorizontal(EditorStyles.helpBox);
+            EditorGUILayout.LabelField("speed", GUILayout.MaxWidth(wint));
             EditorGUILayout.LabelField("nitro", GUILayout.MaxWidth(wint));
             EditorGUILayout.LabelField("steering", GUILayout.MaxWidth(wint));
             EditorGUILayout.LabelField("body", GUILayout.MaxWidth(wint));
             GUILayout.EndHorizontal();
 
-            for (int i = 0; i < obj.data.nitroUpgradeValue.Count; i++)
+            for (int i = 0; i < obj.data.TotalUpgradeLevels; i++)
             {
                 GUILayout.BeginHorizontal("box");
+                obj.data.speedUpgradeValue[i] = EditorGUILayout.DelayedFloatField(obj.data.speedUpgradeValue[i], GUILayout.MaxWidth(wint));
                 obj.data.nitroUpgradeValue[i] = EditorGUILayout.DelayedFloatField(obj.data.nitroUpgradeValue[i], GUILayout.MaxWidth(wint));
                 obj.data.steeringUpgradeValue[i] = EditorGUILayout.DelayedFloatField(obj.data.steeringUpgradeValue[i], GUILayout.MaxWidth(wint));
                 obj.data.bodyUpgradeValue[i] = EditorGUILayout.DelayedFloatField(obj.data.bodyUpgradeValue[i], GUILayout.MaxWidth(wint));
@@ -133,6 +142,10 @@ public class RacerGlobalConfigsEditor : Editor
                 for (int i = 0; i < list.Count; i++)
                     list[i].price = Mathf.FloorToInt(obj.editorPriceParam.x + obj.editorPriceParam.y * i);
 
+            if (DrawLinearParamButton("Speed", ref obj.editorSpeedParam))
+                for (int i = 0; i < list.Count; i++)
+                    list[i].speedBaseValue = obj.editorSpeedParam.x + obj.editorSpeedParam.y * i;
+
             if (DrawLinearParamButton("Nitro", ref obj.editorNitroParam))
                 for (int i = 0; i < list.Count; i++)
                     list[i].nitroBaseValue = obj.editorNitroParam.x + obj.editorNitroParam.y * i;
@@ -153,6 +166,7 @@ public class RacerGlobalConfigsEditor : Editor
             EditorGUILayout.LabelField("group", GUILayout.MaxWidth(wint));
             EditorGUILayout.LabelField("cards", GUILayout.MaxWidth(wint));
             EditorGUILayout.LabelField("price", GUILayout.MaxWidth(wint));
+            EditorGUILayout.LabelField("speed", GUILayout.MaxWidth(wint));
             EditorGUILayout.LabelField("nitro", GUILayout.MaxWidth(wint));
             EditorGUILayout.LabelField("steer", GUILayout.MaxWidth(wint));
             EditorGUILayout.LabelField("body", GUILayout.MaxWidth(wint));
@@ -168,6 +182,7 @@ public class RacerGlobalConfigsEditor : Editor
                 item.groupId = EditorGUILayout.DelayedIntField(item.groupId, GUILayout.MaxWidth(wint));
                 item.cardCount = EditorGUILayout.DelayedIntField(item.cardCount, GUILayout.MaxWidth(wint));
                 item.price = EditorGUILayout.DelayedIntField(item.price, GUILayout.MaxWidth(wint));
+                item.speedBaseValue = EditorGUILayout.DelayedFloatField(item.speedBaseValue, GUILayout.MaxWidth(wint));
                 item.nitroBaseValue = EditorGUILayout.DelayedFloatField(item.nitroBaseValue, GUILayout.MaxWidth(wint));
                 item.steeringBaseValue = EditorGUILayout.DelayedFloatField(item.steeringBaseValue, GUILayout.MaxWidth(wint));
                 item.bodyBaseValue = EditorGUILayout.DelayedFloatField(item.bodyBaseValue, GUILayout.MaxWidth(wint));

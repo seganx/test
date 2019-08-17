@@ -21,7 +21,7 @@ public class State_Playing : GameState
         UiShowHide.ShowAll(transform);
         RacerCamera.offset.z = -10;
         gameManager.OpenPopup<Popup_PlayingCountDown>();
-        forwardSpeedDelta = PlayModel.maxForwardSpeed - PlayModel.minForwardSpeed;
+        forwardSpeedDelta = RaceModel.specs.maxForwardSpeed - RaceModel.specs.minForwardSpeed;
         DelayCall(0.1f, () =>
         {
             foreach (var player in PlayerPresenter.all)
@@ -38,17 +38,18 @@ public class State_Playing : GameState
         {
             float x = PlayNetwork.PlayTime / GlobalConfig.Race.maxTime;
             float y = Mathf.Clamp01(1 - Mathf.Pow(x - 1, 4));
-            PlayModel.CurrentPlaying.speed = Mathf.Min(y * forwardSpeedDelta + PlayModel.minForwardSpeed, PlayModel.maxForwardSpeed);
-            PlayModel.CurrentPlaying.forwardPosition += PlayModel.CurrentPlaying.speed * deltaTime;
+            RaceModel.stats.speed = Mathf.Min(y * forwardSpeedDelta + RaceModel.specs.minForwardSpeed, RaceModel.specs.maxForwardSpeed);
+            RaceModel.stats.forwardPosition += RaceModel.stats.speed * deltaTime;
         }
 
         PlayerPresenter.UpdateAll(deltaTime);
-        PlayModel.CurrentPlaying.playerForwardPosition = PlayerPresenter.local.transform.position.z;
+        RaceModel.stats.playerForwardPosition = PlayerPresenter.local.transform.position.z;
+        RaceModel.stats.playerPosition = PlayerPresenter.local.player.CurrPosition;
 
         RacerCamera.offset.z = Mathf.Lerp(RacerCamera.offset.z, -cameraMode * 0.6f, deltaTime * 3);
         RacerCamera.UpdateAll(deltaTime);
 
-        var remainedTime = Mathf.Max(0, PlayModel.maxPlayTime - PlayNetwork.PlayTime);
+        var remainedTime = Mathf.Max(0, RaceModel.specs.maxPlayTime - PlayNetwork.PlayTime);
         timeLabel.text = Utilities.TimeToString(remainedTime, 3);
 
         if (remainedTime < 11 && timerAudioPlayed != Mathf.FloorToInt(remainedTime))
@@ -72,7 +73,7 @@ public class State_Playing : GameState
 
             PlayerPresenter.local.Horn(InputManager.Horn.isPointerDown);
 
-            if (PlayNetwork.PlayTime > PlayModel.maxPlayTime)
+            if (PlayNetwork.PlayTime > RaceModel.specs.maxPlayTime)
             {
                 UiShowHide.HideAll(transform);
                 allowUserHandle = false;
@@ -116,8 +117,8 @@ public class State_Playing : GameState
     private void OnApplicationPause(bool pause)
     {
         if (pause)
-            isGamePaused = PlayNetwork.PlayTime < PlayModel.maxPlayTime;
-        else if (isGamePaused && PlayNetwork.PlayTime > PlayModel.maxPlayTime)
+            isGamePaused = PlayNetwork.PlayTime < RaceModel.specs.maxPlayTime;
+        else if (isGamePaused && PlayNetwork.PlayTime > RaceModel.specs.maxPlayTime)
             ExitToMainMenu();
     }
 }

@@ -19,7 +19,7 @@ public class RacerCollisionContact : MonoBehaviour
 
         var rigid = other.transform.GetComponent<Rigidbody>();
         rigid.useGravity = true;
-        rigid.AddForceAtPosition(Vector3.forward * PlayModel.CurrentPlaying.speed * 0.75f + Vector3.up * 7, other.contacts[0].point, ForceMode.Impulse);
+        rigid.AddForceAtPosition(Vector3.forward * RaceModel.stats.speed * 0.75f + Vector3.up * 7, other.contacts[0].point, ForceMode.Impulse);
 
         other.transform.GetComponentInParent<TrafficCar>().Shoot();
     }
