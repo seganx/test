@@ -1,31 +1,24 @@
 ﻿using SeganX;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using LocalPush;
 
-public class UiLoadingBoxFreePackage : MonoBehaviour
+public class UiLoadingBoxFreePackage : TimerPresenter
 {
     [SerializeField] private int index = 0;
     [SerializeField] private LocalText desc = null;
     [SerializeField] private LocalText remainedLabel = null;
-    [SerializeField] private Button purchaseButton = null;
+
+    [SerializeField] private Button getButton = null;
+    [SerializeField] private GameObject deactiveButtonGameObject = null;
+    [SerializeField] private LocalText timerText = null;
 
     private GlobalConfig.Data.Shop.LoadingBox data = null;
 
-    private bool IsSameDay
-    {
-        get { return PlayerPrefsEx.GetInt(name + ".day", 0) == TimerManager.ServerTime.DayOfYear; }
-        set { if (value) PlayerPrefsEx.SetInt(name + ".day", TimerManager.ServerTime.DayOfYear); }
-    }
-
-    private int UseCount
-    {
-        get { return PlayerPrefsEx.GetInt(name + ".used", 0); }
-        set { PlayerPrefsEx.SetInt(name + ".used", value); }
-    }
-
-    private void Start()
+    public override void Start()
     {
         data = index < GlobalConfig.Shop.loadingBoxPackage.Count ? GlobalConfig.Shop.loadingBoxPackage[index] : null;
         if (data != null)
@@ -38,14 +31,47 @@ public class UiLoadingBoxFreePackage : MonoBehaviour
 
             UpdateVisual();
         }
-        else Destroy(gameObject);
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
 
-        purchaseButton.onClick.AddListener(() =>
+        base.Start();
+        timerText.SetFormatedText(0, 0, 0);
+
+        getButton.onClick.AddListener(() =>
         {
             UseCount++;
+
+            if (data.dailyCount > UseCount)
+            {
+                if (State_Settings.IsFreePackageNotificationActive)
+                    NotificationManager.SendWithAppIcon(GlobalConfig.Shop.loadingBoxPackage[index].nextTime, NotificationType.FreePackage);
+                StartTimer(GlobalConfig.Shop.loadingBoxPackage[index].nextTime);
+
+            }
+            else
+            {
+                DateTime now = TimerManager.ServerTime;
+                int hours = 0, minutes = 0, seconds = 0, newTime = 0;
+                hours = (24 - now.Hour) - 1;
+                minutes = (60 - now.Minute) - 1;
+                seconds = (60 - now.Second - 1);
+
+                newTime = seconds + (minutes * 60) + (hours * 3600);
+
+                if (State_Settings.IsFreePackageNotificationActive)
+                    NotificationManager.SendWithAppIcon(newTime, NotificationType.FreePackage);
+                StartTimer(newTime);
+            }
+
+
+
+
             UpdateVisual();
 
-            switch (Random.Range(0, 100) % 4)
+            switch (UnityEngine.Random.Range(0, 100) % 4)
             {
                 case 0:
                     {
@@ -85,10 +111,36 @@ public class UiLoadingBoxFreePackage : MonoBehaviour
         });
     }
 
+    public override void UpdateTimerText(int remainTime)
+    {
+        if (remainTime >= 0)
+            timerText.SetFormatedText(remainTime / 3600, remainTime % 3600 / 60, remainTime % 60);
+    }
+
+    public override void SetActiveTimerObjects(bool active)
+    {
+        getButton.gameObject.SetActive(!active);
+        if (deactiveButtonGameObject)
+            deactiveButtonGameObject.SetActive(active);
+    }
+
+
+    private bool IsSameDay
+    {
+        get { return PlayerPrefsEx.GetInt(name + ".day", 0) == TimerManager.ServerTime.DayOfYear; }
+        set { if (value) PlayerPrefsEx.SetInt(name + ".day", TimerManager.ServerTime.DayOfYear); }
+    }
+
+    private int UseCount
+    {
+        get { return PlayerPrefsEx.GetInt(name + ".used", 0); }
+        set { PlayerPrefsEx.SetInt(name + ".used", value); }
+    }
+
     private void UpdateVisual()
     {
         desc.SetFormatedText(data.nextTime > 3600 ? data.nextTime / 3600 : data.nextTime / 60);
-        purchaseButton.SetInteractable(UseCount < data.dailyCount);
+        //purchaseButton.SetInteractable(UseCount < data.dailyCount);
 
         if (remainedLabel)
         {
