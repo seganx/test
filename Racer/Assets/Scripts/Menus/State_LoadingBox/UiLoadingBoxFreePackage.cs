@@ -19,6 +19,18 @@ public class UiLoadingBoxFreePackage : TimerPresenter
 
     private GlobalConfig.Data.Shop.LoadingBox data = null;
 
+    private bool IsSameDay
+    {
+        get { return PlayerPrefsEx.GetInt(name + ".day", 0) == TimerManager.ServerTime.DayOfYear; }
+        set { if (value) PlayerPrefsEx.SetInt(name + ".day", TimerManager.ServerTime.DayOfYear); }
+    }
+
+    private int UseCount
+    {
+        get { return PlayerPrefsEx.GetInt(name + ".used", 0); }
+        set { PlayerPrefsEx.SetInt(name + ".used", value); }
+    }
+
     public override void Start()
     {
         data = index < GlobalConfig.Shop.loadingBoxPackage.Count ? GlobalConfig.Shop.loadingBoxPackage[index] : null;
@@ -116,19 +128,6 @@ public class UiLoadingBoxFreePackage : TimerPresenter
         getButton.gameObject.SetActive(!active);
         if (deactiveButtonGameObject)
             deactiveButtonGameObject.SetActive(active);
-    }
-
-
-    private bool IsSameDay
-    {
-        get { return PlayerPrefsEx.GetInt(name + ".day", 0) == TimerManager.ServerTime.DayOfYear; }
-        set { if (value) PlayerPrefsEx.SetInt(name + ".day", TimerManager.ServerTime.DayOfYear); }
-    }
-
-    private int UseCount
-    {
-        get { return PlayerPrefsEx.GetInt(name + ".used", 0); }
-        set { PlayerPrefsEx.SetInt(name + ".used", value); }
     }
 
     private void UpdateVisual()

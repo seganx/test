@@ -39,7 +39,6 @@ namespace SeganX
         {
             UnityWebRequest res = postdata == null ? UnityWebRequest.Get(url) : UnityWebRequest.Post(url, postdata);
 
-            res.timeout = requestTimeout;
             if (res.method == UnityWebRequest.kHttpVerbPOST)
             {
                 var uploader = new UploadHandlerRaw(postdata.GetBytes());

@@ -101,7 +101,8 @@
                 fixed4 frag(v2f i) : SV_Target
                 {
                     //  extract material id from vertex color
-                    uint matId = (round(i.colr.r * 255) / 10) - 1;
+                    uint umatId = (round(i.colr.r * 255) / 10) - 1;
+                    float matId = clamp(umatId, 0, 1);
                     
                     // compute parametres based on material id
                     fixed4 diffcolor = lerp(_DiffColor1, _DiffColor2, matId);
@@ -120,7 +121,7 @@
                     {
                         fixed3 diffuse = _LightColor0.rgb * max(0, dot(i.norm, lightDir));
                         fixed3 ambient = (i.norm.y > 0) ? lerp(unity_AmbientEquator.rgb, unity_AmbientSky.rgb, i.norm.y) : lerp(unity_AmbientEquator.rgb, unity_AmbientGround.rgb, -i.norm.y);
-                        res.rgb *= (diffuse + ambient);
+                       // res.rgb *= (diffuse + ambient);
                     }
 
                     // apply reflection
