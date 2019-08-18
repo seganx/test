@@ -86,6 +86,12 @@ public class RacerConfig : ScriptableObject
         get { return Mathf.RoundToInt(data.price * GlobalConfig.Shop.racerCosts.lightColorCostRatio); }
     }
 
+    public int UpgradeCostSpeed(int upgradeLevel)
+    {
+        upgradeLevel = Mathf.Clamp(upgradeLevel, 0, MaxUpgradeLevel);
+        return Mathf.RoundToInt(data.price * GlobalConfig.Shop.gemToCoin * GlobalConfig.Shop.racerCosts.speedUpgradeCostRatio * GlobalConfig.Shop.racerCosts.upgradeCostsRatio[upgradeLevel]);
+    }
+
     public int UpgradeCostNitro(int upgradeLevel)
     {
         upgradeLevel = Mathf.Clamp(upgradeLevel, 0, MaxUpgradeLevel);
@@ -102,6 +108,12 @@ public class RacerConfig : ScriptableObject
     {
         upgradeLevel = Mathf.Clamp(upgradeLevel, 0, MaxUpgradeLevel);
         return Mathf.RoundToInt(data.price * GlobalConfig.Shop.gemToCoin * GlobalConfig.Shop.racerCosts.bodyUpgradeCostRatio * GlobalConfig.Shop.racerCosts.upgradeCostsRatio[upgradeLevel]);
+    }
+
+    public float ComputeSpeed(int upgradeLevel)
+    {
+        upgradeLevel = Mathf.Clamp(upgradeLevel, 0, MaxUpgradeLevel);
+        return data.speedBaseValue + RacerGlobalConfigs.Data.speedUpgradeValue[upgradeLevel];
     }
 
     public float ComputeNitro(int upgradeLevel)
@@ -125,6 +137,7 @@ public class RacerConfig : ScriptableObject
     public int ComputePower(int nitroLevel, int steeringLevel, int bodyLevel)
     {
         var res =
+            ComputeSpeed(nitroLevel) * RacerGlobalConfigs.Data.speedPowerRatio +
             ComputeNitro(nitroLevel) * RacerGlobalConfigs.Data.nitroPowerRatio +
             ComputeSteering(steeringLevel) * RacerGlobalConfigs.Data.steeringPowerRatio +
             ComputeBody(bodyLevel) * RacerGlobalConfigs.Data.bodyPowerRatio;

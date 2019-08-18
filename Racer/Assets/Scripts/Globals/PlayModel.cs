@@ -18,7 +18,7 @@ public static class RaceModel
         public byte maxPlayerCount = 4;
         public float maxPlayTime = 60;
         public float minForwardSpeed = 50;
-        public float maxForwardSpeed = 100;
+        public float maxForwardSpeed = 0;
         public int racersGroup = 0;
     }
 

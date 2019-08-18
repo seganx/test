@@ -52,7 +52,7 @@ public class State_GameTutorial : GameState
         RaceModel.specs.maxPlayerCount = 2;
         RaceModel.specs.maxPlayTime = 120;
         RaceModel.specs.minForwardSpeed = GlobalConfig.Race.startSpeed;
-        RaceModel.specs.maxForwardSpeed = 120;
+        RaceModel.specs.maxForwardSpeed = 50;
 
         RaceModel.traffic.baseDistance = GlobalConfig.Race.traffics.baseDistance * 1.5f;
         RaceModel.traffic.distanceRatio = GlobalConfig.Race.traffics.speedFactor;
@@ -63,13 +63,6 @@ public class State_GameTutorial : GameState
         PlayNetwork.MapId = RaceModel.specs.mapId;
         PlayNetwork.MaxPlayerCount = RaceModel.specs.maxPlayerCount;
 
-        Game.LoadMap(PlayNetwork.MapId);
-
-        var playerData = new PlayerData(Profile.Name, Profile.Score, Profile.Position, Profile.CurrentRacer);
-        playerData.IsPlayer = true;
-
-        PlayerPresenter.local = PlayerPresenterOffline.Create(playerData);
-
-        gameManager.OpenState<State_Playing>(true);
+        gameManager.OpenState<State_GoToRace>();
     }
 }

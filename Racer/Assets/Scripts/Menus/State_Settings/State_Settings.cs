@@ -42,7 +42,7 @@ public class State_Settings : GameState
         notifCommons.isOn = IsCommonsNotificationActive;
         playMusic.isOn = AudioManager.Instance.IsMusicOn;
         playSfx.isOn = AudioManager.Instance.IsFxOn;
-        matchMakingWaitMoreToggle.isOn = State_FindOpponents.WaitMore;
+        matchMakingWaitMoreToggle.isOn = State_GoToRace.WaitMore;
 
         notifFullFuel.onValueChanged.AddListener((active) => IsFullFuelActiveNotificationActive = active);
         notifFreePackage.onValueChanged.AddListener((active) => IsFreePackageNotificationActive = active);
@@ -51,7 +51,7 @@ public class State_Settings : GameState
         notifCommons.onValueChanged.AddListener((active) => IsCommonsNotificationActive = active);
         playMusic.onValueChanged.AddListener((active) => AudioManager.Instance.IsMusicOn = active);
         playSfx.onValueChanged.AddListener((active) => AudioManager.Instance.IsFxOn = active);
-        matchMakingWaitMoreToggle.onValueChanged.AddListener((active) => State_FindOpponents.WaitMore = active);
+        matchMakingWaitMoreToggle.onValueChanged.AddListener((active) => State_GoToRace.WaitMore = active);
 
         telegramButton.onClick.AddListener(() => Application.OpenURL(GlobalConfig.Socials.contactTelegramUrl));
         emailButton.onClick.AddListener(() => SendEmail());

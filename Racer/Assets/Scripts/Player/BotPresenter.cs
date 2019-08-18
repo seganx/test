@@ -41,7 +41,7 @@ public class BotPresenter : Base
         else
             player.SteeringValue = Mathf.MoveTowards(player.SteeringValue, 0, Time.deltaTime * 2);
 
-        if (player.NitrosReady)
+        if (player.IsNitrosFull)
         {
             nosTimer += Time.fixedDeltaTime;
             if (nosTimer >= 1)
@@ -70,7 +70,7 @@ public class BotPresenter : Base
             var botRank = Random.Range(Profile.Position - 50, Profile.Position + 50);
             var pdata = new PlayerData(GlobalFactory.GetRandomName(), botScore, botRank, CreateRandomRacerProfile(i));
             var seed = (int)(PlayNetwork.RoomSeed % 4) + (PlayNetwork.PlayersCount + i + 1);
-            PlayerPresenterOnline.CreateOnline(pdata, 10 - seed % 4, true);
+            PlayerPresenterOnline.Create(pdata, 10 - seed % 4, true);
         }
     }
 

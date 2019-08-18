@@ -22,7 +22,7 @@ public class UiPlayingTutorial : MonoBehaviour
 
     private void Update()
     {
-        if (PlayerPresenter.local.NitrosReady)
+        if (PlayerPresenter.local.IsNitrosReady)
         {
             if (canDisplayNitros)
             {

@@ -92,7 +92,7 @@ public class State_LeagueStart : GameState
         PlayNetwork.MapId = RaceModel.specs.mapId;
         PlayNetwork.MaxPlayerCount = RaceModel.specs.maxPlayerCount;
 
-        gameManager.OpenState<State_FindOpponents>();
+        gameManager.OpenState<State_GoToRace>();
     }
 
     private void ClaimRewards()

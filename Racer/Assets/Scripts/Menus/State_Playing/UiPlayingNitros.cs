@@ -7,17 +7,14 @@ using UnityEngine.UI;
 public class UiPlayingNitros : MonoBehaviour
 {
     [SerializeField] private Image nitrosBar = null;
-    [SerializeField] private Text nitrosChangeLabel = null;
     [SerializeField] private Color nitrosBarFullColor = Color.red;
     [SerializeField] private InputScreenButton nitrosButtons = null;
     [SerializeField] private AudioSource nosFullAudio = null;
     [SerializeField] private RectTransform nitrosHint = null;
 
     private Color nitrosBarDefaultColor = Color.yellow;
-    private Color nitrosChangeLabelColor = Color.yellow;
     private float grading = 0;
     private float gradingLength = 1;
-    private float lastNitros = 0;
     private float nitrosHintTimer = 0;
 
     private bool NitrosButtonsActive
@@ -34,7 +31,6 @@ public class UiPlayingNitros : MonoBehaviour
     private void Start()
     {
         nitrosBarDefaultColor = nitrosBar.color;
-        nitrosChangeLabelColor = nitrosChangeLabel.color;
         nitrosBar.fillAmount = 0;
         NitrosButtonsActive = false;
 
@@ -48,55 +44,36 @@ public class UiPlayingNitros : MonoBehaviour
         HandleInput();
         HandleNitorsHint();
 
-        if (PlayerPresenter.local.Grading > grading)
-            gradingLength = PlayerPresenter.local.Grading - grading;
-        grading = PlayerPresenter.local.Grading;
+        if (PlayerPresenter.local.IsNitrosUsing > grading)
+            gradingLength = PlayerPresenter.local.IsNitrosUsing - grading;
+        grading = PlayerPresenter.local.IsNitrosUsing;
 
         nitrosBar.fillAmount = Mathf.MoveTowards(nitrosBar.fillAmount, grading > 0 ? (grading / gradingLength) : PlayerPresenter.local.Nitros, Time.deltaTime);
-        nitrosBar.color = PlayerPresenter.local.NitrosReady ? nitrosBarFullColor : nitrosBarDefaultColor;
-        nitrosChangeLabelColor.a = Mathf.MoveTowards(nitrosChangeLabelColor.a, 0, Time.deltaTime);
-        nitrosChangeLabel.color = nitrosChangeLabelColor;
-        NitrosButtonsActive = PlayerPresenter.local.NitrosReady;
+        nitrosBar.color = PlayerPresenter.local.IsNitrosFull ? nitrosBarFullColor : nitrosBarDefaultColor;
+        NitrosButtonsActive = PlayerPresenter.local.IsNitrosReady;
 
         RacerCamera.fovScale = grading > 0 ? 1.45f : 1;
         SeganX.Effects.CameraFX.MotionBlurValue = Mathf.Lerp(SeganX.Effects.CameraFX.MotionBlurValue, grading > 0 ? 0.6f : 0.15f, Time.deltaTime * 2);
-
-        if (lastNitros != PlayerPresenter.local.Nitros)
-        {
-            var nosdiff = (PlayerPresenter.local.Nitros - lastNitros) * 100;
-            if (nosdiff > 0)
-            {
-                nitrosChangeLabel.SetText("+" + nosdiff.ToString("0.00"), false, LocalizationService.IsPersian);
-                nitrosChangeLabelColor = Color.blue;
-            }
-            else if (nosdiff < 0)
-            {
-                nitrosChangeLabel.SetText(nosdiff.ToString("0.00"), false, LocalizationService.IsPersian);
-                nitrosChangeLabelColor = Color.red;
-            }
-            lastNitros = PlayerPresenter.local.Nitros;
-        }
     }
 
     private void HandleInput()
     {
-        if (PlayerPresenter.local.NitrosReady == false) return;
+        if (PlayerPresenter.local.IsNitrosReady == false) return;
 
 
         if (InputManager.Boost.isPointerDown || UiPlayingGesture.UseNitors
 #if UNITY_EDITOR || UNITY_STANDALONE
-                || Input.GetKeyDown(KeyCode.LeftShift)
+                || Input.GetKeyDown(KeyCode.LeftControl)
 #endif
         )
         {
             PlayerPresenter.local.UseNitrous();
-            lastNitros = 0;
         }
     }
 
     private void HandleNitorsHint()
     {
-        if (PlayerPresenter.local.NitrosReady)
+        if (PlayerPresenter.local.IsNitrosFull)
         {
             nitrosHintTimer += Time.deltaTime;
             if (nitrosHintTimer > 5)

@@ -202,6 +202,7 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
                 public float lightColorCostRatio = 0.01f;
 
                 [Header("Upgrade Cost Ratios")]
+                public float speedUpgradeCostRatio = 0.05f;
                 public float nitroUpgradeCostRatio = 0.05f;
                 public float steeringUpgradeCostRatio = 0.03f;
                 public float bodyUpgradeCostRatio = 0.04f;

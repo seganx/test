@@ -49,18 +49,18 @@ public class RacerCustomData
 [System.Serializable]
 public class RacerLevelData
 {
-    public int[] di = new int[4];
+    public int[] di = new int[5];
 
     public int Level { set { di[0] = value; } get { return di[0]; } }
     public int NitroLevel { set { di[1] = value; } get { return di[1]; } }
     public int SteeringLevel { set { di[2] = value; } get { return di[2]; } }
     public int BodyLevel { set { di[3] = value; } get { return di[3]; } }
+    public int SpeedLevel { set { di[4] = value; } get { return di[4]; } }
 }
 
 [System.Serializable]
 public class RacerProfile
 {
-    public int ver = 0; // Depricated! remove this for next update
     public int id = 0;
     public int cards = 0;
     public byte unlock = 0;

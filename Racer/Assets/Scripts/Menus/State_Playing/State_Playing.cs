@@ -44,7 +44,7 @@ public class State_Playing : GameState
 
         PlayerPresenter.UpdateAll(deltaTime);
         RaceModel.stats.playerForwardPosition = PlayerPresenter.local.transform.position.z;
-        RaceModel.stats.playerPosition = PlayerPresenter.local.player.CurrPosition;
+        RaceModel.stats.playerPosition = PlayerPresenter.local.player.CurrRank;
 
         RacerCamera.offset.z = Mathf.Lerp(RacerCamera.offset.z, -cameraMode * 0.6f, deltaTime * 3);
         RacerCamera.UpdateAll(deltaTime);

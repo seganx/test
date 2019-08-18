@@ -24,9 +24,9 @@ public class PlayerHud : MonoBehaviour
         pos.y = player.racer.bluePrint.roof.transform.position.y + 1.0f;
         transform.localPosition = pos;
 
-        if (currPosition != player.player.CurrPosition)
+        if (currPosition != player.player.CurrRank)
         {
-            currPosition = player.player.CurrPosition;
+            currPosition = player.player.CurrRank;
             spriter.sprite = positionSprites[currPosition % positionSprites.Length];
         }
 

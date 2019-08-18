@@ -11,8 +11,6 @@ public class PlayerPresenterOnline : PlayerPresenter
     private int[] eventInts = new int[1];           //  4 bytes
     private float[] eventFloats = new float[2];     //  8 bytes
     private byte[] eventObjects = new byte[12];     //  12 bytes
-    private object[] rpcSetGrade = new object[1];
-    private object[] rpcSetHorn = new object[1];
 
     public override bool IsInactive { get { return photonView.owner == null ? false : photonView.owner.IsInactive; } }
     public override bool IsMine { get { return photonView.isMine; } }
@@ -20,12 +18,14 @@ public class PlayerPresenterOnline : PlayerPresenter
     protected override void OnEnable()
     {
         base.OnEnable();
+        UiPlayingBoard.AddPlayer(player);
         PlayNetwork.OnEventCall += OnNetworkEvent;
     }
 
     protected override void OnDisable()
     {
         base.OnDisable();
+        UiPlayingBoard.RemovePlayer(player);
         PlayNetwork.OnEventCall -= OnNetworkEvent;
     }
 
@@ -94,21 +94,8 @@ public class PlayerPresenterOnline : PlayerPresenter
 
     public override void SetGrade(int grade, bool dontBlend = false)
     {
-        if (grade > Grade)
-        {
-            rpcSetGrade[0] = Grade;
-            photonView.RPC("NetMasterSetGrade", PhotonTargets.MasterClient, rpcSetGrade);
-        }
-    }
-
-    [PunRPC]
-    private void NetMasterSetGrade(int grade)
-    {
-        if (PhotonNetwork.isMasterClient)
-        {
-            rpcSetGrade[0] = FindNextFreeGrade(grade);
-            photonView.RPC("NetSetGrade", PhotonTargets.All, rpcSetGrade);
-        }
+        base.SetGrade(grade);
+        photonView.RPC("NetSetGrade", PhotonTargets.Others, grade);
     }
 
     [PunRPC]
@@ -121,8 +108,7 @@ public class PlayerPresenterOnline : PlayerPresenter
     public override void Horn(bool play)
     {
         base.Horn(play);
-        rpcSetHorn[0] = play;
-        photonView.RPC("NetHorn", PhotonTargets.Others, rpcSetHorn);
+        photonView.RPC("NetHorn", PhotonTargets.Others, play);
     }
 
     [PunRPC]
@@ -152,7 +138,7 @@ public class PlayerPresenterOnline : PlayerPresenter
     private static Dictionary<int, int> groupStat = new Dictionary<int, int>(10);
 
 
-    public static PlayerPresenterOnline CreateOnline(PlayerData data, int grade, bool asBot)
+    public static PlayerPresenterOnline Create(PlayerData data, int grade, bool asBot)
     {
         var ndata = new object[] { JsonUtility.ToJson(data), grade };
 
