@@ -86,6 +86,18 @@ public static class Profile
         set { if (value) data.socials |= 2; }
     }
 
+    public static int UsedFreeItem
+    {
+        get { return data.usedFreeItem; }
+        set { data.usedFreeItem = value; }
+    }
+
+    public static int TotalRaces
+    {
+        get { return data.totalRaces; }
+        set { data.totalRaces = value; }
+    }
+
     public static ProfileData Data
     {
         get { return data; }

@@ -15,15 +15,19 @@ public class RacerSpecialOfferTimerPresenter : TimerPresenter
 
     private void Awake()
     {
-        timerText.SetFormatedText(0, 0, 0);
-
-        ShopLogic.SpecialRacerPopup.Load();
-
-        if (specialOfferButton)
+        if (Profile.TotalRaces > 5)
         {
-            specialOfferButton.gameObject.SetActive(false);
-            specialOfferButton.onClick.AddListener(() => ShopLogic.SpecialRacerPopup.Display(() => specialOfferButton.gameObject.SetActive(false)));
+            timerText.SetFormatedText(0, 0, 0);
+
+            ShopLogic.SpecialRacerPopup.Load();
+
+            if (specialOfferButton)
+            {
+                specialOfferButton.gameObject.SetActive(false);
+                specialOfferButton.onClick.AddListener(() => ShopLogic.SpecialRacerPopup.Display(() => specialOfferButton.gameObject.SetActive(false)));
+            }
         }
+        else Destroy(gameObject);
     }
 
     public override void UpdateTimerText(int remainTime)

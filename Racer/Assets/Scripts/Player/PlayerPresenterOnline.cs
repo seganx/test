@@ -20,14 +20,12 @@ public class PlayerPresenterOnline : PlayerPresenter
     protected override void OnEnable()
     {
         base.OnEnable();
-        UiPlayingBoard.AddPlayer(player);
         PlayNetwork.OnEventCall += OnNetworkEvent;
     }
 
     protected override void OnDisable()
     {
         base.OnDisable();
-        UiPlayingBoard.RemovePlayer(player);
         PlayNetwork.OnEventCall -= OnNetworkEvent;
     }
 
@@ -48,18 +46,12 @@ public class PlayerPresenterOnline : PlayerPresenter
         player.IsPlayer = local == this;
 
         //  load racer from player data
-        LoadRacer(player, player.IsPlayer);
-        racer.AutoSteeringWheel = true;
-        racer.AutoWheelRotation = true;
-        if (local == this)
-            transform.GetChild(0).ScaleLocalPosition(1, racer.Size.y / 1.279f, 0.5f + 0.4f * (racer.Size.z / 3.4f));
+        Setup(player);
 
         //  initialize presneter
         base.SetGrade(playerGrade, true);
         if (photonView.isMine)
         {
-            racer.gameObject.AddComponent<RacerTrafficCounter>();
-
             if (RaceModel.IsOnline)
             {
                 racer.boxCollider.isTrigger = !player.IsPlayer;
@@ -69,11 +61,7 @@ public class PlayerPresenterOnline : PlayerPresenter
             {
                 racer.boxCollider.isTrigger = false;
                 racer.bodyTransform.gameObject.AddComponent<RacerCollisionContact>();
-                var rigid = racer.bodyTransform.gameObject.AddComponent<Rigidbody>();
-                rigid.mass = 20;
-                rigid.useGravity = false;
-                rigid.constraints = RigidbodyConstraints.FreezeAll;
-                rigid.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+                AddRigidBody();
             }
         }
         else racer.boxCollider.isTrigger = true;
@@ -169,7 +157,7 @@ public class PlayerPresenterOnline : PlayerPresenter
         var ndata = new object[] { JsonUtility.ToJson(data), grade };
 
         if (asBot)
-            return PhotonNetwork.InstantiateSceneObject("Prefabs/bot", Vector3.zero, Quaternion.identity, 0, ndata).GetComponent<PlayerPresenterOnline>();
+            return PhotonNetwork.InstantiateSceneObject("Prefabs/Player", Vector3.zero, Quaternion.identity, 0, ndata).AddComponent<BotPresenter>().GetComponent<PlayerPresenterOnline>();
         else
             return PhotonNetwork.Instantiate("Prefabs/Player", Vector3.zero, Quaternion.identity, 0, ndata).GetComponent<PlayerPresenterOnline>();
     }

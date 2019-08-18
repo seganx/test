@@ -29,6 +29,7 @@ public abstract class PlayerPresenter : Base
         all.Add(this);
         allPlayers.Add(player);
         UpdatePositons();
+        UiPlayingBoard.AddPlayer(player);
     }
 
     protected virtual void OnDisable()
@@ -36,7 +37,36 @@ public abstract class PlayerPresenter : Base
         player.CurrGrade = -100 * all.Count;
         all.Remove(this);
         UpdatePositons();
+        UiPlayingBoard.RemovePlayer(player);
         if (all.Count < 2) allPlayers.Clear();
+    }
+
+    public virtual void Setup(PlayerData playerdata)
+    {
+        player = playerdata;
+        maxSteeringSpeed = player.RacerSteering;
+
+        racer = RacerFactory.Racer.Create(player.RacerId, transform);
+        racer.SetupCustom(player.RacerCustom).SetupCameras(player.IsPlayer);
+        racer.BroadcastMessage("SetPlateText", player.name, SendMessageOptions.DontRequireReceiver);
+        racer.AutoSteeringWheel = true;
+        racer.AutoWheelRotation = true;
+
+        if (player.IsPlayer)
+        {
+            racer.gameObject.AddComponent<AudioListener>();
+            transform.GetChild(0).ScaleLocalPosition(1, racer.Size.y / 1.279f, 0.5f + 0.4f * (racer.Size.z / 3.4f));
+        }
+    }
+
+    public virtual Rigidbody AddRigidBody()
+    {
+        var rigid = racer.bodyTransform.gameObject.AddComponent<Rigidbody>();
+        rigid.mass = 20;
+        rigid.useGravity = false;
+        rigid.constraints = RigidbodyConstraints.FreezeAll;
+        rigid.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+        return rigid;
     }
 
     public virtual float UpdateForwardPosition(float deltaTime)
@@ -64,16 +94,6 @@ public abstract class PlayerPresenter : Base
             currSteeringSpeed = 0;
         }
         racer.transform.localPosition = localPos;
-    }
-
-    public virtual void LoadRacer(PlayerData playerdata, bool isplayer)
-    {
-        player = playerdata;
-        racer = RacerFactory.Racer.Create(player.RacerId, transform);
-        racer.SetupCustom(player.RacerCustom).SetupCameras(isplayer);
-        maxSteeringSpeed = player.RacerSteering;
-        if (isplayer) racer.gameObject.AddComponent<AudioListener>();
-        racer.BroadcastMessage("SetPlateText", player.name, SendMessageOptions.DontRequireReceiver);
     }
 
     public virtual void AddNitors()

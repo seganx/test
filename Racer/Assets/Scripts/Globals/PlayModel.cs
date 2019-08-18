@@ -5,7 +5,7 @@ using SeganX;
 
 public static class RaceModel
 {
-    public enum Mode { Online, Campain, Quests, FreeDrive }
+    public enum Mode { Online, Campain, Quests, FreeDrive, Tutorial }
 
     public static Mode mode = Mode.Online;
 
@@ -28,19 +28,6 @@ public static class RaceModel
         public float forwardPosition = 0;
         public float playerForwardPosition = 0;
         public int playerPosition = 0;
-        
-
-        public int TotalPassed
-        {
-            get { return PlayerPrefsEx.GetInt("PlayModel.TotalPassed", 1); }
-            set { PlayerPrefsEx.SetInt("PlayModel.TotalPassed", value); }
-        }
-
-        public int TotalSuccessed
-        {
-            get { return PlayerPrefsEx.GetInt("PlayModel.TotalSuccessed", 0); }
-            set { PlayerPrefsEx.SetInt("PlayModel.TotalSuccessed", value); }
-        }
     }
 
     public class Traffic
@@ -58,6 +45,7 @@ public static class RaceModel
     public static bool IsCampain { get { return mode == Mode.Campain; } }
     public static bool IsQuests { get { return mode == Mode.Quests; } }
     public static bool IsFreeDrive { get { return mode == Mode.FreeDrive; } }
+    public static bool IsTutorial { get { return mode == Mode.Tutorial; } }
 
     public static int SelectRandomMap()
     {

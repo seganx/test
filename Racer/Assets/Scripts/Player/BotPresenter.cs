@@ -17,10 +17,6 @@ public class BotPresenter : Base
         var waitWhile = new WaitForSeconds(2);
         yield return waitWhile;
 
-        var tc = GetComponentInChildren<RacerTrafficCounter>();
-        tc.NosMaxDistance = 100;
-        tc.EarnNosChance = ComputeNosChance();
-
         while (true)
         {
             defaultSteering = Random.Range(0, 100) > 50 ? 1 : -1;
@@ -145,10 +141,5 @@ public class BotPresenter : Base
 
         var index = Random.Range(0, list.Count);
         return list[index];
-    }
-
-    private static int ComputeNosChance()
-    {
-        return 100 * RaceModel.stats.TotalSuccessed / RaceModel.stats.TotalPassed;
     }
 }

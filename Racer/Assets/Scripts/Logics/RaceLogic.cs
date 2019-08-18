@@ -38,9 +38,5 @@ public static class RaceLogic
 
         Profile.Score = onlineResult.newScore;
         Network.SendScore(Profile.Score);
-
-        var tcounter = PlayerPresenter.local.racer.GetComponent<RacerTrafficCounter>();
-        RaceModel.stats.TotalPassed = tcounter.TotalTrafficPassed;
-        RaceModel.stats.TotalSuccessed = tcounter.TotalTrafficSuccess;
     }
 }

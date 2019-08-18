@@ -22,6 +22,8 @@ public class ProfileData
     public int selectedRacer { get { return data.i3.Value; } set { data.i3 = value; } }
     public int socials { get { return data.i4.Value; } set { data.i4 = value; } }
     public int skill { get { return data.i5.Value; } set { data.i5 = value; } }
+    public int usedFreeItem { get { return data.i6.Value; } set { data.i6 = value; } }
+    public int totalRaces { get { return data.i7.Value; } set { data.i7 = value; } }
     public List<string> purchasedItems { get { return data.a1; } set { data.a1 = value; } }
     public List<RacerProfile> racers { get { return data.a2; } set { data.a2 = value; } }
 
@@ -73,11 +75,13 @@ public class ProfileData
     public class NetData : NetDataArrays
     {
         public int mod = 0;
-        public CryptoInt i1 = 0;
-        public CryptoInt i2 = 0;
-        public CryptoInt i3 = 0;
-        public CryptoInt i4 = 0;
-        public CryptoInt i5 = 0;
+        public CryptoInt i1 = 0; // gem
+        public CryptoInt i2 = 0; // gold
+        public CryptoInt i3 = 0; // selected racer
+        public CryptoInt i4 = 0; // socials
+        public CryptoInt i5 = 0; // skills
+        public CryptoInt i6 = 0; // used free item
+        public CryptoInt i7 = 0; // total races
 
         public bool IsEqualTo(NetData other)
         {
@@ -87,6 +91,9 @@ public class ProfileData
             if (i2.Value != other.i2.Value) return false;
             if (i3.Value != other.i3.Value) return false;
             if (i4.Value != other.i4.Value) return false;
+            if (i5.Value != other.i5.Value) return false;
+            if (i6.Value != other.i6.Value) return false;
+            if (i7.Value != other.i7.Value) return false;
             if (a1.Count != other.a1.Count) return false;
             if (a2.Count != other.a2.Count) return false;
 
