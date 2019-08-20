@@ -13,8 +13,10 @@ public static class RewardLogic
 
     public class RaceReward
     {
-        public int gem = 0;
+        public int gems = 0;
+        public int coins = 0;
         public int racerId = 0;
+        public int racerCount = 1;
         public RacerCustomReward custome = null;
     }
 
@@ -26,11 +28,12 @@ public static class RewardLogic
         set { PlayerPrefs.SetInt("RewardLogic.IsFirstRace", value ? 1 : 0); }
     }
 
-    public static RaceReward GetRaceReward(int racerCardChance, int customeChance, int gemChance, int gems)
+    public static RaceReward GetRaceReward(int racerCardChance, int customeChance, int gemChance, int gems, int coins)
     {
         var res = new RaceReward();
+        res.coins = coins;
         if (Random.Range(0, 100) < gemChance)
-            res.gem = gems;
+            res.gems = gems;
         if (Random.Range(0, 100) < racerCardChance)
             res.racerId = SelectRacerReward();
         if (Random.Range(0, 100) < customeChance)

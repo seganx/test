@@ -65,7 +65,13 @@ public class State_Upgrade : GameState
 
     private float CurrPower
     {
-        get { return config.ComputePower(LevelNitro, LevelSteering, LevelBody); }
+        get { return config.ComputePower(LevelSpeed, LevelNitro, LevelSteering, LevelBody); }
+    }
+
+    private int LevelSpeed
+    {
+        get { return racerprofile == null ? 0 : racerprofile.level.SpeedLevel; }
+        set { if (racerprofile != null) racerprofile.level.SpeedLevel = value; }
     }
 
     private int LevelNitro
@@ -242,19 +248,19 @@ public class State_Upgrade : GameState
                 level = LevelNitro;
                 value = config.ComputeNitro(level);
                 nvalue = config.ComputeNitro(level + 1);
-                if (showPlus) powerDiffValue = config.ComputePower(LevelNitro + 1, LevelSteering, LevelBody) - CurrPower;
+                if (showPlus) powerDiffValue = config.ComputePower(LevelSpeed, LevelNitro + 1, LevelSteering, LevelBody) - CurrPower;
                 break;
             case UpgradeType.Steering:
                 level = LevelSteering;
                 value = config.ComputeSteering(level);
                 nvalue = config.ComputeSteering(level + 1);
-                if (showPlus) powerDiffValue = config.ComputePower(LevelNitro, LevelSteering + 1, LevelBody) - CurrPower;
+                if (showPlus) powerDiffValue = config.ComputePower(LevelSpeed, LevelNitro, LevelSteering + 1, LevelBody) - CurrPower;
                 break;
             case UpgradeType.Body:
                 level = LevelBody;
                 value = config.ComputeBody(level);
                 nvalue = config.ComputeBody(level + 1);
-                if (showPlus) powerDiffValue = config.ComputePower(LevelNitro, LevelSteering, LevelBody + 1) - CurrPower;
+                if (showPlus) powerDiffValue = config.ComputePower(LevelSpeed, LevelNitro, LevelSteering, LevelBody + 1) - CurrPower;
                 break;
         }
 

@@ -18,7 +18,7 @@ public class UiPlayingBoard : Base
         public bool IsLeft { get; set; }
         public PlayerData Player { get { return data; } set { data = value; } }
         public bool IsPlayer { get { return data == null ? false : data.IsPlayer; } }
-        public int Rank { get { return data == null ? -100 : data.Rank; } }
+        public int Rank { get { return data == null ? -100 : data.CurrRank; } }
     }
 
     [SerializeField] private LocalText positionLabel = null;
@@ -70,7 +70,7 @@ public class UiPlayingBoard : Base
     public static void UpdatePositions()
     {
         if (instance == null) return;
-        instance.items.Sort((x, y) => y.Rank - x.Rank);
+        instance.items.Sort((x, y) => x.Rank - y.Rank);
         for (int i = 0; i < instance.items.Count; i++)
         {
             var item = instance.items[i];

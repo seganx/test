@@ -18,8 +18,9 @@ public class Popup_Welcome : GameState
         UiShowHide.ShowAll(transform);
         nextButton.gameObject.SetActive(false);
         yield return new WaitWhile(() => CameraFX_Optimizer.IsRunning);
-        nextButton.gameObject.SetActive(true);
-        nextButton.onClick.AddListener(Back);
+        //nextButton.gameObject.SetActive(true);
+        //nextButton.onClick.AddListener(Back);
+        Back();
     }
 
 
@@ -32,26 +33,7 @@ public class Popup_Welcome : GameState
     public override void Back()
     {
         base.Back();
-
         Profile.ResetData(2);
-
-        var preset = GlobalConfig.ProfilePresets.RandomOne();
-        Profile.EarnResouce(preset.gems, preset.coins);
-        Popup_Rewards.AddResource(preset.gems, preset.coins);
-
-        var racerconfig = RacerFactory.Racer.GetConfig(preset.racerId);
-        Profile.AddRacerCard(preset.racerId, racerconfig.CardCount);
-        Profile.UnlockRacer(preset.racerId);
-        Popup_Rewards.AddRacerCard(preset.racerId, racerconfig.CardCount);
-        Profile.SelectedRacer = preset.racerId;
-
-        for (int i = 0; i < preset.rndCards; i++)
-        {
-            var racerid = RewardLogic.SelectRacerReward();
-            Profile.AddRacerCard(racerid, 1);
-            Popup_Rewards.AddRacerCard(racerid, 1);
-        }
-
-        Popup_Rewards.Display(onNextTaskFunc);
+        if (onNextTaskFunc != null) onNextTaskFunc();
     }
 }

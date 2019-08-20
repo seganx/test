@@ -18,29 +18,31 @@ public class State_GoToRace : GameState
 
 
     private PlayerData playerData = null;
-    private int grade = 0;
     private float waitTime = 0;
     private State state = State.Waiting;
     private int lastPlayersCount = 0;
     private bool waitFirst = true;
+
+    public State_GoToRace Setup(PlayerData playerdata)
+    {
+        playerData = playerdata;
+        return this;
+    }
 
     private IEnumerator Start()
     {
         GarageCamera.SetCameraId(1);
         UiHeader.Hide();
 
-        PlayNetwork.Connect(() =>
-        {
-            var seed = (int)(PlayNetwork.RoomSeed % 4) + PlayNetwork.PlayersCount;
-            grade = 10 - seed % 4;
-        },
+        PlayNetwork.Connect(() => { },
         StartGame,
         OnNetworkError);
 
         searchbar.SetActive(RaceModel.IsOnline);
         playersInfoBar.SetActive(false);
 
-        playerData = new PlayerData(Profile.Name, Profile.Score, Profile.Position, Profile.CurrentRacer);
+        if (playerData == null)
+            playerData = new PlayerData(Profile.Name, Profile.Score, Profile.Position, Profile.CurrentRacer);
         playerInfo.Setup(playerData);
 
         // entring loop
@@ -110,7 +112,7 @@ public class State_GoToRace : GameState
         StableRandom.Initialize(Mathf.RoundToInt((float)startTime));
         Game.LoadMap(PlayNetwork.MapId);
 
-        PlayerPresenterOnline.Create(playerData, grade, false);
+        PlayerPresenterOnline.Create(playerData, false);
 
         if (PhotonNetwork.isMasterClient)
             BotPresenter.InitializeBots(RaceModel.specs.maxPlayerCount - PlayNetwork.PlayersCount);
@@ -154,6 +156,12 @@ public class State_GoToRace : GameState
             opponentInfo.Clone<UiGoToRacePlayerInfo>().Setup(player).gameObject.SetActive(true);
         }
         Destroy(opponentInfo.gameObject);
+
+        if (PlayNetwork.IsMaster)
+        {
+            yield return new WaitForSeconds(1);
+            PlayerPresenter.SetReadyToRace();
+        }
     }
 
     private void PlayGame()

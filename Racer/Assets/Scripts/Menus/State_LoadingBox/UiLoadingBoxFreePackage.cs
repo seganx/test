@@ -25,12 +25,6 @@ public class UiLoadingBoxFreePackage : TimerPresenter
         set { if (value) PlayerPrefsEx.SetInt(name + ".day", TimerManager.ServerTime.DayOfYear); }
     }
 
-    private int UseCount
-    {
-        get { return PlayerPrefsEx.GetInt(name + ".used", 0); }
-        set { PlayerPrefsEx.SetInt(name + ".used", value); }
-    }
-
     public override void Start()
     {
         data = index < GlobalConfig.Shop.loadingBoxPackage.Count ? GlobalConfig.Shop.loadingBoxPackage[index] : null;
@@ -39,7 +33,7 @@ public class UiLoadingBoxFreePackage : TimerPresenter
             if (IsSameDay == false)
             {
                 IsSameDay = true;
-                UseCount = 0;
+                Profile.UsedFreeItem = 0;
             }
 
             UpdateVisual();
@@ -55,10 +49,10 @@ public class UiLoadingBoxFreePackage : TimerPresenter
 
         getButton.onClick.AddListener(() =>
         {
-            UseCount++;
+            Profile.UsedFreeItem++;
 
             int newTime = 0;
-            if (data.dailyCount > UseCount)
+            if (data.dailyCount > Profile.UsedFreeItem)
                 newTime = GlobalConfig.Shop.loadingBoxPackage[index].nextTime;
             else
             {
@@ -140,7 +134,7 @@ public class UiLoadingBoxFreePackage : TimerPresenter
 
         if (remainedLabel)
         {
-            var ramained = Mathf.Max(0, data.dailyCount - UseCount);
+            var ramained = Mathf.Max(0, data.dailyCount - Profile.UsedFreeItem);
             remainedLabel.SetFormatedText(ramained, data.dailyCount);
         }
     }

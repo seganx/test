@@ -16,17 +16,29 @@ public class State_Playing : GameState
     private bool isGamePaused = false;
     private int cameraMode = 0;
 
-    private void Start()
+    private IEnumerator Start()
     {
         UiShowHide.ShowAll(transform);
         RacerCamera.offset.z = -10;
         gameManager.OpenPopup<Popup_PlayingCountDown>();
         forwardSpeedDelta = RaceModel.specs.maxForwardSpeed - RaceModel.specs.minForwardSpeed;
-        DelayCall(0.1f, () =>
+
+        var waitTimer = new WaitForSeconds(0.2f);
+
+        yield return waitTimer;
+        foreach (var player in PlayerPresenter.all)
+            player.BroadcastMessage("EnableRacerAudio", SendMessageOptions.DontRequireReceiver);
+
+        while (true)
         {
-            foreach (var player in PlayerPresenter.all)
-                player.BroadcastMessage("EnableRacerAudio", SendMessageOptions.DontRequireReceiver);
-        });
+            if (allowUserHandle)
+            {
+                PlayerPresenter.UpdateRanks();
+                UiPlayingBoard.UpdatePositions();
+                RaceModel.stats.playerPosition = PlayerPresenter.local.player.CurrRank;
+            }
+            yield return waitTimer;
+        }
     }
 
     private void Update()
@@ -44,7 +56,6 @@ public class State_Playing : GameState
 
         PlayerPresenter.UpdateAll(deltaTime);
         RaceModel.stats.playerForwardPosition = PlayerPresenter.local.transform.position.z;
-        RaceModel.stats.playerPosition = PlayerPresenter.local.player.CurrRank;
 
         RacerCamera.offset.z = Mathf.Lerp(RacerCamera.offset.z, -cameraMode * 0.6f, deltaTime * 3);
         RacerCamera.UpdateAll(deltaTime);
@@ -61,27 +72,35 @@ public class State_Playing : GameState
 
         if (allowUserHandle)
         {
-#if UNITY_EDITOR || UNITY_STANDALONE
-            int leftRight = Input.GetKey(KeyCode.LeftArrow) ? -1 : (Input.GetKey(KeyCode.RightArrow) ? 1 : 0);
-            if (leftRight != 0)
-                PlayerPresenter.local.SteeringValue = leftRight;
-            else
-#endif
-                PlayerPresenter.local.SteeringValue = InputManager.Left.isPointerDown ? -1 : (InputManager.Right.isPointerDown ? 1 : 0);
-
-            RacerCamera.steeringValue = PlayerPresenter.local.SteeringValue;
-
-            PlayerPresenter.local.Horn(InputManager.Horn.isPointerDown);
+            HandleUserActions();
 
             if (PlayNetwork.PlayTime > RaceModel.specs.maxPlayTime)
             {
-                UiShowHide.HideAll(transform);
                 allowUserHandle = false;
-                DisplayFinalCamera();
-                PlayerPresenter.local.gameObject.AddComponent<BotPresenter>();
-                gameManager.OpenPopup<Popup_RaceResult>().Setup(ExitToMainMenu);
+                FinishRace();
             }
         }
+    }
+
+    private void HandleUserActions()
+    {
+#if UNITY_EDITOR || UNITY_STANDALONE
+        int leftRight = Input.GetKey(KeyCode.LeftArrow) ? -1 : (Input.GetKey(KeyCode.RightArrow) ? 1 : 0);
+        if (leftRight != 0)
+            PlayerPresenter.local.SteeringValue = leftRight;
+        else
+#endif
+            PlayerPresenter.local.SteeringValue = InputManager.Left.isPointerDown ? -1 : (InputManager.Right.isPointerDown ? 1 : 0);
+        RacerCamera.steeringValue = PlayerPresenter.local.SteeringValue;
+        PlayerPresenter.local.Horn(InputManager.Horn.isPointerDown);
+    }
+
+    private void FinishRace()
+    {
+        UiShowHide.HideAll(transform);
+        DisplayFinalCamera();
+        PlayerPresenter.local.gameObject.AddComponent<BotPresenter>();
+        gameManager.OpenPopup<Popup_RaceResult>().Setup(ExitToMainMenu);
     }
 
     public void OnCameraButton()

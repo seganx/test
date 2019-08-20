@@ -89,11 +89,12 @@ public class State_Home : GameState
 
     private void StartOffline()
     {
-        RaceModel.Reset(RaceModel.Mode.Campain);
+        RaceModel.Reset(RaceModel.Mode.FreeDrive);
 
         RaceModel.specs.mapId = RaceModel.SelectRandomMap();
         RaceModel.specs.maxPlayerCount = 4;
         RaceModel.specs.maxPlayTime = GlobalConfig.Race.maxTime;
+
         RaceModel.traffic.baseDistance = GlobalConfig.Race.traffics.baseDistance;
         RaceModel.traffic.distanceRatio = GlobalConfig.Race.traffics.speedFactor;
 

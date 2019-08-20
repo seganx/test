@@ -70,7 +70,7 @@ public static class Profile
         get
         {
             var racerconfig = RacerFactory.Racer.GetConfig(SelectedRacer);
-            return racerconfig == null ? 0 : racerconfig.ComputePower(CurrentRacer.level.NitroLevel, CurrentRacer.level.SteeringLevel, CurrentRacer.level.BodyLevel);
+            return racerconfig == null ? 0 : racerconfig.ComputePower(CurrentRacer.level.SpeedLevel, CurrentRacer.level.NitroLevel, CurrentRacer.level.SteeringLevel, CurrentRacer.level.BodyLevel);
         }
     }
 
@@ -103,12 +103,30 @@ public static class Profile
         get { return data; }
         set
         {
-            if (value != null && value.data != null && value.version == 1)
+            if (value != null && value.data != null)
             {
-                foreach (var item in value.racers)
-                    if (IsReadyToUnlock(item))
-                        item.unlock = 1;
-                value.version = 2;
+                if (value.version < 2)
+                {
+                    foreach (var item in value.racers)
+                        if (IsReadyToUnlock(item))
+                            item.unlock = 1;
+                    value.version = 2;
+                }
+
+                if (value.version < 3)
+                {
+                    foreach (var item in value.racers)
+                    {
+                        if (item.level.di == null || item.level.di.Length < 5)
+                        {
+                            var ndi = new int[5];
+                            for (int i = 0; i < item.level.di.Length; i++)
+                                ndi[i] = item.level.di[i];
+                            item.level.di = ndi;
+                        }
+                    }
+                    value.version = 3;
+                }
             }
 
             data = value;

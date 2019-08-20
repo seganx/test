@@ -24,7 +24,7 @@ public class UiGoToRacePlayerInfo : MonoBehaviour
         racerPower.SetFormatedText(data.RacerPower);
         if (racerName) racerName.text = rconfig.Name;
 
-        var leagueIndex = GlobalConfig.Leagues.GetIndex(data.Score, data.Rank);
+        var leagueIndex = GlobalConfig.Leagues.GetIndex(data.Score, data.LeagueRank);
         if (leagueBigImage) leagueBigImage.sprite = GlobalFactory.League.GetBigIcon(leagueIndex);
         leagueTinyImage.sprite = GlobalFactory.League.GetSmallIcon(leagueIndex);
         scoreValue.SetText(data.Score.ToString());
