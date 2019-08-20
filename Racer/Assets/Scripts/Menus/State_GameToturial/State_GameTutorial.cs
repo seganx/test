@@ -20,7 +20,7 @@ public class State_GameTutorial : GameState
 
         RaceModel.specs.mapId = 2;
         RaceModel.specs.maxPlayerCount = 2;
-        RaceModel.specs.maxPlayTime = 20;
+        RaceModel.specs.maxPlayTime = 120;
         RaceModel.specs.minForwardSpeed = GlobalConfig.Race.startSpeed;
         RaceModel.specs.maxForwardSpeed = 50;
 

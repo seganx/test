@@ -186,7 +186,7 @@
 
                         //  layer 2 - specular color
                         res.rgb = lerp( res.rgb, _LightColor0.rgb, clamp( pow(spec, specpower * 2) * specvalue, 0, 1 ) );
-                        res.a = max(res.a, pow(spec, specpower * 80) * 8) * specvalue;
+                        res.a = max(res.a, pow(spec, specpower * 80) * specvalue * 8);
 
                         // layer 3 - metallic 
                         res.rgb += tex2D(_MetalTex, i.uv2).a * metallic * pow(spec, 15);
