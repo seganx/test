@@ -125,7 +125,7 @@ public abstract class PlayerPresenter : Base
         if (IsNitrosUsing)
         {
             nosPosition += GlobalConfig.Race.racerDistance * Time.deltaTime * (IsNitrosPerfect ? 1 : 0.8f);
-            player.CurrNitrous -= player.RacerNitrous * Time.deltaTime * 0.1f;
+            player.CurrNitrous -= Time.deltaTime / (player.RacerNitrous + 1);
             if (player.CurrNitrous <= 0)
             {
                 IsNitrosUsing = false;
