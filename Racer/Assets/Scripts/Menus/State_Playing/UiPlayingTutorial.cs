@@ -16,10 +16,14 @@ public class UiPlayingTutorial : MonoBehaviour
         if (!GetPlayingTutorialShowed(1))
             StartCoroutine(ShowThenHideTutorial(1, 13));
 
+        if (!GetPlayingTutorialShowed(2))
+            StartCoroutine(ShowThenHideTutorial(2, 20));
+
         if (GetPlayingTutorialShowed(0) && GetPlayingTutorialShowed(1) && GetPlayingTutorialShowed(2))
             Destroy(gameObject);
     }
 
+        /*
     private void Update()
     {
         if (PlayerPresenter.local.IsNitrosReady)
@@ -31,7 +35,7 @@ public class UiPlayingTutorial : MonoBehaviour
             }
         }
         else tutorialObjects[2].gameObject.SetActive(false);
-    }
+    }*/
 
     private IEnumerator ShowThenHideTutorial(int index, float delay = 0)
     {

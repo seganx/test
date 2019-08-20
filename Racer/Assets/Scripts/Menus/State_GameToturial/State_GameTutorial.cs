@@ -6,42 +6,12 @@ using UnityEngine.UI;
 
 public class State_GameTutorial : GameState
 {
-    [SerializeField] private GameObject[] tutorialObjects;
-    [SerializeField] private Button nextTutorialButton;
-    [SerializeField] private Button prevTutorialButton;
     [SerializeField] private Button tutorialRaceButton;
     private int currentTutorialPageIndex = 0;
 
     private void Start()
     {
         UiShowHide.ShowAll(transform);
-        UpdateCurrenctTutorialPage();
-
-        nextTutorialButton.onClick.AddListener(() =>
-        {
-            currentTutorialPageIndex++;
-            UpdateCurrenctTutorialPage();
-        });
-
-        prevTutorialButton.onClick.AddListener(() =>
-        {
-            currentTutorialPageIndex--;
-            UpdateCurrenctTutorialPage();
-        });
-
-        tutorialRaceButton.onClick.AddListener(() =>
-        {
-        });
-    }
-
-    private void UpdateCurrenctTutorialPage()
-    {
-        foreach (var item in tutorialObjects)
-            item.SetActive(false);
-        tutorialObjects[currentTutorialPageIndex].SetActive(true);
-
-        prevTutorialButton.gameObject.SetActive(currentTutorialPageIndex > 0);
-        nextTutorialButton.gameObject.SetActive(currentTutorialPageIndex < tutorialObjects.Length - 1);
     }
 
     public void OnStartTutorial()
