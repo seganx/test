@@ -154,4 +154,17 @@ public class Popup_Rewards : GameState
         rewards.Clear();
         return page;
     }
+
+    public static Popup_Rewards Display(RewardLogic.RaceReward reward, System.Action onNextTask = null)
+    {
+        if (reward.custome != null)
+            AddCustomeCard(reward.custome.type, reward.custome.racerId, reward.custome.customId);
+        if (reward.racerId > 0)
+            AddRacerCard(reward.racerId, reward.racerCount);
+        if (reward.gems > 0)
+            AddResource(reward.gems, 0);
+        if (reward.coins > 0)
+            AddResource(0, reward.coins);
+        return Display(onNextTask);
+    }
 }

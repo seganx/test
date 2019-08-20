@@ -38,18 +38,13 @@ public class PlayerPresenterOnline : PlayerPresenter
             transform.RemoveChildren(0, 1);
 
         //  read data from network
-        string playerJson = photonView.instantiationData[0] as string;
-        int playerGrade = (int)photonView.instantiationData[1];
-
-        //  load player data from network
-        player = PlayerData.FromJson(playerJson);
+        player = PlayerData.FromJson(photonView.instantiationData[0] as string);
         player.IsPlayer = local == this;
 
         //  load racer from player data
         Setup(player);
 
         //  initialize presneter
-        base.SetGrade(playerGrade, true);
         if (photonView.isMine)
         {
             if (RaceModel.IsOnline)
@@ -92,31 +87,6 @@ public class PlayerPresenterOnline : PlayerPresenter
         }
     }
 
-    public override void SetGrade(int grade, bool dontBlend = false)
-    {
-        base.SetGrade(grade);
-        photonView.RPC("NetSetGrade", PhotonTargets.Others, grade);
-    }
-
-    [PunRPC]
-    private void NetSetGrade(int grade)
-    {
-        base.SetGrade(grade);
-        UiPlayingBoard.UpdatePositions();
-    }
-
-    public override void Horn(bool play)
-    {
-        base.Horn(play);
-        photonView.RPC("NetHorn", PhotonTargets.Others, play);
-    }
-
-    [PunRPC]
-    private void NetHorn(bool play)
-    {
-        base.Horn(play);
-    }
-
     private void OnNetworkEvent(PlayNetwork.Events code, object content, int senderId)
     {
         if (code == PlayNetwork.Events.Movement)
@@ -131,6 +101,41 @@ public class PlayerPresenterOnline : PlayerPresenter
         }
     }
 
+    public override void SetNosPosition(float nosPos)
+    {
+        base.SetNosPosition(nosPos);
+        photonView.RPC("NetSetNosPosition", PhotonTargets.Others, nosPos);
+    }
+
+    [PunRPC]
+    private void NetSetNosPosition(int nosPos)
+    {
+        base.SetNosPosition(nosPos);
+    }
+
+    public override void UseNitrous()
+    {
+        base.UseNitrous();
+        photonView.RPC("NetUseNitrous", PhotonTargets.Others);
+    }
+
+    [PunRPC]
+    private void NetUseNitrous()
+    {
+        base.UseNitrous();
+    }
+
+    public override void Horn(bool play)
+    {
+        base.Horn(play);
+        photonView.RPC("NetHorn", PhotonTargets.Others, play);
+    }
+
+    [PunRPC]
+    private void NetHorn(bool play)
+    {
+        base.Horn(play);
+    }
 
     ////////////////////////////////////////////////////////////
     /// STATIC MEMBERS
@@ -138,9 +143,9 @@ public class PlayerPresenterOnline : PlayerPresenter
     private static Dictionary<int, int> groupStat = new Dictionary<int, int>(10);
 
 
-    public static PlayerPresenterOnline Create(PlayerData data, int grade, bool asBot)
+    public static PlayerPresenterOnline Create(PlayerData data, bool asBot)
     {
-        var ndata = new object[] { JsonUtility.ToJson(data), grade };
+        var ndata = new object[] { JsonUtility.ToJson(data) };
 
         if (asBot)
             return PhotonNetwork.InstantiateSceneObject("Prefabs/Player", Vector3.zero, Quaternion.identity, 0, ndata).AddComponent<BotPresenter>().GetComponent<PlayerPresenterOnline>();
@@ -189,4 +194,5 @@ public class PlayerPresenterOnline : PlayerPresenter
         }
         return res;
     }
+
 }

@@ -63,12 +63,12 @@ public class RacerConfig : ScriptableObject
 
     public int MinPower
     {
-        get { return ComputePower(0, 0, 0); }
+        get { return ComputePower(0, 0, 0, 0); }
     }
 
     public int MaxPower
     {
-        get { return ComputePower(MaxUpgradeLevel, MaxUpgradeLevel, MaxUpgradeLevel); }
+        get { return ComputePower(MaxUpgradeLevel, MaxUpgradeLevel, MaxUpgradeLevel, MaxUpgradeLevel); }
     }
 
     public int BodyColorCost
@@ -134,10 +134,10 @@ public class RacerConfig : ScriptableObject
         return data.bodyBaseValue + RacerGlobalConfigs.Data.bodyUpgradeValue[upgradeLevel];
     }
 
-    public int ComputePower(int nitroLevel, int steeringLevel, int bodyLevel)
+    public int ComputePower(int speedLevel, int nitroLevel, int steeringLevel, int bodyLevel)
     {
         var res =
-            ComputeSpeed(nitroLevel) * RacerGlobalConfigs.Data.speedPowerRatio +
+            ComputeSpeed(speedLevel) * RacerGlobalConfigs.Data.speedPowerRatio +
             ComputeNitro(nitroLevel) * RacerGlobalConfigs.Data.nitroPowerRatio +
             ComputeSteering(steeringLevel) * RacerGlobalConfigs.Data.steeringPowerRatio +
             ComputeBody(bodyLevel) * RacerGlobalConfigs.Data.bodyPowerRatio;

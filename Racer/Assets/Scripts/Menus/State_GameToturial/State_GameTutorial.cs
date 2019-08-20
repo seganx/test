@@ -20,7 +20,7 @@ public class State_GameTutorial : GameState
 
         RaceModel.specs.mapId = 2;
         RaceModel.specs.maxPlayerCount = 2;
-        RaceModel.specs.maxPlayTime = 120;
+        RaceModel.specs.maxPlayTime = 20;
         RaceModel.specs.minForwardSpeed = GlobalConfig.Race.startSpeed;
         RaceModel.specs.maxForwardSpeed = 50;
 
@@ -33,6 +33,26 @@ public class State_GameTutorial : GameState
         PlayNetwork.MapId = RaceModel.specs.mapId;
         PlayNetwork.MaxPlayerCount = RaceModel.specs.maxPlayerCount;
 
-        gameManager.OpenState<State_GoToRace>();
+        var racerdata = new RacerProfile();
+
+        racerdata.id = 370;
+        racerdata.cards = 1000;
+        racerdata.unlock = 1;
+        racerdata.level.Level = 1;
+        racerdata.level.BodyLevel = 5;
+        racerdata.level.NitroLevel = 5;
+        racerdata.level.SpeedLevel = 5;
+        racerdata.level.SteeringLevel = 5;
+
+        racerdata.custom.BodyColor = 10;
+        racerdata.custom.Vinyl = 460;
+        racerdata.custom.VinylColor = 580;
+        racerdata.custom.Wheel = 70;
+        racerdata.custom.Spoiler = 20;
+        racerdata.custom.WindowColor = 60;
+        racerdata.custom.LightsColor = 60;
+
+        var playerdata = new PlayerData(Profile.Name, Profile.Score, Profile.Position, racerdata);
+        gameManager.OpenState<State_GoToRace>().Setup(playerdata);
     }
 }

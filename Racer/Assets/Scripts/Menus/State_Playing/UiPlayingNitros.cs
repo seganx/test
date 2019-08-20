@@ -13,8 +13,6 @@ public class UiPlayingNitros : MonoBehaviour
     [SerializeField] private RectTransform nitrosHint = null;
 
     private Color nitrosBarDefaultColor = Color.yellow;
-    private float grading = 0;
-    private float gradingLength = 1;
     private float nitrosHintTimer = 0;
 
     private bool NitrosButtonsActive
@@ -44,16 +42,12 @@ public class UiPlayingNitros : MonoBehaviour
         HandleInput();
         HandleNitorsHint();
 
-        if (PlayerPresenter.local.IsNitrosUsing > grading)
-            gradingLength = PlayerPresenter.local.IsNitrosUsing - grading;
-        grading = PlayerPresenter.local.IsNitrosUsing;
-
-        nitrosBar.fillAmount = Mathf.MoveTowards(nitrosBar.fillAmount, grading > 0 ? (grading / gradingLength) : PlayerPresenter.local.Nitros, Time.deltaTime);
+        nitrosBar.fillAmount = PlayerPresenter.local.Nitros;
         nitrosBar.color = PlayerPresenter.local.IsNitrosFull ? nitrosBarFullColor : nitrosBarDefaultColor;
         NitrosButtonsActive = PlayerPresenter.local.IsNitrosReady;
 
-        RacerCamera.fovScale = grading > 0 ? 1.45f : 1;
-        SeganX.Effects.CameraFX.MotionBlurValue = Mathf.Lerp(SeganX.Effects.CameraFX.MotionBlurValue, grading > 0 ? 0.6f : 0.15f, Time.deltaTime * 2);
+        RacerCamera.fovScale = PlayerPresenter.local.IsNitrosUsing  ? 1.45f : 1;
+        SeganX.Effects.CameraFX.MotionBlurValue = Mathf.Lerp(SeganX.Effects.CameraFX.MotionBlurValue, PlayerPresenter.local.IsNitrosUsing ? 0.6f : 0.15f, Time.deltaTime * 2);
     }
 
     private void HandleInput()

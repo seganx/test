@@ -41,10 +41,19 @@ public class BotPresenter : Base
         else
             player.SteeringValue = Mathf.MoveTowards(player.SteeringValue, 0, Time.deltaTime * 2);
 
+        var nosMaxTime = 1;
+        if (RaceModel.IsTutorial)
+        {
+            if (player.player.CurrRank == 0)
+                player.player.CurrNitrous = 0;
+            else
+                nosMaxTime = 5;
+        }
+
         if (player.IsNitrosFull)
         {
             nosTimer += Time.fixedDeltaTime;
-            if (nosTimer >= 1)
+            if (nosTimer >= nosMaxTime)
             {
                 nosTimer = 0;
                 player.UseNitrous();
@@ -68,36 +77,45 @@ public class BotPresenter : Base
         {
             var botScore = Random.Range(Profile.Score - 50, Profile.Score + 50);
             var botRank = Random.Range(Profile.Position - 50, Profile.Position + 50);
-            var pdata = new PlayerData(GlobalFactory.GetRandomName(), botScore, botRank, CreateRandomRacerProfile(i));
-            var seed = (int)(PlayNetwork.RoomSeed % 4) + (PlayNetwork.PlayersCount + i + 1);
-            PlayerPresenterOnline.Create(pdata, 10 - seed % 4, true);
+
+            RacerProfile botRacer = null;
+            if (RaceModel.IsTutorial)
+            {
+                var config = RacerFactory.Racer.GetConfig(370);
+                botRacer = CreateRandomRacerProfile(i, Random.Range(config.MinPower, config.MaxPower), config.Id, Random.Range(config.MinPower, config.MaxPower));
+            }
+            else botRacer = CreateRandomRacerProfile(i, Profile.Score, Profile.SelectedRacer, Profile.CurrentRacerPower);
+
+            var pdata = new PlayerData(GlobalFactory.GetRandomName(), botScore, botRank, botRacer);
+            PlayerPresenterOnline.Create(pdata, true);
         }
     }
 
-    private static RacerProfile CreateRandomRacerProfile(int index)
+    private static RacerProfile CreateRandomRacerProfile(int index, int playerScore, int playerRacerId, int playerPower)
     {
         int targetPower = 0;
         if (index == 0)
         {
-            targetPower = Profile.CurrentRacerPower;
+            targetPower = playerPower;
         }
         else if (index == 1)
         {
-            var factor = GlobalConfig.Race.bots.powers[RacerFactory.Racer.GetConfig(Profile.SelectedRacer).GroupId];
+            var factor = GlobalConfig.Race.bots.powers[RacerFactory.Racer.GetConfig(playerRacerId).GroupId];
             targetPower = Mathf.RoundToInt(factor.x * Profile.Score + factor.y);
         }
         else
         {
             var factor = GlobalConfig.Race.bots.powers[0];
-            targetPower = Mathf.RoundToInt(factor.x * Profile.Score + factor.y);
+            targetPower = Mathf.RoundToInt(factor.x * playerScore + factor.y);
         }
 
         var res = new RacerProfile() { id = SelectRacer(targetPower) };
         var config = RacerFactory.Racer.GetConfig(res.id);
         res.cards = config.CardCount;
-        res.level.Level = Profile.CurrentRacer.level.Level;
+        res.level.Level = 1;
 
         var maxUpgradeLevel = RacerGlobalConfigs.Data.maxUpgradeLevel[res.level.Level] + 1;
+        res.level.SpeedLevel = Random.Range(0, maxUpgradeLevel / 2);
         res.level.NitroLevel = Random.Range(0, maxUpgradeLevel / 2);
         res.level.BodyLevel = Random.Range(0, maxUpgradeLevel / 2);
         res.level.SteeringLevel = Random.Range(0, maxUpgradeLevel / 2);

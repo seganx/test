@@ -28,7 +28,7 @@ public class UiGarageRacerItem : Base
             racerImage.SetColorAlpha(0);
             cardsImage.SetColorAlpha(0);
             cardsLabel.SetFormatedText(0, config.CardCount);
-            rankLabel.SetFormatedText(config.ComputePower(0, 0, 0), config.MaxPower);
+            rankLabel.SetFormatedText(config.ComputePower(0, 0, 0, 0), config.MaxPower);
         }
         else
         {
@@ -40,7 +40,7 @@ public class UiGarageRacerItem : Base
             cardsImage.SetColorAlpha(1);
             cardsImage.gameObject.SetActive(unlocked == false);
             cardsLabel.SetFormatedText(racerprofile.cards, config.CardCount);
-            rankLabel.SetFormatedText(config.ComputePower(racerprofile.level.NitroLevel, racerprofile.level.SteeringLevel, racerprofile.level.BodyLevel), config.MaxPower);
+            rankLabel.SetFormatedText(config.ComputePower(racerprofile.level.SpeedLevel, racerprofile.level.NitroLevel, racerprofile.level.SteeringLevel, racerprofile.level.BodyLevel), config.MaxPower);
             unlockButton.SetActive(unlocking);
         }
 

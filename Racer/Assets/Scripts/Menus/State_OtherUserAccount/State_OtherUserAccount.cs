@@ -65,7 +65,7 @@ public class State_OtherUserAccount : GameState
         var racerprofile = racers[currentRaceIndex];
         var config = RacerFactory.Racer.GetConfig(racerprofile.id);
         racerNameLabel.text = config.Name;
-        racerPowerLabel.SetText(config.ComputePower(racerprofile.level.NitroLevel, racerprofile.level.SteeringLevel, racerprofile.level.BodyLevel).ToString("#,0"));
+        racerPowerLabel.SetText(config.ComputePower(racerprofile.level.SpeedLevel, racerprofile.level.NitroLevel, racerprofile.level.SteeringLevel, racerprofile.level.BodyLevel).ToString("#,0"));
         GarageRacer.LoadRacer(racerprofile);
         if (GarageRacer.racer != null)
             GarageRacer.racer.BroadcastMessage("SetPlateText", playerName, SendMessageOptions.DontRequireReceiver);

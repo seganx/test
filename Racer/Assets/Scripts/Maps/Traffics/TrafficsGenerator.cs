@@ -20,10 +20,11 @@ public class TrafficsGenerator : MonoBehaviour
 
     private IEnumerator Start()
     {
-        yield return new WaitForSeconds(5);
+        yield return new WaitUntil(() => RaceModel.specs.maxForwardSpeed > 0);
 
         var maxDistance = Mathf.RoundToInt(RaceModel.traffic.baseDistance + RaceModel.traffic.distanceRatio * RaceModel.specs.maxForwardSpeed);
         var lastseed = currPosition / maxDistance;
+
         var waitTime = new WaitForSeconds(0.1f);
         while (true)
         {

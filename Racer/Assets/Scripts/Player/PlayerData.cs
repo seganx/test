@@ -16,7 +16,7 @@ public class PlayerData : VersionPlayerData
     public RacerCustomData rc = null;
     public string name = string.Empty;
 
-    public int Rank { get { return id[1]; } set { id[1] = value; } }
+    public int LeagueRank { get { return id[1]; } set { id[1] = value; } }
     public int Score { get { return id[1]; } set { id[1] = value; } }
     public int RacerId { get { return id[2]; } set { id[2] = value; } }
     public int RacerPower { get { return id[3]; } set { id[3] = value; } }
@@ -32,19 +32,19 @@ public class PlayerData : VersionPlayerData
     public int CurrRank { get; set; }
     public float CurrNitrous { get; set; }
 
-    public PlayerData (string playerName, int score, int rank, RacerProfile racer)
+    public PlayerData (string playerName, int score, int leagueRank, RacerProfile racer)
     {
         name = playerName;
-        Rank = rank;
+        LeagueRank = leagueRank;
         Score = score;
         RacerId = racer.id;
         RacerCustom = racer.custom;
         var config = RacerFactory.Racer.GetConfig(RacerId);
-        RacerSpeed = config.ComputeNitro(racer.level.NitroLevel);
+        RacerSpeed = config.ComputeSpeed(racer.level.NitroLevel);
         RacerNitrous = config.ComputeNitro(racer.level.NitroLevel);
         RacerSteering = config.ComputeSteering(racer.level.SteeringLevel);
         RacerBody = config.ComputeBody(racer.level.BodyLevel);
-        RacerPower = config.ComputePower(racer.level.NitroLevel, racer.level.SteeringLevel, racer.level.BodyLevel);
+        RacerPower = config.ComputePower(racer.level.SpeedLevel, racer.level.NitroLevel, racer.level.SteeringLevel, racer.level.BodyLevel);
     }
 
     public static PlayerData FromJson(string json)
