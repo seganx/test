@@ -115,10 +115,10 @@ public class BotPresenter : Base
         res.level.Level = 1;
 
         var maxUpgradeLevel = RacerGlobalConfigs.Data.maxUpgradeLevel[res.level.Level] + 1;
-        res.level.SpeedLevel = Random.Range(0, maxUpgradeLevel / 2);
-        res.level.NitroLevel = Random.Range(0, maxUpgradeLevel / 2);
-        res.level.BodyLevel = Random.Range(0, maxUpgradeLevel / 2);
-        res.level.SteeringLevel = Random.Range(0, maxUpgradeLevel / 2);
+        //res.level.SpeedLevel = Random.Range(0, maxUpgradeLevel / 2);
+        //res.level.NitroLevel = Random.Range(0, maxUpgradeLevel / 2);
+        //res.level.BodyLevel = Random.Range(0, maxUpgradeLevel / 2);
+        //res.level.SteeringLevel = Random.Range(0, maxUpgradeLevel / 2);
 
         res.custom = config.DefaultRacerCustom;
         res.custom.BodyColor = RacerFactory.Colors.AllColors.RandomOne().id;
@@ -138,7 +138,8 @@ public class BotPresenter : Base
         if (list.Count < 1) list = RacerFactory.Racer.AllConfigs;
         var center = list.FindIndex(x => x.Id == Profile.SelectedRacer);
         var index = SelectProbability(list.Count, center - 1, 4, 0.5f);
-        return list[index].Id;
+        //return list[index].Id;
+        return 50;
     }
 
     private static int SelectProbability(int lenght, int center, int radius, float heightFactor)
