@@ -36,7 +36,7 @@ public class Popup_RaceResult : GameState
             else onNextTask();
         });
 
-        Popup_RateUs.SetPlayerInjoy(RaceModel.stats.playerPosition < 1);
+        Popup_RateUs.SetPlayerInjoy(RaceModel.stats.playerRank < 1);
 
 #if DATABEEN
         if (RewardLogic.IsFirstRace)
@@ -53,7 +53,7 @@ public class Popup_RaceResult : GameState
 
     private void Start()
     {
-        positionLabel.SetFormatedText(RaceModel.stats.playerPosition + 1);
+        positionLabel.SetFormatedText(RaceModel.stats.playerRank + 1);
         foreach (var player in PlayerPresenter.allPlayers)
         {
             var rac = RacerFactory.Racer.GetConfig(player.RacerId);

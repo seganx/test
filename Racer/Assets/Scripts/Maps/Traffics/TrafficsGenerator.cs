@@ -6,7 +6,7 @@ public class TrafficsGenerator : MonoBehaviour
 {
     private int lastline = 5;
 
-    private int currPosition { get { return Mathf.RoundToInt(RaceModel.stats.playerForwardPosition); } }
+    private int currPosition { get { return Mathf.RoundToInt(RaceModel.stats.playerPosition); } }
 
     private void OnEnable()
     {

@@ -36,12 +36,12 @@ public static class RaceLogic
         raceResult.lastLeague = Profile.League;
 
         if (RaceModel.specs.racersGroup == PlayerPresenter.local.racer.GroupId)
-            raceResult.rewardScore = GlobalConfig.Race.positionScore[RaceModel.stats.playerPosition];
+            raceResult.rewardScore = GlobalConfig.Race.positionScore[RaceModel.stats.playerRank];
         else
             raceResult.rewardScore = 0;
 
         var rewardsList = RaceModel.IsOnline ? GlobalConfig.Race.rewardsOnline : GlobalConfig.Race.rewardsOffline;
-        var preward = rewardsList[Mathf.Clamp(RaceModel.stats.playerPosition, 0, rewardsList.Count - 1)];
+        var preward = rewardsList[Mathf.Clamp(RaceModel.stats.playerRank, 0, rewardsList.Count - 1)];
         raceResult.rewards = RewardLogic.GetRaceReward(preward.racerCardChance, preward.customeChance, preward.gemChance, preward.gems, preward.coins);
 
         //  apply rewards to profile
@@ -59,7 +59,7 @@ public static class RaceLogic
         raceResult.rewardScore = 0;
 
         var rewardsList = GlobalConfig.Race.rewardsOffline;
-        var preward = rewardsList[Mathf.Clamp(RaceModel.stats.playerPosition, 0, rewardsList.Count - 1)];
+        var preward = rewardsList[Mathf.Clamp(RaceModel.stats.playerRank, 0, rewardsList.Count - 1)];
         raceResult.rewards = RewardLogic.GetRaceReward(preward.racerCardChance, preward.customeChance, preward.gemChance, preward.gems, preward.coins);
 
         //  apply rewards to profile

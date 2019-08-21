@@ -6,7 +6,6 @@ public class UiPlayingTutorial : MonoBehaviour
 {
     [SerializeField] private GameObject[] tutorialObjects;
 
-    private bool canDisplayNitros = true;
 
     private void Start()
     {
@@ -22,20 +21,6 @@ public class UiPlayingTutorial : MonoBehaviour
         if (GetPlayingTutorialShowed(0) && GetPlayingTutorialShowed(1) && GetPlayingTutorialShowed(2))
             Destroy(gameObject);
     }
-
-        /*
-    private void Update()
-    {
-        if (PlayerPresenter.local.IsNitrosReady)
-        {
-            if (canDisplayNitros)
-            {
-                canDisplayNitros = false;
-                StartCoroutine(ShowThenHideTutorial(2));
-            }
-        }
-        else tutorialObjects[2].gameObject.SetActive(false);
-    }*/
 
     private IEnumerator ShowThenHideTutorial(int index, float delay = 0)
     {

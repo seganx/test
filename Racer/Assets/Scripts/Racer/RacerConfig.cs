@@ -113,7 +113,8 @@ public class RacerConfig : ScriptableObject
     public float ComputeSpeed(int upgradeLevel)
     {
         upgradeLevel = Mathf.Clamp(upgradeLevel, 0, MaxUpgradeLevel);
-        return data.speedBaseValue + RacerGlobalConfigs.Data.speedUpgradeValue[upgradeLevel];
+        var res = data.speedBaseValue + RacerGlobalConfigs.Data.speedUpgradeValue[upgradeLevel];
+        return res * 0.277778f;
     }
 
     public float ComputeNitro(int upgradeLevel)
