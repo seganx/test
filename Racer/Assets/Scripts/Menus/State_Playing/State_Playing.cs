@@ -45,7 +45,8 @@ public class State_Playing : GameState
         float deltaTime = Time.deltaTime;
 
         float gametime = PlayNetwork.PlayTime / GlobalConfig.Race.maxTime;
-        PlayerPresenter.UpdateAll(Mathf.Clamp01(1 - Mathf.Pow(gametime - 1, 4)), deltaTime);
+        //PlayerPresenter.UpdateAll(Mathf.Clamp01(1 - Mathf.Pow(gametime - 1, 2)), deltaTime);
+        PlayerPresenter.UpdateAll(gametime, deltaTime);
 
         RaceModel.stats.playerSpeed = PlayerPresenter.local.player.CurrSpeed;
         RaceModel.stats.playerPosition = PlayerPresenter.local.player.CurrPosition;

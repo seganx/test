@@ -130,21 +130,21 @@ public class RacerGlobalConfigsEditor : Editor
         foldRacersGrid = EditorGUILayout.Foldout(foldRacersGrid, "Racers");
         if (foldRacersGrid)
         {
-            if (DrawLinearParamButton("Group", ref obj.editorGroupParam))
-                for (int i = 0; i < list.Count; i++)
-                    list[i].groupId = Mathf.FloorToInt(obj.editorGroupParam.x + obj.editorGroupParam.y * i);
+            //if (DrawLinearParamButton("Group", ref obj.editorGroupParam))
+              //  for (int i = 0; i < list.Count; i++)
+                //    list[i].groupId = Mathf.FloorToInt(obj.editorGroupParam.x + obj.editorGroupParam.y * i);
 
-            if (DrawLinearParamButton("Cards", ref obj.editorCardsParam))
-                for (int i = 0; i < list.Count; i++)
-                    list[i].cardCount = Mathf.FloorToInt(obj.editorCardsParam.x + obj.editorCardsParam.y * i);
+            //if (DrawLinearParamButton("Cards", ref obj.editorCardsParam))
+              //  for (int i = 0; i < list.Count; i++)
+                //    list[i].cardCount = Mathf.FloorToInt(obj.editorCardsParam.x + obj.editorCardsParam.y * i);
 
-            if (DrawLinearParamButton("Price", ref obj.editorPriceParam))
-                for (int i = 0; i < list.Count; i++)
-                    list[i].price = Mathf.FloorToInt(obj.editorPriceParam.x + obj.editorPriceParam.y * i);
+            //if (DrawLinearParamButton("Price", ref obj.editorPriceParam))
+              //  for (int i = 0; i < list.Count; i++)
+                //    list[i].price = Mathf.FloorToInt(obj.editorPriceParam.x + obj.editorPriceParam.y * i);
 
-            if (DrawLinearParamButton("Speed", ref obj.editorSpeedParam))
-                for (int i = 0; i < list.Count; i++)
-                    list[i].speedBaseValue = obj.editorSpeedParam.x + obj.editorSpeedParam.y * i;
+            //if (DrawLinearParamButton("Speed", ref obj.editorSpeedParam))
+              //  for (int i = 0; i < list.Count; i++)
+                //    list[i].speedBaseValue = obj.editorSpeedParam.x + obj.editorSpeedParam.y * i;
 
             if (DrawLinearParamButton("Nitro", ref obj.editorNitroParam))
                 for (int i = 0; i < list.Count; i++)
