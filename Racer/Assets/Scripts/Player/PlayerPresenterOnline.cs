@@ -140,9 +140,6 @@ public class PlayerPresenterOnline : PlayerPresenter
     ////////////////////////////////////////////////////////////
     /// STATIC MEMBERS
     ////////////////////////////////////////////////////////////
-    private static Dictionary<int, int> groupStat = new Dictionary<int, int>(10);
-
-
     public static PlayerPresenterOnline Create(PlayerData data, bool asBot)
     {
         var ndata = new object[] { JsonUtility.ToJson(data) };
@@ -152,47 +149,4 @@ public class PlayerPresenterOnline : PlayerPresenter
         else
             return PhotonNetwork.Instantiate("Prefabs/Player", Vector3.zero, Quaternion.identity, 0, ndata).GetComponent<PlayerPresenterOnline>();
     }
-
-    public static float FindMaxGameSpeed()
-    {
-        groupStat.Clear();
-        foreach (var item in all)
-        {
-            if (groupStat.ContainsKey(item.racer.GroupId))
-                groupStat[item.racer.GroupId]++;
-            else
-                groupStat.Add(item.racer.GroupId, 1);
-        }
-
-        int selectedGroup = 0;
-        if (groupStat.Count == 4) // find master group
-            selectedGroup = FindMasterGroupId();
-        else
-            selectedGroup = GroupStatFindMaxValue();
-
-        return GlobalConfig.Race.GetGroupMaxSpeed(selectedGroup);
-    }
-
-    private static int FindMasterGroupId()
-    {
-        foreach (PlayerPresenterOnline item in all)
-            if (item.photonView.owner != null && item.photonView.owner.IsMasterClient)
-                return item.racer.GroupId;
-        return 0;
-    }
-
-    private static int GroupStatFindMaxValue()
-    {
-        int maxval = 0, res = 0;
-        foreach (var item in groupStat)
-        {
-            if (item.Value > maxval)
-            {
-                maxval = item.Value;
-                res = item.Key;
-            }
-        }
-        return res;
-    }
-
 }

@@ -10,7 +10,6 @@ public class State_Playing : GameState
     [SerializeField] private Text timeLabel = null;
     [SerializeField] private AudioSource[] timerAudios = null;
 
-    private float forwardSpeedDelta = 0;
     private bool allowUserHandle = true;
     private int timerAudioPlayed = -1;
     private bool isGamePaused = false;
@@ -21,7 +20,6 @@ public class State_Playing : GameState
         UiShowHide.ShowAll(transform);
         RacerCamera.offset.z = -10;
         gameManager.OpenPopup<Popup_PlayingCountDown>();
-        forwardSpeedDelta = RaceModel.specs.maxForwardSpeed - RaceModel.specs.minForwardSpeed;
 
         var waitTimer = new WaitForSeconds(0.2f);
 
@@ -35,7 +33,7 @@ public class State_Playing : GameState
             {
                 PlayerPresenter.UpdateRanks();
                 UiPlayingBoard.UpdatePositions();
-                RaceModel.stats.playerPosition = PlayerPresenter.local.player.CurrRank;
+                RaceModel.stats.playerRank = PlayerPresenter.local.player.CurrRank;
             }
             yield return waitTimer;
         }
@@ -46,16 +44,11 @@ public class State_Playing : GameState
         if (PlayerPresenter.local == null || PlayNetwork.IsJoined == false) return;
         float deltaTime = Time.deltaTime;
 
-        //  compute racers speed
-        {
-            float x = PlayNetwork.PlayTime / GlobalConfig.Race.maxTime;
-            float y = Mathf.Clamp01(1 - Mathf.Pow(x - 1, 4));
-            RaceModel.stats.speed = Mathf.Min(y * forwardSpeedDelta + RaceModel.specs.minForwardSpeed, RaceModel.specs.maxForwardSpeed);
-            RaceModel.stats.forwardPosition += RaceModel.stats.speed * deltaTime;
-        }
+        float gametime = PlayNetwork.PlayTime / GlobalConfig.Race.maxTime;
+        PlayerPresenter.UpdateAll(Mathf.Clamp01(1 - Mathf.Pow(gametime - 1, 4)), deltaTime);
 
-        PlayerPresenter.UpdateAll(deltaTime);
-        RaceModel.stats.playerForwardPosition = PlayerPresenter.local.transform.position.z;
+        RaceModel.stats.playerSpeed = PlayerPresenter.local.player.CurrSpeed;
+        RaceModel.stats.playerPosition = PlayerPresenter.local.player.CurrPosition;
 
         RacerCamera.offset.z = Mathf.Lerp(RacerCamera.offset.z, -cameraMode * 0.6f, deltaTime * 3);
         RacerCamera.UpdateAll(deltaTime);

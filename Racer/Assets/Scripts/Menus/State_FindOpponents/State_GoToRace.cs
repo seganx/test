@@ -43,6 +43,8 @@ public class State_GoToRace : GameState
 
         if (playerData == null)
             playerData = new PlayerData(Profile.Name, Profile.Score, Profile.Position, Profile.CurrentRacer);
+        RaceModel.specs.minForwardSpeed = GlobalConfig.Race.startSpeed;
+        RaceModel.specs.maxForwardSpeed = playerData.RacerMaxSpeed;
         playerInfo.Setup(playerData);
 
         // entring loop
@@ -167,8 +169,6 @@ public class State_GoToRace : GameState
     private void PlayGame()
     {
         state = State.Started;
-        if (RaceModel.specs.minForwardSpeed < 1) RaceModel.specs.minForwardSpeed = GlobalConfig.Race.startSpeed;
-        if (RaceModel.specs.maxForwardSpeed < 1) RaceModel.specs.maxForwardSpeed = PlayerPresenterOnline.FindMaxGameSpeed();
         gameManager.OpenState<State_Playing>(true);
     }
 

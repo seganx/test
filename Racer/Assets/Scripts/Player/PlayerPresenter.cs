@@ -66,7 +66,7 @@ public abstract class PlayerPresenter : Base
 
     public virtual float UpdateForwardPosition(float deltaTime)
     {
-        player.CurrPosition = RaceModel.stats.forwardPosition + speedPosition + nosPosition;
+        player.CurrPosition = speedPosition + nosPosition;
         transform.position = RoadPresenter.GetPositionByDistance(player.CurrPosition);
         transform.forward = Vector3.Lerp(transform.forward, RoadPresenter.GetForwardByDistance(player.CurrPosition), deltaTime * 10);
         return player.CurrPosition;
@@ -74,7 +74,7 @@ public abstract class PlayerPresenter : Base
 
     public virtual void UpdateSteeringPosition(float deltaTime)
     {
-        var stdest = Mathf.Clamp01(RaceModel.stats.speed / 30.0f) * SteeringValue * maxSteeringSpeed;
+        var stdest = Mathf.Clamp01(player.CurrSpeed / 30.0f) * SteeringValue * maxSteeringSpeed;
         currSteeringSpeed = Mathf.MoveTowards(currSteeringSpeed, stdest, maxSteeringSpeed * deltaTime * 3);
         var localPos = racer.transform.localPosition;
         localPos.x = localPos.x + currSteeringSpeed * deltaTime;
@@ -120,8 +120,12 @@ public abstract class PlayerPresenter : Base
         BroadcastMessage("StartNitors", SendMessageOptions.DontRequireReceiver);
     }
 
-    public virtual void PlayingUpdate(float deltaTime)
+    public virtual void PlayingUpdate(float gameTime, float deltaTime)
     {
+        float forwardSpeedDelta = player.RacerMaxSpeed - RaceModel.specs.minForwardSpeed;
+        player.CurrSpeed = Mathf.Min(gameTime * forwardSpeedDelta + RaceModel.specs.minForwardSpeed, player.RacerMaxSpeed);
+        speedPosition += player.CurrSpeed * deltaTime;
+
         if (IsNitrosUsing)
         {
             nosPosition += GlobalConfig.Race.racerDistance * Time.deltaTime * (IsNitrosPerfect ? 1 : 0.8f);
@@ -138,7 +142,6 @@ public abstract class PlayerPresenter : Base
             player.CurrNitrous += player.RacerNitrous * Time.deltaTime * 0.05f;
         }
 
-        speedPosition += player.RacerSpeed * deltaTime;
         UpdateForwardPosition(deltaTime);
         UpdateSteeringPosition(deltaTime);
     }
@@ -150,12 +153,10 @@ public abstract class PlayerPresenter : Base
     public static List<PlayerPresenter> all = new List<PlayerPresenter>(10);
     public static PlayerPresenter local = null;
 
-    public static void UpdateAll(float deltaTime)
+    public static void UpdateAll(float gameTime, float deltaTime)
     {
         for (int i = 0; i < all.Count; i++)
-        {
-            all[i].PlayingUpdate(deltaTime);
-        }
+            all[i].PlayingUpdate(gameTime, deltaTime);
     }
 
     public static void UpdateRanks()
