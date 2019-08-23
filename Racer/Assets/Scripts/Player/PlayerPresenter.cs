@@ -139,7 +139,7 @@ public abstract class PlayerPresenter : Base
         }
         else if (IsNitrosFull == false)
         {
-            player.CurrNitrous += 0.04f * (0 + player.RacerNitrous) * Time.deltaTime;
+            player.CurrNitrous += 0.04f * (0 + player.RacerNitrous) * deltaTime;
         }
 
         UpdateForwardPosition(deltaTime);

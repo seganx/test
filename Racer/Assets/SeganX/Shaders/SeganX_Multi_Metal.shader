@@ -1,4 +1,8 @@
-﻿Shader "SeganX/Multi/Metal"
+﻿// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+
+// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+
+Shader "SeganX/Multi/Metal"
 {
     Properties
     {
@@ -6,6 +10,7 @@
         _VinylTex("Vinyl Texture", 2D) = "black" {}
         _MetalTex("Metal Texture", 2D) = "black" {}
 
+        [Enum(Off,1,Transparent,0)]	    _FillMode("Fill Mode", Float) = 1
         [Enum(ON,1,OFF,0)]	            _ZWrite("Z Write", Int) = 0
         [Enum(BACK,2,FRONT,1,OFF,0)]	_Cull("Cull", Int) = 2
 
@@ -77,9 +82,10 @@
                     float4 colr : COLOR;
                     float2 uv0 : TEXCOORD0;
                     float2 uv1 : TEXCOORD1;
-                    float2 uv2 : TEXCOORD3;
-                    float3 wrl : TEXCOORD2;
-                    UNITY_FOG_COORDS(4)
+                    float2 uv2 : TEXCOORD2;
+                    float3 wrl : TEXCOORD3;
+                    float2 zdp : TEXCOORD4;
+                    UNITY_FOG_COORDS(5)
                 };
 
                 sampler2D _MainTex;
@@ -99,11 +105,18 @@
                     o.uv1 = TRANSFORM_TEX(v.uv1, _VinylTex);
                     o.uv2 = TRANSFORM_TEX(v.uv1, _MetalTex);
                     o.wrl = mul(unity_ObjectToWorld, v.vrtx).xyz;
+
+                    o.zdp.x = 0.5f * abs(o.vrtx.x / o.vrtx.w);
+                    const float depz = -1.0f / (15.0f - 0.0f);
+                    const float depw = 15.0f / (15.0f - 0.0f);
+                    o.zdp.y = 0.5f * (UNITY_Z_0_FAR_FROM_CLIPSPACE(o.vrtx.z) * depz + depw);
+
                     UNITY_TRANSFER_FOG(o, o.vrtx);
                     return o;
                 }
 
 
+                fixed  _FillMode;
                 fixed4 _VinylColor;
                 fixed4 _GlossColor;
                 fixed4 _DiffColor1;
@@ -138,6 +151,10 @@
 
                 float4 frag(v2f i) : SV_Target
                 {
+                    clip(_FillMode + i.zdp.x + frac(i.vrtx.x * 0.5f) - i.zdp.y);
+                    clip(_FillMode + i.zdp.x + frac(i.vrtx.y * 0.5f) - i.zdp.y);
+                    //clip(_FillMode + i.zdp.x + frac(i.vrtx.x * 0.5f) - frac(i.vrtx.y * 0.5f) - i.zdp.y);
+
                     //  extract material id from vertex color
                     uint matId = (round(i.colr.r * 255) / 10) - 1;  
 

@@ -25,7 +25,11 @@ public class State_Playing : GameState
 
         yield return waitTimer;
         foreach (var player in PlayerPresenter.all)
+        {
             player.BroadcastMessage("EnableRacerAudio", SendMessageOptions.DontRequireReceiver);
+            player.racer.SetTransparent(player.player.IsPlayer == false);
+        }
+
 
         while (true)
         {
