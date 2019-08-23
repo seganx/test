@@ -43,8 +43,6 @@ public class State_GoToRace : GameState
 
         if (playerData == null)
             playerData = new PlayerData(Profile.Name, Profile.Score, Profile.Position, Profile.CurrentRacer);
-        RaceModel.specs.minForwardSpeed = GlobalConfig.Race.startSpeed;
-        RaceModel.specs.maxForwardSpeed = playerData.RacerMaxSpeed;
         playerInfo.Setup(playerData);
 
         // entring loop

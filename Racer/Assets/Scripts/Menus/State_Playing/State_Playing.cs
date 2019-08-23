@@ -10,6 +10,7 @@ public class State_Playing : GameState
     [SerializeField] private Text timeLabel = null;
     [SerializeField] private AudioSource[] timerAudios = null;
 
+    private float forwardSpeedDelta = 0;
     private bool allowUserHandle = true;
     private int timerAudioPlayed = -1;
     private bool isGamePaused = false;
@@ -21,8 +22,13 @@ public class State_Playing : GameState
         RacerCamera.offset.z = -10;
         gameManager.OpenPopup<Popup_PlayingCountDown>();
 
-        var waitTimer = new WaitForSeconds(0.2f);
 
+        RaceModel.specs.minForwardSpeed = GlobalConfig.Race.startSpeed;
+        RaceModel.specs.maxForwardSpeed = PlayerPresenter.FindMaxGameSpeed();
+        forwardSpeedDelta = RaceModel.specs.maxForwardSpeed - RaceModel.specs.minForwardSpeed;
+
+
+        var waitTimer = new WaitForSeconds(0.2f);
         yield return waitTimer;
         foreach (var player in PlayerPresenter.all)
         {
@@ -48,8 +54,12 @@ public class State_Playing : GameState
         if (PlayerPresenter.local == null || PlayNetwork.IsJoined == false) return;
         float deltaTime = Time.deltaTime;
 
-        float gametime = PlayNetwork.PlayTime / GlobalConfig.Race.maxTime;
-        PlayerPresenter.UpdateAll(Mathf.Clamp01(1 - Mathf.Pow(Mathf.Abs(gametime - 1), 1.5f)), deltaTime);
+        //  compute racers speed
+        float gametimeFactor = PlayNetwork.PlayTime / GlobalConfig.Race.maxTime;
+        float gametime = Mathf.Clamp01(1 - Mathf.Pow(Mathf.Abs(gametimeFactor - 1), 1.5f));
+        RaceModel.stats.globalSpeed = Mathf.Min(gametime * forwardSpeedDelta + RaceModel.specs.minForwardSpeed, RaceModel.specs.maxForwardSpeed);
+
+        PlayerPresenter.UpdateAll(gametime, deltaTime);
 
         RaceModel.stats.playerSpeed = PlayerPresenter.local.player.CurrSpeed;
         RaceModel.stats.playerPosition = PlayerPresenter.local.player.CurrPosition;

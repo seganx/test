@@ -16,6 +16,7 @@ public abstract class PlayerPresenter : Base
 
     public virtual bool IsInactive { get { return false; } }
     public virtual bool IsMine { get { return true; } }
+    public virtual bool IsMaster { get { return true; } }
     public float SteeringValue { get; set; }
     public bool PlayingHorn { get; set; }
     public float Nitros { get { return player.CurrNitrous; } }
@@ -123,7 +124,7 @@ public abstract class PlayerPresenter : Base
     public virtual void PlayingUpdate(float gameTime, float deltaTime)
     {
         float forwardSpeedDelta = player.RacerMaxSpeed - RaceModel.specs.minForwardSpeed;
-        player.CurrSpeed = Mathf.Min(gameTime * forwardSpeedDelta + RaceModel.specs.minForwardSpeed, player.RacerMaxSpeed);
+        player.CurrSpeed = RaceModel.stats.globalSpeed + Mathf.Min(gameTime * forwardSpeedDelta + RaceModel.specs.minForwardSpeed, player.RacerMaxSpeed);
         speedPosition += player.CurrSpeed * deltaTime;
 
         if (IsNitrosUsing)
@@ -153,6 +154,8 @@ public abstract class PlayerPresenter : Base
     public static List<PlayerPresenter> all = new List<PlayerPresenter>(10);
     public static PlayerPresenter local = null;
 
+    private static Dictionary<int, int> groupStat = new Dictionary<int, int>(10);
+
     public static void UpdateAll(float gameTime, float deltaTime)
     {
         for (int i = 0; i < all.Count; i++)
@@ -171,5 +174,47 @@ public abstract class PlayerPresenter : Base
         all.Sort((x, y) => Random.Range(-99999, 99999));
         for (int i = 0; i < all.Count; i++)
             all[i].SetNosPosition(i * GlobalConfig.Race.racerDistance);
+    }
+
+    public static float FindMaxGameSpeed()
+    {
+        groupStat.Clear();
+        foreach (var item in all)
+        {
+            if (groupStat.ContainsKey(item.racer.GroupId))
+                groupStat[item.racer.GroupId]++;
+            else
+                groupStat.Add(item.racer.GroupId, 1);
+        }
+
+        int selectedGroup = 0;
+        if (groupStat.Count == 4) // find master group
+            selectedGroup = FindMasterGroupId();
+        else
+            selectedGroup = GroupStatFindMaxValue();
+
+        return GlobalConfig.Race.GetGroupMaxSpeed(selectedGroup);
+    }
+
+    private static int FindMasterGroupId()
+    {
+        foreach (var item in all)
+            if (item.IsMaster)
+                return item.racer.GroupId;
+        return 0;
+    }
+
+    private static int GroupStatFindMaxValue()
+    {
+        int maxval = 0, res = 0;
+        foreach (var item in groupStat)
+        {
+            if (item.Value > maxval)
+            {
+                maxval = item.Value;
+                res = item.Key;
+            }
+        }
+        return res;
     }
 }

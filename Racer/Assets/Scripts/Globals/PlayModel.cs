@@ -24,6 +24,7 @@ public static class RaceModel
 
     public class Stats
     {
+        public float globalSpeed = 0;
         public float playerSpeed = 0;
         public float playerPosition = 0;
         public int playerRank = 0;
