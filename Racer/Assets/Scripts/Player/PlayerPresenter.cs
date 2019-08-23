@@ -99,6 +99,8 @@ public abstract class PlayerPresenter : Base
         var localPos = racer.transform.localPosition;
         localPos.x = steerPos;
         racer.transform.localPosition = localPos;
+
+        Debug.Log("Ready to race " + player.name + " " + nosPos + " " + steerPos);
     }
 
     public virtual void Horn(bool play)

@@ -27,7 +27,6 @@ public class State_Playing : GameState
         RaceModel.specs.maxForwardSpeed = PlayerPresenter.FindMaxGameSpeed();
         forwardSpeedDelta = RaceModel.specs.maxForwardSpeed - RaceModel.specs.minForwardSpeed;
 
-
         var waitTimer = new WaitForSeconds(0.2f);
         yield return waitTimer;
         foreach (var player in PlayerPresenter.all)

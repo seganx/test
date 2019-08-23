@@ -105,11 +105,11 @@ public class PlayerPresenterOnline : PlayerPresenter
     public override void ReadyToRace(float nosPos, float steerPos)
     {
         base.ReadyToRace(nosPos, steerPos);
-        photonView.RPC("NetSetNosPosition", PhotonTargets.Others, nosPos, steerPos);
+        photonView.RPC("NetReadyToRace", PhotonTargets.Others, nosPos, steerPos);
     }
 
     [PunRPC]
-    private void NetSetNosPosition(int nosPos, float steerPos)
+    private void NetReadyToRace(float nosPos, float steerPos)
     {
         base.ReadyToRace(nosPos, steerPos);
     }
