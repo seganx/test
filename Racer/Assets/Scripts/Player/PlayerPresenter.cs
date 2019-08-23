@@ -101,6 +101,8 @@ public abstract class PlayerPresenter : Base
         racer.transform.localPosition = localPos;
 
         Debug.Log("Ready to race " + player.name + " " + nosPos + " " + steerPos);
+        UpdateForwardPosition(0);
+        UpdateSteeringPosition(0);
     }
 
     public virtual void Horn(bool play)

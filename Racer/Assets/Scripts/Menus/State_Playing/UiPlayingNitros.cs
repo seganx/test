@@ -11,9 +11,11 @@ public class UiPlayingNitros : MonoBehaviour
     [SerializeField] private InputScreenButton nitrosButtons = null;
     [SerializeField] private AudioSource nosFullAudio = null;
     [SerializeField] private RectTransform nitrosHint = null;
+    [SerializeField] private RectTransform nitrosBonus = null;
 
     private Color nitrosBarDefaultColor = Color.yellow;
     private float nitrosHintTimer = 0;
+    private bool usingbonuse = false;
 
     private bool NitrosButtonsActive
     {
@@ -30,6 +32,7 @@ public class UiPlayingNitros : MonoBehaviour
     {
         nitrosBarDefaultColor = nitrosBar.color;
         nitrosBar.fillAmount = 0;
+        nitrosBonus.gameObject.SetActive(false);
         NitrosButtonsActive = false;
     }
 
@@ -43,22 +46,42 @@ public class UiPlayingNitros : MonoBehaviour
         nitrosBar.color = PlayerPresenter.local.IsNitrosFull ? nitrosBarFullColor : nitrosBarDefaultColor;
         NitrosButtonsActive = PlayerPresenter.local.IsNitrosReady;
 
-        RacerCamera.fovScale = PlayerPresenter.local.IsNitrosUsing  ? 1.45f : 1;
+        RacerCamera.fovScale = PlayerPresenter.local.IsNitrosUsing ? 1.45f : 1;
         SeganX.Effects.CameraFX.MotionBlurValue = Mathf.Lerp(SeganX.Effects.CameraFX.MotionBlurValue, PlayerPresenter.local.IsNitrosUsing ? 0.6f : 0.15f, Time.deltaTime * 2);
+
+        if (PlayerPresenter.local.IsNitrosUsing == false)
+            nitrosBonus.gameObject.SetActive(usingbonuse = false);
     }
 
     private void HandleInput()
     {
-        if (PlayerPresenter.local.IsNitrosReady == false) return;
-
-
         if (InputManager.Boost.isPointerDown || UiPlayingGesture.UseNitors
 #if UNITY_EDITOR || UNITY_STANDALONE
                 || Input.GetKeyDown(KeyCode.LeftControl)
 #endif
         )
         {
-            PlayerPresenter.local.UseNitrous();
+            if (PlayerPresenter.local.IsNitrosReady)
+                PlayerPresenter.local.UseNitrous();
+
+            if (nitrosBonus.gameObject.activeSelf)
+            {
+                var nos = PlayerPresenter.local.player.CurrNitrous;
+                var nosmin = nitrosBonus.anchoredPosition.x / nitrosBar.rectTransform.rect.width;
+                var nosmax = (nitrosBonus.anchoredPosition.x + nitrosBonus.rect.width) / nitrosBar.rectTransform.rect.width;
+                if (nosmin < nos && nos < nosmax)
+                {
+                    PlayerPresenter.local.player.CurrNitrous = Mathf.Clamp01(nos + 0.5f);
+                }
+                nitrosBonus.gameObject.SetActive(false);
+            }
+            else if (usingbonuse == false)
+            {
+                usingbonuse = true;
+                nitrosBonus.SetAnchordPositionX(Random.Range(70.0f, 270.0f));
+                nitrosBonus.SetAnchordWidth(Random.Range(10, 20) * 3000 / PlayerPresenter.local.player.RacerPower);
+                nitrosBonus.gameObject.SetActive(true);
+            }
         }
     }
 
