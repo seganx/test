@@ -117,7 +117,7 @@ public class PlayerPresenterOnline : PlayerPresenter
     public override void OnCrashed()
     {
         base.OnCrashed();
-        if (player.IsPlayer)
+        if (IsMine)
             photonView.RPC("NetOnCrashed", PhotonTargets.Others, nosPosition);
     }
 
@@ -130,9 +130,11 @@ public class PlayerPresenterOnline : PlayerPresenter
 
     public override void UseNitrous()
     {
-        base.UseNitrous();
-        if (IsNitrosReady)
+        if (IsNitrosReady && IsMine)
+        {
+            base.UseNitrous();
             photonView.RPC("NetUseNitrous", PhotonTargets.Others, player.CurrNitrous, nosPosition);
+        }
     }
 
     [PunRPC]
