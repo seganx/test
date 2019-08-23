@@ -179,7 +179,7 @@ public abstract class PlayerPresenter : Base
         for (int i = 0; i < all.Count; i++)
         {
             float nospos = i * GlobalConfig.Race.racerDistance;
-            float rodseg = 2 * RoadPresenter.RoadWidth / 3;
+            float rodseg = 2 * RoadPresenter.RoadWidth / 4;
             all[i].ReadyToRace(nospos, (i % 3) * rodseg - rodseg);
         }
     }
