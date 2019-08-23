@@ -102,16 +102,16 @@ public class PlayerPresenterOnline : PlayerPresenter
         }
     }
 
-    public override void SetNosPosition(float nosPos)
+    public override void ReadyToRace(float nosPos, float steerPos)
     {
-        base.SetNosPosition(nosPos);
-        photonView.RPC("NetSetNosPosition", PhotonTargets.Others, nosPos);
+        base.ReadyToRace(nosPos, steerPos);
+        photonView.RPC("NetSetNosPosition", PhotonTargets.Others, nosPos, steerPos);
     }
 
     [PunRPC]
-    private void NetSetNosPosition(int nosPos)
+    private void NetSetNosPosition(int nosPos, float steerPos)
     {
-        base.SetNosPosition(nosPos);
+        base.ReadyToRace(nosPos, steerPos);
     }
 
     public override void UseNitrous()

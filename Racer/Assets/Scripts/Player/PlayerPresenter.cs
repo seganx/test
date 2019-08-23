@@ -92,9 +92,13 @@ public abstract class PlayerPresenter : Base
         racer.transform.localPosition = localPos;
     }
 
-    public virtual void SetNosPosition(float nosPos)
+    public virtual void ReadyToRace(float nosPos, float steerPos)
     {
         nosPosition = nosPos;
+
+        var localPos = racer.transform.localPosition;
+        localPos.x = steerPos;
+        racer.transform.localPosition = localPos;
     }
 
     public virtual void Horn(bool play)
@@ -173,7 +177,11 @@ public abstract class PlayerPresenter : Base
     {
         all.Sort((x, y) => Random.Range(-99999, 99999));
         for (int i = 0; i < all.Count; i++)
-            all[i].SetNosPosition(i * GlobalConfig.Race.racerDistance);
+        {
+            float nospos = i * GlobalConfig.Race.racerDistance;
+            float rodseg = 2 * RoadPresenter.RoadWidth / 3;
+            all[i].ReadyToRace(nospos, (i % 3) * rodseg - rodseg);
+        }
     }
 
     public static float FindMaxGameSpeed()

@@ -36,6 +36,9 @@ public class State_Playing : GameState
             player.racer.SetTransparent(player.player.IsPlayer == false);
         }
 
+        PlayerPresenter.UpdateRanks();
+        for (int i = 0; i < PlayerPresenter.allPlayers.Count; i++)
+            PlayerPresenter.allPlayers[i].CurrNitrous = i / (float)RaceModel.specs.maxPlayerCount;
 
         while (true)
         {

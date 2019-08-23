@@ -31,9 +31,6 @@ public class UiPlayingNitros : MonoBehaviour
         nitrosBarDefaultColor = nitrosBar.color;
         nitrosBar.fillAmount = 0;
         NitrosButtonsActive = false;
-
-        for (int i = 0; i < PlayerPresenter.allPlayers.Count; i++)
-            PlayerPresenter.allPlayers[i].CurrNitrous = i / 4.0f;
     }
 
     // Update is called once per frame
