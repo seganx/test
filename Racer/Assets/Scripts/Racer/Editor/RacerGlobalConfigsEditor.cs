@@ -142,9 +142,9 @@ public class RacerGlobalConfigsEditor : Editor
               //  for (int i = 0; i < list.Count; i++)
                 //    list[i].price = Mathf.FloorToInt(obj.editorPriceParam.x + obj.editorPriceParam.y * i);
 
-            //if (DrawLinearParamButton("Speed", ref obj.editorSpeedParam))
-              //  for (int i = 0; i < list.Count; i++)
-                //    list[i].speedBaseValue = obj.editorSpeedParam.x + obj.editorSpeedParam.y * i;
+            if (DrawLinearParamButton("Speed", ref obj.editorSpeedParam))
+                for (int i = 0; i < list.Count; i++)
+                    list[i].speedBaseValue = obj.editorSpeedParam.x + obj.editorSpeedParam.y * i;
 
             if (DrawLinearParamButton("Nitro", ref obj.editorNitroParam))
                 for (int i = 0; i < list.Count; i++)

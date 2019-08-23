@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class State_Upgrade : GameState
 {
-    public enum UpgradeType : int { Nitors = 0, Steering = 1, Body = 2, Null = 3 }
+    public enum UpgradeType : int { Speed = 0, Nitors = 1, Steering = 2, Body = 3, Null = 4 }
 
     [System.Serializable]
     public class UpgradableMenu
@@ -98,6 +98,7 @@ public class State_Upgrade : GameState
         {
             switch (selectedType)
             {
+                case UpgradeType.Speed: return LevelSpeed;
                 case UpgradeType.Nitors: return LevelNitro;
                 case UpgradeType.Steering: return LevelSteering;
                 case UpgradeType.Body: return LevelBody;
@@ -109,6 +110,7 @@ public class State_Upgrade : GameState
         {
             switch (selectedType)
             {
+                case UpgradeType.Speed: LevelSpeed = value; break;
                 case UpgradeType.Nitors: LevelNitro = value; break;
                 case UpgradeType.Steering: LevelSteering = value; break;
                 case UpgradeType.Body: LevelBody = value; break;
@@ -122,6 +124,7 @@ public class State_Upgrade : GameState
         {
             switch (selectedType)
             {
+                case UpgradeType.Speed: return config.UpgradeCostSpeed(LevelSpeed + 1);
                 case UpgradeType.Nitors: return config.UpgradeCostNitro(LevelNitro + 1);
                 case UpgradeType.Steering: return config.UpgradeCostSteering(LevelSteering + 1);
                 case UpgradeType.Body: return config.UpgradeCostBody(LevelBody + 1);
@@ -244,6 +247,12 @@ public class State_Upgrade : GameState
 
         switch (menu.type)
         {
+            case UpgradeType.Speed:
+                level = LevelSpeed;
+                value = config.ComputeSpeed(level);
+                nvalue = config.ComputeSpeed(level + 1);
+                if (showPlus) powerDiffValue = config.ComputePower(LevelSpeed + 1, LevelNitro, LevelSteering, LevelBody) - CurrPower;
+                break;
             case UpgradeType.Nitors:
                 level = LevelNitro;
                 value = config.ComputeNitro(level);

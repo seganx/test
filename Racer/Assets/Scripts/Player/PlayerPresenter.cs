@@ -128,8 +128,8 @@ public abstract class PlayerPresenter : Base
 
         if (IsNitrosUsing)
         {
-            nosPosition += GlobalConfig.Race.racerDistance * Time.deltaTime * (IsNitrosPerfect ? 1 : 0.8f);
-            player.CurrNitrous -= Time.deltaTime / (player.RacerNitrous + 1);
+            nosPosition += 1.0f * (0 + player.RacerNitrous) * deltaTime; // toodoo: use deltaTime??
+            player.CurrNitrous -= deltaTime / (.7f * (2 + player.RacerNitrous) * (IsNitrosPerfect ? 1 : 0.8f));
             if (player.CurrNitrous <= 0)
             {
                 IsNitrosUsing = false;
@@ -139,7 +139,7 @@ public abstract class PlayerPresenter : Base
         }
         else if (IsNitrosFull == false)
         {
-            player.CurrNitrous += player.RacerNitrous * Time.deltaTime * 0.05f;
+            player.CurrNitrous += 0.04f * (0 + player.RacerNitrous) * Time.deltaTime;
         }
 
         UpdateForwardPosition(deltaTime);
