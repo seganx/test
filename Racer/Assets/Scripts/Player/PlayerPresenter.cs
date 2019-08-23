@@ -9,7 +9,7 @@ public abstract class PlayerPresenter : Base
     [HideInInspector] public PlayerData player = null;
     [HideInInspector] public RacerPresenter racer = null;
 
-    private float nosPosition = 0;
+    protected float nosPosition = 0;
     private float speedPosition = 0;
     private float currSteeringSpeed = 0;
     private float maxSteeringSpeed = 0;
@@ -127,10 +127,10 @@ public abstract class PlayerPresenter : Base
         BroadcastMessage("StartNitors", SendMessageOptions.DontRequireReceiver);
     }
 
-    public virtual void PlayingUpdate(float gameTime, float deltaTime)
+    public virtual void PlayingUpdate(float speedTime, float deltaTime)
     {
         float forwardSpeedDelta = player.RacerMaxSpeed - RaceModel.specs.minForwardSpeed;
-        player.CurrSpeed = RaceModel.stats.globalSpeed + Mathf.Min(gameTime * forwardSpeedDelta + RaceModel.specs.minForwardSpeed, player.RacerMaxSpeed);
+        player.CurrSpeed = RaceModel.stats.globalSpeed + Mathf.Min(speedTime * forwardSpeedDelta + RaceModel.specs.minForwardSpeed, player.RacerMaxSpeed);
         speedPosition += player.CurrSpeed * deltaTime;
 
         if (IsNitrosUsing)
@@ -162,10 +162,10 @@ public abstract class PlayerPresenter : Base
 
     private static Dictionary<int, int> groupStat = new Dictionary<int, int>(10);
 
-    public static void UpdateAll(float gameTime, float deltaTime)
+    public static void UpdateAll(float speedTime, float deltaTime)
     {
         for (int i = 0; i < all.Count; i++)
-            all[i].PlayingUpdate(gameTime, deltaTime);
+            all[i].PlayingUpdate(speedTime, deltaTime);
     }
 
     public static void UpdateRanks()

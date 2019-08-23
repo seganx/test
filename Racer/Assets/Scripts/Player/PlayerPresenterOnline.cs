@@ -114,15 +114,32 @@ public class PlayerPresenterOnline : PlayerPresenter
         base.ReadyToRace(nosPos, steerPos);
     }
 
-    public override void UseNitrous()
+    public override void OnCrashed()
     {
-        base.UseNitrous();
-        photonView.RPC("NetUseNitrous", PhotonTargets.Others);
+        base.OnCrashed();
+        if (player.IsPlayer)
+            photonView.RPC("NetOnCrashed", PhotonTargets.Others, nosPosition);
     }
 
     [PunRPC]
-    private void NetUseNitrous()
+    private void NetOnCrashed(float nospos)
     {
+        nosPosition = nospos;
+        base.OnCrashed();
+    }
+
+    public override void UseNitrous()
+    {
+        base.UseNitrous();
+        if (IsNitrosReady)
+            photonView.RPC("NetUseNitrous", PhotonTargets.Others, player.CurrNitrous, nosPosition);
+    }
+
+    [PunRPC]
+    private void NetUseNitrous(float currnitros, float nospos)
+    {
+        player.CurrNitrous = currnitros;
+        nosPosition = nospos;
         base.UseNitrous();
     }
 

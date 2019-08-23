@@ -57,11 +57,11 @@ public class State_Playing : GameState
         float deltaTime = Time.deltaTime;
 
         //  compute racers speed
-        float gametimeFactor = PlayNetwork.PlayTime / GlobalConfig.Race.maxTime;
-        float gametime = Mathf.Clamp01(1 - Mathf.Pow(Mathf.Abs(gametimeFactor - 1), 1.5f));
-        RaceModel.stats.globalSpeed = Mathf.Min(gametime * forwardSpeedDelta + RaceModel.specs.minForwardSpeed, RaceModel.specs.maxForwardSpeed);
+        float gametime = PlayNetwork.PlayTime / GlobalConfig.Race.maxTime;
+        float speedtime = Mathf.Clamp01(1 - Mathf.Pow(Mathf.Abs(gametime - 1), 1.5f));
+        RaceModel.stats.globalSpeed = Mathf.Min(speedtime * forwardSpeedDelta + RaceModel.specs.minForwardSpeed, RaceModel.specs.maxForwardSpeed);
 
-        PlayerPresenter.UpdateAll(gametime, deltaTime);
+        PlayerPresenter.UpdateAll(speedtime, deltaTime);
 
         RaceModel.stats.playerSpeed = PlayerPresenter.local.player.CurrSpeed;
         RaceModel.stats.playerPosition = PlayerPresenter.local.player.CurrPosition;
