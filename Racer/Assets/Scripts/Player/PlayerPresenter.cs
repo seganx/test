@@ -129,6 +129,11 @@ public abstract class PlayerPresenter : Base
         BroadcastMessage("StartNitors", SendMessageOptions.DontRequireReceiver);
     }
 
+    public virtual void BoostNitros()
+    {
+        player.CurrNitrous = Mathf.Clamp01(player.CurrNitrous + 0.5f);
+    }
+
     public virtual void PlayingUpdate(float speedTime, float deltaTime)
     {
         float forwardSpeedDelta = player.RacerMaxSpeed - RaceModel.specs.minForwardSpeed;

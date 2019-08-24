@@ -70,16 +70,14 @@ public class UiPlayingNitros : MonoBehaviour
                 var nosmin = nitrosBonus.anchoredPosition.x / nitrosBar.rectTransform.rect.width;
                 var nosmax = (nitrosBonus.anchoredPosition.x + nitrosBonus.rect.width) / nitrosBar.rectTransform.rect.width;
                 if (nosmin < nos && nos < nosmax)
-                {
-                    PlayerPresenter.local.player.CurrNitrous = Mathf.Clamp01(nos + 0.5f);
-                }
+                    PlayerPresenter.local.BoostNitros();
                 nitrosBonus.gameObject.SetActive(false);
             }
             else if (usingbonuse == false)
             {
                 usingbonuse = true;
                 nitrosBonus.SetAnchordPositionX(Random.Range(70.0f, 270.0f));
-                nitrosBonus.SetAnchordWidth(Random.Range(10, 20) * 3000 / PlayerPresenter.local.player.RacerPower);
+                nitrosBonus.SetAnchordWidth(30 + Random.Range(0, 20) * 1000 / PlayerPresenter.local.player.RacerPower);
                 nitrosBonus.gameObject.SetActive(true);
             }
         }

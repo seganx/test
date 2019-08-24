@@ -145,6 +145,20 @@ public class PlayerPresenterOnline : PlayerPresenter
         base.UseNitrous();
     }
 
+    public override void BoostNitros()
+    {
+        base.BoostNitros();
+        photonView.RPC("NetBoostNitros", PhotonTargets.Others, player.CurrNitrous, nosPosition);
+    }
+
+    [PunRPC]
+    private void NetBoostNitros(float currnitros, float nospos)
+    {
+        player.CurrNitrous = currnitros;
+        nosPosition = nospos;
+        base.BoostNitros();
+    }
+
     public override void Horn(bool play)
     {
         base.Horn(play);
