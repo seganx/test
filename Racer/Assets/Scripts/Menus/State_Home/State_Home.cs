@@ -21,15 +21,39 @@ public class State_Home : GameState
     {
         GarageCamera.SetCameraId(1);
 
-        blackMarketButton.onClick.AddListener(() => gameManager.OpenState<State_BlackMarket>());
-        shopButton.onClick.AddListener(() => gameManager.OpenState<State_Shop>());
-        loadingBoxButton.onClick.AddListener(() => gameManager.OpenState<State_LoadingBox>());
+        blackMarketButton.onClick.AddListener(() =>
+        {
+            OnOpened(blackMarketButton);
+            gameManager.OpenState<State_BlackMarket>();
+        });
 
-        garageButton.onClick.AddListener(() => gameManager.OpenState<State_Garage>().Setup(0, rc => gameManager.OpenState<State_PhotoMode>()));
-        upgradeButton.onClick.AddListener(() => gameManager.OpenState<State_Garage>().Setup(0, rc => gameManager.OpenState<State_Upgrade>()));
+        shopButton.onClick.AddListener(() =>
+        {
+            OnOpened(shopButton);
+            gameManager.OpenState<State_Shop>();
+        });
+
+        loadingBoxButton.onClick.AddListener(() =>
+        {
+            OnOpened(loadingBoxButton);
+            gameManager.OpenState<State_LoadingBox>();
+        });
+
+        garageButton.onClick.AddListener(() =>
+        {
+            OnOpened(garageButton);
+            gameManager.OpenState<State_Garage>().Setup(0, rc => gameManager.OpenState<State_PhotoMode>());
+        });
+
+        upgradeButton.onClick.AddListener(() =>
+        {
+            OnOpened(upgradeButton);
+            gameManager.OpenState<State_Garage>().Setup(0, rc => gameManager.OpenState<State_Upgrade>());
+        });
 
         customButton.onClick.AddListener(() => gameManager.OpenState<State_Garage>().Setup(0, rc =>
         {
+            OnOpened(customButton);
             if (Profile.IsUnlockedRacer(rc.Id))
                 gameManager.OpenState<State_Custome>();
             else
@@ -38,6 +62,7 @@ public class State_Home : GameState
 
         offlineButton.onClick.AddListener(() =>
         {
+            OnOpened(offlineButton);
 #if DATABEEN
             DataBeen.SendCustomEventData("home", new DataBeenConnection.CustomEventInfo[] { new DataBeenConnection.CustomEventInfo() { key = "select", value = "offline" } });
 #endif
@@ -52,6 +77,7 @@ public class State_Home : GameState
 
         onlineButton.onClick.AddListener(() =>
         {
+            OnOpened(onlineButton);
 #if DATABEEN
             DataBeen.SendCustomEventData("home", new DataBeenConnection.CustomEventInfo[] { new DataBeenConnection.CustomEventInfo() { key = "select", value = "online" } });
 #endif
@@ -60,6 +86,7 @@ public class State_Home : GameState
 
         storyButton.onClick.AddListener(() =>
         {
+            OnOpened(storyButton);
 #if DATABEEN
             DataBeen.SendCustomEventData("home", new DataBeenConnection.CustomEventInfo[] { new DataBeenConnection.CustomEventInfo() { key = "select", value = "story" } });
 #endif
@@ -67,7 +94,11 @@ public class State_Home : GameState
 
         });
 
-        gameTutorialButton.onClick.AddListener(() => gameManager.OpenState<State_GameTutorial>());
+        gameTutorialButton.onClick.AddListener(() =>
+        {
+            OnOpened(gameTutorialButton);
+            gameManager.OpenState<State_GameTutorial>();
+        });
 
         CheckPreset(() =>
         {
@@ -113,5 +144,12 @@ public class State_Home : GameState
             nextTask();
         else
             gameManager.OpenPopup<Popup_Welcome>().SetCallback(nextTask);
+    }
+
+    void OnOpened(Button buttonGameObject)
+    {
+        UiHomeLockItem uiHomeLockItem = buttonGameObject.GetComponent<UiHomeLockItem>();
+        if (uiHomeLockItem)
+            uiHomeLockItem.SetOpenedOnce();
     }
 }
