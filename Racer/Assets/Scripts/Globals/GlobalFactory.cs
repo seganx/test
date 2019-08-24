@@ -50,6 +50,7 @@ public class GlobalFactory : StaticConfig<GlobalFactory>
     {
         try
         {
+            playersName.names.Clear();
             playersName.names.AddRange(playersName.Text.Replace("\r", "").Split(new char[] { '\n' }, System.StringSplitOptions.RemoveEmptyEntries));
             playersName.names.RemoveAll(x => x.Length < 3);
             playersName.names.Sort((x, y) => Random.Range(-10, 11));

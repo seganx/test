@@ -128,7 +128,8 @@ public static class Network
         DownloadData<List<LeaderboardProfileResponse>>(uri, null, (msg, res) =>
         {
             if (res != null)
-            {
+            { 
+
                 res.RemoveAll(x => x.position < 1);
                 res.Sort((x, y) => x.position - y.position);
                 foreach (var item in res)
@@ -160,6 +161,7 @@ public static class Network
             {
                 var dejson = Utilities.DecompressString(res.Split('.')[0], string.Empty);
                 var data = JsonUtilityEx.FromJson<ProfileData.NetData>(dejson);
+                data.Validate();
                 callback(data);
             }
             else callback(null);

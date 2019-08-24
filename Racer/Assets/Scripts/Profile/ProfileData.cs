@@ -61,7 +61,7 @@ public class ProfileData
     [System.Serializable]
     public class NetDataBase
     {
-        public int ver = 2; 
+        public int ver = 3;
     }
 
     [System.Serializable]
@@ -108,6 +108,21 @@ public class ProfileData
             var thisjson = JsonUtility.ToJson(thistmp);
             var othrjson = JsonUtility.ToJson(othertmp);
             return thisjson == othrjson;
+        }
+
+        public void Validate()
+        {
+            // validate length of integers in racer profile
+            foreach (var item in a2)
+            {
+                if (item.level.di == null || item.level.di.Length < 5)
+                {
+                    var ndi = new int[5];
+                    for (int i = 0; i < item.level.di.Length; i++)
+                        ndi[i] = item.level.di[i];
+                    item.level.di = ndi;
+                }
+            }
         }
     }
 }

@@ -83,7 +83,7 @@ Shader "SeganX/UI/AlphaGlow"
                     o.pos = UnityObjectToClipPos(v.pos);
                     o.col = v.col;
                     o.uv0 = TRANSFORM_TEX(v.uv0, _MainTex);
-                    o.uv1 = TRANSFORM_TEX(v.uv0, _MainTex);
+                    o.uv1 = TRANSFORM_TEX(v.uv0, _LightTex);
                     o.uv1.x -= _Time.x * 2.5f;
 
     #ifdef UNITY_HALF_TEXEL_OFFSET
