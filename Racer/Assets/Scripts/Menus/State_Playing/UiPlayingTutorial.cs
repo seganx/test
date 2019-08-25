@@ -30,8 +30,8 @@ public class UiPlayingTutorial : MonoBehaviour
             yield return HoldTime();
 
             yield return new WaitForSecondsRealtime(5);
-            if (PlayerPresenter.local.IsNitrosUsing)
-                tutorialObjects[3].SetActive(true);
+            yield return new WaitUntil(() => PlayerPresenter.local.IsNitrosUsing);
+            tutorialObjects[3].SetActive(true);
 
             yield return HoldTime();
         }
