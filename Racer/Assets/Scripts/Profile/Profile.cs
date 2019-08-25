@@ -113,20 +113,8 @@ public static class Profile
                     value.version = 2;
                 }
 
-                if (value.version < 3)
-                {
-                    foreach (var item in value.racers)
-                    {
-                        if (item.level.di == null || item.level.di.Length < 5)
-                        {
-                            var ndi = new int[5];
-                            for (int i = 0; i < item.level.di.Length; i++)
-                                ndi[i] = item.level.di[i];
-                            item.level.di = ndi;
-                        }
-                    }
-                    value.version = 3;
-                }
+                value.data.Validate();
+                value.version = 3;
             }
 
             data = value;

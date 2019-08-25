@@ -25,11 +25,17 @@ public class UiLeaderboardItem : MonoBehaviour
         if (userid == Profile.UserId)
             GetComponent<Image>().color = Color.red;
         else
-            garageButton.onClick.AddListener(() => Network.GetPlayerInfo(userid, pdata =>
+            garageButton.onClick.AddListener(() =>
             {
-                if (pdata != null)
-                    Game.Instance.OpenState<State_OtherUserAccount>().Setup(pdata, nickname, score, position);
-            }));
+                Popup_Loading.Display();
+                Network.GetPlayerInfo(userid, pdata =>
+                {
+                    Popup_Loading.Hide();
+
+                    if (pdata != null)
+                        Game.Instance.OpenState<State_OtherUserAccount>().Setup(pdata, nickname, score, position);
+                });
+            });
 
         return this;
     }
