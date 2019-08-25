@@ -12,8 +12,10 @@ namespace SeganX
         [SerializeField] private Text target = null;
         [SerializeField] private float delayTime = 0.035f;
 
+        private string[] lines = null;
         private string text = string.Empty;
         private WaitForSeconds typeDelay = null;
+
 
         private void Awake()
         {
@@ -38,6 +40,7 @@ namespace SeganX
             if (IsChanged)
             {
                 text = target.text;
+                lines = text.Split('\n');
                 target.text = string.Empty;
                 StopAllCoroutines();
                 StartCoroutine(TypeText());
@@ -46,11 +49,13 @@ namespace SeganX
 
         private IEnumerator TypeText()
         {
-            for (int i = text.Length - 1; i >= 0; i--)
+            for (int l = 0; l < lines.Length; l++)
             {
-                target.text = text[i] + target.text;
-
-                yield return typeDelay;
+                for (int i = lines[l].Length - 1; i >= 0; i--)
+                {
+                    target.text = lines[l][i] + target.text;
+                    yield return typeDelay;
+                }
             }
         }
     }
