@@ -1,29 +1,16 @@
 ﻿using UnityEngine;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
-using UnityEngine.UI;
+using SeganX;
 
-public enum Align { Center, Left, Right, Up, Down }
-public enum TutorialDir { Left, Right, Up, Down }
-
-[CreateAssetMenu(menuName = "Tutorial Config")]
+[CreateAssetMenu(menuName = "Game/Tutorial")]
 public class TutorialConfig : ScriptableObject
 {
-    #region fields
-    public int tutorialIndex;
-    public Align align;
-    public string dialogueString;
-    public Vector2 dialoguePosition;
-    public TutorialPointer tutorialPointer;
-    public TutorialConfig nextTutorialConfig;
-    public Rect focusRect;
-    #endregion
+    public enum Character : int { Null = 0, Mentor = 1, Mechanic = 2, Driver = 3}
+
+    [PersianPreview]
+    public string title = string.Empty;
+    [PersianPreview(3)]
+    public string description = string.Empty;
+    public Character character = Character.Null;
+    public TutorialConfig next = null;
 }
 
-[System.Serializable]
-public class TutorialPointer
-{
-    public Vector2 position;
-    public TutorialDir dir;
-}

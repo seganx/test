@@ -1,84 +1,61 @@
-﻿using System;
-using SeganX;
+﻿using SeganX;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Popup_Tutorial : GameState
 {
-    #region fields
-    public RectTransform[] darkImages;
-    public RectTransform pointer, image_left, image_right, image_up, image_down;
-    [SerializeField] RectTransform pointerRectTransform = null, dialogueRectTransform = null, alignParentRectTransform = null;
-    [SerializeField] LocalText dialogueText = null;
-    #endregion
+    [SerializeField] LocalText titleLabel = null;
+    [SerializeField] LocalText descLabel = null;
+    [SerializeField] Transform characters = null;
+    [SerializeField] Button nextButton = null;
 
-    #region properties
-    public RectTransform DialogueRectTransform { get { return dialogueRectTransform; } }
-    #endregion
-
-    #region methods
-    public void Setup(TutorialConfig tutorialConfig, Action onTouch)
+    public Popup_Tutorial Setup(TutorialConfig config, System.Action onFinished)
     {
-        GetComponent<Button>().onClick.AddListener(() =>
+        titleLabel.gameObject.SetActive(config.title.HasContent());
+        titleLabel.SetText(config.title);
+        descLabel.SetText(config.description);
+        characters.SetActiveChild((int)config.character);
+
+        nextButton.onClick.AddListener(() =>
         {
-            base.Back();
-            onTouch();
+            nextButton.onClick.RemoveAllListeners();
+
+            if (config.next == null)
+            {
+                base.Back();
+                onFinished();
+            }
+            else Setup(config.next, onFinished);
         });
 
-        switch (tutorialConfig.align)
-        {
-            case Align.Left:
-                alignParentRectTransform.anchorMin = new Vector2(0, .5f);
-                alignParentRectTransform.anchorMax = new Vector2(0, .5f);
-                break;
-            case Align.Right:
-                alignParentRectTransform.anchorMin = new Vector2(1, .5f);
-                alignParentRectTransform.anchorMax = new Vector2(1, .5f);
-                break;
-            case Align.Up:
-                alignParentRectTransform.anchorMin = new Vector2(.5f, 1);
-                alignParentRectTransform.anchorMax = new Vector2(.5f, 1);
-                break;
-            case Align.Down:
-                alignParentRectTransform.anchorMin = new Vector2(.5f, 0);
-                alignParentRectTransform.anchorMax = new Vector2(.5f, 0);
-                break;
-        }
+        return this;
+    }
 
-
-
-        if (string.IsNullOrEmpty(tutorialConfig.dialogueString))
-            dialogueRectTransform.gameObject.SetActive(false);
-        else
-        {
-            dialogueText.SetText(tutorialConfig.dialogueString.Replace("\\n", "\n"));
-            dialogueRectTransform.anchoredPosition = tutorialConfig.dialoguePosition;
-        }
-
-        image_left.anchoredPosition = new Vector2(tutorialConfig.focusRect.x, 0);
-        image_right.anchoredPosition = new Vector2(tutorialConfig.focusRect.xMax, 0);
-        image_up.anchoredPosition = new Vector2(tutorialConfig.focusRect.x, tutorialConfig.focusRect.yMax);
-        image_up.SetAnchordWidth(tutorialConfig.focusRect.width);
-        image_down.anchoredPosition = new Vector2(tutorialConfig.focusRect.x, tutorialConfig.focusRect.y);
-        image_down.SetAnchordWidth(tutorialConfig.focusRect.width);
-
-        pointerRectTransform.anchoredPosition = tutorialConfig.tutorialPointer.position;
-        switch (tutorialConfig.tutorialPointer.dir)
-        {
-            case TutorialDir.Left:
-                pointer.rotation = Quaternion.Euler(0, 0, 270);
-                break;
-            case TutorialDir.Right:
-                pointer.rotation = Quaternion.Euler(0, 0, 90);
-                break;
-            case TutorialDir.Up:
-                pointer.rotation = Quaternion.Euler(0, 0, 180);
-                break;
-        }
+    private void Start()
+    {
+        UiShowHide.ShowAll(transform);
     }
 
     public override void Back()
     {
+
     }
-    #endregion
+
+
+    ////////////////////////////////////////////////////////////
+    /// STATIC MEMBERS
+    ////////////////////////////////////////////////////////////
+    public static Popup_Tutorial Display(int id, bool showOnce = true, System.Action onFinished = null)
+    {
+        if (showOnce)
+        {
+            if (PlayerPrefs.GetInt("Popup_Tutorial.Displayed." + id, 0) > 0)
+                return null;
+            PlayerPrefs.SetInt("Popup_Tutorial.Displayed." + id, 1);
+        }
+
+        var config = ResourceEx.Load<TutorialConfig>("Tutorials", id);
+        if (config == null) return null;
+        return gameManager.OpenPopup<Popup_Tutorial>().Setup(config, onFinished);
+    }
 }
