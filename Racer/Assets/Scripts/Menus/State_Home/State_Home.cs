@@ -21,6 +21,8 @@ public class State_Home : GameState
     {
         GarageCamera.SetCameraId(1);
 
+        PopupQueue.Add(1, () => Popup_Tutorial.Display(1, false, () => Debug.LogWarning("Finished!")));
+
         blackMarketButton.onClick.AddListener(() =>
         {
             OnOpened(blackMarketButton);
