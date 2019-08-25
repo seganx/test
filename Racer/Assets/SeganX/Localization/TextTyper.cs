@@ -10,13 +10,14 @@ namespace SeganX
     public class TextTyper : MonoBehaviour
     {
         [SerializeField] private Text target = null;
+        [SerializeField] private float delayTime = 0.035f;
 
         private string text = string.Empty;
-        private WaitForSecondsRealtime typeDelay = null;
+        private WaitForSeconds typeDelay = null;
 
         private void Awake()
         {
-            typeDelay = new WaitForSecondsRealtime(0.03f);
+            typeDelay = new WaitForSeconds(delayTime);
         }
 
         private bool IsChanged
@@ -48,6 +49,7 @@ namespace SeganX
             for (int i = text.Length - 1; i >= 0; i--)
             {
                 target.text = text[i] + target.text;
+
                 yield return typeDelay;
             }
         }
