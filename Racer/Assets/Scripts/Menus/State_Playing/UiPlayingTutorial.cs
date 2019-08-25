@@ -14,23 +14,23 @@ public class UiPlayingTutorial : MonoBehaviour
 
         if (RaceModel.IsTutorial)
         {
-            yield return new WaitForSecondsRealtime(4.5f);
+            yield return new WaitForSecondsRealtime(10f);
             tutorialObjects[0].SetActive(true);
 
             yield return HoldTime();
 
             yield return new WaitForSecondsRealtime(5);
-            tutorialObjects[2].SetActive(true);
-
-            yield return HoldTime();
-
-            yield return new WaitForSecondsRealtime(4);
-            yield return new WaitUntil(() => PlayerPresenter.local.Nitros < 0.01f);
             tutorialObjects[1].SetActive(true);
 
             yield return HoldTime();
 
-            yield return new WaitForSecondsRealtime(4);
+            yield return new WaitForSecondsRealtime(3);
+            yield return new WaitUntil(() => PlayerPresenter.local.Nitros < 0.01f);
+            tutorialObjects[2].SetActive(true);
+
+            yield return HoldTime();
+
+            yield return new WaitForSecondsRealtime(1);
             yield return new WaitUntil(() => PlayerPresenter.local.IsNitrosUsing);
             tutorialObjects[3].SetActive(true);
 
@@ -43,7 +43,7 @@ public class UiPlayingTutorial : MonoBehaviour
     private IEnumerator HoldTime()
     {
         Time.timeScale = 0.4f;
-        yield return new WaitForSecondsRealtime(8);
+        yield return new WaitForSecondsRealtime(10);
         Time.timeScale = 1;
 
         for (int i = 0; i < tutorialObjects.Length; i++)
