@@ -39,6 +39,8 @@ public class State_Custome : GameState
 
         assignButton.onClick.AddListener(OnAssignButtonClick);
         assignButton.gameObject.SetActive(false);
+
+        PopupQueue.Add(.5f, () => Popup_Tutorial.Display(92, false));
     }
 
     public override float PreClose()

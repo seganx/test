@@ -73,5 +73,7 @@ public class State_Shop : GameState
         Destroy(specialPackagePrefab.gameObject);
 
         UiShowHide.ShowAll(transform);
+
+        PopupQueue.Add(.5f, () => Popup_Tutorial.Display(71));
     }
 }

@@ -23,7 +23,8 @@ public class Popup_Tutorial : GameState
             if (config.next == null)
             {
                 base.Back();
-                onFinished();
+                if (onFinished != null)
+                    onFinished();
             }
             else Setup(config.next, onFinished);
         });

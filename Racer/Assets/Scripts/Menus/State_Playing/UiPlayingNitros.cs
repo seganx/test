@@ -77,7 +77,7 @@ public class UiPlayingNitros : MonoBehaviour
             {
                 usingbonuse = true;
                 nitrosBonus.SetAnchordPositionX(Random.Range(70.0f, 270.0f));
-                nitrosBonus.SetAnchordWidth(20 + Random.Range(0, 20) * 1000 / PlayerPresenter.local.player.RacerPower);
+                nitrosBonus.SetAnchordWidth(40 + Random.Range(0, 20));
                 nitrosBonus.gameObject.SetActive(true);
             }
         }

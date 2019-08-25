@@ -11,5 +11,7 @@ public class State_LoadingBox : GameState
         GarageCamera.SetCameraId(1);
         UiHeader.Show();
         UiShowHide.ShowAll(transform);
+
+        PopupQueue.Add(.5f, () => Popup_Tutorial.Display(51));
     }
 }
