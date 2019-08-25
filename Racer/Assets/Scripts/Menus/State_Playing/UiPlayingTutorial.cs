@@ -43,7 +43,7 @@ public class UiPlayingTutorial : MonoBehaviour
     private IEnumerator HoldTime()
     {
         Time.timeScale = 0.4f;
-        yield return new WaitForSecondsRealtime(5);
+        yield return new WaitForSecondsRealtime(8);
         Time.timeScale = 1;
 
         for (int i = 0; i < tutorialObjects.Length; i++)
