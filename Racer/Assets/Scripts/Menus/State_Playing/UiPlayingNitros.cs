@@ -47,7 +47,7 @@ public class UiPlayingNitros : MonoBehaviour
         NitrosButtonsActive = PlayerPresenter.local.IsNitrosReady;
 
         RacerCamera.fovScale = PlayerPresenter.local.IsNitrosUsing ? 1.45f : 1;
-        SeganX.Effects.CameraFX.MotionBlurValue = Mathf.Lerp(SeganX.Effects.CameraFX.MotionBlurValue, PlayerPresenter.local.IsNitrosUsing ? 0.6f : 0.15f, Time.deltaTime * 2);
+        SeganX.Effects.CameraFX.MotionBlurValue = Mathf.Lerp(SeganX.Effects.CameraFX.MotionBlurValue, PlayerPresenter.local.IsNitrosUsing ? 0.6f : 0.3f, Time.deltaTime * 2);
 
         if (PlayerPresenter.local.IsNitrosUsing == false)
             nitrosBonus.gameObject.SetActive(usingbonuse = false);
@@ -85,7 +85,7 @@ public class UiPlayingNitros : MonoBehaviour
 
     private void HandleNitorsHint()
     {
-        if (PlayerPresenter.local.IsNitrosFull)
+        if (RaceModel.IsTutorial == false && PlayerPresenter.local.IsNitrosFull)
         {
             nitrosHintTimer += Time.deltaTime;
             if (nitrosHintTimer > 5)
