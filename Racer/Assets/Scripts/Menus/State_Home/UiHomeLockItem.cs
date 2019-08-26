@@ -10,6 +10,9 @@ public class UiHomeLockItem : MonoBehaviour
     [SerializeField] private Button button = null;
     [SerializeField] private GameObject newLabelGameObject;
 
+    private string OpenedOnceString { get { return "HomeSectionOpenedOnce" + name; } }
+    private bool IsOpenedOnce { get { return PlayerPrefs.GetInt(OpenedOnceString) == 1; } }
+
     private void Start()
     {
         if (newLabelGameObject)
@@ -27,8 +30,20 @@ public class UiHomeLockItem : MonoBehaviour
         }
         else
         {
-            SetNewLabelGameObjectActive();
+            UpdateVisual();
+
+            button.onClick.AddListener(() =>
+            {
+                PlayerPrefs.SetInt(OpenedOnceString, 1);
+                UpdateVisual();
+            });
         }
+    }
+
+    void UpdateVisual()
+    {
+        if (newLabelGameObject)
+            newLabelGameObject.SetActive(!IsOpenedOnce);
     }
 
     private void Reset()
@@ -37,17 +52,4 @@ public class UiHomeLockItem : MonoBehaviour
         images = GetComponentsInChildren<MaskableGraphic>(true);
     }
 
-    string openedOnceString() { return "HomeSectionOpenedOnce" + name.ToString(); }
-    public void SetOpenedOnce()
-    {
-        PlayerPrefs.SetInt(openedOnceString(), 1);
-        SetNewLabelGameObjectActive();
-    }
-    bool GetOpenedOnce() { return PlayerPrefs.GetInt(openedOnceString()) == 1; }
-
-    void SetNewLabelGameObjectActive()
-    {
-        if (newLabelGameObject)
-            newLabelGameObject.SetActive(!GetOpenedOnce());
-    }
 }
