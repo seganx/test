@@ -60,7 +60,6 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
         {
             public int count = 5;
             public int time = 10;
-            public int price = 10;
         }
 
         [System.Serializable]
