@@ -154,7 +154,7 @@ public class BotPresenter : Base
     private static int SelectRacer(int targetPower)
     {
         targetPower = Mathf.Max(targetPower, 1200);
-        var list = RacerFactory.Racer.AllConfigs.FindAll(x => x.MinPower.Between(targetPower - 200, targetPower + 100));
+        var list = RacerFactory.Racer.AllConfigs.FindAll(x => x.MinPower.Between(targetPower - 300, targetPower + 100));
         if (list.Count < 1) list = RacerFactory.Racer.AllConfigs;
         var center = list.FindIndex(x => x.Id == Profile.SelectedRacer);
         var index = SelectProbability(list.Count, center - 1, 4, 0.5f);
