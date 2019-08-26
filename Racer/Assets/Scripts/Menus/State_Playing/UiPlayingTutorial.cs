@@ -9,8 +9,7 @@ public class UiPlayingTutorial : MonoBehaviour
 
     private IEnumerator Start()
     {
-        for (int i = 0; i < tutorialObjects.Length; i++)
-            tutorialObjects[i].SetActive(false);
+        HideAllTutorials();
 
         if (RaceModel.IsTutorial)
         {
@@ -20,12 +19,14 @@ public class UiPlayingTutorial : MonoBehaviour
             yield return HoldTime();
 
             yield return new WaitForSecondsRealtime(5);
+            yield return new WaitUntil(() => PlayerPresenter.local.IsNitrosFull);
             tutorialObjects[1].SetActive(true);
 
-            yield return HoldTime();
+            yield return HoldTimeForUseNitors();
 
             yield return new WaitForSecondsRealtime(3);
             yield return new WaitUntil(() => PlayerPresenter.local.Nitros < 0.01f);
+            yield return new WaitForSecondsRealtime(1);
             tutorialObjects[2].SetActive(true);
 
             yield return HoldTime();
@@ -46,7 +47,19 @@ public class UiPlayingTutorial : MonoBehaviour
         Time.timeScale = 0.01f;
         yield return new WaitForSecondsRealtime(10);
         Time.timeScale = 1;
+        HideAllTutorials();        
+    }
 
+    private IEnumerator HoldTimeForUseNitors()
+    {
+        Time.timeScale = 0.01f;
+        yield return new WaitUntil(() => PlayerPresenter.local.IsNitrosUsing);
+        Time.timeScale = 1;
+        HideAllTutorials();
+    }
+
+    private void HideAllTutorials()
+    {
         for (int i = 0; i < tutorialObjects.Length; i++)
             tutorialObjects[i].SetActive(false);
     }
