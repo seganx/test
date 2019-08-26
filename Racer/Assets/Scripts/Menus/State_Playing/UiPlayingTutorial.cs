@@ -37,7 +37,7 @@ public class UiPlayingTutorial : MonoBehaviour
             yield return new WaitUntil(() => UiPlayingNitros.IsBoostInRange);
             tutorialObjects[3].SetActive(true);
 
-            yield return HoldTime();
+            yield return HoldTimeForBoostNitros();
         }
 
         Destroy(gameObject);
@@ -55,6 +55,14 @@ public class UiPlayingTutorial : MonoBehaviour
     {
         Time.timeScale = 0.01f;
         yield return new WaitUntil(() => PlayerPresenter.local.IsNitrosUsing);
+        Time.timeScale = 1;
+        HideAllTutorials();
+    }
+
+    private IEnumerator HoldTimeForBoostNitros()
+    {
+        Time.timeScale = 0.01f;
+        yield return new WaitWhile(() => UiPlayingNitros.IsBoostInRange);
         Time.timeScale = 1;
         HideAllTutorials();
     }

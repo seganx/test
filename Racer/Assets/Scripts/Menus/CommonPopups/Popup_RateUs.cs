@@ -80,6 +80,7 @@ public class Popup_RateUs : GameState
 
     public static void CheckAndDisplay()
     {
+        if (Profile.TotalRaces < 6) return;
         if (RateUsValue > 0 || PlayerInjoyed < 2) return;
         PopupQueue.Add(0, () => gameManager.OpenPopup<Popup_RateUs>());
     }
