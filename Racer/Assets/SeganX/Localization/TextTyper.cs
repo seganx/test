@@ -22,26 +22,12 @@ namespace SeganX
             typeDelay = new WaitForSeconds(delayTime);
         }
 
-        private bool IsChanged
-        {
-            get
-            {
-                var currtext = target.text;
-                if (currtext.Length > text.Length) return true;
-                for (int i = currtext.Length - 1; i >= 0; i--)
-                    if (currtext[currtext.Length - i - 1] != text[text.Length - i - 1])
-                        return true;
-                return false;
-            }
-        }
-
         private void LateUpdate()
         {
-            if (IsChanged)
+            if (text != target.text)
             {
-                text = target.text;
-                lines = text.Split('\n');
-                target.text = string.Empty;
+                lines = target.text.Split('\n');
+                target.text = text = string.Empty;
                 StopAllCoroutines();
                 StartCoroutine(TypeText());
             }
@@ -49,13 +35,17 @@ namespace SeganX
 
         private IEnumerator TypeText()
         {
+            int rindex = 0;
             for (int l = 0; l < lines.Length; l++)
             {
                 for (int i = lines[l].Length - 1; i >= 0; i--)
                 {
-                    target.text = lines[l][i] + target.text;
+                    target.text = text = text.Insert(rindex, string.Empty + lines[l][i]);
                     yield return typeDelay;
                 }
+                text = text + '\n';
+                target.text = text;
+                rindex = text.Length;
             }
         }
     }
