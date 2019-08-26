@@ -78,7 +78,7 @@ public class DataBeen : MonoBehaviour
 
     private void Start()
     {
-        if (PlayerPrefs.GetInt("Databeen.IsFirst", 0) == 1)
+        if (PlayerPrefs.GetInt("Databeen.IsFirst", 0) == 0)
         {
             SendData(GetInstallData());
             PlayerPrefs.SetInt("Databeen.IsFirst", 1);
@@ -111,7 +111,7 @@ public class DataBeen : MonoBehaviour
         res.date = System.DateTime.Now.ToString(dateTimeFormat);
         res.deviceId = SystemInfo.deviceUniqueIdentifier;
         res.ip = GetIP();
-        res.productName = Application.productName;
+        res.productName = Application.identifier;
         res.secretKey = secretKey;
         res.sessionID = sessionId;
         //res.versionCode = boundleVersionCode;
