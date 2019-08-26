@@ -23,8 +23,6 @@ public class Popup_LeaguePrize : GameState
     // Use this for initialization
     private void Start()
     {
-        Popup_Tutorial.Display(34);
-
         DisplayLeague(Profile.League);
 
         for (int i = 0; i < smallIcons.Length; i++)
@@ -37,6 +35,8 @@ public class Popup_LeaguePrize : GameState
         playerPosition.SetAnchordPositionX(pos.x);
 
         UiShowHide.ShowAll(transform);
+
+        DelayCall(2, () => Popup_Tutorial.Display(34));
     }
 
     private void DisplayLeague(int index)
