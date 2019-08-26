@@ -47,7 +47,12 @@ public class BotPresenter : Base
             if (player.player.CurrRank == 0)
                 player.player.CurrNitrous = 0;
             else
-                nosMaxTime = 5;
+                nosMaxTime = 0;
+        }
+        else if (RaceModel.IsFreeDrive)
+        {
+            if (Profile.TotalRaces < 5)
+                nosMaxTime = 5 - Profile.TotalRaces;
         }
 
         if (player.IsNitrosFull)
