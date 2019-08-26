@@ -13,7 +13,7 @@ public class UiPlayingTutorial : MonoBehaviour
 
         if (RaceModel.IsTutorial)
         {
-            yield return new WaitForSecondsRealtime(6);
+            yield return new WaitForSecondsRealtime(10);
             tutorialObjects[0].SetActive(true);
 
             yield return HoldTime();
