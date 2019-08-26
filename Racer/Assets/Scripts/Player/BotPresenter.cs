@@ -91,7 +91,7 @@ public class BotPresenter : Base
             }
             else botRacer = CreateRandomRacerProfile(i, Profile.Score, Profile.SelectedRacer, Profile.CurrentRacerPower);
 
-            var pdata = new PlayerData(GlobalFactory.GetRandomName(), botScore, botRank, botRacer);
+            var pdata = new PlayerData(RaceModel.IsOnline ? GlobalFactory.GetRandomName() : "Player " + i, botScore, botRank, botRacer);
             PlayerPresenterOnline.Create(pdata, true);
         }
     }
