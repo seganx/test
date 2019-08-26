@@ -66,6 +66,12 @@ public class UiBlackMarketPackage : MonoBehaviour
     private void Display()
     {
         pack = GetPackage(index);
+        if (pack == null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         var rp = Profile.GetRacer(pack.racerId);
         int playerRemained = pack.racerCardsCount - (rp != null ? rp.cards : 0);
 
@@ -93,7 +99,7 @@ public class UiBlackMarketPackage : MonoBehaviour
     private static Package GetPackage(int index)
     {
         if (packages == null) LoadPackages();
-        return packages[index % packages.Count];
+        return packages.Count > 0 ? packages[index % packages.Count] : null;
     }
 
     private static bool PackageExist(int id)

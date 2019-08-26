@@ -43,9 +43,13 @@ namespace SeganX
                     target.text = text = text.Insert(rindex, string.Empty + lines[l][i]);
                     yield return typeDelay;
                 }
-                text = text + '\n';
-                target.text = text;
-                rindex = text.Length;
+
+                if (l < lines.Length - 1)
+                {
+                    text = text + '\n';
+                    target.text = text;
+                    rindex = text.Length;
+                }
             }
         }
     }
