@@ -16,15 +16,17 @@ public class UiPlayingNitros : MonoBehaviour
     private Color nitrosBarDefaultColor = Color.yellow;
     private float nitrosHintTimer = 0;
     private bool usingbonuse = false;
+    private bool playNosAudio = false;
 
 
-
-    private bool NitrosButtonsActive
+    private bool ActiveNitros
     {
         set
         {
-            if (value && nitrosButtons.intractable != value)
+            if (value && playNosAudio != value)
                 nosFullAudio.Play();
+            playNosAudio = value;
+
             nitrosButtons.intractable = value;
         }
     }
@@ -35,7 +37,7 @@ public class UiPlayingNitros : MonoBehaviour
         nitrosBarDefaultColor = nitrosBar.color;
         nitrosBar.fillAmount = 0;
         nitrosBonus.gameObject.SetActive(false);
-        NitrosButtonsActive = false;
+        ActiveNitros = false;
         boostCoods.z = nitrosBar.rectTransform.rect.width;
     }
 
@@ -47,7 +49,7 @@ public class UiPlayingNitros : MonoBehaviour
 
         nitrosBar.fillAmount = PlayerPresenter.local.Nitros;
         nitrosBar.color = PlayerPresenter.local.IsNitrosFull ? nitrosBarFullColor : nitrosBarDefaultColor;
-        NitrosButtonsActive = PlayerPresenter.local.IsNitrosReady;
+        ActiveNitros = PlayerPresenter.local.IsNitrosFull;
 
         RacerCamera.fovScale = PlayerPresenter.local.IsNitrosUsing ? 1.45f : 1;
         SeganX.Effects.CameraFX.MotionBlurValue = Mathf.Lerp(SeganX.Effects.CameraFX.MotionBlurValue, PlayerPresenter.local.IsNitrosUsing ? 0.6f : 0.3f, Time.deltaTime * 2);
