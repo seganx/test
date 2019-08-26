@@ -94,22 +94,34 @@ public class BotPresenter : Base
     private static RacerProfile CreateRandomRacerProfile(int index, int playerScore, int playerRacerId, int playerPower)
     {
         int targetPower = 0;
-        if (index == 0)
+        if (RaceModel.IsOnline)
         {
-            targetPower = playerPower;
-        }
-        else if (index == 1)
-        {
-            var factor = GlobalConfig.Race.bots.powers[RacerFactory.Racer.GetConfig(playerRacerId).GroupId];
-            targetPower = Mathf.RoundToInt(factor.x * Profile.Score + factor.y);
-        }
-        else
-        {
-            var factor = GlobalConfig.Race.bots.powers[RacerFactory.Racer.GetConfig(playerRacerId).GroupId];
-            targetPower = Mathf.RoundToInt(factor.x * Profile.Score + factor.y + GlobalConfig.Race.bots.powers[0].y);
+            if (index == 0)
+            {
+                targetPower = playerPower;
+            }
+            else if (index == 1)
+            {
+                var factor = GlobalConfig.Race.bots.powers[RacerFactory.Racer.GetConfig(playerRacerId).GroupId];
+                targetPower = Mathf.RoundToInt(factor.x * Profile.Score + factor.y);
+            }
+            else
+            {
+                var factor = GlobalConfig.Race.bots.powers[RacerFactory.Racer.GetConfig(playerRacerId).GroupId];
+                targetPower = Mathf.RoundToInt(factor.x * Profile.Score + factor.y + GlobalConfig.Race.bots.powers[0].y);
 
-            //var factor = GlobalConfig.Race.bots.powers[0];
-            //targetPower = Mathf.RoundToInt(factor.x * playerScore + factor.y);
+                //var factor = GlobalConfig.Race.bots.powers[0];
+                //targetPower = Mathf.RoundToInt(factor.x * playerScore + factor.y);
+            }
+        }
+        else if (RaceModel.IsFreeDrive)
+        {
+            if (index == 0)
+                targetPower = playerPower;
+            else if (index == 1)
+                targetPower = Mathf.RoundToInt(playerPower + GlobalConfig.Race.bots.powers[0].y);
+            else
+                targetPower = Mathf.RoundToInt(playerPower + 2 * GlobalConfig.Race.bots.powers[0].y);
         }
 
         var res = new RacerProfile() { id = SelectRacer(targetPower) };
