@@ -103,12 +103,12 @@ public class BotPresenter : Base
             else if (index == 1)
             {
                 var factor = GlobalConfig.Race.bots.powers[RacerFactory.Racer.GetConfig(playerRacerId).GroupId];
-                targetPower = Mathf.RoundToInt(factor.x * Profile.Score + factor.y);
+                targetPower = Mathf.RoundToInt(factor.x * playerScore + factor.y);
             }
             else
             {
                 var factor = GlobalConfig.Race.bots.powers[RacerFactory.Racer.GetConfig(playerRacerId).GroupId];
-                targetPower = Mathf.RoundToInt(factor.x * Profile.Score + factor.y + GlobalConfig.Race.bots.powers[0].y);
+                targetPower = Mathf.RoundToInt(factor.x * playerScore + factor.y + GlobalConfig.Race.bots.powers[0].y);
 
                 //var factor = GlobalConfig.Race.bots.powers[0];
                 //targetPower = Mathf.RoundToInt(factor.x * playerScore + factor.y);
