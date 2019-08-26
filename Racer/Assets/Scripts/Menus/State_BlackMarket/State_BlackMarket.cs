@@ -44,5 +44,7 @@ public class State_BlackMarket : GameState
         Destroy(racerCardPackagePrefab.gameObject);
 
         UiShowHide.ShowAll(transform);
+
+        PopupQueue.Add(.5f, () => Popup_Tutorial.Display(81));
     }
 }

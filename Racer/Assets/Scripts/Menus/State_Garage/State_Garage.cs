@@ -32,8 +32,19 @@ public class State_Garage : GameState
 
             descLabel.gameObject.SetActive(true);
             descLabel.SetFormatedText(targetGroup);
+
+            if (Profile.TotalRaces < 20)
+                PopupQueue.Add(.5f, () => Popup_Tutorial.Display(32));
         }
-        else cars = null;
+        else
+        {
+            PopupQueue.Add(.5f, () => Popup_Tutorial.Display(11));
+            //PopupQueue.Add(.5f, () => Popup_Tutorial.Display(41));
+            //PopupQueue.Add(.5f, () => Popup_Tutorial.Display(61));
+            //PopupQueue.Add(.5f, () => Popup_Tutorial.Display(91));
+
+            cars = null;
+        }
 
         return this;
     }

@@ -21,7 +21,11 @@ public class State_Home : GameState
     {
         GarageCamera.SetCameraId(1);
 
-        PopupQueue.Add(1, () => Popup_Tutorial.Display(1, false, () => Debug.LogWarning("Finished!")));
+#if UNITY_EDITOR
+        //Profile.TotalRaces = 0;
+#endif
+        if (Profile.TotalRaces >= 0 && Profile.TotalRaces < 10)
+            PopupQueue.Add(.5f, () => Popup_Tutorial.Display(Profile.TotalRaces));
 
         blackMarketButton.onClick.AddListener(() =>
         {
@@ -53,14 +57,17 @@ public class State_Home : GameState
             gameManager.OpenState<State_Garage>().Setup(0, rc => gameManager.OpenState<State_Upgrade>());
         });
 
-        customButton.onClick.AddListener(() => gameManager.OpenState<State_Garage>().Setup(0, rc =>
+        customButton.onClick.AddListener(() =>
         {
             OnOpened(customButton);
-            if (Profile.IsUnlockedRacer(rc.Id))
-                gameManager.OpenState<State_Custome>();
-            else
-                gameManager.OpenState<State_PhotoMode>();
-        }));
+            gameManager.OpenState<State_Garage>().Setup(0, rc =>
+            {
+                if (Profile.IsUnlockedRacer(rc.Id))
+                    gameManager.OpenState<State_Custome>();
+                else
+                    gameManager.OpenState<State_PhotoMode>();
+            });
+        });
 
         offlineButton.onClick.AddListener(() =>
         {

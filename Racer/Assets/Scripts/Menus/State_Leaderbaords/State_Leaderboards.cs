@@ -20,6 +20,8 @@ public class State_Leaderboards : GameState
         UiHeader.Show();
         UiShowHide.ShowAll(transform);
 
+        PopupQueue.Add(.5f, () => Popup_Tutorial.Display(33));
+
         playerLeagueIcon.sprite = GlobalFactory.League.GetBigIcon(Profile.League);
 
         prefabItem.gameObject.SetActive(false);

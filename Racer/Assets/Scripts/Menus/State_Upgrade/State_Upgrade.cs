@@ -182,6 +182,9 @@ public class State_Upgrade : GameState
     private void DisplayInfo()
     {
         UiShowHide.ShowAll(transform);
+
+        PopupQueue.Add(.5f, () => Popup_Tutorial.Display(42));
+
         config = RacerFactory.Racer.GetConfig(GarageRacer.racer.Id);
         racerprofile = Profile.GetRacer(config.Id);
         racerIcon.sprite = config.icon;
@@ -214,6 +217,26 @@ public class State_Upgrade : GameState
     {
         if (racerprofile == null || Profile.IsUnlockedRacer(config.Id) == false) return;
         selectedType = (UpgradeType)type;
+
+        switch (selectedType)
+        {
+            case UpgradeType.Speed:
+                PopupQueue.Add(.5f, () => Popup_Tutorial.Display(43));
+                break;
+            case UpgradeType.Nitors:
+                PopupQueue.Add(.5f, () => Popup_Tutorial.Display(44));
+                break;
+            case UpgradeType.Steering:
+                PopupQueue.Add(.5f, () => Popup_Tutorial.Display(45));
+                break;
+            case UpgradeType.Body:
+                PopupQueue.Add(.5f, () => Popup_Tutorial.Display(46));
+                break;
+            case UpgradeType.Null:
+                break;
+            default:
+                break;
+        }
 
         foreach (var menu in upgradeMenus)
             DisplayMenu(menu, menu.type == selectedType);

@@ -29,9 +29,7 @@ public class FuelTimerPresenter : TimerPresenter
         {
             popup_TimerSkip = gameManager.OpenPopup<Popup_TimerSkip>().Setup(() =>
             {
-                FuelCount = GlobalConfig.Recharg.count;
-                UpdateFuelCountText();
-                UpdateFuelNotification();
+                FullFuel();
             });
         });
 
@@ -42,6 +40,13 @@ public class FuelTimerPresenter : TimerPresenter
 
         if (FuelCount > 0)
             SetActiveTimerObjects(false);
+    }
+
+    public void FullFuel()
+    {
+        FuelCount = GlobalConfig.Recharg.count;
+        UpdateFuelCountText();
+        UpdateFuelNotification();
     }
 
     public static void ReduceFuel()

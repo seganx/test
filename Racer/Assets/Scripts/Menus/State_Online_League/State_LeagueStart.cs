@@ -13,6 +13,7 @@ public class State_LeagueStart : GameState
     [SerializeField] private Button startButton = null;
     [SerializeField] private Button leaderboardButton = null;
     [SerializeField] private Button claimRewardsButton = null;
+    [SerializeField] private FuelTimerPresenter fuelTimerPresenter = null;
 
     private void Start()
     {
@@ -73,6 +74,19 @@ public class State_LeagueStart : GameState
         }));
 
         UiShowHide.ShowAll(transform);
+
+        PopupQueue.Add(.5f, () => Popup_Tutorial.Display(31));
+
+        if (Profile.TotalRaces < 30 && FuelTimerPresenter.FuelCount <= 0)
+        {
+            PopupQueue.Add(.5f, () =>
+            {
+                Popup_Tutorial.Display(39, true, () =>
+                {
+                    fuelTimerPresenter.FullFuel();
+                });
+            });
+        }
     }
 
     private void StartOnlineGame(int racegroup)

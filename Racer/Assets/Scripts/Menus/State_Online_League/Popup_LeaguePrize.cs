@@ -23,6 +23,8 @@ public class Popup_LeaguePrize : GameState
     // Use this for initialization
     private void Start()
     {
+        Popup_Tutorial.Display(34);
+
         DisplayLeague(Profile.League);
 
         for (int i = 0; i < smallIcons.Length; i++)

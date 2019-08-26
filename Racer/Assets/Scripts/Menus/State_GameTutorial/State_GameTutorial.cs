@@ -20,6 +20,9 @@ public class State_GameTutorial : GameState
         RaceModel.specs.mapId = 2;
         RaceModel.specs.maxPlayerCount = 2;
         RaceModel.specs.maxPlayTime = 120;
+#if UNITY_EDITOR
+        //RaceModel.specs.maxPlayTime = 0;
+#endif
 
         RaceModel.traffic.baseDistance = GlobalConfig.Race.traffics.baseDistance * 1.5f;
         RaceModel.traffic.distanceRatio = GlobalConfig.Race.traffics.speedFactor;
