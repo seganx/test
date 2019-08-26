@@ -15,7 +15,7 @@ public class RacerSpecialOfferTimerPresenter : TimerPresenter
 
     private void Awake()
     {
-        if (Profile.TotalRaces > 5)
+        if (Profile.TotalRaces > 14)
         {
             timerText.SetFormatedText(0, 0, 0);
 
