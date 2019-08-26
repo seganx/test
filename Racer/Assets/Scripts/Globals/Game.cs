@@ -20,8 +20,7 @@ public class Game : GameManager<Game>
         yield return new WaitForSeconds(1);
 
 #if DATABEEN
-        DataBeen.SendCustomEventData("app_started", new DataBeenConnection.CustomEventInfo[] { new DataBeenConnection.CustomEventInfo() { key = "ver", value = Application.version } });
-        OnOpenState += gamestate => { if (gamestate != null) DataBeen.SendContentViewlData(gamestate.name, "ok"); };
+        OnOpenState += gamestate => { if (gamestate != null) DataBeen.SendContentView(gamestate.name, "ok"); };
 #endif
 
         //  first try to connect to internet

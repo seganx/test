@@ -57,6 +57,10 @@ public class UiShopResourcePackage : MonoBehaviour
                     Popup_Rewards.Display().DisplayPurchaseReward();
                     PurchaseSystem.Consume();
                     ProfileLogic.SyncWidthServer(true, done => { });
+
+#if DATABEEN
+                    DataBeen.SendPurchase(pack.sku, msg);
+#endif
                 }
             });
         });

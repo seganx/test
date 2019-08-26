@@ -38,17 +38,7 @@ public class Popup_RaceResult : GameState
 
         Popup_RateUs.SetPlayerInjoy(RaceModel.stats.playerRank < 1);
 
-#if DATABEEN
-        if (RewardLogic.IsFirstRace)
-        {
-            RewardLogic.IsFirstRace = false;
-            DataBeen.SendCustomEventData("first_race", new DataBeenConnection.CustomEventInfo[] {
-                new DataBeenConnection.CustomEventInfo() { key = "result " + BotPresenter.currentCount + " bot", value = playerCurPosition.ToString() },
-            });
-        }
-
-#endif
-        return this;
+       return this;
     }
 
     private void Start()
