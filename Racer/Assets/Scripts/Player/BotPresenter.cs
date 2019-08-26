@@ -52,7 +52,7 @@ public class BotPresenter : Base
         else if (RaceModel.IsFreeDrive)
         {
             if (Profile.TotalRaces < 5)
-                nosMaxTime = 5 - Profile.TotalRaces;
+                nosMaxTime = 8 - Profile.TotalRaces;
         }
 
         if (player.IsNitrosFull)
@@ -134,11 +134,14 @@ public class BotPresenter : Base
         res.cards = config.CardCount;
         res.level.Level = 1;
 
-        var maxUpgradeLevel = RacerGlobalConfigs.Data.maxUpgradeLevel[res.level.Level] + 1;
-        res.level.SpeedLevel = Random.Range(0, maxUpgradeLevel / 2);
-        res.level.NitroLevel = Random.Range(0, maxUpgradeLevel / 2);
-        res.level.BodyLevel = Random.Range(0, maxUpgradeLevel / 2);
-        res.level.SteeringLevel = Random.Range(0, maxUpgradeLevel / 2);
+        if (Profile.TotalRaces > 4)
+        {
+            var maxUpgradeLevel = RacerGlobalConfigs.Data.maxUpgradeLevel[res.level.Level] + 1;
+            res.level.SpeedLevel = Random.Range(0, maxUpgradeLevel / 2);
+            res.level.NitroLevel = Random.Range(0, maxUpgradeLevel / 2);
+            res.level.BodyLevel = Random.Range(0, maxUpgradeLevel / 2);
+            res.level.SteeringLevel = Random.Range(0, maxUpgradeLevel / 2);
+        }
 
         res.custom = config.DefaultRacerCustom;
         res.custom.BodyColor = RacerFactory.Colors.AllColors.RandomOne().id;
@@ -153,8 +156,8 @@ public class BotPresenter : Base
 
     private static int SelectRacer(int targetPower)
     {
-        targetPower = Mathf.Max(targetPower, 1200);
-        var list = RacerFactory.Racer.AllConfigs.FindAll(x => x.MinPower.Between(targetPower - 400, targetPower));
+        targetPower = Mathf.Max(targetPower, RacerFactory.Racer.AllConfigs[0].MinPower);
+        var list = RacerFactory.Racer.AllConfigs.FindAll(x => x.MinPower.Between(targetPower - 400, targetPower + 100));
         if (list.Count < 1) list = RacerFactory.Racer.AllConfigs;
         var center = list.FindIndex(x => x.Id == Profile.SelectedRacer);
         var index = SelectProbability(list.Count, center - 1, 4, 0.5f);
