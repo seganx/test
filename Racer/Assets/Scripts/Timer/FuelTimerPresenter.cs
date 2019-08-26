@@ -1,9 +1,9 @@
-﻿using System.Collections;
+﻿using LocalPush;
+using SeganX;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using SeganX;
-using LocalPush;
 
 public class FuelTimerPresenter : TimerPresenter
 {
@@ -14,6 +14,16 @@ public class FuelTimerPresenter : TimerPresenter
     [SerializeField] private LocalText timerText;
 
     private Popup_TimerSkip popup_TimerSkip;
+
+    private void OnEnable()
+    {
+        all.Add(this);
+    }
+
+    private void OnDisable()
+    {
+        all.Remove(this);
+    }
 
     public override void Start()
     {
@@ -42,29 +52,10 @@ public class FuelTimerPresenter : TimerPresenter
             SetActiveTimerObjects(false);
     }
 
-    public void FullFuel()
-    {
-        FuelCount = GlobalConfig.Recharg.count;
-        UpdateFuelCountText();
-        UpdateFuelNotification();
-    }
-
-    public static void ReduceFuel()
-    {
-        FuelCount--;
-        UpdateFuelNotification();
-    }
-
-    void UpdateFuelCountText()
+    private void UpdateFuelCountText()
     {
         timerGameObject.SetActive(FuelCount < GlobalConfig.Recharg.count);
         fuelCountText.SetFormatedText(FuelCount, GlobalConfig.Recharg.count);
-    }
-
-    public static int FuelCount
-    {
-        get { return PlayerPrefsEx.GetInt("fuelCount", GlobalConfig.Recharg.count); }
-        set { PlayerPrefsEx.SetInt("fuelCount", value); }
     }
 
     public override void UpdateTimerText(int remainTime)
@@ -110,11 +101,38 @@ public class FuelTimerPresenter : TimerPresenter
         }
     }
 
-    static void UpdateFuelNotification()
+    ////////////////////////////////////////////////////////////
+    /// STATIC MEMBERS
+    ////////////////////////////////////////////////////////////
+    private static List<FuelTimerPresenter> all = new List<FuelTimerPresenter>();
+
+    public static int FuelCount
+    {
+        get { return PlayerPrefsEx.GetInt("fuelCount", GlobalConfig.Recharg.count); }
+        set { PlayerPrefsEx.SetInt("fuelCount", value); }
+    }
+
+    public static void ReduceFuel()
+    {
+        FuelCount--;
+        UpdateFuelNotification();
+    }
+
+    private static void UpdateFuelNotification()
     {
         if (State_Settings.IsFullFuelActiveNotificationActive && FuelCount < GlobalConfig.Recharg.count / 2)
             NotificationManager.SendWithAppIcon(GlobalConfig.Recharg.time * (GlobalConfig.Recharg.count - FuelCount), NotificationType.FullFuel);
         else
             NotificationManager.Cancel(NotificationType.FullFuel);
     }
+
+
+    public static void FullFuel()
+    {
+        FuelCount = GlobalConfig.Recharg.count;
+        UpdateFuelNotification();
+        foreach (var item in all)
+            item.UpdateFuelCountText();
+    }
+
 }
