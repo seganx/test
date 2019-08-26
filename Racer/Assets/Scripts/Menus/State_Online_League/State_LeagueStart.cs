@@ -51,26 +51,35 @@ public class State_LeagueStart : GameState
 
         claimRewardsButton.onClick.AddListener(ClaimRewards);
         bigIcon.onClick.AddListener(() => gameManager.OpenPopup<Popup_LeagueInfo>());
-        rewardButton.onClick.AddListener(() => gameManager.OpenPopup<Popup_LeaguePrize>());
+        rewardButton.onClick.AddListener(() =>
+        {
+            gameManager.OpenPopup<Popup_LeaguePrize>();
+            //PopupQueue.Add(.5f, () => Popup_Tutorial.Display(34, false));
+        });
         leaderboardButton.onClick.AddListener(() => gameManager.OpenState<State_Leaderboards>());
 
         var leagueInfo = GlobalConfig.Leagues.GetByIndex(Profile.League);
-        startButton.onClick.AddListener(() => gameManager.OpenState<State_Garage>().Setup(leagueInfo.startGroup, rconfig =>
+        startButton.onClick.AddListener(() =>
         {
-            if (Profile.IsUnlockedRacer(rconfig.Id))
+            gameManager.OpenState<State_Garage>().Setup(leagueInfo.startGroup, rconfig =>
             {
-                if (rconfig.GroupId != leagueInfo.startGroup)
+                if (Profile.IsUnlockedRacer(rconfig.Id))
                 {
-                    var str = string.Format(LocalizationService.Get(111141), leagueInfo.startGroup);
-                    gameManager.OpenPopup<Popup_Confirm>().Setup(str, true, isok =>
+                    if (rconfig.GroupId != leagueInfo.startGroup)
                     {
-                        if (isok) StartOnlineGame(leagueInfo.startGroup);
-                    });
+                        var str = string.Format(LocalizationService.Get(111141), leagueInfo.startGroup);
+                        gameManager.OpenPopup<Popup_Confirm>().Setup(str, true, isok =>
+                        {
+                            if (isok) StartOnlineGame(leagueInfo.startGroup);
+                        });
+                    }
+                    else StartOnlineGame(leagueInfo.startGroup);
                 }
-                else StartOnlineGame(leagueInfo.startGroup);
-            }
-            else gameManager.OpenPopup<Popup_RacerCardInfo>();
-        }));
+                else gameManager.OpenPopup<Popup_RacerCardInfo>();
+
+            });
+            PopupQueue.Add(.5f, () => Popup_Tutorial.Display(32));
+        });
 
         UiShowHide.ShowAll(transform);
 

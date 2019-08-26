@@ -33,9 +33,17 @@ public class State_Home : GameState
 
         loadingBoxButton.onClick.AddListener(() => { gameManager.OpenState<State_LoadingBox>(); });
 
-        garageButton.onClick.AddListener(() => { gameManager.OpenState<State_Garage>().Setup(0, rc => gameManager.OpenState<State_PhotoMode>()); });
+        garageButton.onClick.AddListener(() =>
+        {
+            gameManager.OpenState<State_Garage>().Setup(0, rc => gameManager.OpenState<State_PhotoMode>());
+            PopupQueue.Add(.5f, () => Popup_Tutorial.Display(61));
+        });
 
-        upgradeButton.onClick.AddListener(() => { gameManager.OpenState<State_Garage>().Setup(0, rc => gameManager.OpenState<State_Upgrade>()); });
+        upgradeButton.onClick.AddListener(() =>
+        {
+            gameManager.OpenState<State_Garage>().Setup(0, rc => gameManager.OpenState<State_Upgrade>());
+            PopupQueue.Add(.5f, () => Popup_Tutorial.Display(41));
+        });
 
         customButton.onClick.AddListener(() =>
         {
@@ -46,6 +54,7 @@ public class State_Home : GameState
                 else
                     gameManager.OpenState<State_PhotoMode>();
             });
+            PopupQueue.Add(.5f, () => Popup_Tutorial.Display(91));
         });
 
         offlineButton.onClick.AddListener(() =>
@@ -60,6 +69,7 @@ public class State_Home : GameState
                 else
                     gameManager.OpenPopup<Popup_RacerCardInfo>();
             });
+            PopupQueue.Add(.5f, () => Popup_Tutorial.Display(11));
         });
 
         onlineButton.onClick.AddListener(() =>
