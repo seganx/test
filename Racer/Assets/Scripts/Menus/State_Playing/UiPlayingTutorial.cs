@@ -13,7 +13,7 @@ public class UiPlayingTutorial : MonoBehaviour
 
         if (RaceModel.IsTutorial)
         {
-            yield return new WaitForSecondsRealtime(10f);
+            yield return new WaitForSecondsRealtime(6);
             tutorialObjects[0].SetActive(true);
 
             yield return HoldTime();
@@ -31,7 +31,7 @@ public class UiPlayingTutorial : MonoBehaviour
 
             yield return HoldTime();
 
-            yield return new WaitForSecondsRealtime(20);
+            yield return new WaitForSecondsRealtime(10);
             yield return new WaitUntil(() => PlayerPresenter.local.IsNitrosFull);
             yield return new WaitUntil(() => PlayerPresenter.local.IsNitrosUsing);
             yield return new WaitUntil(() => UiPlayingNitros.IsBoostInRange);
@@ -46,7 +46,7 @@ public class UiPlayingTutorial : MonoBehaviour
     private IEnumerator HoldTime()
     {
         Time.timeScale = 0.01f;
-        yield return new WaitForSecondsRealtime(10);
+        yield return new WaitForSecondsRealtime(6);
         Time.timeScale = 1;
         HideAllTutorials();        
     }
