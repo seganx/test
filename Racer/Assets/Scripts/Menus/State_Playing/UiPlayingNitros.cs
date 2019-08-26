@@ -17,6 +17,8 @@ public class UiPlayingNitros : MonoBehaviour
     private float nitrosHintTimer = 0;
     private bool usingbonuse = false;
 
+
+
     private bool NitrosButtonsActive
     {
         set
@@ -34,6 +36,7 @@ public class UiPlayingNitros : MonoBehaviour
         nitrosBar.fillAmount = 0;
         nitrosBonus.gameObject.SetActive(false);
         NitrosButtonsActive = false;
+        boostCoods.z = nitrosBar.rectTransform.rect.width;
     }
 
     // Update is called once per frame
@@ -66,18 +69,18 @@ public class UiPlayingNitros : MonoBehaviour
 
             if (nitrosBonus.gameObject.activeSelf)
             {
-                var nos = PlayerPresenter.local.player.CurrNitrous;
-                var nosmin = nitrosBonus.anchoredPosition.x / nitrosBar.rectTransform.rect.width;
-                var nosmax = (nitrosBonus.anchoredPosition.x + nitrosBonus.rect.width) / nitrosBar.rectTransform.rect.width;
-                if (nosmin < nos && nos < nosmax)
+                if (IsBoostInRange)
                     PlayerPresenter.local.BoostNitros();
                 nitrosBonus.gameObject.SetActive(false);
+                boostCoods.x = -1;
             }
             else if (usingbonuse == false)
             {
                 usingbonuse = true;
-                nitrosBonus.SetAnchordPositionX(Random.Range(70.0f, 270.0f));
-                nitrosBonus.SetAnchordWidth(40 + Random.Range(0, 20));
+                boostCoods.x = Random.Range(70.0f, 270.0f);
+                boostCoods.y = 40 + Random.Range(0, 20);
+                nitrosBonus.SetAnchordPositionX(boostCoods.x);
+                nitrosBonus.SetAnchordWidth(boostCoods.y);
                 nitrosBonus.gameObject.SetActive(true);
             }
         }
@@ -99,6 +102,23 @@ public class UiPlayingNitros : MonoBehaviour
         {
             nitrosHintTimer = 0;
             nitrosHint.gameObject.SetActive(false);
+        }
+    }
+
+    ////////////////////////////////////////////////////////////
+    /// STATIC MEMBERS
+    ////////////////////////////////////////////////////////////
+    private static Vector3 boostCoods = -Vector3.one;
+
+    public static bool IsBoostInRange
+    {
+        get
+        {
+            if (boostCoods.x < 0) return false;
+            var nos = PlayerPresenter.local.player.CurrNitrous;
+            var nosmin = boostCoods.x / boostCoods.z;
+            var nosmax = (boostCoods.x + boostCoods.y) / boostCoods.z;
+            return nosmin < nos && nos < nosmax;
         }
     }
 }

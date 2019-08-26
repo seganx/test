@@ -101,7 +101,11 @@ public class DataBeen : MonoBehaviour
         Debug.Log("DataBeen Sending: " + json);
         var res = new WWW("https://api.databeen.ir/v1/statistics", json.GetBytes(), header);
         yield return res;
-        Debug.Log("DataBeen Sent: " + res.text + " Error: " + res.error);
+
+        if (res.error.HasContent())
+            Debug.Log("DataBeen Sent: " + res.text + " Error: " + res.error);
+        else
+            Debug.Log("DataBeen Sent: " + res.text);
     }
 
     private Data<T> CreateData<T>()

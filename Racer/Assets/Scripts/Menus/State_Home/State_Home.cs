@@ -122,7 +122,7 @@ public class State_Home : GameState
 
     private void CheckPreset(System.Action nextTask)
     {
-        if (Profile.SelectedRacer > 0)
+        if (Profile.IsFirstSession || Profile.SelectedRacer > 0)
             nextTask();
         else
             gameManager.OpenPopup<Popup_Welcome>().SetCallback(nextTask);
