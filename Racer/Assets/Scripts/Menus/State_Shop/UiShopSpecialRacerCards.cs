@@ -46,6 +46,10 @@ public class UiShopSpecialRacerCards : MonoBehaviour
                     PurchaseSystem.Consume();
                     if (isPopup) ShopLogic.SpecialRacerPopup.Clear();
                     Destroy(gameObject);
+
+#if DATABEEN
+                    DataBeen.SendPurchase(pack.sku, msg);
+#endif
                 }
             });
         });

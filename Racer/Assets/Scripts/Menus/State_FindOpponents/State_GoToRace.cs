@@ -125,13 +125,6 @@ public class State_GoToRace : GameState
             Profile.Score -= 1;
             Network.SendScore(Profile.Score);
             FuelTimerPresenter.ReduceFuel();
-
-#if DATABEEN
-            DataBeen.SendCustomEventData("game", new DataBeenConnection.CustomEventInfo[] {
-                new DataBeenConnection.CustomEventInfo() { key = "started", value = "true" },
-                new DataBeenConnection.CustomEventInfo() { key = "bots", value = botcount.ToString() },
-            });
-#endif
         }
 
         StartCoroutine(DisplayPlayersInfo());
@@ -215,13 +208,6 @@ public class State_GoToRace : GameState
                         gameManager.CurrentState.SendMessage("ExitToMainMenu", SendMessageOptions.DontRequireReceiver);
                     }));
                 }
-
-#if DATABEEN
-                DataBeen.SendCustomEventData("game", new DataBeenConnection.CustomEventInfo[] {
-                    new DataBeenConnection.CustomEventInfo() { key = "started", value = "false" },
-                    new DataBeenConnection.CustomEventInfo() { key = "error", value = error.ToString() },
-                });
-#endif
                 break;
 
             case PlayNetwork.Error.PhotonJoinRoomFailed:

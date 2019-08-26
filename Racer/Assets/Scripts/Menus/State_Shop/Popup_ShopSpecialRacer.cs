@@ -39,6 +39,10 @@ public class Popup_ShopSpecialRacer : GameState
                     PurchaseSystem.Consume();
                     ProfileLogic.SyncWidthServer(true, done => { });
                     if (onPurchase != null) onPurchase();
+
+#if DATABEEN
+                    DataBeen.SendPurchase(pack.sku, msg);
+#endif
                 }
             });
         });

@@ -53,6 +53,10 @@ public class UiShopSpecialPackage : MonoBehaviour
                     DisplayRewards(pack);
                     PurchaseSystem.Consume();
                     Destroy(gameObject);
+
+#if DATABEEN
+                    DataBeen.SendPurchase(sku, msg);
+#endif
                 }
             });
         });
