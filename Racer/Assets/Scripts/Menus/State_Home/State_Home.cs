@@ -16,16 +16,14 @@ public class State_Home : GameState
     [SerializeField] private Button onlineButton = null;
     [SerializeField] private Button storyButton = null;
     [SerializeField] private Button gameTutorialButton = null;
+    [SerializeField] private RectTransform mapTransform = null;
 
     private void Start()
     {
         GarageCamera.SetCameraId(1);
 
-#if UNITY_EDITOR
-        //Profile.TotalRaces = 0;
-#endif
         if (Profile.TotalRaces >= 0 && Profile.TotalRaces < 10)
-            PopupQueue.Add(.5f, () => Popup_Tutorial.Display(Profile.TotalRaces));
+            PopupQueue.Add(.5f, () => Popup_Tutorial.Display(Profile.TotalRaces, true, () => SetFocused(Profile.TotalRaces)));
 
         blackMarketButton.onClick.AddListener(() => { gameManager.OpenState<State_BlackMarket>(); });
 
@@ -126,5 +124,18 @@ public class State_Home : GameState
             nextTask();
         else
             gameManager.OpenPopup<Popup_Welcome>().SetCallback(nextTask);
+    }
+
+    private void SetFocused(int tutorialId)
+    {
+        Vector2 destPosition = mapTransform.anchoredPosition;
+
+        switch (tutorialId)
+        {
+            // TODO : simply set destination position for each button
+            case 2: destPosition = -upgradeButton.transform.AsRectTransform().anchoredPosition; break;
+        }
+
+        mapTransform.anchoredPosition = destPosition;
     }
 }

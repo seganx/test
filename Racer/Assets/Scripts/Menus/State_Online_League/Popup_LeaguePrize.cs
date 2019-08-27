@@ -36,7 +36,7 @@ public class Popup_LeaguePrize : GameState
 
         UiShowHide.ShowAll(transform);
 
-        DelayCall(2, () => Popup_Tutorial.Display(34));
+        DelayCall(1.5f, () => Popup_Tutorial.Display(34));
     }
 
     private void DisplayLeague(int index)

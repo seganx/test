@@ -70,7 +70,7 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
             {
                 public float rayDistance = -14;
                 public float raySpeedFactor = 0.75f;
-                public int nosChance = 100;
+                public int crachChance = 10;
                 public Vector2[] powers = new Vector2[] { Vector2.one, Vector2.one, Vector2.one, Vector2.one, Vector2.one, Vector2.one, Vector2.one };
             }
 

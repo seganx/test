@@ -43,7 +43,6 @@ public class UiHeader : Base
         initProfileWidth = statsButton.transform.AsRectTransform().rect.width;
         backButtonWidth = backButton.transform.AsRectTransform().rect.width;
         backButton.onClick.AddListener(() => gameManager.CurrentState.Back());
-        garageButton.onClick.AddListener(() => gameManager.OpenState<State_Garage>());
         profileButton.onClick.AddListener(() => gameManager.OpenState<State_Profile>());
         homeButton.onClick.AddListener(() => gameManager.OpenState<State_Home>(true));
         settingsButton.onClick.AddListener(() => gameManager.OpenState<State_Settings>());
@@ -51,6 +50,12 @@ public class UiHeader : Base
         gemLabel.GetComponentInParent<Button>().onClick.AddListener(() => GoToShop(1));
         coinLabel.GetComponentInParent<Button>().onClick.AddListener(() => GoToShop(2));
         OnGameStateChanged(gameManager.CurrentState);
+
+        garageButton.onClick.AddListener(() =>
+        {
+            gameManager.OpenState<State_Garage>().Setup(0, rc => gameManager.OpenState<State_PhotoMode>());
+            PopupQueue.Add(.5f, () => Popup_Tutorial.Display(61));
+        });
 
         var syncCount = 0;
         var waitseconds = new WaitForSeconds(0.5f);

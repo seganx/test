@@ -19,7 +19,7 @@ namespace SeganX
 
         private void Awake()
         {
-            typeDelay = new WaitForSeconds(delayTime);
+            typeDelay = new WaitForSeconds(delayTime * 0.75f);
         }
 
         private void LateUpdate()

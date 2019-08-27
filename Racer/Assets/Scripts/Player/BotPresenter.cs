@@ -20,6 +20,8 @@ public class BotPresenter : Base
         while (true)
         {
             defaultSteering = Random.Range(0, 100) > 50 ? 1 : -1;
+            if (Random.Range(0, 100) < GlobalConfig.Race.bots.crachChance)
+                player.OnCrashed();
             yield return waitWhile;
         }
     }

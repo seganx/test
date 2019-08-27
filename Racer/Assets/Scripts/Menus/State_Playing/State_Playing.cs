@@ -70,7 +70,7 @@ public class State_Playing : GameState
         RacerCamera.UpdateAll(deltaTime);
 
         var remainedTime = Mathf.Max(0, RaceModel.specs.maxPlayTime - PlayNetwork.PlayTime);
-        timeLabel.text = Utilities.TimeToString(remainedTime, 3);
+        timeLabel.text = Utilities.TimeToString(remainedTime, 1);
 
         if (remainedTime < 11 && timerAudioPlayed != Mathf.FloorToInt(remainedTime))
         {
