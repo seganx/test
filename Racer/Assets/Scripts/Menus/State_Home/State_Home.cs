@@ -135,13 +135,13 @@ public class State_Home : GameState
         {
             case 0: focusButton = gameTutorialButton; break;
             case 1: case 2: focusButton = offlineButton; break;
-            case 3: focusButton = onlineButton; break;
+            case 3: case 5: focusButton = onlineButton; break;
             case 4: focusButton = upgradeButton; break;
-            case 5: focusButton = loadingBoxButton; break;
-            case 6: focusButton = garageButton; break;
-            case 7: focusButton = shopButton; break;
-            case 8: focusButton = blackMarketButton; break;
-            case 9: focusButton = customButton; break;
+            case 6: focusButton = loadingBoxButton; break;
+            case 7: focusButton = garageButton; break;
+            case 8: focusButton = shopButton; break;
+            case 9: focusButton = blackMarketButton; break;
+            case 10: focusButton = customButton; break;
         }
 
         mapTransform.anchoredPosition = -focusButton.transform.AsRectTransform().anchoredPosition;
