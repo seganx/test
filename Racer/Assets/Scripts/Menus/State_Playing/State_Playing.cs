@@ -99,8 +99,9 @@ public class State_Playing : GameState
             PlayerPresenter.local.SteeringValue = leftRight;
         else
 #endif
-            PlayerPresenter.local.SteeringValue = InputManager.Left.isPointerDown ? -1 : (InputManager.Right.isPointerDown ? 1 : 0);
-        RacerCamera.steeringValue = PlayerPresenter.local.SteeringValue;
+            PlayerPresenter.local.SteeringValue = UiPlayingGesture.GoToLeft ? -1 : (UiPlayingGesture.GoToRight ? 1 : 0);
+            //PlayerPresenter.local.SteeringValue = InputManager.Left.isPointerDown ? -1 : (InputManager.Right.isPointerDown ? 1 : 0);
+            RacerCamera.steeringValue = PlayerPresenter.local.SteeringValue;
         PlayerPresenter.local.Horn(InputManager.Horn.isPointerDown);
     }
 
