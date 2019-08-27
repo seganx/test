@@ -54,7 +54,7 @@ public class BotPresenter : Base
         else if (RaceModel.IsFreeDrive)
         {
             if (Profile.TotalRaces < 5)
-                nosMaxTime = 8 - Profile.TotalRaces;
+                nosMaxTime = 0 - Profile.TotalRaces;
         }
 
         if (player.IsNitrosFull)
