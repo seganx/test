@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class State_Playing : GameState
 {
     [SerializeField] private Text timeLabel = null;
+    [SerializeField] private Animation timeBeat = null;
     [SerializeField] private AudioSource[] timerAudios = null;
 
     private float forwardSpeedDelta = 0;
@@ -77,6 +78,7 @@ public class State_Playing : GameState
             timerAudioPlayed = Mathf.FloorToInt(remainedTime);
             if (timerAudioPlayed > 0) timerAudios[0].Play();
             else timerAudios[1].Play();
+            timeBeat.Play();
         }
 
         if (allowUserHandle)
