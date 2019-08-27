@@ -81,8 +81,8 @@ public class UiPlayingNitros : MonoBehaviour
             else if (usingbonuse == false && (RaceModel.IsTutorial || Random.value < Stat.NitroUsePercentage))
             {
                 usingbonuse = true;
-                boostCoods.x = Random.Range(70.0f, 270.0f);
-                boostCoods.y = 40 + Random.Range(0, 20);
+                boostCoods.x = Random.Range(70.0f, 310 - GlobalConfig.Race.nosBonusWidth);
+                boostCoods.y = GlobalConfig.Race.nosBonusWidth + Random.Range(0, 20);
                 nitrosBonus.SetAnchordPositionX(boostCoods.x);
                 nitrosBonus.SetAnchordWidth(boostCoods.y);
                 nitrosBonus.gameObject.SetActive(true);
@@ -130,7 +130,6 @@ public class UiPlayingNitros : MonoBehaviour
     private static class Stat
     {
         private static int nitroUseSaveSlotCount = 6;
-        private const float minNitroUsePercentage = .4f;
 
         private static int LastNitroUseSaveSlotIndex
         {
@@ -147,7 +146,7 @@ public class UiPlayingNitros : MonoBehaviour
                     if (GetNitroUseSlot(i))
                         totalNitroUse++;
 
-                return Mathf.Max(minNitroUsePercentage, totalNitroUse / (float)nitroUseSaveSlotCount);
+                return Mathf.Max(GlobalConfig.Race.nosBonusMinPercentage, totalNitroUse / (float)nitroUseSaveSlotCount);
             }
         }
 

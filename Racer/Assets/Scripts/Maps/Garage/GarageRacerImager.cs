@@ -1,34 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using UnityEditor;
 using UnityEngine;
 
-
-public static class PhotoGalleyScreenShot
+public class GarageRacerImager : MonoBehaviour
 {
-    [MenuItem("SeganX/Take Screenshot")]
-    public static void TakeScreenShot()
-    {
-        var desc = new RenderTextureDescriptor(1024, 512, RenderTextureFormat.ARGB32, 32);
-        desc.autoGenerateMips = false;
-        var rt = RenderTexture.GetTemporary(desc);
 
-        Camera.main.targetTexture = rt;
-        Camera.main.Render();
-        Camera.main.targetTexture = null;
-
-        RenderTexture.active = rt;
-        var screenShot = new Texture2D(desc.width, desc.height, TextureFormat.ARGB32, false);
-        screenShot.ReadPixels(new Rect(0, 0, desc.width, desc.height), 0, 0);
-        RenderTexture.active = null;
-
-        SaveToFile(screenShot);
-    }
-
-
-    [MenuItem("SeganX/Take Racer Screenshot")]
-    public static void TakeRacerScreenShot()
+    public GarageRacerImager TakeAShot()
     {
         var racer = GameObject.FindObjectOfType<RacerPresenter>();
         racer.SendMessage("Awake");
@@ -64,25 +41,6 @@ public static class PhotoGalleyScreenShot
                 pixels[i].a = 255;
         screenShot.SetPixels32(pixels);
 
-
-        SaveToFile(screenShot);
-    }
-
-    private static void SaveToFile(Texture2D texture)
-    {
-        var filename = Application.persistentDataPath +
-            "/screenshot" +
-            System.DateTime.Now.Year +
-            System.DateTime.Now.Month +
-            System.DateTime.Now.Day +
-            System.DateTime.Now.Hour +
-            System.DateTime.Now.Minute +
-            System.DateTime.Now.Second +
-            ".png";
-
-        var bytes = texture.EncodeToPNG();
-        File.WriteAllBytes(filename, bytes);
-
-        EditorUtility.RevealInFinder(Path.GetDirectoryName(filename));
+        return this;
     }
 }
