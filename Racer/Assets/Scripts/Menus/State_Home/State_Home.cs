@@ -25,11 +25,11 @@ public class State_Home : GameState
         if (Profile.TotalRaces >= 0 && Profile.TotalRaces < 11)
             PopupQueue.Add(.5f, () => Popup_Tutorial.Display(Profile.TotalRaces, true, () => SetFocused(Profile.TotalRaces)));
 
-        blackMarketButton.onClick.AddListener(() => { gameManager.OpenState<State_BlackMarket>(); });
+        blackMarketButton.onClick.AddListener(() => gameManager.OpenState<State_BlackMarket>());
 
-        shopButton.onClick.AddListener(() => { gameManager.OpenState<State_Shop>(); });
+        shopButton.onClick.AddListener(() => gameManager.OpenState<State_Shop>());
 
-        loadingBoxButton.onClick.AddListener(() => { gameManager.OpenState<State_LoadingBox>(); });
+        loadingBoxButton.onClick.AddListener(() => gameManager.OpenState<State_LoadingBox>());
 
         garageButton.onClick.AddListener(() =>
         {
@@ -40,10 +40,7 @@ public class State_Home : GameState
         upgradeButton.onClick.AddListener(() =>
         {
             gameManager.OpenState<State_Garage>().Setup(0, rc => gameManager.OpenState<State_Upgrade>());
-            PopupQueue.Add(.5f, () => Popup_Tutorial.Display(41, true, () =>
-            {
-                Profile.TotalRaces++;
-            }));
+            PopupQueue.Add(.5f, () => Popup_Tutorial.Display(41, true, () => Profile.TotalRaces++));
         });
 
         customButton.onClick.AddListener(() =>
