@@ -20,7 +20,7 @@ public class BotPresenter : Base
         while (true)
         {
             defaultSteering = Random.Range(0, 100) > 50 ? 1 : -1;
-            if (Random.Range(0, 100) < GlobalConfig.Race.bots.crashChance)
+            if (Random.Range(0, 100) < GlobalConfig.Race.bots.crachChance)
                 player.OnCrashed();
             yield return waitWhile;
         }
@@ -54,7 +54,7 @@ public class BotPresenter : Base
         else if (RaceModel.IsFreeDrive)
         {
             if (Profile.TotalRaces < 5)
-                nosMaxTime = 0 - Profile.TotalRaces;
+                nosMaxTime = 8 - Profile.TotalRaces;
         }
 
         if (player.IsNitrosFull)
