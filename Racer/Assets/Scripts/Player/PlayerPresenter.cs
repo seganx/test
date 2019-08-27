@@ -142,7 +142,7 @@ public abstract class PlayerPresenter : Base
 
         if (IsNitrosUsing)
         {
-            nosPosition += 1.0f * (0 + player.RacerNitrous) * deltaTime; // toodoo: use deltaTime??
+            nosPosition += 1.0f * (0 + player.RacerNitrous) * deltaTime;
             player.CurrNitrous -= deltaTime / (.7f * (2 + player.RacerNitrous) * (IsNitrosPerfect ? 1 : 0.8f));
             if (player.CurrNitrous <= 0)
             {
