@@ -71,8 +71,10 @@ public class UiPlayingNitros : MonoBehaviour
 
             if (nitrosBonus.gameObject.activeSelf)
             {
+                SetLastNitroUseSlot(IsBoostInRange);
                 if (IsBoostInRange)
                     PlayerPresenter.local.BoostNitros();
+
                 nitrosBonus.gameObject.SetActive(false);
                 boostCoods.x = -1;
             }
@@ -83,7 +85,9 @@ public class UiPlayingNitros : MonoBehaviour
                 boostCoods.y = 40 + Random.Range(0, 20);
                 nitrosBonus.SetAnchordPositionX(boostCoods.x);
                 nitrosBonus.SetAnchordWidth(boostCoods.y);
-                nitrosBonus.gameObject.SetActive(true);
+
+                if (Random.value < GetNitroUsePercentage())
+                    nitrosBonus.gameObject.SetActive(true);
             }
         }
     }
@@ -122,5 +126,40 @@ public class UiPlayingNitros : MonoBehaviour
             var nosmax = (boostCoods.x + boostCoods.y) / boostCoods.z;
             return nosmin < nos && nos < nosmax;
         }
+    }
+
+
+    int nitroUseSaveSlotCount = 6;
+    float minNitroUsePercentage = .4f;
+
+    string lastNitroUseSaveSlotIndexString = "lastNitroUseSaveSlotIndex";
+    int LastNitroUseSaveSlotIndex
+    {
+        get { return PlayerPrefs.GetInt(lastNitroUseSaveSlotIndexString); }
+        set { PlayerPrefs.SetInt(lastNitroUseSaveSlotIndexString, value); }
+    }
+
+    string GetNitroUseSlotString(int slotIndex) { return "nitroUseSaveSlot" + slotIndex.ToString(); }
+    void SetLastNitroUseSlot(bool use)
+    {
+        LastNitroUseSaveSlotIndex++;
+        LastNitroUseSaveSlotIndex = LastNitroUseSaveSlotIndex % nitroUseSaveSlotCount;
+
+        PlayerPrefs.SetInt(GetNitroUseSlotString(LastNitroUseSaveSlotIndex), use ? 1 : 0);
+    }
+
+    bool GetNitroUseSlot(int index)
+    {
+        return PlayerPrefs.GetInt(GetNitroUseSlotString(index)) == 1;
+    }
+
+    float GetNitroUsePercentage()
+    {
+        int totalNitroUse = 0;
+        for (int i = 0; i < nitroUseSaveSlotCount; i++)
+            if (GetNitroUseSlot(i))
+                totalNitroUse++;
+
+        return Mathf.Max(minNitroUsePercentage, totalNitroUse / (float)nitroUseSaveSlotCount);
     }
 }

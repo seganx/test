@@ -22,7 +22,7 @@ public class State_Home : GameState
     {
         GarageCamera.SetCameraId(1);
 
-        if (Profile.TotalRaces >= 0 && Profile.TotalRaces < 10)
+        if (Profile.TotalRaces >= 0 && Profile.TotalRaces < 11)
             PopupQueue.Add(.5f, () => Popup_Tutorial.Display(Profile.TotalRaces, true, () => SetFocused(Profile.TotalRaces)));
 
         blackMarketButton.onClick.AddListener(() => { gameManager.OpenState<State_BlackMarket>(); });
@@ -40,7 +40,10 @@ public class State_Home : GameState
         upgradeButton.onClick.AddListener(() =>
         {
             gameManager.OpenState<State_Garage>().Setup(0, rc => gameManager.OpenState<State_Upgrade>());
-            PopupQueue.Add(.5f, () => Popup_Tutorial.Display(41));
+            PopupQueue.Add(.5f, () => Popup_Tutorial.Display(41, true, () =>
+            {
+                Profile.TotalRaces++;
+            }));
         });
 
         customButton.onClick.AddListener(() =>
@@ -130,12 +133,20 @@ public class State_Home : GameState
     {
         Vector2 destPosition = mapTransform.anchoredPosition;
 
+        Button focusButton = onlineButton;
         switch (tutorialId)
         {
-            // TODO : simply set destination position for each button
-            case 2: destPosition = -upgradeButton.transform.AsRectTransform().anchoredPosition; break;
+            case 0: focusButton = gameTutorialButton; break;
+            case 1: case 2: focusButton = offlineButton; break;
+            case 3: focusButton = onlineButton; break;
+            case 4: focusButton = upgradeButton; break;
+            case 5: focusButton = loadingBoxButton; break;
+            case 6: focusButton = garageButton; break;
+            case 7: focusButton = shopButton; break;
+            case 8: focusButton = blackMarketButton; break;
+            case 9: focusButton = customButton; break;
         }
 
-        mapTransform.anchoredPosition = destPosition;
+        mapTransform.anchoredPosition = -focusButton.transform.AsRectTransform().anchoredPosition;
     }
 }
