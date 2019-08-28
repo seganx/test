@@ -16,7 +16,6 @@ public class UiGarageRacerItem : Base
 
     public UiGarageRacerItem Setup(RacerConfig config, System.Action<UiGarageRacerItem> callback)
     {
-        racerImage.sprite = config.icon;
         nameLabel.SetText(config.Name);
         nameLabel.rectTransform.parent.SetAnchordWidth(nameLabel.preferredWidth + 4);
 
@@ -24,6 +23,7 @@ public class UiGarageRacerItem : Base
         var racerprofile = Profile.GetRacer(config.Id);
         if (racerprofile == null)
         {
+            racerImage.sprite = GarageRacerImager.GetRacerImage(config.Id, config.DefaultRacerCustom);
             backgImage.SetColorAlpha(0);
             racerImage.SetColorAlpha(0);
             cardsImage.SetColorAlpha(0);
@@ -32,6 +32,8 @@ public class UiGarageRacerItem : Base
         }
         else
         {
+            racerImage.sprite = GarageRacerImager.GetRacerImage(config.Id, racerprofile.custom);
+
             var unlocking = Profile.IsUnlockingRacer(config.Id);
             var unlocked = Profile.IsUnlockedRacer(config.Id);
 
