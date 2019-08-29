@@ -64,8 +64,8 @@ public class UiLoadingBoxFreePackage : TimerPresenter
 
                 newTime = seconds + (minutes * 60) + (hours * 3600);
             }
-
-            if (State_Settings.IsFreePackageNotificationActive)
+            
+            if (State_Settings.IsFreePackageNotificationActive && newTime > 3600)
                 NotificationManager.SendWithAppIcon(newTime, NotificationType.FreePackage);
             StartTimer(newTime);
 

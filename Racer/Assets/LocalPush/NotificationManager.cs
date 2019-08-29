@@ -30,7 +30,7 @@ namespace LocalPush
             if (GetLastNotificationSendId(notificationType) >= 0)
                 Cancel(notificationType);
 
-            return SendCustom(new NotificationParams
+            int id = SendCustom(new NotificationParams
             {
                 Id = UnityEngine.Random.Range(0, int.MaxValue),
                 Delay = TimeSpan.FromSeconds(delay),
@@ -44,6 +44,9 @@ namespace LocalPush
                 SmallIconColor = new Color(.8f, 0, 0),
                 LargeIcon = ""
             });
+
+            SetLastNotificationSendId(notificationType, id);
+            return id;
         }
 
         /// <summary>
@@ -55,7 +58,7 @@ namespace LocalPush
             if (GetLastNotificationSendId(notificationType) >= 0)
                 Cancel(notificationType);
 
-            return SendCustom(new NotificationParams
+            int id = SendCustom(new NotificationParams
             {
                 Id = UnityEngine.Random.Range(0, int.MaxValue),
                 Delay = TimeSpan.FromSeconds(delay),
@@ -69,6 +72,9 @@ namespace LocalPush
                 SmallIconColor = new Color(.8f, 0, 0),
                 LargeIcon = "app_icon"
             });
+
+            SetLastNotificationSendId(notificationType, id);
+            return id;
         }
 
         /// <summary>
@@ -170,7 +176,7 @@ namespace LocalPush
         {
             return PlayerPrefs.GetInt(GetLastNotificationSendIdString(notificationType), -1);
         }
-        private static void GetLastNotificationSendId(NotificationType notificationType, int sendId)
+        private static void SetLastNotificationSendId(NotificationType notificationType, int sendId)
         {
             PlayerPrefs.SetInt(GetLastNotificationSendIdString(notificationType), sendId);
         }
