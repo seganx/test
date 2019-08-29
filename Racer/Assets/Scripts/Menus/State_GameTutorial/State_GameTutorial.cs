@@ -19,7 +19,7 @@ public class State_GameTutorial : GameState
 
         RaceModel.specs.mapId = 2;
         RaceModel.specs.maxPlayerCount = 2;
-        RaceModel.specs.maxPlayTime = 120;
+        RaceModel.specs.maxPlayTime = 110;
 #if UNITY_EDITOR
         //RaceModel.specs.maxPlayTime = 0;
 #endif
