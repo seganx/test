@@ -74,7 +74,6 @@ namespace SeganX
         public static Button Jump = new Button();
         public static Button Fire = new Button();
         public static Button Accelerate = new Button();
-        public static Button Nitros = new Button();
         public static Button Boost = new Button();
         public static Button Break = new Button();
         public static Button Left = new Button();

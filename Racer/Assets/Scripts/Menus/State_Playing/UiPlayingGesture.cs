@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-
+[DefaultExecutionOrder(-90)]
 public class UiPlayingGesture : Base, IEndDragHandler, IDragHandler, IBeginDragHandler, IPointerDownHandler, IPointerUpHandler
 {
     private Vector2 beginDragPos = Vector2.zero;
