@@ -187,7 +187,7 @@ public class State_Upgrade : GameState
 
         config = RacerFactory.Racer.GetConfig(GarageRacer.racer.Id);
         racerprofile = Profile.GetRacer(config.Id);
-        racerIcon.sprite = config.icon;
+        racerIcon.sprite = GarageRacerImager.GetImageTransparent(config.Id, racerprofile == null ? config.DefaultRacerCustom : racerprofile.custom, racerIcon.rectTransform.rect.width, racerIcon.rectTransform.rect.height);
         racerName.SetText(config.Name);
 
         if (Profile.IsUnlockedRacer(config.Id))

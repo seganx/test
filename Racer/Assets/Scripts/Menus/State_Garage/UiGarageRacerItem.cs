@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class UiGarageRacerItem : Base
 {
-    [SerializeField] private Image backgImage = null;
     [SerializeField] private Image racerImage = null;
     [SerializeField] private Image cardsImage = null;
     [SerializeField] private LocalText cardsLabel = null;
@@ -23,8 +22,9 @@ public class UiGarageRacerItem : Base
         var racerprofile = Profile.GetRacer(config.Id);
         if (racerprofile == null)
         {
-            racerImage.sprite = GarageRacerImager.GetRacerImage(config.Id, config.DefaultRacerCustom);
-            backgImage.SetColorAlpha(0);
+            racerImage.sprite = GarageRacerImager.GetImageOpaque(config.Id, config.DefaultRacerCustom, racerImage.rectTransform.rect.width, racerImage.rectTransform.rect.height);
+
+            racerImage.color = Color.gray;
             racerImage.SetColorAlpha(0);
             cardsImage.SetColorAlpha(0);
             cardsLabel.SetFormatedText(0, config.CardCount);
@@ -32,13 +32,13 @@ public class UiGarageRacerItem : Base
         }
         else
         {
-            racerImage.sprite = GarageRacerImager.GetRacerImage(config.Id, racerprofile.custom);
+            racerImage.sprite = GarageRacerImager.GetImageOpaque(config.Id, racerprofile.custom, racerImage.rectTransform.rect.width, racerImage.rectTransform.rect.height);
 
             var unlocking = Profile.IsUnlockingRacer(config.Id);
             var unlocked = Profile.IsUnlockedRacer(config.Id);
 
-            backgImage.SetColorAlpha(unlocked ? 1 : 0);
-            racerImage.SetColorAlpha(1);
+            racerImage.color = Color.white;
+            racerImage.SetColorAlpha(unlocked ? 1 : 0.05f);
             cardsImage.SetColorAlpha(1);
             cardsImage.gameObject.SetActive(unlocked == false);
             cardsLabel.SetFormatedText(racerprofile.cards, config.CardCount);

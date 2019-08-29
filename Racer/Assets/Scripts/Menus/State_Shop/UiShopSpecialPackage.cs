@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class UiShopSpecialPackage : MonoBehaviour
 {
-    [SerializeField] private Transform racerCardHolder = null;
     [SerializeField] private LocalText customeCardsLabel = null;
     [SerializeField] private LocalText gemsLabel = null;
     [SerializeField] private LocalText coinsLabel = null;
@@ -32,9 +31,7 @@ public class UiShopSpecialPackage : MonoBehaviour
         gems = pack.gems[config.GroupId - 1];
         coins = pack.coins[config.GroupId - 1];
 
-        //GlobalFactory.CreateRacerCard(config.Id, racerCardHolder);
-        Destroy(racerCardHolder.gameObject);
-        racerImage.sprite = config.icon;
+        racerImage.sprite = GarageRacerImager.GetImageTransparent(racerId, config.DefaultRacerCustom, racerImage.rectTransform.rect.width, racerImage.rectTransform.rect.height);
         customeCardsLabel.SetFormatedText(pack.customes);
         gemsLabel.SetText(gems.ToString("#,0"));
         coinsLabel.SetText(coins.ToString("#,0"));

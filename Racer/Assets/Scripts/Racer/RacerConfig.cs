@@ -7,7 +7,6 @@ using UnityEngine;
 public class RacerConfig : ScriptableObject
 {
     [SpritePreview(100)]
-    public Sprite icon = null;
     public Sprite halfIcon = null;
 
     [Header("Defaults:")]

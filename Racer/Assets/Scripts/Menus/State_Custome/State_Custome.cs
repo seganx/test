@@ -45,6 +45,7 @@ public class State_Custome : GameState
 
     public override float PreClose()
     {
+        GarageRacerImager.RemoveImageOpaque(racer.Id);
         ValidateChanges();
         assignButton.gameObject.SetActive(false);
         return base.PreClose();

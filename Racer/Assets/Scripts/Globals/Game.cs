@@ -11,6 +11,7 @@ public class Game : GameManager<Game>
     private void Awake()
     {
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
+        Application.targetFrameRate = 25;
     }
 
     private IEnumerator Start()

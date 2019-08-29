@@ -16,7 +16,8 @@ public class Popup_ShopSpecialRacer : GameState
 
     public Popup_ShopSpecialRacer Setup(GlobalConfig.Data.Shop.SpecialRacerCardPackage pack, System.Action onPurchase)
     {
-        racerImage.sprite = RacerFactory.Racer.GetConfig(pack.racerId).icon;
+        var rconfig = RacerFactory.Racer.GetConfig(pack.racerId);
+        racerImage.sprite = GarageRacerImager.GetImageTransparent(rconfig.Id, rconfig.DefaultRacerCustom, racerImage.rectTransform.rect.width, racerImage.rectTransform.rect.height);
         descLabel.SetFormatedText(pack.discount, pack.cardCount);
         GlobalFactory.CreateRacerCard(pack.racerId, cardHolder);
         cardsLabel.SetFormatedText(pack.cardCount);

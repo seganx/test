@@ -20,7 +20,7 @@ public class UiGoToRacePlayerInfo : MonoBehaviour
         var rconfig = RacerFactory.Racer.GetConfig(data.RacerId);
 
         playerName.SetText(data.name);
-        racerIcon.sprite = rconfig.icon;
+        racerIcon.sprite = GarageRacerImager.GetImageTransparentTemporary(data.RacerId, data.RacerCustom, racerIcon.rectTransform.rect.width, racerIcon.rectTransform.rect.height);
         racerPower.SetFormatedText(data.RacerPower);
         if (racerName) racerName.text = rconfig.Name;
 
