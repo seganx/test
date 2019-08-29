@@ -18,7 +18,8 @@ namespace SeganX
             Break = 4,
             Left = 5,
             Right = 6,
-            Horn = 7
+            Horn = 7,
+            Nitros = 8
         }
 
         public bool intractable = true;
@@ -49,20 +50,18 @@ namespace SeganX
                 case Type.Left: button = InputManager.Left; break;
                 case Type.Right: button = InputManager.Right; break;
                 case Type.Horn: button = InputManager.Horn; break;
+                case Type.Nitros: button = InputManager.Nitros; break;
             }
 
             if (disabledImage) disabledImage.gameObject.SetActive(!intractable);
-            if (normalImage)
-                normalImage.gameObject.SetActive(intractable);
-            if (pressImage)
-                pressImage.gameObject.SetActive(false);
+            if (normalImage) normalImage.gameObject.SetActive(intractable);
+            if (pressImage) pressImage.gameObject.SetActive(false);
         }
 
         private void LateUpdate()
         {
             if (disabledImage) disabledImage.gameObject.SetActive(!intractable);
-            if (normalImage)
-                normalImage.gameObject.SetActive(intractable);
+            if (normalImage) normalImage.gameObject.SetActive(intractable);
             button.OnLateUpdate();
         }
 
@@ -70,16 +69,14 @@ namespace SeganX
         {
             if (intractable)
             {
-                if (pressImage)
-                    pressImage.gameObject.SetActive(true);
+                if (pressImage) pressImage.gameObject.SetActive(true);
                 button.OnPointerDown();
             }
         }
 
         public void OnPointerUp(PointerEventData eventData)
         {
-            if (pressImage)
-                pressImage.gameObject.SetActive(false);
+            if (pressImage) pressImage.gameObject.SetActive(false);
             button.OnPointerUp();
         }
     }

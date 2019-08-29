@@ -8,14 +8,14 @@ public class UiPlayingNitros : MonoBehaviour
 {
     [SerializeField] private Image nitrosBar = null;
     [SerializeField] private Color nitrosBarFullColor = Color.red;
-    [SerializeField] private InputScreenButton nitrosButtons = null;
     [SerializeField] private AudioSource nosFullAudio = null;
     [SerializeField] private RectTransform nitrosHint = null;
     [SerializeField] private RectTransform nitrosBonus = null;
+    [SerializeField] private InputScreenButton nitrosButton = null;
+    [SerializeField] private InputScreenButton nitrosBonusButton = null;
 
     private Color nitrosBarDefaultColor = Color.yellow;
     private float nitrosHintTimer = 0;
-    private bool usingbonuse = false;
     private bool playNosAudio = false;
 
 
@@ -26,8 +26,16 @@ public class UiPlayingNitros : MonoBehaviour
             if (value && playNosAudio != value)
                 nosFullAudio.Play();
             playNosAudio = value;
+            if (nitrosButton) nitrosButton.intractable = value;
+        }
+    }
 
-            nitrosButtons.intractable = value;
+    private bool ActiveNosBoost
+    {
+        set
+        {
+            nitrosBonus.gameObject.SetActive(value);
+            if (nitrosBonusButton) nitrosBonusButton.intractable = value;
         }
     }
 
@@ -36,8 +44,8 @@ public class UiPlayingNitros : MonoBehaviour
     {
         nitrosBarDefaultColor = nitrosBar.color;
         nitrosBar.fillAmount = 0;
-        nitrosBonus.gameObject.SetActive(false);
         ActiveNitros = false;
+        ActiveNosBoost = false;
         boostCoods.z = nitrosBar.rectTransform.rect.width;
     }
 
@@ -49,43 +57,51 @@ public class UiPlayingNitros : MonoBehaviour
 
         nitrosBar.fillAmount = PlayerPresenter.local.Nitros;
         nitrosBar.color = PlayerPresenter.local.IsNitrosFull ? nitrosBarFullColor : nitrosBarDefaultColor;
-        ActiveNitros = PlayerPresenter.local.IsNitrosFull;
 
         RacerCamera.fovScale = PlayerPresenter.local.IsNitrosUsing ? 1.45f : 1;
-        SeganX.Effects.CameraFX.MotionBlurValue = Mathf.Lerp(SeganX.Effects.CameraFX.MotionBlurValue, PlayerPresenter.local.IsNitrosUsing ? 0.6f : 0.3f, Time.deltaTime * 2);
+        SeganX.Effects.CameraFX.MotionBlurValue = Mathf.Lerp(SeganX.Effects.CameraFX.MotionBlurValue, PlayerPresenter.local.IsNitrosUsing ? 0.4f : 0.1f, Time.deltaTime * 2);
 
+        ActiveNitros = PlayerPresenter.local.IsNitrosFull;
         if (PlayerPresenter.local.IsNitrosUsing == false)
-            nitrosBonus.gameObject.SetActive(usingbonuse = false);
+            ActiveNosBoost = false;
     }
 
     private void HandleInput()
     {
-        if (InputManager.Boost.isPointerDown || UiPlayingGesture.UseNitors
+        if ((PlayerPresenter.local.IsNitrosUsing) &&
+            (InputManager.Boost.isPointerDown || UiPlayingGesture.UseNitors
 #if UNITY_EDITOR || UNITY_STANDALONE
                 || Input.GetKeyDown(KeyCode.LeftControl)
 #endif
-        )
+        ))
         {
-            if (PlayerPresenter.local.IsNitrosReady)
-                PlayerPresenter.local.UseNitrous();
-
             if (nitrosBonus.gameObject.activeSelf)
             {
                 Stat.SetLastNitroUseSlot(IsBoostInRange);
                 if (IsBoostInRange)
                     PlayerPresenter.local.BoostNitros();
 
-                nitrosBonus.gameObject.SetActive(false);
+                ActiveNosBoost = false;
                 boostCoods.x = -1;
             }
-            else if (usingbonuse == false && (RaceModel.IsTutorial || Random.value < Stat.NitroUsePercentage))
+        }
+
+        if ((PlayerPresenter.local.IsNitrosReady && PlayerPresenter.local.IsNitrosUsing == false) &&
+            (InputManager.Nitros.isPointerDown || UiPlayingGesture.UseNitors
+#if UNITY_EDITOR || UNITY_STANDALONE
+                || Input.GetKeyDown(KeyCode.LeftControl)
+#endif
+        ))
+        {
+            PlayerPresenter.local.UseNitrous();
+
+            if (RaceModel.IsTutorial || Random.value < Stat.NitroUsePercentage)
             {
-                usingbonuse = true;
                 boostCoods.x = Random.Range(70.0f, 310 - GlobalConfig.Race.nosBonusWidth);
                 boostCoods.y = GlobalConfig.Race.nosBonusWidth + Random.Range(0, 20);
                 nitrosBonus.SetAnchordPositionX(boostCoods.x);
                 nitrosBonus.SetAnchordWidth(boostCoods.y);
-                nitrosBonus.gameObject.SetActive(true);
+                ActiveNosBoost = true;
             }
         }
     }

@@ -18,9 +18,29 @@ public class State_Home : GameState
     [SerializeField] private Button gameTutorialButton = null;
     [SerializeField] private RectTransform mapTransform = null;
 
+
+    public Vector2 MapPosition
+    {
+        get
+        {
+            var res = Vector2.zero;
+            res.x = PlayerPrefs.GetFloat(name + ".MapPosition.x", 0);
+            res.y = PlayerPrefs.GetFloat(name + ".MapPosition.y", 0);
+            return res;
+        }
+
+        set
+        {
+            PlayerPrefs.SetFloat(name + ".MapPosition.x", value.x);
+            PlayerPrefs.SetFloat(name + ".MapPosition.y", value.y);
+        }
+    }
+
     private void Start()
     {
         GarageCamera.SetCameraId(1);
+
+        mapTransform.anchoredPosition = MapPosition;
 
         if (Profile.TotalRaces >= 0 && Profile.TotalRaces < 11)
             PopupQueue.Add(.5f, () => Popup_Tutorial.Display(Profile.TotalRaces, true, () => SetFocused(Profile.TotalRaces)));
@@ -88,6 +108,12 @@ public class State_Home : GameState
 
             Popup_RateUs.CheckAndDisplay();
         });
+    }
+
+    public override float PreClose()
+    {
+        MapPosition = mapTransform.anchoredPosition;
+        return base.PreClose();
     }
 
     public override void Back()
