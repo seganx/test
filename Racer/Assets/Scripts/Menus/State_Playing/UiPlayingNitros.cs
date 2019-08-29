@@ -9,7 +9,6 @@ public class UiPlayingNitros : MonoBehaviour
     [SerializeField] private Image nitrosBar = null;
     [SerializeField] private Color nitrosBarFullColor = Color.red;
     [SerializeField] private AudioSource nosFullAudio = null;
-    [SerializeField] private RectTransform nitrosHint = null;
     [SerializeField] private RectTransform nitrosBonus = null;
     [SerializeField] private InputScreenButton nitrosButton = null;
     [SerializeField] private InputScreenButton nitrosBonusButton = null;
@@ -21,21 +20,28 @@ public class UiPlayingNitros : MonoBehaviour
 
     private bool ActiveNitros
     {
+        get { return nitrosButton.intractable; }
+        set { nitrosButton.intractable = value; }
+    }
+
+
+    private bool ActiveNosBoost
+    {
+        get { return nitrosBonus.gameObject.activeSelf; }
+        set
+        {
+            nitrosBonus.gameObject.SetActive(value);
+            nitrosBonusButton.gameObject.SetActive(value);
+        }
+    }
+
+    private bool ActiveSound
+    {
         set
         {
             if (value && playNosAudio != value)
                 nosFullAudio.Play();
             playNosAudio = value;
-            if (nitrosButton) nitrosButton.intractable = value;
-        }
-    }
-
-    private bool ActiveNosBoost
-    {
-        set
-        {
-            nitrosBonus.gameObject.SetActive(value);
-            if (nitrosBonusButton) nitrosBonusButton.intractable = value;
         }
     }
 
@@ -44,6 +50,7 @@ public class UiPlayingNitros : MonoBehaviour
     {
         nitrosBarDefaultColor = nitrosBar.color;
         nitrosBar.fillAmount = 0;
+        ActiveSound = false;
         ActiveNitros = false;
         ActiveNosBoost = false;
         boostCoods.z = nitrosBar.rectTransform.rect.width;
@@ -61,29 +68,28 @@ public class UiPlayingNitros : MonoBehaviour
         RacerCamera.fovScale = PlayerPresenter.local.IsNitrosUsing ? 1.45f : 1;
         SeganX.Effects.CameraFX.MotionBlurValue = Mathf.Lerp(SeganX.Effects.CameraFX.MotionBlurValue, PlayerPresenter.local.IsNitrosUsing ? 0.4f : 0.1f, Time.deltaTime * 2);
 
-        ActiveNitros = PlayerPresenter.local.IsNitrosFull;
+        ActiveSound = PlayerPresenter.local.IsNitrosFull;
         if (PlayerPresenter.local.IsNitrosUsing == false)
             ActiveNosBoost = false;
+        ActiveNitros = PlayerPresenter.local.IsNitrosReady && ActiveNosBoost == false;
+
     }
 
     private void HandleInput()
     {
-        if ((PlayerPresenter.local.IsNitrosUsing) &&
+        if ((ActiveNosBoost && PlayerPresenter.local.IsNitrosUsing) &&
             (InputManager.Boost.isPointerDown || UiPlayingGesture.UseNitors
 #if UNITY_EDITOR || UNITY_STANDALONE
                 || Input.GetKeyDown(KeyCode.LeftControl)
 #endif
         ))
         {
-            if (nitrosBonus.gameObject.activeSelf)
-            {
-                Stat.SetLastNitroUseSlot(IsBoostInRange);
-                if (IsBoostInRange)
-                    PlayerPresenter.local.BoostNitros();
+            Stat.SetLastNitroUseSlot(IsBoostInRange);
+            if (IsBoostInRange)
+                PlayerPresenter.local.BoostNitros();
 
-                ActiveNosBoost = false;
-                boostCoods.x = -1;
-            }
+            ActiveNosBoost = false;
+            boostCoods.x = -1;
         }
 
         if ((PlayerPresenter.local.IsNitrosReady && PlayerPresenter.local.IsNitrosUsing == false) &&
@@ -114,14 +120,12 @@ public class UiPlayingNitros : MonoBehaviour
             if (nitrosHintTimer > 5)
             {
                 nitrosHintTimer = 0;
-                nitrosHint.SetAnchordPositionX(Random.Range(-200.0f, 200.0f));
-                nitrosHint.gameObject.SetActive(true);
+
             }
         }
         else
         {
             nitrosHintTimer = 0;
-            nitrosHint.gameObject.SetActive(false);
         }
     }
 
