@@ -64,11 +64,13 @@ public class SocialLogic : MonoBehaviour
         if (IsLiked(profileId, racerId))
         {
             data.likesByMe.RemoveAll(x => x.likedForProfile == profileId && x.racerId == racerId);
+            SaveToLocal();
             return false;
         }
         else
         {
             data.likesByMe.Add(new LikeData(profileId, racerId));
+            SaveToLocal();
             return true;
         }
     }
