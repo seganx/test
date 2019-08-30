@@ -47,7 +47,7 @@ public class SocialLogic : MonoBehaviour
             lastSocialUpdate = System.DateTime.Now;
             Network.GetProfileSocialData(res =>
             {
-                socialData = res ?? new SocialData();
+                socialData = res;// ?? new SocialData();
                 callback(socialData);
             });
         }

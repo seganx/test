@@ -80,6 +80,7 @@ public class State_PhotoMode : GameState
 
             SocialLogic.GetSocialData(res =>
             {
+                if (res == null) return;
                 var racelike = res.racerLikes.Find(x => x.racerId == GarageRacer.racer.Id);
                 socialPanel.likesCountLabel.SetText(racelike != null ? racelike.count.ToString("#,0") : "0");
                 socialPanel.viewCountLabel.SetText(res.dailyViews.ToString("#,0"));

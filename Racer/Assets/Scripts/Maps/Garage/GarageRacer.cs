@@ -70,10 +70,18 @@ public class GarageRacer : Base
             wheel.RotationSpeed = wheelSpeed;
     }
 
-    public static void SetRacerWheelsAngle(float wheelAngle)
+    public static void SetRacerWheelsAngle(float wheelAngle, bool blend = true)
     {
         racer.AutoSteeringWheel = false;
-        foreach (var wheel in racer.frontWheels)
-            wheel.transform.DoRotateToward(0, wheelAngle, 0, 10, Space.Self);
+        if (blend)
+        {
+            foreach (var wheel in racer.frontWheels)
+                wheel.transform.DoRotateToward(0, wheelAngle, 0, 10, Space.Self);
+        }
+        else
+        {
+            foreach (var wheel in racer.frontWheels)
+                wheel.transform.localEulerAngles = Vector3.up * wheelAngle;
+        }
     }
 }

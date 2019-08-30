@@ -15,6 +15,9 @@ public class GarageRacerImager : MonoBehaviour
         racer = RacerFactory.Racer.Create(racerId, transform);
         racer.SetupCustom(custom).SetupCameras(false).SetTransparent(false);
 
+        foreach (var wheel in racer.frontWheels)
+            wheel.transform.localEulerAngles = Vector3.up * 30;
+
         if (hideShadow)
             DestroyImmediate(racer.transform.Find("Shadow").gameObject);
 
@@ -57,7 +60,7 @@ public class GarageRacerImager : MonoBehaviour
     [System.Serializable]
     private class ImageInfo
     {
-        public static int version = 0;
+        public static int version = 1;
 
         public int ver = version;
         public int width = 0;
