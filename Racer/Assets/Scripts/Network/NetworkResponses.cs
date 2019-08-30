@@ -53,4 +53,20 @@ namespace SeganX.Network
         public int score = 0;
         public int position = 0;
     }
+
+    [System.Serializable]
+    public class PlayerInfoResponse
+    {
+        [System.Serializable]
+        public class RacerLike
+        {
+            public int racerId = 0;
+            public int count = 0;
+        }
+
+        public int dailyProfileView = 0;
+        public string profileData = string.Empty;
+        public ProfileData.NetData netData = null;
+        public List<RacerLike> racerLikes = new List<RacerLike>();
+    }
 }
