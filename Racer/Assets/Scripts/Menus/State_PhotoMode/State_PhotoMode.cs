@@ -16,6 +16,14 @@ public class State_PhotoMode : GameState
         public UiShowHide showhide = null;
     }
 
+    [System.Serializable]
+    public class SocialPanel
+    {
+        public LocalText likesCountLabel = null;
+        public LocalText viewCountLabel = null;
+        public UiShowHide showhide = null;
+    }
+
     [SerializeField] private GameObject upPanel = null;
     [SerializeField] private GameObject effectPanel = null;
     [SerializeField] private Button prevEffectButton = null;
@@ -25,6 +33,7 @@ public class State_PhotoMode : GameState
     [SerializeField] private GameObject screenshotButtonLabel = null;
     [SerializeField] private GameObject screenshotButtonImage = null;
     [SerializeField] private LockedBar lockedBar = null;
+    [SerializeField] private SocialPanel socialPanel = null;
 
     private static bool RewardLabelVisible
     {
@@ -62,10 +71,19 @@ public class State_PhotoMode : GameState
 
         lockedBar.cardButton.onClick.AddListener(() => gameManager.OpenPopup<Popup_RacerCardInfo>());
 
-
         if (Profile.IsUnlockedRacer(GarageRacer.racer.Id))
         {
             lockedBar.showhide.Hide();
+            socialPanel.showhide.Hide();
+
+            Network.GetPlayerInfo(Profile.UserId, res =>
+            {
+                if (res == null) return;
+                var racelike = res.racerLikes.Find(x => x.racerId == GarageRacer.racer.Id);
+                socialPanel.likesCountLabel.SetText(racelike != null ? racelike.count.ToString("#,0") : "0");
+                socialPanel.viewCountLabel.SetText(res.dailyProfileView.ToString("#,0"));
+                socialPanel.showhide.Show();
+            });
         }
         else
         {
@@ -74,6 +92,7 @@ public class State_PhotoMode : GameState
             lockedBar.descLabel.SetFormatedText(Mathf.Clamp(config.CardCount - (racerprofile != null ? racerprofile.cards : 0), 0, config.CardCount));
             lockedBar.cardsCountLabel.SetFormatedText(racerprofile != null ? racerprofile.cards : 0, config.CardCount);
             lockedBar.showhide.Show();
+            socialPanel.showhide.Hide();
         }
     }
 

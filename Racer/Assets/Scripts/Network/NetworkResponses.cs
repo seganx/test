@@ -64,9 +64,12 @@ namespace SeganX.Network
             public int count = 0;
         }
 
+        public string profileId = string.Empty;
         public int dailyProfileView = 0;
         public string profileData = string.Empty;
         public ProfileData.NetData netData = null;
         public List<RacerLike> racerLikes = new List<RacerLike>();
     }
+
+
 }

@@ -39,4 +39,11 @@ namespace SeganX.Network
     public class PrizeBody
     {
     }
+
+    [System.Serializable]
+    public class LikeBody
+    {
+        public int racerId = 0;
+        public string likedFor = string.Empty;
+    }
 }

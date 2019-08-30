@@ -159,9 +159,30 @@ public static class Network
         {
             if (msg == Message.ok)
             {
+                res.profileId = profileId;
                 var dejson = Utilities.DecompressString(res.profileData.Split('.')[0], string.Empty);
                 res.netData = JsonUtilityEx.FromJson<ProfileData.NetData>(dejson);
                 res.netData.Validate(); 
+                callback(res);
+            }
+            else callback(null);
+        });
+    }
+
+    public static void Like(string profileId, int racerId, System.Action<bool> callback)
+    {
+        var post = new LikeBody();
+        post.likedFor = profileId;
+        post.racerId = racerId;
+        DownloadData<string>(address + "Players/Like", post, (msg, res) => callback(msg == Message.ok));
+    }
+
+    public static void GetLikes(System.Action<List<LikeData>> callback)
+    {
+        DownloadData<List<LikeData>>(address + "Players/GetLikesByMe", null, (msg, res) =>
+        {
+            if (msg == Message.ok)
+            {
                 callback(res);
             }
             else callback(null);

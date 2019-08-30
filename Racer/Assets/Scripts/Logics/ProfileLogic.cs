@@ -73,9 +73,18 @@ public class ProfileLogic : MonoBehaviour
         Network.GetProfile((msg, data) =>
         {
             if (msg == Network.Message.ok)
-                SyncProfile(sendProfile, data, nextTask);
-            else
-                nextTask(false);
+            {
+                if (Likes.DownloadFromServer)
+                {
+                    Network.GetLikes(res =>
+                    {
+                        Likes.SetData(res);
+                        SyncProfile(sendProfile, data, nextTask);
+                    });
+                }
+                else SyncProfile(sendProfile, data, nextTask);
+            }
+            else nextTask(false);
         });
     }
 
@@ -93,7 +102,7 @@ public class ProfileLogic : MonoBehaviour
             if (newprofile.data != null)
             {
                 Popup_Loading.Hide();
-                Game.Instance.OpenPopup<Popup_AccountSelection>().Setup(yes =>
+                Game.Instance.OpenPopup<Popup_AccountSelection>().Setup(newprofile, yes =>
                 {
                     if (yes)
                     {
@@ -103,6 +112,7 @@ public class ProfileLogic : MonoBehaviour
                             PlayerPrefs.DeleteAll();
                             PlayerPrefsEx.ClearData();
                             SaveToLocal();
+                            Likes.DownloadFromServer = true;
                             Application.Quit();
                         });
                     }
@@ -164,6 +174,7 @@ public class ProfileLogic : MonoBehaviour
     {
         PlayerPrefsEx.Serialize("ProfileLogic.Data", Profile.Data);
         PlayerPrefsEx.Serialize("ProfileLogic.LastData", lastdata);
+        Likes.Save();
     }
 
     private static void LoadFromLocal()
@@ -171,5 +182,6 @@ public class ProfileLogic : MonoBehaviour
         Debug.Log("Loading Profile From Device ...");
         Profile.Data = PlayerPrefsEx.Deserialize("ProfileLogic.Data", new ProfileData());
         lastdata = PlayerPrefsEx.Deserialize("ProfileLogic.LastData", new ProfileData.NetData());
+        Likes.Load();
     }
 }

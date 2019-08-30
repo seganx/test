@@ -1,9 +1,9 @@
 ﻿using SeganX;
+using SeganX.Network;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using SeganX.Network;
 
 public class State_OtherUserAccount : GameState
 {
@@ -15,16 +15,26 @@ public class State_OtherUserAccount : GameState
     [SerializeField] private LocalText racerPowerLabel = null;
     [SerializeField] private Button nextButton = null;
     [SerializeField] private Button prevButton = null;
+    [SerializeField] private UiShowHide socialPanel = null;
+    [SerializeField] private Button racerLikeButton = null;
+    [SerializeField] private Button racerUnlikeButton = null;
+    [SerializeField] private LocalText racerLikesLabel = null;
+    [SerializeField] private LocalText dailyReviewLabel = null;
 
     private string playerName = string.Empty;
     private int currentRaceIndex = 0;
     private List<RacerProfile> racers = null;
+    private PlayerInfoResponse data = null;
+
+    private int CurrentRacerId { get { return GarageRacer.racer == null ? 0 : GarageRacer.racer.Id; } }
 
     public State_OtherUserAccount Setup(PlayerInfoResponse netdata, string nickname, int score, int position)
     {
+        data = netdata;
         playerName = nickname;
         nameLabel.SetText(nickname);
         scoreLabel.SetText(score.ToString("#,0"));
+        dailyReviewLabel.SetText(netdata.dailyProfileView.ToString("#,0"));
         var leagueIndex = GlobalConfig.Leagues.GetIndex(score, position);
         leagueImage.sprite = GlobalFactory.League.GetBigIcon(leagueIndex);
         leagueIcon.sprite = GlobalFactory.League.GetSmallIcon(leagueIndex);
@@ -33,6 +43,9 @@ public class State_OtherUserAccount : GameState
         racers = profile.racers.FindAll(x => x.cards >= RacerFactory.Racer.GetConfig(x.id).CardCount);
         racers.Sort((x, y) => x.id - y.id);
         currentRaceIndex = racers.FindIndex(x => x.id == profile.selectedRacer);
+
+        racerLikeButton.onClick.AddListener(OnLikeClicked);
+        racerUnlikeButton.onClick.AddListener(OnLikeClicked);
         return this;
     }
 
@@ -70,11 +83,55 @@ public class State_OtherUserAccount : GameState
         GarageRacer.LoadRacer(racerprofile);
         if (GarageRacer.racer != null)
             GarageRacer.racer.BroadcastMessage("SetPlateText", playerName, SendMessageOptions.DontRequireReceiver);
+
+        UpdateSocialPanel();
+    }
+
+    private void UpdateSocialPanel()
+    {
+        if (GarageRacer.racer != null)
+        {
+            var likes = data.racerLikes.Find(x => x.racerId == CurrentRacerId);
+            racerLikesLabel.SetText(likes == null ? "0" : likes.count.ToString("#,0"));
+
+            bool IsLiked = Likes.IsLiked(data.profileId, CurrentRacerId);
+            racerLikeButton.gameObject.SetActive(IsLiked == false);
+            racerUnlikeButton.gameObject.SetActive(IsLiked == true);
+            socialPanel.Show();
+        }
+        else socialPanel.Hide();
     }
 
     public override float PreClose()
     {
         GarageRacer.LoadRacer(0);
         return base.PreClose();
+    }
+
+    private void OnLikeClicked()
+    {
+        if (CurrentRacerId < 1) return;
+        Network.Like(data.profileId, CurrentRacerId, done =>
+        {
+            if (done)
+            {
+                var likedata = data.racerLikes.Find(x => x.racerId == CurrentRacerId);
+                if (Likes.Action(data.profileId, CurrentRacerId))
+                {
+                    if (likedata != null)
+                        likedata.count++;
+                    else
+                        data.racerLikes.Add(new PlayerInfoResponse.RacerLike() { racerId = CurrentRacerId, count = 1 });
+                }
+                else
+                {
+                    if (likedata != null && likedata.count > 0)
+                        likedata.count--;
+                    else
+                        data.racerLikes.RemoveAll(x => x.racerId == CurrentRacerId);
+                }
+                UpdateSocialPanel();
+            }
+        });
     }
 }

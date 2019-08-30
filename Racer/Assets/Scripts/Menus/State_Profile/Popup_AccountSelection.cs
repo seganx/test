@@ -17,7 +17,7 @@ public class Popup_AccountSelection : GameState
         UiShowHide.ShowAll(transform);
     }
 
-    public Popup_AccountSelection Setup(System.Action<bool> callback)
+    public Popup_AccountSelection Setup(ProfileData newprofile, System.Action<bool> callback)
     {
         callbackFunc = callback;
         closeButton.onClick.AddListener(Back);
