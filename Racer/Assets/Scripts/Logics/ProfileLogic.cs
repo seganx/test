@@ -107,14 +107,11 @@ public class ProfileLogic : MonoBehaviour
                     if (yes)
                     {
                         Profile.Data = newprofile;
-                        Game.Instance.OpenPopup<Popup_Confirm>().Setup(111068, false, ok =>
-                        {
-                            PlayerPrefs.DeleteAll();
-                            PlayerPrefsEx.ClearData();
-                            SaveToLocal();
-                            SocialLogic.DownloadFromServer = true;
-                            Application.Quit();
-                        });
+                        PlayerPrefs.DeleteAll();
+                        PlayerPrefsEx.ClearData();
+                        SaveToLocal();
+                        SocialLogic.DownloadFromServer = true;
+                        Game.Instance.OpenPopup<Popup_Confirm>().Setup(111068, false, ok => Application.Quit());
                     }
                     else
                     {

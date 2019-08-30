@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 public class UiGarageRacerItem : Base
 {
+    public static int racerImageWidth = 250;
+    public static int racerImageHeight = 175;
+
     [SerializeField] private Image racerImage = null;
     [SerializeField] private Image cardsImage = null;
     [SerializeField] private LocalText cardsLabel = null;
@@ -22,7 +25,7 @@ public class UiGarageRacerItem : Base
         var racerprofile = Profile.GetRacer(config.Id);
         if (racerprofile == null)
         {
-            racerImage.sprite = GarageRacerImager.GetImageOpaque(config.Id, config.DefaultRacerCustom, racerImage.rectTransform.rect.width, racerImage.rectTransform.rect.height);
+            racerImage.sprite = GarageRacerImager.GetImageOpaque(config.Id, config.DefaultRacerCustom, racerImageWidth, racerImageHeight);
 
             racerImage.color = Color.gray;
             racerImage.SetColorAlpha(0);
@@ -32,7 +35,7 @@ public class UiGarageRacerItem : Base
         }
         else
         {
-            racerImage.sprite = GarageRacerImager.GetImageOpaque(config.Id, racerprofile.custom, racerImage.rectTransform.rect.width, racerImage.rectTransform.rect.height);
+            racerImage.sprite = GarageRacerImager.GetImageOpaque(config.Id, racerprofile.custom, racerImageWidth, racerImageHeight);
 
             var unlocking = Profile.IsUnlockingRacer(config.Id);
             var unlocked = Profile.IsUnlockedRacer(config.Id);

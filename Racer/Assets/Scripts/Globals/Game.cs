@@ -17,8 +17,9 @@ public class Game : GameManager<Game>
     private IEnumerator Start()
     {
         Popup_Loading.Display();
-        PurchaseSystem.Initialize(GlobalConfig.Instance.cafeBazaarKey, GlobalConfig.Socials.storeUrl, (success, msg) => Debug.Log("Purchase system initialized: " + success + " " + msg));
         yield return new WaitForSeconds(1);
+        PurchaseSystem.Initialize(GlobalConfig.Instance.cafeBazaarKey, GlobalConfig.Socials.storeUrl, (success, msg) => Debug.Log("Purchase system initialized: " + success + " " + msg));
+        GarageRacerImager.LoadCache();
 
 #if DATABEEN
         OnOpenState += gamestate => { if (gamestate != null) DataBeen.SendContentView(gamestate.name, "ok"); };

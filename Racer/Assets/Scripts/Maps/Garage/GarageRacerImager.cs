@@ -63,12 +63,23 @@ public class GarageRacerImager : MonoBehaviour
         public static int version = 1;
 
         public int ver = version;
+        public int racerId = 0;
         public int width = 0;
         public int height = 0;
     }
 
+    private class CacheInfo
+    {
+        public string tag = string.Empty;
+        public int racerId = 0;
+        public int width = 0;
+        public int height = 0;
+        public Sprite sprite = null;
+    }
+
     private const string tag_opaque = "_opaque";
     private const string tag_transparent = "_transparent";
+    private static List<CacheInfo> cache = new List<CacheInfo>();
 
     private static string BasePath
     {
@@ -103,7 +114,7 @@ public class GarageRacerImager : MonoBehaviour
         var dataPath = GetDataPath(tag, id, width, height);
         if (File.Exists(infoPath) == false || File.Exists(dataPath) == false) return null;
         var info = JsonUtility.FromJson<ImageInfo>(File.ReadAllText(infoPath));
-        if (info.ver != ImageInfo.version) return null;
+        if (info.ver != ImageInfo.version || info.racerId != id) return null;
         var res = new Texture2D(info.width, info.height, TextureFormat.ARGB32, false);
         res.LoadRawTextureData(File.ReadAllBytes(dataPath));
         res.Apply();
@@ -112,12 +123,31 @@ public class GarageRacerImager : MonoBehaviour
 
     private static void SaveToFile(int id, string tag, Texture2D texture)
     {
-        File.WriteAllText(GetInfoPath(tag, id, texture.width, texture.height), JsonUtility.ToJson(new ImageInfo() { width = texture.width, height = texture.height }));
+        File.WriteAllText(GetInfoPath(tag, id, texture.width, texture.height), JsonUtility.ToJson(new ImageInfo() { racerId = id, width = texture.width, height = texture.height }));
         File.WriteAllBytes(GetDataPath(tag, id, texture.width, texture.height), texture.GetRawTextureData());
+    }
+
+    private static Sprite LoadFromCache(int id, string tag, int width, int height)
+    {
+        var res = cache.Find(x => x.tag == tag && x.racerId == id && x.width == width && x.height == height);
+        return res != null ? res.sprite : null;
+    }
+
+    private static void AddToCache(int id, string tag, int width, int height, Sprite sprite)
+    {
+        var item = new CacheInfo();
+        item.racerId = id;
+        item.tag = tag;
+        item.width = width;
+        item.height = height;
+        item.sprite = sprite;
+        cache.Add(item);
     }
 
     private static void RemoveFiles(int id, string tag)
     {
+        cache.RemoveAll(x => x.racerId == id && x.tag == tag);
+
         var search = GetPath(id, tag);
         var files = Directory.GetFiles(BasePath);
         foreach (var item in files)
@@ -144,8 +174,16 @@ public class GarageRacerImager : MonoBehaviour
     {
         int w = Mathf.RoundToInt(width * 2);
         int h = Mathf.RoundToInt(height * 2);
-        var tex = LoadFromFile(racerId, tag_opaque, w, h);
-        return GetSprite(tex != null ? tex : CreateAndSaveOpaque(racerId, custom, w, h));
+
+        var res = LoadFromCache(racerId, tag_opaque, w, h);
+        if (res == null)
+        {
+            var tex = LoadFromFile(racerId, tag_opaque, w, h);
+            res = GetSprite(tex != null ? tex : CreateAndSaveOpaque(racerId, custom, w, h));
+            AddToCache(racerId, tag_opaque, w, h, res);
+        }
+
+        return res;
     }
 
     public static void RemoveImageOpaque(int racerId)
@@ -183,5 +221,30 @@ public class GarageRacerImager : MonoBehaviour
         var res = imager.TakeAShot(racerId, custom, true, Mathf.RoundToInt(width * 2), Mathf.RoundToInt(height * 2), 0);
         DestroyImmediate(imager.gameObject);
         return GetSprite(res);
+    }
+
+
+    public static void LoadCache()
+    {
+        var files = Directory.GetFiles(BasePath);
+        foreach (var item in files)
+        {
+            if (item.Contains(tag_opaque) == false && Path.GetExtension(item) != ".info") continue;
+
+            try
+            {
+                var info = JsonUtility.FromJson<ImageInfo>(File.ReadAllText(item));
+                var tex = LoadFromFile(info.racerId, tag_opaque, info.width, info.height);
+                if (tex == null) continue;
+                AddToCache(info.racerId, tag_opaque, info.width, info.height, GetSprite(tex));
+            }
+            catch { }
+        }
+
+        foreach (var config in RacerFactory.Racer.AllConfigs)
+        {
+            var racerprofile = Profile.GetRacer(config.Id);
+            var test = GetImageOpaque(config.Id, racerprofile != null ? racerprofile.custom : config.DefaultRacerCustom, UiGarageRacerItem.racerImageWidth, UiGarageRacerItem.racerImageHeight);
+        }
     }
 }
