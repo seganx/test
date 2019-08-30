@@ -35,7 +35,7 @@ public class Popup_TimerSkip : GameState
     public void UpdateTimerText(int remainTime)
     {
         buyButton.SetInteractable(true);
-        price = Mathf.CeilToInt(remainTime / (float)GlobalConfig.Shop.gemToTime);
+        price = Mathf.CeilToInt((GlobalConfig.Recharg.time * (GlobalConfig.Recharg.count - 1)  + remainTime) / (float)GlobalConfig.Shop.gemToTime);
         rechargCostText.SetFormatedText(price);
         timerText.SetFormatedText(remainTime / 60, remainTime % 60);
     }
