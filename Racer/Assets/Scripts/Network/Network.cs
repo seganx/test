@@ -153,16 +153,16 @@ public static class Network
         });
     }
 
-    public static void GetPlayerInfo(string profileId, System.Action<ProfileData.NetData> callback)
+    public static void GetPlayerInfo(string profileId, System.Action<PlayerInfoResponse> callback)
     {
-        DownloadData<string>(address + "Players/GetPlayerInfo?profileId=" + profileId, null, (msg, res) =>
+        DownloadData<PlayerInfoResponse>(address + "Players/GetPlayerInfo?profileId=" + profileId, null, (msg, res) =>
         {
-            if (res.HasContent())
+            if (msg == Message.ok)
             {
-                var dejson = Utilities.DecompressString(res.Split('.')[0], string.Empty);
-                var data = JsonUtilityEx.FromJson<ProfileData.NetData>(dejson);
-                data.Validate();
-                callback(data);
+                var dejson = Utilities.DecompressString(res.profileData.Split('.')[0], string.Empty);
+                res.netData = JsonUtilityEx.FromJson<ProfileData.NetData>(dejson);
+                res.netData.Validate(); 
+                callback(res);
             }
             else callback(null);
         });

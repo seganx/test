@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using SeganX.Network;
 
 public class State_OtherUserAccount : GameState
 {
@@ -19,7 +20,7 @@ public class State_OtherUserAccount : GameState
     private int currentRaceIndex = 0;
     private List<RacerProfile> racers = null;
 
-    public State_OtherUserAccount Setup(ProfileData.NetData netdata, string nickname, int score, int position)
+    public State_OtherUserAccount Setup(PlayerInfoResponse netdata, string nickname, int score, int position)
     {
         playerName = nickname;
         nameLabel.SetText(nickname);
@@ -28,7 +29,7 @@ public class State_OtherUserAccount : GameState
         leagueImage.sprite = GlobalFactory.League.GetBigIcon(leagueIndex);
         leagueIcon.sprite = GlobalFactory.League.GetSmallIcon(leagueIndex);
 
-        var profile = new ProfileData() { data = netdata };
+        var profile = new ProfileData() { data = netdata.netData };
         racers = profile.racers.FindAll(x => x.cards >= RacerFactory.Racer.GetConfig(x.id).CardCount);
         racers.Sort((x, y) => x.id - y.id);
         currentRaceIndex = racers.FindIndex(x => x.id == profile.selectedRacer);
