@@ -90,6 +90,7 @@ public class SocialLogic : MonoBehaviour
         if (likeList == null) return;
         DownloadFromServer = false;
         data.likesByMe = likeList;
+
         SaveToLocal();
     }
 }
