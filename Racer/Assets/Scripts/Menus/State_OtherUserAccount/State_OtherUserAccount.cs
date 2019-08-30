@@ -20,6 +20,7 @@ public class State_OtherUserAccount : GameState
     [SerializeField] private Button racerUnlikeButton = null;
     [SerializeField] private LocalText racerLikesLabel = null;
     [SerializeField] private LocalText dailyReviewLabel = null;
+    [SerializeField] private GameObject likeTutorialGameObject = null;
 
     private string playerName = string.Empty;
     private int currentRaceIndex = 0;
@@ -92,6 +93,7 @@ public class State_OtherUserAccount : GameState
 
     private void UpdateSocialPanel()
     {
+        likeTutorialGameObject.SetActive(!LikedOnce);
         if (GarageRacer.racer != null)
         {
             var likes = data.racerLikes.Find(x => x.racerId == CurrentRacerId);
@@ -133,8 +135,16 @@ public class State_OtherUserAccount : GameState
                     else
                         data.racerLikes.RemoveAll(x => x.racerId == CurrentRacerId);
                 }
+                LikedOnce = true;
                 UpdateSocialPanel();
             }
         });
+    }
+
+    static string likesOnceString = "LikedOnce";
+    static bool LikedOnce
+    {
+        get { return PlayerPrefs.GetInt(likesOnceString, 0) == 1; }
+        set { PlayerPrefs.SetInt(likesOnceString, value ? 1 : 0); }
     }
 }
