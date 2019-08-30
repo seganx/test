@@ -97,7 +97,7 @@ public class State_OtherUserAccount : GameState
             var likes = data.racerLikes.Find(x => x.racerId == CurrentRacerId);
             racerLikesLabel.SetText(likes == null ? "0" : likes.count.ToString("#,0"));
 
-            bool IsLiked = Likes.IsLiked(data.profileId, CurrentRacerId);
+            bool IsLiked = SocialLogic.IsLiked(data.profileId, CurrentRacerId);
             racerLikeButton.gameObject.SetActive(IsLiked == false);
             racerUnlikeButton.gameObject.SetActive(IsLiked == true);
             socialPanel.Show();
@@ -119,12 +119,12 @@ public class State_OtherUserAccount : GameState
             if (done)
             {
                 var likedata = data.racerLikes.Find(x => x.racerId == CurrentRacerId);
-                if (Likes.Action(data.profileId, CurrentRacerId))
+                if (SocialLogic.Action(data.profileId, CurrentRacerId))
                 {
                     if (likedata != null)
                         likedata.count++;
                     else
-                        data.racerLikes.Add(new PlayerInfoResponse.RacerLike() { racerId = CurrentRacerId, count = 1 });
+                        data.racerLikes.Add(new RacerLike() { racerId = CurrentRacerId, count = 1 });
                 }
                 else
                 {

@@ -57,13 +57,6 @@ namespace SeganX.Network
     [System.Serializable]
     public class PlayerInfoResponse
     {
-        [System.Serializable]
-        public class RacerLike
-        {
-            public int racerId = 0;
-            public int count = 0;
-        }
-
         public string profileId = string.Empty;
         public int dailyProfileView = 0;
         public string profileData = string.Empty;

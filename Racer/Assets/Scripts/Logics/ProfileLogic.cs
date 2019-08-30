@@ -74,11 +74,11 @@ public class ProfileLogic : MonoBehaviour
         {
             if (msg == Network.Message.ok)
             {
-                if (Likes.DownloadFromServer)
+                if (SocialLogic.DownloadFromServer)
                 {
                     Network.GetLikes(res =>
                     {
-                        Likes.SetData(res);
+                        SocialLogic.SetData(res);
                         SyncProfile(sendProfile, data, nextTask);
                     });
                 }
@@ -112,7 +112,7 @@ public class ProfileLogic : MonoBehaviour
                             PlayerPrefs.DeleteAll();
                             PlayerPrefsEx.ClearData();
                             SaveToLocal();
-                            Likes.DownloadFromServer = true;
+                            SocialLogic.DownloadFromServer = true;
                             Application.Quit();
                         });
                     }
@@ -174,7 +174,6 @@ public class ProfileLogic : MonoBehaviour
     {
         PlayerPrefsEx.Serialize("ProfileLogic.Data", Profile.Data);
         PlayerPrefsEx.Serialize("ProfileLogic.LastData", lastdata);
-        Likes.Save();
     }
 
     private static void LoadFromLocal()
@@ -182,6 +181,5 @@ public class ProfileLogic : MonoBehaviour
         Debug.Log("Loading Profile From Device ...");
         Profile.Data = PlayerPrefsEx.Deserialize("ProfileLogic.Data", new ProfileData());
         lastdata = PlayerPrefsEx.Deserialize("ProfileLogic.LastData", new ProfileData.NetData());
-        Likes.Load();
     }
 }

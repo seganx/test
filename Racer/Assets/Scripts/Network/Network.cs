@@ -189,6 +189,18 @@ public static class Network
         });
     }
 
+    public static void GetProfileSocialData(System.Action<SocialData> callback)
+    {
+        DownloadData<SocialData>(address + "Players/GetMyProfileLikesAndViews", null, (msg, res) =>
+        {
+            if (msg == Message.ok)
+            {
+                callback(res);
+            }
+            else callback(null);
+        });
+    }
+
     public static class Message
     {
         public const string ok = "ok";
