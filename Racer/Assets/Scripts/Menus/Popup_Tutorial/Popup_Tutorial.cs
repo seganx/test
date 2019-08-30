@@ -5,15 +5,17 @@ using UnityEngine.UI;
 public class Popup_Tutorial : GameState
 {
     [SerializeField] LocalText titleLabel = null;
-    [SerializeField] LocalText descLabel = null;
+    [SerializeField] TextTyper descTextTyper = null;
     [SerializeField] Transform characters = null;
     [SerializeField] Button nextButton = null;
+    [SerializeField] Button skipButton = null;
 
     public Popup_Tutorial Setup(TutorialConfig config, System.Action onFinished)
     {
         titleLabel.gameObject.SetActive(config.title.HasContent());
         titleLabel.SetText(config.title);
-        descLabel.SetText(config.description);
+        descTextTyper.GetComponent<LocalText>().SetText(config.description);
+        descTextTyper.Setup(() => RemoveSkipButton());
         characters.SetActiveChild((int)config.character);
 
         nextButton.onClick.AddListener(() =>
@@ -29,6 +31,12 @@ public class Popup_Tutorial : GameState
             else Setup(config.next, onFinished);
         });
 
+        skipButton.onClick.AddListener(() =>
+        {
+            descTextTyper.Skip();
+            RemoveSkipButton();
+        });
+
         return this;
     }
 
@@ -40,6 +48,11 @@ public class Popup_Tutorial : GameState
     public override void Back()
     {
 
+    }
+
+    private void RemoveSkipButton()
+    {
+        skipButton.gameObject.SetActive(false);
     }
 
 

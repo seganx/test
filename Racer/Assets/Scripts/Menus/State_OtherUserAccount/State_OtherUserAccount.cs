@@ -39,6 +39,9 @@ public class State_OtherUserAccount : GameState
     {
         UiHeader.Hide();
         UiShowHide.ShowAll(transform);
+
+        PopupQueue.Add(.5f, () => Popup_Tutorial.Display(35));
+
         GarageCamera.SetCameraId(0);
         DisplayRacer();
 

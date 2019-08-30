@@ -40,6 +40,8 @@ public class State_PhotoMode : GameState
         GarageRacer.SetRacerWheelsAngle(30);
         UiShowHide.ShowAll(transform);
 
+        PopupQueue.Add(.5f, () => Popup_Tutorial.Display(62));
+
         if (CameraFX.Activated)
             SetLutTexture(0);
         else
