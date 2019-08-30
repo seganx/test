@@ -12,10 +12,11 @@ public class Popup_Tutorial : GameState
 
     public Popup_Tutorial Setup(TutorialConfig config, System.Action onFinished)
     {
+        SetActiveSkipButton(true);
         titleLabel.gameObject.SetActive(config.title.HasContent());
         titleLabel.SetText(config.title);
         descTextTyper.GetComponent<LocalText>().SetText(config.description);
-        descTextTyper.Setup(() => RemoveSkipButton());
+        descTextTyper.Setup(() => SetActiveSkipButton(false));
         characters.SetActiveChild((int)config.character);
 
         nextButton.onClick.AddListener(() =>
@@ -34,7 +35,7 @@ public class Popup_Tutorial : GameState
         skipButton.onClick.AddListener(() =>
         {
             descTextTyper.Skip();
-            RemoveSkipButton();
+            SetActiveSkipButton(false);
         });
 
         return this;
@@ -50,9 +51,9 @@ public class Popup_Tutorial : GameState
 
     }
 
-    private void RemoveSkipButton()
+    private void SetActiveSkipButton(bool active)
     {
-        skipButton.gameObject.SetActive(false);
+        skipButton.gameObject.SetActive(active);
     }
 
 
