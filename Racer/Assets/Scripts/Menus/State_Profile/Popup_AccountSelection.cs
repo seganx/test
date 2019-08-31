@@ -27,7 +27,11 @@ public class Popup_AccountSelection : GameState
         {
             gameManager.OpenPopup<Popup_Confirm>().Setup(111062, true, yes =>
             {
-                if (yes) callback(true);
+                if (yes)
+                {
+                    base.Back();
+                    callback(true);
+                }
             });
         });
         return this;

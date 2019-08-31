@@ -38,6 +38,7 @@ public class State_Home : GameState
 
     private void Start()
     {
+        UiHeader.Show();
         GarageCamera.SetCameraId(1);
 
         mapTransform.anchoredPosition = MapPosition;

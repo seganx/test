@@ -16,6 +16,8 @@ public class Game : GameManager<Game>
 
     private IEnumerator Start()
     {
+        GameMap.Load(0);
+
         Popup_Loading.Display();
         yield return new WaitForSeconds(1);
         PurchaseSystem.Initialize(GlobalConfig.Instance.cafeBazaarKey, GlobalConfig.Socials.storeUrl, (success, msg) => Debug.Log("Purchase system initialized: " + success + " " + msg));
@@ -30,7 +32,6 @@ public class Game : GameManager<Game>
         ProfileLogic.SyncWidthServer(false, success =>
         {
             Http.requestTimeout = GlobalConfig.Server.requestTimeout;
-            LoadMap(0);
             Popup_Loading.Hide();
             OpenState<State_Home>();
         });
