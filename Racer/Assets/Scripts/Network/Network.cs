@@ -157,13 +157,17 @@ public static class Network
     {
         DownloadData<PlayerInfoResponse>(address + "Players/GetPlayerInfo?profileId=" + profileId, null, (msg, res) =>
         {
-            if (msg == Message.ok)
+            if (msg == Message.ok && res.profileData.HasContent())
             {
                 res.profileId = profileId;
                 var dejson = Utilities.DecompressString(res.profileData.Split('.')[0], string.Empty);
                 res.netData = JsonUtilityEx.FromJson<ProfileData.NetData>(dejson);
-                res.netData.Validate(); 
-                callback(res);
+                if (res.netData != null)
+                {
+                    res.netData.Validate();
+                    callback(res);
+                }
+                else callback(null);
             }
             else callback(null);
         });

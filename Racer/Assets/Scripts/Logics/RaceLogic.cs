@@ -96,6 +96,8 @@ public static class RaceLogic
             Profile.AddRacerCard(racerid, 1);
             Popup_Rewards.AddRacerCard(racerid, 1);
         }
+
+        ProfileLogic.SyncWidthServer(true, success => Debug.Log("Profile Uploaded: " + success));
     }
 
     private static void SetRewardsToProfile()

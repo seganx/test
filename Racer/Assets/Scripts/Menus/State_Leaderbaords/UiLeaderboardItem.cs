@@ -34,6 +34,11 @@ public class UiLeaderboardItem : MonoBehaviour
 
                     if (pdata != null)
                         Game.Instance.OpenState<State_OtherUserAccount>().Setup(pdata, nickname, score, position);
+                    else
+                    {
+                        var warning = string.Format(LocalizationService.Get(111143), nickname);
+                        Game.Instance.OpenPopup<Popup_Confirm>().Setup(warning, false, null);
+                    }
                 });
             });
 
