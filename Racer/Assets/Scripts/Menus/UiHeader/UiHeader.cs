@@ -59,6 +59,7 @@ public class UiHeader : Base
 
         var syncCount = 0;
         var waitseconds = new WaitForSeconds(0.5f);
+        var lastSyncTime = System.DateTime.Now;
         while (true)
         {
             leagueImage.sprite = GlobalFactory.League.GetSmallIcon(Profile.League);
@@ -68,10 +69,9 @@ public class UiHeader : Base
             garageNotif.SetActive(Profile.IsUnlockingRacerExist);
 
             syncCount++;
-            if (syncCount % 2 == 0)
-                syncIcon.color = syncCount < 0 ? Color.yellow : (ProfileLogic.Synced ? Color.green : Color.red);
+            if (syncCount % 2 == 0) syncIcon.color = syncCount < 0 ? Color.yellow : (ProfileLogic.Synced ? Color.green : Color.red);
 
-            if (syncCount > 0 && syncCount % 240 == 0)
+            if ((System.DateTime.Now - lastSyncTime).TotalSeconds > 20)
             {
                 if (ProfileLogic.Synced == false)
                 {

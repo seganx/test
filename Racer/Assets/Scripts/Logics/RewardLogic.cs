@@ -99,7 +99,6 @@ public static class RewardLogic
     }
 
 
-
     public static int SelectProbability(int lenght, int center, int radius, float heightFactor = 0.5f)
     {
         var list = new List<int>(lenght * 3);
