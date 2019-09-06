@@ -28,26 +28,34 @@ public class ProfileLogic : MonoBehaviour
 
     public static bool Synced { get { return Profile.Data.data.IsEqualTo(lastdata); } }
     public static bool IsGlobalConfigUpdated { get; set; }
+    public static bool IsRacersConfigUpdated { get; set; }
     public static bool IsLoggedIn { get; set; }
 
 
     public static void SyncWidthServer(bool sendProfile, System.Action<bool> nextTask)
     {
-        if (IsGlobalConfigUpdated)
+        if (IsRacersConfigUpdated == false)
         {
-            LoginToServer(sendProfile, nextTask);
-            return;
+            var address = GlobalConfig.Instance.address + GlobalConfig.Instance.version + "/racers.txt?" + System.DateTime.Now.Ticks;
+            Http.DownloadText(address, null, null, json =>
+            {
+                IsRacersConfigUpdated = (json != null && RacerGlobalConfigs.SetData(json));
+            });
         }
 
-        var address = GlobalConfig.Instance.address + GlobalConfig.Instance.version + "/config.txt?" + System.DateTime.Now.Ticks;
-        Http.DownloadText(address, null, null, json =>
+        if (IsGlobalConfigUpdated == false)
         {
-            IsGlobalConfigUpdated = (json != null && GlobalConfig.SetData(json));
-            if (IsGlobalConfigUpdated)
-                LoginToServer(sendProfile, nextTask);
-            else
-                nextTask(false);
-        });
+            var address = GlobalConfig.Instance.address + GlobalConfig.Instance.version + "/config.txt?" + System.DateTime.Now.Ticks;
+            Http.DownloadText(address, null, null, json =>
+            {
+                IsGlobalConfigUpdated = (json != null && GlobalConfig.SetData(json));
+                if (IsGlobalConfigUpdated)
+                    LoginToServer(sendProfile, nextTask);
+                else
+                    nextTask(false);
+            });
+        }
+        else LoginToServer(sendProfile, nextTask);
     }
 
     private static void LoginToServer(bool sendProfile, System.Action<bool> nextTask)

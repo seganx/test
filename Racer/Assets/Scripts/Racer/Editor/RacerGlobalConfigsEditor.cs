@@ -86,15 +86,15 @@ public class RacerGlobalConfigsEditor : Editor
 
         if (GUILayout.Button("Export"))
         {
-            var filename = EditorUtility.SaveFilePanel("Save exported data", Path.GetDirectoryName(Application.dataPath), obj.name, "json");
+            var filename = EditorUtility.SaveFilePanel("Save exported data", Path.GetDirectoryName(Application.dataPath), "racers", "txt");
             if (filename.HasContent(4))
-                File.WriteAllText(filename, JsonUtilityEx.ToJson(obj.data), System.Text.Encoding.UTF8);
+                File.WriteAllText(filename, JsonUtility.ToJson(obj.data), System.Text.Encoding.UTF8);
         }
         if (GUILayout.Button("Import"))
         {
-            var filename = EditorUtility.OpenFilePanel("Load data from", Path.GetDirectoryName(Application.dataPath), "json");
+            var filename = EditorUtility.OpenFilePanel("Load data from", Path.GetDirectoryName(Application.dataPath), "txt");
             if (filename.HasContent(4))
-                obj.data = JsonUtilityEx.FromJson<RacerGlobalConfigs.ConfigData>(File.ReadAllText(filename, System.Text.Encoding.UTF8));
+                obj.data = JsonUtility.FromJson<RacerGlobalConfigs.ConfigData>(File.ReadAllText(filename, System.Text.Encoding.UTF8));
         }
 
         EditorUtility.SetDirty(obj);

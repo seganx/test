@@ -48,10 +48,20 @@ public class RacerGlobalConfigs : StaticConfig<RacerGlobalConfigs>
     ////////////////////////////////////////////////////////////
     public static ConfigData Data { get { return Instance.data; } }
 
-    public static void SetData(ConfigData newdata)
+    public static bool SetData(string json)
     {
+        var newdata = JsonUtility.FromJson<ConfigData>(json);
+        if (newdata == null) return false;
+
+
+#if UNITY_EDITOR
+        if (GlobalConfig.Instance.offline)
+            return true;
+#endif
+
         Instance.data = newdata;
         SaveData(newdata);
+        return true;
     }
 
     public static Racer GetConfig(int id)

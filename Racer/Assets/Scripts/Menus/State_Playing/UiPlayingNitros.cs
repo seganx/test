@@ -22,11 +22,7 @@ public class UiPlayingNitros : MonoBehaviour
     private bool ActiveNosBoost
     {
         get { return nitrosBonus.gameObject.activeSelf; }
-        set
-        {
-            nitrosBonus.gameObject.SetActive(value);
-            nitrosBonusButtons.SetActive(value);
-        }
+        set { nitrosBonus.gameObject.SetActive(value); }
     }
 
     private bool ActiveSound
@@ -70,7 +66,7 @@ public class UiPlayingNitros : MonoBehaviour
             nitrosButtonImage[i].fillAmount = PlayerPresenter.local.Nitros;
             nitrosButtonImage[i].gameObject.SetActive(PlayerPresenter.local.IsNitrosReady && ActiveNosBoost == false);
         }
-
+        nitrosBonusButtons.SetActive(IsBoostInRange);
     }
 
     public static bool checkme = false;

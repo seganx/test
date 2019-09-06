@@ -16,8 +16,10 @@ public class State_OtherUserAccount : GameState
     [SerializeField] private Button nextButton = null;
     [SerializeField] private Button prevButton = null;
     [SerializeField] private UiShowHide socialPanel = null;
-    [SerializeField] private Button racerLikeButton = null;
-    [SerializeField] private Button racerUnlikeButton = null;
+
+    [SerializeField] private Button LikeButton = null;
+    [SerializeField] private Image LikeImage = null;
+    [SerializeField] private Image LikedImage = null;
     [SerializeField] private LocalText racerLikesLabel = null;
     [SerializeField] private LocalText dailyReviewLabel = null;
     [SerializeField] private GameObject likeTutorialGameObject = null;
@@ -35,18 +37,18 @@ public class State_OtherUserAccount : GameState
         playerName = nickname;
         nameLabel.SetText(nickname);
         scoreLabel.SetText(score.ToString("#,0"));
-        dailyReviewLabel.SetText(netdata.dailyProfileView.ToString("#,0"));
+        dailyReviewLabel.SetText(data.dailyProfileView.ToString("#,0"));
         var leagueIndex = GlobalConfig.Leagues.GetIndex(score, position);
         leagueImage.sprite = GlobalFactory.League.GetBigIcon(leagueIndex);
         leagueIcon.sprite = GlobalFactory.League.GetSmallIcon(leagueIndex);
 
-        var profile = new ProfileData() { data = netdata.netData };
+        var profile = new ProfileData();
+        profile.data = data.netData;
         racers = profile.racers.FindAll(x => x.cards >= RacerFactory.Racer.GetConfig(x.id).CardCount);
         racers.Sort((x, y) => x.id - y.id);
         currentRaceIndex = racers.FindIndex(x => x.id == profile.selectedRacer);
 
-        racerLikeButton.onClick.AddListener(OnLikeClicked);
-        racerUnlikeButton.onClick.AddListener(OnLikeClicked);
+        LikeButton.onClick.AddListener(OnLikeClicked);
         return this;
     }
 
@@ -100,8 +102,8 @@ public class State_OtherUserAccount : GameState
             racerLikesLabel.SetText(likes == null ? "0" : likes.count.ToString("#,0"));
 
             bool IsLiked = SocialLogic.IsLiked(data.profileId, CurrentRacerId);
-            racerLikeButton.gameObject.SetActive(IsLiked == false);
-            racerUnlikeButton.gameObject.SetActive(IsLiked == true);
+            LikeImage.gameObject.SetActive(IsLiked == false);
+            LikedImage.gameObject.SetActive(IsLiked == true);
             socialPanel.Show();
         }
         else socialPanel.Hide();
@@ -116,8 +118,10 @@ public class State_OtherUserAccount : GameState
     private void OnLikeClicked()
     {
         if (CurrentRacerId < 1) return;
+        LikeButton.SetInteractable(false);
         Network.Like(data.profileId, CurrentRacerId, done =>
         {
+            LikeButton.SetInteractable(true);
             if (done)
             {
                 var likedata = data.racerLikes.Find(x => x.racerId == CurrentRacerId);
@@ -141,8 +145,9 @@ public class State_OtherUserAccount : GameState
         });
     }
 
-    static string likesOnceString = "LikedOnce";
-    static bool LikedOnce
+    private static string likesOnceString = "LikedOnce";
+
+    private static bool LikedOnce
     {
         get { return PlayerPrefs.GetInt(likesOnceString, 0) == 1; }
         set { PlayerPrefs.SetInt(likesOnceString, value ? 1 : 0); }
