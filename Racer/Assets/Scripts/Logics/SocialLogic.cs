@@ -26,6 +26,24 @@ public class SocialLogic : MonoBehaviour
         SaveToLocal();
     }
 
+    private IEnumerator Start()
+    {
+        yield return new WaitUntil(() => ProfileLogic.IsLoggedIn);
+
+        var waitTime = new WaitForSeconds(60);
+        while (true)
+        {
+            if (ForceDownloadFromServer)
+            {
+                Network.GetLikesByMe(res =>
+                {
+                    ForceDownloadFromServer = false;
+                    SetData(res);
+                });
+            }
+            yield return waitTime;
+        }
+    }
 
     ////////////////////////////////////////////////////////
     /// STATIC MEMBER
@@ -34,7 +52,7 @@ public class SocialLogic : MonoBehaviour
     private static SerializableData data = new SerializableData();
     private static System.DateTime lastSocialUpdate = System.DateTime.Now;
 
-    public static bool DownloadFromServer
+    public static bool ForceDownloadFromServer
     {
         get { return PlayerPrefs.GetInt("Likes.DownloadFromServer", 0) > 0; }
         set { PlayerPrefs.SetInt("Likes.DownloadFromServer", value ? 1 : 0); }
@@ -88,9 +106,7 @@ public class SocialLogic : MonoBehaviour
     public static void SetData(List<LikeData> likeList)
     {
         if (likeList == null) return;
-        DownloadFromServer = false;
         data.likesByMe = likeList;
-
         SaveToLocal();
     }
 }

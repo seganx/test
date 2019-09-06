@@ -111,8 +111,12 @@ public class State_LeagueStart : GameState
 
     private void ClaimRewards()
     {
+        Popup_Loading.Display();
+        claimRewardsButton.SetInteractable(false);
         Network.SendPrizeResult(msg =>
         {
+            Popup_Loading.Hide();
+            claimRewardsButton.SetInteractable(true);
             if (msg != Network.Message.ok) return;
 
             claimRewardsButton.gameObject.SetActive(false);

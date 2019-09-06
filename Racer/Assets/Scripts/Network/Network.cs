@@ -181,7 +181,7 @@ public static class Network
         DownloadData<string>(address + "Players/Like", post, (msg, res) => callback(msg == Message.ok));
     }
 
-    public static void GetLikes(System.Action<List<LikeData>> callback)
+    public static void GetLikesByMe(System.Action<List<LikeData>> callback)
     {
         DownloadData<List<LikeData>>(address + "Players/GetLikesByMe", null, (msg, res) =>
         {

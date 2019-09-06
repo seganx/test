@@ -24,11 +24,11 @@ public class ProfileLogic : MonoBehaviour
     /// STATIC MEMBER
     ////////////////////////////////////////////////////////
     private static ProfileData.NetData lastdata = new ProfileData.NetData();
+    private static System.DateTime lastGetPrfoileTime = System.DateTime.MinValue;
 
     public static bool Synced { get { return Profile.Data.data.IsEqualTo(lastdata); } }
-
-    private static bool IsGlobalConfigUpdated { get; set; }
-    private static bool IsLoggedIn { get; set; }
+    public static bool IsGlobalConfigUpdated { get; set; }
+    public static bool IsLoggedIn { get; set; }
 
 
     public static void SyncWidthServer(bool sendProfile, System.Action<bool> nextTask)
@@ -70,19 +70,18 @@ public class ProfileLogic : MonoBehaviour
 
     private static void GetProfile(bool sendProfile, System.Action<bool> nextTask)
     {
+        if ((System.DateTime.Now - lastGetPrfoileTime).TotalMinutes < 2)
+        {
+            SyncProfile(sendProfile, Profile.Data, nextTask);
+            return;
+        }
+
         Network.GetProfile((msg, data) =>
         {
             if (msg == Network.Message.ok)
             {
-                if (SocialLogic.DownloadFromServer)
-                {
-                    Network.GetLikes(res =>
-                    {
-                        SocialLogic.SetData(res);
-                        SyncProfile(sendProfile, data, nextTask);
-                    });
-                }
-                else SyncProfile(sendProfile, data, nextTask);
+                lastGetPrfoileTime = System.DateTime.Now;
+                SyncProfile(sendProfile, data, nextTask);
             }
             else nextTask(false);
         });
@@ -110,7 +109,7 @@ public class ProfileLogic : MonoBehaviour
                         PlayerPrefs.DeleteAll();
                         PlayerPrefsEx.ClearData();
                         SaveToLocal();
-                        SocialLogic.DownloadFromServer = true;
+                        SocialLogic.ForceDownloadFromServer = true;
                         Game.Instance.OpenPopup<Popup_Confirm>().Setup(111068, false, ok => Application.Quit());
                     }
                     else

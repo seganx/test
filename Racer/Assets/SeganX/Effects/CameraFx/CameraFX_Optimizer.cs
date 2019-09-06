@@ -22,7 +22,10 @@ namespace SeganX.Effects
         {
             CameraFX.Resolution = 100;
             CameraFX.Bloom = true;
+            CameraFX.Quality = 0;
+
             yield return new WaitUntil(() => CameraFX.Activated);
+
             var waitfor = new WaitForSeconds(sampleTime + 0.1f);
             yield return waitfor;
             int counter = 10;
@@ -31,7 +34,7 @@ namespace SeganX.Effects
                 yield return waitfor;
                 if (Mathf.Abs(lastfps - fps) < 5)
                 {
-                    if (fps < 55)
+                    if (fps < 45)
                     {
                         if (CameraFX_Reflection.Activate)
                         {
@@ -39,10 +42,12 @@ namespace SeganX.Effects
                             var refcam = FindObjectOfType<CameraFX_Reflection>();
                             if (refcam != null) Destroy(refcam.gameObject);
                         }
-                        else if (CameraFX.Resolution > 40)
-                            CameraFX.Resolution -= 10;
                         else if (CameraFX.Bloom)
                             CameraFX.Bloom = false;
+                        else if (CameraFX.Resolution > 60)
+                            CameraFX.Resolution -= 10;
+                        else if (CameraFX.Quality == 0)
+                            CameraFX.Quality = 0;
                         else
                             IsRunning = false;
                     }

@@ -33,6 +33,8 @@
                 #pragma vertex vert
                 #pragma fragment frag
                 #pragma multi_compile_fog
+                #pragma multi_compile __ SX_SIMPLE
+
 
                 #include "UnityCG.cginc"
                 #include "Lighting.cginc"
@@ -84,22 +86,28 @@
                 fixed4 frag(v2f i) : SV_Target
                 {
                     fixed4 res = tex2D(_MainTex, i.uv0);
+
+#if !SX_SIMPLE
                     fixed3 blur = tex2D(_MainTex, float2(i.uv0.x * 0.05f + _SpeedTileFactor, i.uv0.y));
                     res.rgb = lerp(res.rgb, blur, clamp(i.zdpt * _Speed, 0, 1));
-
+#endif
                     res *= _Color * _ColorStrength;
 
                     half dl = max(0, dot(i.norm, _WorldSpaceLightPos0.xyz));
                     fixed3 ambient = (i.norm.y > 0) ? lerp(unity_AmbientEquator.rgb, unity_AmbientSky.rgb, i.norm.y) : lerp(unity_AmbientEquator.rgb, unity_AmbientGround.rgb, -i.norm.y);
                     res.rgb *= lerp(ambient, _LightColor0.rgb, dl);
 
+#if SX_SIMPLE
+                    res.a = bloomSpecular;
+#else
                     float specmap = tex2D(_SpecTex, i.uv0).a;
                     half3 viewDir = normalize(UnityWorldSpaceViewDir(i.wrl));
                     half3 lightpos = normalize(float3(_WorldSpaceLightPos0.x, 0.25f, _WorldSpaceLightPos0.z));
                     float spec = specmap * pow(max(0, dot(i.norm, normalize(lightpos + viewDir))), _SpecularPower) * _SpecularAtten;
                     res.rgb += (pow(res.rgb, 0.7f) * spec + pow(res.rgb * spec * 5, 4)) * _LightColor0.rgb;
-
                     res.a = min(bloomSpecular, spec);
+#endif
+
 
                     UNITY_APPLY_FOG(i.fogCoord, res);
                     return res;
