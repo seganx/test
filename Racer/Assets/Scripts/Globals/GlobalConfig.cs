@@ -270,7 +270,6 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
         public List<ProfilePreset> profilePreset = new List<ProfilePreset>() { new ProfilePreset() };
     }
 
-    public int version = 1;
     public int gamekey = 0;
     public Market market = 0;
     public string address = "http://seganx.com/development/racer/";
