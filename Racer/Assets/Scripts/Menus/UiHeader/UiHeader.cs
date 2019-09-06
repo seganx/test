@@ -59,7 +59,6 @@ public class UiHeader : Base
 
         var syncCount = 0;
         var waitseconds = new WaitForSeconds(0.5f);
-        var lastSyncTime = System.DateTime.Now;
         while (true)
         {
             leagueImage.sprite = GlobalFactory.League.GetSmallIcon(Profile.League);
@@ -71,13 +70,11 @@ public class UiHeader : Base
             syncCount++;
             if (syncCount % 2 == 0) syncIcon.color = syncCount < 0 ? Color.yellow : (ProfileLogic.Synced ? Color.green : Color.red);
 
-            if ((System.DateTime.Now - lastSyncTime).TotalSeconds > 20)
+            if ((System.DateTime.Now - lastSyncTime).TotalSeconds > 60)
             {
+                lastSyncTime = System.DateTime.Now;
                 if (ProfileLogic.Synced == false)
-                {
-                    syncCount = -100;
                     ProfileLogic.SyncWidthServer(true, done => syncCount = 0);
-                }
             }
 
             yield return waitseconds;
@@ -123,6 +120,7 @@ public class UiHeader : Base
     ////////////////////////////////////////////////////////////
     /// STATIC MEMBERS
     ////////////////////////////////////////////////////////////
+    private static System.DateTime lastSyncTime = System.DateTime.Now;
     private static UiHeader instance = null;
 
     public static void Show()

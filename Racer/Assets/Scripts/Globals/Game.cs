@@ -17,24 +17,24 @@ public class Game : GameManager<Game>
     private IEnumerator Start()
     {
         GameMap.Load(0);
-
         Popup_Loading.Display();
         yield return new WaitForSeconds(1);
         PurchaseSystem.Initialize(GlobalConfig.Instance.cafeBazaarKey, GlobalConfig.Socials.storeUrl, (success, msg) => Debug.Log("Purchase system initialized: " + success + " " + msg));
-        GarageRacerImager.LoadCache();
 
 #if DATABEEN
         OnOpenState += gamestate => { if (gamestate != null) DataBeen.SendContentView(gamestate.name, "ok"); };
 #endif
 
         //  first try to connect to internet
-        Http.requestTimeout = GlobalConfig.Server.requestTimeout / 2;
+        Http.requestTimeout = GlobalConfig.Server.requestTimeout;
         ProfileLogic.SyncWidthServer(false, success =>
         {
             Http.requestTimeout = GlobalConfig.Server.requestTimeout;
             Popup_Loading.Hide();
             OpenState<State_Home>();
         });
+
+        GarageRacerImager.LoadCache();
     }
 
 

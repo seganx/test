@@ -312,7 +312,7 @@ public class RacerPresenter : MonoBehaviour
         var rendrs = transform.GetComponents<Renderer>(true, true);
         foreach (var rndr in rendrs)
             foreach (var mat in rndr.materials)
-                RacerMaterial.SetTransparent(mat, value);
+                RacerMaterial.SetOpponent(mat, value);
         return this;
     }
 }

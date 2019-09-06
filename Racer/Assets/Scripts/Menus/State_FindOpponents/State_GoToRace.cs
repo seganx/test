@@ -40,6 +40,8 @@ public class State_GoToRace : GameState
 
         searchbar.SetActive(RaceModel.IsOnline);
         playersInfoBar.SetActive(false);
+        opponentInfo.gameObject.SetActive(false);
+
 
         if (playerData == null)
             playerData = new PlayerData(Profile.Name, Profile.Score, Profile.Position, Profile.CurrentRacer);
@@ -142,7 +144,6 @@ public class State_GoToRace : GameState
         if (PlayerPresenter.allPlayers.Count < RaceModel.specs.maxPlayerCount)
             yield return new WaitForSeconds(1);
 
-        opponentInfo.gameObject.SetActive(false);
         foreach (var player in PlayerPresenter.allPlayers)
         {
             if (player.IsPlayer) continue;

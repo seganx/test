@@ -7,6 +7,23 @@ using UnityEngine;
 
 public static class PhotoGalleyScreenShot
 {
+
+    [MenuItem("SeganX/SimpleQuality")]
+    public static void SimpleQuality()
+    {
+        if (SeganX.Effects.CameraFX.Quality == 1)
+            SeganX.Effects.CameraFX.Quality = 0;
+        else
+            SeganX.Effects.CameraFX.Quality = 1;
+    }
+
+    [MenuItem("SeganX/Run SetTransparent")]
+    public static void RunSetTransparent()
+    {
+        var obj = GameObject.FindObjectOfType<RacerPresenter>();
+        obj.SetTransparent(true);
+    }
+
     [MenuItem("SeganX/Take Screenshot")]
     public static void TakeScreenShot()
     {

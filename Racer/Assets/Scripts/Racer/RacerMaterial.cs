@@ -68,10 +68,13 @@ public static class RacerMaterial
             dest.SetColor("_GlossColor", color);
     }
 
-    public static void SetTransparent(Material dest, bool value)
+    public static void SetOpponent(Material dest, bool value)
     {
-        if (dest.HasProperty("_FillMode"))
-            dest.SetFloat("_FillMode", value ? 0 : 1);
+        if (dest.HasProperty("_VinylTex") == false) return;
+        if (value)
+            dest.EnableKeyword("SX_OPP");
+        else
+            dest.DisableKeyword("SX_OPP");
     }
 
 }
