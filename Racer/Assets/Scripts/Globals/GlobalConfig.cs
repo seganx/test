@@ -105,7 +105,7 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
             public float nosBonusMinPercentage = 0.4f;
             public int[] positionScore = new int[] { 10, 5, 1, -1 };
             public float[] groupMaxSpeed = new float[] { 100 };
-            
+
             public Bots bots = new Bots();
             public Traffics traffics = new Traffics();
             public List<Rewards> rewardsOnline = new List<Rewards>();
@@ -170,12 +170,14 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
             [System.Serializable]
             public class SpecialPackage
             {
-                public string[] skus = { string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty };
-                public int[] prices = { 0, 0, 0, 0, 0, 0 };
-                public int[] gems = { 0, 0, 0, 0, 0, 0 };
-                public int[] coins = { 0, 0, 0, 0, 0, 0 };
+                public string sku = string.Empty;
+                public int price = 0;
+                public int realPrice = 0;
+                public int gem = 0;
+                public int coin = 0;
                 public int customes = 0;
                 public int discount = 0;
+                public Vector3Int racerIds = new Vector3Int(0, 0, 0);
             }
 
             [System.Serializable]

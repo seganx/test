@@ -11,6 +11,8 @@ public class UiShopSpecialPackage : MonoBehaviour
     [SerializeField] private LocalText coinsLabel = null;
     [SerializeField] private LocalText[] discountLabels = null;
     [SerializeField] private LocalText priceLabel = null;
+    [SerializeField] private LocalText realPriceLabel = null;
+    [SerializeField] private LocalText racerGroupId = null;
     [SerializeField] private Button purchaseButton = null;
     [SerializeField] private Image racerImage = null;
 
@@ -26,16 +28,18 @@ public class UiShopSpecialPackage : MonoBehaviour
         config = RacerFactory.Racer.GetConfig(racerId);
 
         var pack = GlobalConfig.Shop.combinedPackages[index % GlobalConfig.Shop.combinedPackages.Count];
-        var price = pack.prices[config.GroupId - 1];
-        var sku = pack.skus[config.GroupId - 1];
-        gems = pack.gems[config.GroupId - 1];
-        coins = pack.coins[config.GroupId - 1];
+        var price = pack.price;
+        var sku = pack.sku;
+        gems = pack.gem;
+        coins = pack.coin;
 
         racerImage.sprite = GarageRacerImager.GetImageTransparent(racerId, config.DefaultRacerCustom, racerImage.rectTransform.rect.width, racerImage.rectTransform.rect.height);
         customeCardsLabel.SetFormatedText(pack.customes);
         gemsLabel.SetText(gems.ToString("#,0"));
         coinsLabel.SetText(coins.ToString("#,0"));
         priceLabel.SetFormatedText(price);
+        realPriceLabel.SetFormatedText(pack.realPrice);
+        racerGroupId.SetFormatedText(config.GroupId);
         foreach (var item in discountLabels)
             item.SetFormatedText(pack.discount);
 
