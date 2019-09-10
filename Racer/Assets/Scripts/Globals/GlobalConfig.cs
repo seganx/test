@@ -165,7 +165,6 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
                 public int customes = 0;
                 public int discount = 0;
                 public Vector3Int racerIds = new Vector3Int(0, 0, 0);
-                public int PopupRacerId { get; set; }
             }
 
             [System.Serializable]
@@ -230,8 +229,9 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
             public int gemToCoin = 200;
             public int instaToGem = 100;
             public int nicknamePrice = 1200;
-            public int combinedPackagesNextTime = 10800;
-            public int blackMarketRefreshTime = 0;
+            public int combinedPackagesNextTime = 43200;
+            public int leagueSpecialPackagesNextTime = 172800;
+            public int blackMarketRefreshTime = 21600;
             public int[] blackMarketRefreshPrices = new int[] { 200, 80, 20 };
 
             public List<BlackMarketPackage> blackMarketPackages = new List<BlackMarketPackage>();

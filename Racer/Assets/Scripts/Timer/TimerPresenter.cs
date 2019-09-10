@@ -6,7 +6,7 @@ using SeganX;
 
 public abstract class TimerPresenter : Base
 {
-    [SerializeField] private TimerManager.Type timerType = TimerManager.Type.AdTimer;
+    public TimerManager.Type timerType = TimerManager.Type.AdTimer;
 
     private int lastRemainTime;
 

@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class UiShopSpecialPackage : MonoBehaviour
 {
     [SerializeField] private LocalText customeCardsLabel = null;
+    [SerializeField] private ShopItemTimerPresenter timer = null;
     [SerializeField] private LocalText gemsLabel = null;
     [SerializeField] private LocalText coinsLabel = null;
     [SerializeField] private LocalText[] discountLabels = null;
@@ -16,39 +17,28 @@ public class UiShopSpecialPackage : MonoBehaviour
     [SerializeField] private Button purchaseButton = null;
     [SerializeField] private Image racerImage = null;
 
-    private int packIndex = 0;
     private RacerConfig config = null;
-    private int gems = 0;
-    private int coins = 0;
 
-    public UiShopSpecialPackage Setup(int index)
+    public UiShopSpecialPackage Setup(ShopLogic.SpecialOffer.Package pack)
     {
-        packIndex = index;
-        var racerId = 0;// GetRacerId(index);
-        config = RacerFactory.Racer.GetConfig(racerId);
+        SetTimer(pack.packgIndex);
+        config = RacerFactory.Racer.GetConfig(pack.racerId);
 
-        var pack = GlobalConfig.Shop.leagueSpecialPackages[index % GlobalConfig.Shop.leagueSpecialPackages.Count];
-        var price = pack.price;
-        var sku = pack.sku;
-        gems = pack.gem;
-        coins = pack.coin;
-
-        racerImage.sprite = GarageRacerImager.GetImageTransparent(racerId, config.DefaultRacerCustom, racerImage.rectTransform.rect.width, racerImage.rectTransform.rect.height);
-        customeCardsLabel.SetFormatedText(pack.customes);
-        gemsLabel.SetText(gems.ToString("#,0"));
-        coinsLabel.SetText(coins.ToString("#,0"));
-        priceLabel.SetFormatedText(price);
-        realPriceLabel.SetFormatedText(pack.realPrice);
+        racerImage.sprite = GarageRacerImager.GetImageTransparent(pack.racerId, config.DefaultRacerCustom, racerImage.rectTransform.rect.width, racerImage.rectTransform.rect.height);
+        customeCardsLabel.SetFormatedText(pack.item.customes);
+        gemsLabel.SetText(pack.item.gem.ToString("#,0"));
+        coinsLabel.SetText(pack.item.coin.ToString("#,0"));
+        priceLabel.SetFormatedText(pack.item.price);
+        realPriceLabel.SetFormatedText(pack.item.realPrice);
         racerGroupId.SetFormatedText(config.GroupId);
         foreach (var item in discountLabels)
-            item.SetFormatedText(pack.discount);
+            item.SetFormatedText(pack.item.discount);
 
         purchaseButton.onClick.AddListener(() =>
         {
             purchaseButton.SetInteractable(false);
-            PurchaseSystem.Purchase(PurchaseProvider.Bazaar, sku, (success, msg) =>
+            PurchaseSystem.Purchase(PurchaseProvider.Bazaar, pack.item.sku, (success, msg) =>
             {
-                purchaseButton.SetInteractable(true);
                 if (success)
                 {
                     DisplayRewards(pack);
@@ -56,24 +46,25 @@ public class UiShopSpecialPackage : MonoBehaviour
                     Destroy(gameObject);
 
 #if DATABEEN
-                    DataBeen.SendPurchase(sku, msg);
+                    DataBeen.SendPurchase(pack.item.sku, msg);
 #endif
                 }
+                else purchaseButton.SetInteractable(true);
             });
         });
 
         return this;
     }
 
-    private void DisplayRewards(GlobalConfig.Data.Shop.SpecialPackage pack)
+    private void DisplayRewards(ShopLogic.SpecialOffer.Package pack)
     {
-        Profile.EarnResouce(gems, coins);
-        Popup_Rewards.AddResource(gems, coins);
+        Profile.EarnResouce(pack.item.gem, pack.item.coin);
+        Popup_Rewards.AddResource(pack.item.gem, pack.item.coin);
 
         Profile.AddRacerCard(config.Id, config.CardCount);
         Popup_Rewards.AddRacerCard(config.Id, config.CardCount);
 
-        for (int i = 0; i < pack.customes; i++)
+        for (int i = 0; i < pack.item.customes; i++)
         {
             var custom = RewardLogic.GetCustomReward(config.Id);
             Profile.AddRacerCustom(custom.type, custom.racerId, custom.customId);
@@ -85,8 +76,20 @@ public class UiShopSpecialPackage : MonoBehaviour
         Destroy(gameObject);
     }
 
-
-    ////////////////////////////////////////////////////////////
-    /// STATIC MEMBERS
-    ////////////////////////////////////////////////////////////
+    private void SetTimer(int index)
+    {
+        switch (index)
+        {
+            case 0: timer.timerType = TimerManager.Type.ShopSpecialPackage0; break;
+            case 1: timer.timerType = TimerManager.Type.ShopSpecialPackage1; break;
+            case 2: timer.timerType = TimerManager.Type.ShopSpecialPackage2; break;
+            case 3: timer.timerType = TimerManager.Type.ShopSpecialPackage3; break;
+            case 4: timer.timerType = TimerManager.Type.ShopSpecialPackage4; break;
+            case 5: timer.timerType = TimerManager.Type.ShopSpecialPackage5; break;
+            case 6: timer.timerType = TimerManager.Type.ShopSpecialPackage6; break;
+            case 7: timer.timerType = TimerManager.Type.ShopSpecialPackage7; break;
+            case 8: timer.timerType = TimerManager.Type.ShopSpecialPackage8; break;
+            case 9: timer.timerType = TimerManager.Type.ShopSpecialPackage9; break;
+        }
+    }
 }

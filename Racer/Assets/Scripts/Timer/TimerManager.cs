@@ -13,7 +13,17 @@ public class TimerManager : Base
     {
         AdTimer = 1, LoadingBoxItem0 = 2, FullFuelTimer = 3, StartDiscountTimer = 4, FinishDiscountTimer = 5,
         LegendShopActivatorTimer = 6, LegendShopTimer = 7, LeagueStartTimer = 8, LeagueEndTimer = 9, RacerSpecialOfferTimer = 10,
-        CombinedShopItemTimer = 11, LoadingBoxItem1 = 12
+        CombinedShopItemTimer = 11, LoadingBoxItem1 = 12,
+        ShopSpecialPackage0 = 20, 
+        ShopSpecialPackage1 = 21, 
+        ShopSpecialPackage2 = 22, 
+        ShopSpecialPackage3 = 23, 
+        ShopSpecialPackage4 = 24, 
+        ShopSpecialPackage5 = 25, 
+        ShopSpecialPackage6 = 26, 
+        ShopSpecialPackage7 = 27, 
+        ShopSpecialPackage8 = 28, 
+        ShopSpecialPackage9 = 29,
     }
 
     [Serializable]

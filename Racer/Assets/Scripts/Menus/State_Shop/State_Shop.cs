@@ -49,9 +49,9 @@ public class State_Shop : GameState
             gemsPackagePrefab.Clone<UiShopResourcePackage>().SetupAsGemsPack(i);
         Destroy(gemsPackagePrefab.gameObject);
 
-        for (int i = 0; i < 3; i++)
-            if (ShopLogic.SpecialOffer.CanDisplay(i))
-                specialPackagePrefab.Clone<UiShopSpecialPackage>().Setup(i).gameObject.SetActive(true);
+        ShopLogic.SpecialOffer.Refresh();
+        foreach (var item in ShopLogic.SpecialOffer.Packages)
+                specialPackagePrefab.Clone<UiShopSpecialPackage>().Setup(item).gameObject.SetActive(true);
         Destroy(specialPackagePrefab.gameObject);
 
         UiShowHide.ShowAll(transform);

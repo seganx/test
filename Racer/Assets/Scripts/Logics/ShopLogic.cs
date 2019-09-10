@@ -5,12 +5,9 @@ using UnityEngine;
 
 public class ShopLogic : MonoBehaviour
 {
-    private IEnumerator Start()
-    {
-        yield return new WaitUntil(() => Game.Loaded);
-
-    }
-
+    //////////////////////////////////////////////////////////
+    /// STATIC MEMBER
+    //////////////////////////////////////////////////////////
     public static int GetCustomPackagePrice(int unlockedCount, GlobalConfig.Data.Shop.RacerCosts.CustomCost cc, RacerConfig rc)
     {
         var count = unlockedCount / cc.count;
@@ -21,48 +18,128 @@ public class ShopLogic : MonoBehaviour
 
 
     //////////////////////////////////////////////////////////
-    /// POPUP SPECIAL OFFER
+    /// SPECIAL OFFER
     //////////////////////////////////////////////////////////
     public static class SpecialOffer
     {
-        public static GlobalConfig.Data.Shop.SpecialPackage Package = null;
-
-        private static int LastIndex
+        [System.Serializable]
+        public class Package
         {
-            get { return PlayerPrefsEx.GetInt("SpecialOffer.LastIndex", -1); }
-            set { PlayerPrefsEx.SetInt("SpecialOffer.LastIndex", value); }
+            public int packgIndex = 0;
+            public int racerIndex = 0;
+
+            public GlobalConfig.Data.Shop.SpecialPackage item { get; set; }
+            public int racerId { get { return item.racerIds[racerIndex]; } }
         }
 
-        public static void SelectSpecialOffer()
+        [System.Serializable]
+        private class SerializableData
         {
-            var baseIndex = Mathf.Max(Profile.League, 4);
-            var leagueStartScore = GlobalConfig.Leagues.GetByIndex(baseIndex).startScore;
-            var leagueEndScore = GlobalConfig.Leagues.GetByIndex(baseIndex + 1).startScore;
-            if (leagueEndScore - leagueStartScore < 100) leagueEndScore += 500;
-            var leagueMidScore = (leagueEndScore - leagueStartScore) / 2;
+            public int lastIndex = -1;
+            public List<Package> packages = new List<Package>();
+        }
 
-            var midlIndex = (Profile.Score > leagueMidScore) ? 1 : 0;
-            var index = baseIndex * 2 + midlIndex;
+        private static SerializableData data = new SerializableData();
 
-            if (index != LastIndex)
+        public static List<Package> Packages { get { return data.packages; } }
+
+        private static int CurrIndex
+        {
+            get
             {
-                LastIndex = index;
-                TimerManager.SetTimer(TimerManager.Type.CombinedShopItemTimer, GlobalConfig.Shop.combinedPackagesNextTime);
+                var baseIndex = Mathf.Min(Profile.League, 4);
+                var leagueStartScore = GlobalConfig.Leagues.GetByIndex(baseIndex).startScore;
+                var leagueEndScore = GlobalConfig.Leagues.GetByIndex(baseIndex + 1).startScore;
+                if (leagueEndScore - leagueStartScore < 100) leagueEndScore += 500;
+                var leagueMidScore = (leagueEndScore + leagueStartScore) / 2;
+                var midlIndex = (Profile.Score > leagueMidScore) ? 1 : 0;
+                return baseIndex * 2 + midlIndex;
+            }
+        }
+
+        public static void Refresh()
+        {
+            const string key = "ShopLogic.SpecialOffer.Data";
+
+            //  load data
+            data = PlayerPrefsEx.Deserialize(key, data);
+            foreach (var pack in data.packages)
+                pack.item = GlobalConfig.Shop.leagueSpecialPackages[pack.packgIndex];
+
+            // remove unused items
+            data.packages.RemoveAll(x => CanDisplay(x.packgIndex) == false || GetRemainedTime(x.packgIndex) < 1);
+
+            // add new items
+            if (CurrIndex != data.lastIndex)
+            {
+                data.lastIndex = CurrIndex;
+                CreatePackage(data.lastIndex);
             }
 
-            Package = GlobalConfig.Shop.leagueSpecialPackages[index];
-            if (CanDisplay(0)) Package.PopupRacerId = Package.racerIds[0];
-            else if (CanDisplay(1)) Package.PopupRacerId = Package.racerIds[1];
-            else if (CanDisplay(2)) Package.PopupRacerId = Package.racerIds[2];
-            else Package.PopupRacerId = 0;
-
+            // save data
+            PlayerPrefsEx.Serialize(key, data);
         }
 
-        public static bool CanDisplay(int index)
+        private static void CreatePackage(int index)
         {
-            if (Package == null) return false;
-            var racerId = Package.racerIds[index];
-            return Profile.IsUnlockedRacer(racerId) == false;
+            if (Packages.Exists(x => x.packgIndex == index)) return;
+
+            var pack = new Package()
+            {
+                packgIndex = index,
+                racerIndex = Random.Range(0, 100) % 3,
+                item = GlobalConfig.Shop.leagueSpecialPackages[index]
+            };
+
+            //  verify that selected racer is locked
+            if (Profile.IsUnlockedRacer(pack.racerId)) pack.racerIndex = ++pack.racerIndex % 3;
+            if (Profile.IsUnlockedRacer(pack.racerId)) pack.racerIndex = ++pack.racerIndex % 3;
+            if (Profile.IsUnlockedRacer(pack.racerId)) return;
+
+            Packages.Add(pack);
+            SetTimer(index);
+        }
+
+        private static bool CanDisplay(int index)
+        {
+            var pack = Packages.Find(x => x.packgIndex == index);
+            if (pack == null) return false;
+            return Profile.IsUnlockedRacer(pack.racerId) == false;
+        }
+
+        private static void SetTimer(int index)
+        {
+            switch (index)
+            {
+                case 0: TimerManager.SetTimer(TimerManager.Type.ShopSpecialPackage0, GlobalConfig.Shop.leagueSpecialPackagesNextTime); break;
+                case 1: TimerManager.SetTimer(TimerManager.Type.ShopSpecialPackage1, GlobalConfig.Shop.leagueSpecialPackagesNextTime); break;
+                case 2: TimerManager.SetTimer(TimerManager.Type.ShopSpecialPackage2, GlobalConfig.Shop.leagueSpecialPackagesNextTime); break;
+                case 3: TimerManager.SetTimer(TimerManager.Type.ShopSpecialPackage3, GlobalConfig.Shop.leagueSpecialPackagesNextTime); break;
+                case 4: TimerManager.SetTimer(TimerManager.Type.ShopSpecialPackage4, GlobalConfig.Shop.leagueSpecialPackagesNextTime); break;
+                case 5: TimerManager.SetTimer(TimerManager.Type.ShopSpecialPackage5, GlobalConfig.Shop.leagueSpecialPackagesNextTime); break;
+                case 6: TimerManager.SetTimer(TimerManager.Type.ShopSpecialPackage6, GlobalConfig.Shop.leagueSpecialPackagesNextTime); break;
+                case 7: TimerManager.SetTimer(TimerManager.Type.ShopSpecialPackage7, GlobalConfig.Shop.leagueSpecialPackagesNextTime); break;
+                case 8: TimerManager.SetTimer(TimerManager.Type.ShopSpecialPackage8, GlobalConfig.Shop.leagueSpecialPackagesNextTime); break;
+                case 9: TimerManager.SetTimer(TimerManager.Type.ShopSpecialPackage9, GlobalConfig.Shop.leagueSpecialPackagesNextTime); break;
+            }
+        }
+
+        private static int GetRemainedTime(int index)
+        {
+            switch (index)
+            {
+                case 0: return TimerManager.GetRemainTime(TimerManager.Type.ShopSpecialPackage0);
+                case 1: return TimerManager.GetRemainTime(TimerManager.Type.ShopSpecialPackage1);
+                case 2: return TimerManager.GetRemainTime(TimerManager.Type.ShopSpecialPackage2);
+                case 3: return TimerManager.GetRemainTime(TimerManager.Type.ShopSpecialPackage3);
+                case 4: return TimerManager.GetRemainTime(TimerManager.Type.ShopSpecialPackage4);
+                case 5: return TimerManager.GetRemainTime(TimerManager.Type.ShopSpecialPackage5);
+                case 6: return TimerManager.GetRemainTime(TimerManager.Type.ShopSpecialPackage6);
+                case 7: return TimerManager.GetRemainTime(TimerManager.Type.ShopSpecialPackage7);
+                case 8: return TimerManager.GetRemainTime(TimerManager.Type.ShopSpecialPackage8);
+                case 9: return TimerManager.GetRemainTime(TimerManager.Type.ShopSpecialPackage9);
+            }
+            return 0;
         }
     }
 
