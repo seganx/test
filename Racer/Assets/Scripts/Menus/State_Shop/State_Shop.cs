@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class State_Shop : GameState
 {
-    [SerializeField] private UiShopResourcePackage coinsPackagePrefab = null;
     [SerializeField] private UiShopResourcePackage gemsPackagePrefab = null;
     [SerializeField] private UiShopSpecialPackage specialPackagePrefab = null;
 
@@ -46,10 +45,6 @@ public class State_Shop : GameState
 
     private void DisplayItems()
     {
-        for (int i = 0; i < GlobalConfig.Shop.coinPackages.Count; i++)
-            coinsPackagePrefab.Clone<UiShopResourcePackage>().SetupAsCoinsPack(i);
-        Destroy(coinsPackagePrefab.gameObject);
-
         for (int i = 0; i < GlobalConfig.Shop.gemPackages.Count; i++)
             gemsPackagePrefab.Clone<UiShopResourcePackage>().SetupAsGemsPack(i);
         Destroy(gemsPackagePrefab.gameObject);

@@ -50,7 +50,7 @@ public class ShopLogic : MonoBehaviour
                 TimerManager.SetTimer(TimerManager.Type.CombinedShopItemTimer, GlobalConfig.Shop.combinedPackagesNextTime);
             }
 
-            Package = GlobalConfig.Shop.combinedPackages[index];
+            Package = GlobalConfig.Shop.leagueSpecialPackages[index];
             if (CanDisplay(0)) Package.PopupRacerId = Package.racerIds[0];
             else if (CanDisplay(1)) Package.PopupRacerId = Package.racerIds[1];
             else if (CanDisplay(2)) Package.PopupRacerId = Package.racerIds[2];

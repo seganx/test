@@ -72,10 +72,10 @@ public class Game : GameManager<Game>
         if (Profile.SpendCoin(value))
             onSuccess();
         else
-            Instance.OpenPopup<Popup_Shop>().SetupAsCoins(() =>
+            Instance.OpenPopup<Popup_Confirm>().Setup(111144, true, (confirm) =>
             {
-                //if (Profile.SpendCoin(value))
-                //    onSuccess();
+                if (confirm)
+                    Instance.OpenState<State_Shop>();
             });
     }
 }

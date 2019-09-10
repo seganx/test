@@ -14,6 +14,14 @@ public enum Market : int
 
 public class GlobalConfig : StaticConfig<GlobalConfig>
 {
+#if UNITY_EDITOR
+    [ContextMenu("Clone Data")]
+    public void CloneData()
+    {
+        //Instance.data.shop[0].CloneData();
+    }
+#endif
+
     [System.Serializable]
     public class Data
     {
@@ -161,6 +169,14 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
             }
 
             [System.Serializable]
+            public class CombinedPackage
+            {
+                public int gemPrice = 0;
+                public int coin = 0;
+                public int customes = 0;
+            }
+
+            [System.Serializable]
             public class GemPackage
             {
                 public string sku = string.Empty;
@@ -211,7 +227,7 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
             }
 
             public int gemToTime = 90;
-            public int gemToCoin = 175;
+            public int gemToCoin = 200;
             public int instaToGem = 100;
             public int nicknamePrice = 1200;
             public int combinedPackagesNextTime = 10800;
@@ -220,11 +236,33 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
 
             public List<BlackMarketPackage> blackMarketPackages = new List<BlackMarketPackage>();
             public List<LoadingBox> loadingBoxPackage = new List<LoadingBox>();
-            public List<SpecialPackage> combinedPackages = new List<SpecialPackage>();
-            public List<CoinPackage> coinPackages = new List<CoinPackage>();
+            public List<CombinedPackage> combinedPackages = new List<CombinedPackage>();
+            public List<SpecialPackage> leagueSpecialPackages = new List<SpecialPackage>();
             public List<GemPackage> gemPackages = new List<GemPackage>();
             public RacerCosts racerCosts = new RacerCosts();
+
+            /*
+            public void CloneData()
+            {
+                leagueSpecialPackages = new List<SpecialPackage>();
+                for (int i = 0; i < oldPackages.Count; i++)
+                {
+                    SpecialPackage sp = new SpecialPackage();
+                    SpecialPackage item = oldPackages[i];
+                    sp.coin = item.coin;
+                    sp.customes = item.customes;
+                    sp.discount = item.discount;
+                    sp.gem = item.gem;
+                    sp.price = item.price;
+                    sp.racerIds = item.racerIds;
+                    sp.realPrice = item.realPrice;
+                    sp.sku = item.sku;
+                    leagueSpecialPackages.Add(sp);
+                }
+            }
+            */
         }
+
 
         [System.Serializable]
         public class ProfilePreset

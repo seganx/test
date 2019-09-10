@@ -27,7 +27,7 @@ public class UiShopSpecialPackage : MonoBehaviour
         var racerId = 0;// GetRacerId(index);
         config = RacerFactory.Racer.GetConfig(racerId);
 
-        var pack = GlobalConfig.Shop.combinedPackages[index % GlobalConfig.Shop.combinedPackages.Count];
+        var pack = GlobalConfig.Shop.leagueSpecialPackages[index % GlobalConfig.Shop.leagueSpecialPackages.Count];
         var price = pack.price;
         var sku = pack.sku;
         gems = pack.gem;

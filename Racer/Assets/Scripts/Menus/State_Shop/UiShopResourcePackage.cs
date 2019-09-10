@@ -13,28 +13,6 @@ public class UiShopResourcePackage : MonoBehaviour
     [SerializeField] private Button purchaseButton = null;
     [SerializeField] private Sprite[] images = null;
 
-    public UiShopResourcePackage SetupAsCoinsPack(int index)
-    {
-        var pack = GlobalConfig.Shop.coinPackages[index % GlobalConfig.Shop.coinPackages.Count];
-        background.sprite = images[index % images.Length];
-        amountLabel.SetText(pack.coins.ToString("#,0"));
-        discountLabel.gameObject.SetActive(pack.discount > 0);
-        discountLabel.SetFormatedText(pack.discount);
-        priceLabel.SetFormatedText(pack.price);
-
-        purchaseButton.onClick.AddListener(() =>
-        {
-            Game.SpendGem(pack.price, () =>
-            {
-                Profile.EarnResouce(0, pack.coins);
-                Popup_Rewards.AddResource(0, pack.coins);
-                Popup_Rewards.Display().DisplayPurchaseReward();
-            });
-        });
-
-        return this;
-    }
-
     public UiShopResourcePackage SetupAsGemsPack(int index)
     {
         var pack = GlobalConfig.Shop.gemPackages[index % GlobalConfig.Shop.gemPackages.Count];
