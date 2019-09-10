@@ -50,12 +50,12 @@ public class RacerSpecialOfferTimerPresenter : TimerPresenter
                 RemovePackage();
             }
 
-            if (remainTime < -GlobalConfig.Shop.specialRacerCardPopup.durationTime)
-            {
-                ShopLogic.SpecialRacerPopup.TryToCreateNewPackage();
-                if (ShopLogic.SpecialRacerPopup.IsAvailable)
-                    state = 0;
-            }
+            //if (remainTime < -GlobalConfig.Shop.specialRacerCardPopup.durationTime)
+            //{
+            //    ShopLogic.SpecialRacerPopup.TryToCreateNewPackage();
+            //    if (ShopLogic.SpecialRacerPopup.IsAvailable)
+            //        state = 0;
+            //}
         }
     }
 

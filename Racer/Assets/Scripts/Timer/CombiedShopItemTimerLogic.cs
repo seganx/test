@@ -12,7 +12,7 @@ public class CombiedShopItemTimerLogic : TimerPresenter
         if (remainTime < 0)
         {
             StartTimer(GlobalConfig.Shop.combinedPackagesNextTime);
-            UiShopSpecialPackage.RefreshAllRacerId();
+            //UiShopSpecialPackage.RefreshAllRacerId();
         }
     }
 

@@ -24,7 +24,7 @@ public class UiShopSpecialPackage : MonoBehaviour
     public UiShopSpecialPackage Setup(int index)
     {
         packIndex = index;
-        var racerId = GetRacerId(index);
+        var racerId = 0;// GetRacerId(index);
         config = RacerFactory.Racer.GetConfig(racerId);
 
         var pack = GlobalConfig.Shop.combinedPackages[index % GlobalConfig.Shop.combinedPackages.Count];
@@ -83,79 +83,10 @@ public class UiShopSpecialPackage : MonoBehaviour
         Popup_Rewards.Display().DisplayPurchaseReward();
         ProfileLogic.SyncWidthServer(true, done => { });
         Destroy(gameObject);
-
-        SetRacerId(packIndex, -1); // set that the package has been purchased
     }
 
 
     ////////////////////////////////////////////////////////////
     /// STATIC MEMBERS
     ////////////////////////////////////////////////////////////
-    public static void ValidateAllRacerId()
-    {
-        for (int i = 0; i < GlobalConfig.Shop.combinedPackages.Count; i++)
-        {
-            if (GetRacerId(i) != 0) continue;
-            var racerId = SelectRandomRacerId(i);
-            if (racerId == 0 || IsIdExist(racerId)) racerId = SelectRandomRacerId(i);
-            if (racerId == 0 || IsIdExist(racerId)) racerId = SelectRandomRacerId(i);
-            if (racerId == 0 || IsIdExist(racerId)) racerId = SelectRandomRacerId(i);
-            if (racerId == 0 || IsIdExist(racerId)) continue;
-            SetRacerId(i, racerId);
-        }
-    }
-
-    public static void RefreshAllRacerId()
-    {
-        for (int i = 0; i < GlobalConfig.Shop.combinedPackages.Count; i++)
-            SetRacerId(i, 0);
-    }
-
-    private static int GetRacerId(int index)
-    {
-        return PlayerPrefsEx.GetInt("UiShopSpecialPackage.RacerId." + index, 0);
-    }
-
-    private static void SetRacerId(int index, int id)
-    {
-        PlayerPrefsEx.SetInt("UiShopSpecialPackage.RacerId." + index, id);
-    }
-
-    private static bool IsIdExist(int Id)
-    {
-        for (int i = 0; i < GlobalConfig.Shop.combinedPackages.Count; i++)
-            if (GetRacerId(i) == Id)
-                return true;
-        return false;
-    }
-
-    private static int SelectRandomRacerId(int index)
-    {
-        int radius = GlobalConfig.Probabilities.shopSpecialRacerRadius;
-        int center = RewardLogic.FindSelectRacerCenter() + index * (radius + 3);
-        int count = center + radius;
-        var configindex = RewardLogic.SelectProbability(count, center, radius);
-        if (configindex < 0 || configindex >= RacerFactory.Racer.AllConfigs.Count) return 0;
-        var config = RacerFactory.Racer.AllConfigs[configindex];
-        if (Profile.IsUnlockedRacer(config.Id)) return 0;
-        return config.Id;
-    }
-
-    public static bool CanDisplay(int index)
-    {
-        var racerId = GetRacerId(index);
-        if (racerId <= 0) return false;
-
-        var config = RacerFactory.Racer.GetConfig(racerId);
-        if (config == null) return false;
-
-        return true;
-    }
-
-    [Console("shop", "special")]
-    public static void ShopSpecialTest()
-    {
-        for (int i = 0; i < GlobalConfig.Shop.combinedPackages.Count; i++)
-            SetRacerId(i, 0);
-    }
 }

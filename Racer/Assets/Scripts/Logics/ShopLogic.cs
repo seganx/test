@@ -5,6 +5,12 @@ using UnityEngine;
 
 public class ShopLogic : MonoBehaviour
 {
+    private IEnumerator Start()
+    {
+        yield return new WaitUntil(() => Game.Loaded);
+
+    }
+
     public static int GetCustomPackagePrice(int unlockedCount, GlobalConfig.Data.Shop.RacerCosts.CustomCost cc, RacerConfig rc)
     {
         var count = unlockedCount / cc.count;
@@ -13,16 +19,63 @@ public class ShopLogic : MonoBehaviour
         return Mathf.RoundToInt(basePrice + priceRatio * count);
     }
 
+
+    //////////////////////////////////////////////////////////
+    /// POPUP SPECIAL OFFER
+    //////////////////////////////////////////////////////////
+    public static class SpecialOffer
+    {
+        public static GlobalConfig.Data.Shop.SpecialPackage Package = null;
+
+        private static int LastIndex
+        {
+            get { return PlayerPrefsEx.GetInt("SpecialOffer.LastIndex", -1); }
+            set { PlayerPrefsEx.SetInt("SpecialOffer.LastIndex", value); }
+        }
+
+        public static void SelectSpecialOffer()
+        {
+            var baseIndex = Mathf.Max(Profile.League, 4);
+            var leagueStartScore = GlobalConfig.Leagues.GetByIndex(baseIndex).startScore;
+            var leagueEndScore = GlobalConfig.Leagues.GetByIndex(baseIndex + 1).startScore;
+            if (leagueEndScore - leagueStartScore < 100) leagueEndScore += 500;
+            var leagueMidScore = (leagueEndScore - leagueStartScore) / 2;
+
+            var midlIndex = (Profile.Score > leagueMidScore) ? 1 : 0;
+            var index = baseIndex * 2 + midlIndex;
+
+            if (index != LastIndex)
+            {
+                LastIndex = index;
+                TimerManager.SetTimer(TimerManager.Type.CombinedShopItemTimer, GlobalConfig.Shop.combinedPackagesNextTime);
+            }
+
+            Package = GlobalConfig.Shop.combinedPackages[index];
+            if (CanDisplay(0)) Package.PopupRacerId = Package.racerIds[0];
+            else if (CanDisplay(1)) Package.PopupRacerId = Package.racerIds[1];
+            else if (CanDisplay(2)) Package.PopupRacerId = Package.racerIds[2];
+            else Package.PopupRacerId = 0;
+
+        }
+
+        public static bool CanDisplay(int index)
+        {
+            if (Package == null) return false;
+            var racerId = Package.racerIds[index];
+            return Profile.IsUnlockedRacer(racerId) == false;
+        }
+    }
+
     public static class SpecialRacerPopup
     {
         private static bool PopupWasDisplayed = false;
         private static bool PopupWasUsed = false;
-        private static GlobalConfig.Data.Shop.SpecialRacerCardPackage CurrentPackage = null;
+        private static GlobalConfig.Data.Shop.SpecialPackage CurrentPackage = null;
 
         public static bool IsAvailable { get { return PopupWasUsed == false && CurrentPackage != null && CurrentPackage.price > 0; } }
         public static bool AutoDisplay { get { return PopupWasUsed == false && PopupWasDisplayed == false; } }
 
-        public static GlobalConfig.Data.Shop.SpecialRacerCardPackage Package
+        public static GlobalConfig.Data.Shop.SpecialPackage Package
         {
             get { return PopupWasUsed || CurrentPackage == null || CurrentPackage.price < 1 ? null : CurrentPackage; }
         }
@@ -36,6 +89,7 @@ public class ShopLogic : MonoBehaviour
 
         public static void TryToCreateNewPackage()
         {
+#if OFF
             var pack = GlobalConfig.Shop.specialRacerCardPopup;
             if (pack.skus.IsNullOrEmpty() || pack.prices.Length < 1 || Profile.SelectedRacer < 1) return;
 
@@ -57,7 +111,7 @@ public class ShopLogic : MonoBehaviour
             CurrentPackage.racerId = racerprofile.id;
 
             TimerManager.SetTimer(TimerManager.Type.RacerSpecialOfferTimer, pack.durationTime);
-
+#endif
             Save();
         }
 
@@ -68,14 +122,14 @@ public class ShopLogic : MonoBehaviour
 
         public static void Load()
         {
-            var res = PlayerPrefsEx.Deserialize<GlobalConfig.Data.Shop.SpecialRacerCardPackage>("Shop.SpecialRacerCardPopup", null);
+            var res = PlayerPrefsEx.Deserialize<GlobalConfig.Data.Shop.SpecialPackage>("Shop.SpecialRacerCardPopup", null);
             CurrentPackage = (res != null && res.price > 0) ? res : null;
         }
 
         public static void Clear()
         {
             //PopupWasUsed = true;
-            CurrentPackage = new GlobalConfig.Data.Shop.SpecialRacerCardPackage();
+            CurrentPackage = new GlobalConfig.Data.Shop.SpecialPackage();
             Save();
         }
     }

@@ -16,6 +16,7 @@ public class Game : GameManager<Game>
 
     private IEnumerator Start()
     {
+        Loaded = false;
         GameMap.Load(0);
         Popup_Loading.Display();
         yield return new WaitForSeconds(1);
@@ -32,6 +33,7 @@ public class Game : GameManager<Game>
             Http.requestTimeout = GlobalConfig.Server.requestTimeout;
             Popup_Loading.Hide();
             OpenState<State_Home>();
+            Loaded = true;
         });
 
         GarageRacerImager.LoadCache();
@@ -41,6 +43,7 @@ public class Game : GameManager<Game>
     ////////////////////////////////////////////////////////
     /// STATIC MEMBER
     ////////////////////////////////////////////////////////
+    public static bool Loaded { get; private set; }
     public static void LoadMap(int id)
     {
         GameMap.Load(id);

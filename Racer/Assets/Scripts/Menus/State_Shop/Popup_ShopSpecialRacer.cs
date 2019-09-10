@@ -15,13 +15,14 @@ public class Popup_ShopSpecialRacer : GameState
     [SerializeField] private LocalText discountLabel = null;
     [SerializeField] private Button purchaseButton = null;
 
-    public Popup_ShopSpecialRacer Setup(GlobalConfig.Data.Shop.SpecialRacerCardPackage pack, System.Action onPurchase)
+    public Popup_ShopSpecialRacer Setup(GlobalConfig.Data.Shop.SpecialPackage pack, System.Action onPurchase)
     {
-        var rconfig = RacerFactory.Racer.GetConfig(pack.racerId);
+
+        var rconfig = RacerFactory.Racer.GetConfig(pack.PopupRacerId);
         racerImage.sprite = GarageRacerImager.GetImageTransparent(rconfig.Id, rconfig.DefaultRacerCustom, racerImage.rectTransform.rect.width, racerImage.rectTransform.rect.height);
-        descLabel.SetFormatedText(pack.discount, pack.cardCount);
-        GlobalFactory.CreateRacerCard(pack.racerId, cardHolder);
-        cardsLabel.SetFormatedText(pack.cardCount);
+        descLabel.SetFormatedText(pack.discount, rconfig.CardCount);
+        GlobalFactory.CreateRacerCard(pack.PopupRacerId, cardHolder);
+        cardsLabel.SetFormatedText(rconfig.CardCount);
         priceLabel.SetFormatedText(pack.price.ToString("#,0"));
         discountLabel.SetText(pack.discount.ToString());
 
@@ -35,8 +36,8 @@ public class Popup_ShopSpecialRacer : GameState
                 {
                     Back();
                     ShopLogic.SpecialRacerPopup.Clear();
-                    Profile.AddRacerCard(pack.racerId, pack.cardCount);
-                    Popup_Rewards.AddRacerCard(pack.racerId, pack.cardCount);
+                    Profile.AddRacerCard(pack.PopupRacerId, rconfig.CardCount);
+                    Popup_Rewards.AddRacerCard(pack.PopupRacerId, rconfig.CardCount);
                     Popup_Rewards.Display().DisplayPurchaseReward();
                     PurchaseSystem.Consume();
                     ProfileLogic.SyncWidthServer(true, done => { });

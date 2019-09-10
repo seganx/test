@@ -59,7 +59,7 @@ public class LegendShopTimerPresenter : TimerPresenter
     private void RemainedTimeFinished(int remainTime)
     {
         UiBlackMarketPackage.CreatePackages();
-        int newTime = GlobalConfig.Shop.racerCardPackageTime + remainTime % GlobalConfig.Shop.racerCardPackageTime;
+        int newTime = GlobalConfig.Shop.blackMarketRefreshTime + remainTime % GlobalConfig.Shop.blackMarketRefreshTime;
         if (State_Settings.IsLegendStoreActive)
             NotificationManager.SendWithAppIcon(newTime, NotificationType.LegendStore);
 
