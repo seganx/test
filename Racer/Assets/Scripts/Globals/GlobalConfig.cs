@@ -173,6 +173,8 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
                 public int gemPrice = 0;
                 public int coin = 0;
                 public int customes = 0;
+                public int racerCartValue = 0;
+                public Vector2Int cardsGroups = new Vector2Int(1, 2);
             }
 
             [System.Serializable]
