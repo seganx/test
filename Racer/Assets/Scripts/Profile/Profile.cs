@@ -175,7 +175,7 @@ public static class Profile
         return (rp.cards += count);
     }
 
-    public static void AddRacerCustome(RacerCustomeType type, int racerId, int customId)
+    public static void AddRacerCustom(RacerCustomeType type, int racerId, int customId)
     {
         data.AddPurchasedItem(type, racerId, customId);
     }
@@ -209,7 +209,7 @@ public static class Profile
         return rc.CardCount <= rp.cards;
     }
 
-    public static bool IsUnlockedCustome(RacerCustomeType type, int racerId, int customId)
+    public static bool IsUnlockedCustom(RacerCustomeType type, int racerId, int customId)
     {
         if (customId == 0) return true;
         var sku = RacerProfile.GetCustomeSKU(type, racerId, customId);

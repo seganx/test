@@ -5,6 +5,14 @@ using UnityEngine;
 
 public class ShopLogic : MonoBehaviour
 {
+    public static int GetCustomPackagePrice(int unlockedCount, GlobalConfig.Data.Shop.RacerCosts.CustomCost cc, RacerConfig rc)
+    {
+        var count = unlockedCount / cc.count;
+        var basePrice = rc.Price * cc.baseCostFactor;
+        var priceRatio = rc.Price * cc.costRatio;
+        return Mathf.RoundToInt(basePrice + priceRatio * count);
+    }
+
     public static class SpecialRacerPopup
     {
         private static bool PopupWasDisplayed = false;

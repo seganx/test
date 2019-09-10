@@ -92,7 +92,7 @@ public static class RewardLogic
         {
             res.type = type;
             res.racerId = racerId;
-            var lockedList = list.FindAll(x => Profile.IsUnlockedCustome(type, racerId, x.Id) == false);
+            var lockedList = list.FindAll(x => Profile.IsUnlockedCustom(type, racerId, x.Id) == false);
             res.customId = (lockedList.Count > 0) ? lockedList.RandomOne().Id : list.RandomOne().Id;
         }
         return res;

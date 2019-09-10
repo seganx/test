@@ -105,7 +105,7 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
             public float nosBonusMinPercentage = 0.4f;
             public int[] positionScore = new int[] { 10, 5, 1, -1 };
             public float[] groupMaxSpeed = new float[] { 100 };
-            
+
             public Bots bots = new Bots();
             public Traffics traffics = new Traffics();
             public List<Rewards> rewardsOnline = new List<Rewards>();
@@ -198,6 +198,21 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
             [System.Serializable]
             public class RacerCosts
             {
+                [System.Serializable]
+                public class CustomCost
+                {
+                    public int count = 5;
+                    public float baseCostFactor = 0.07f;
+                    public float costRatio = 0.02f;
+                }
+
+                [Header("Custom Costs")]
+                public CustomCost hood = new CustomCost();
+                public CustomCost roof = new CustomCost();
+                public CustomCost spoiler = new CustomCost();
+                public CustomCost vinyl = new CustomCost();
+                public CustomCost wheel = new CustomCost();
+
                 [Header("Color Cost Ratios")]
                 public float bodyColorCostRatio = 0.03f;
                 public float windowColorCostRatio = 0.02f;

@@ -72,8 +72,8 @@ public class UiShopSpecialPackage : MonoBehaviour
         for (int i = 0; i < pack.customes; i++)
         {
             var custom = RewardLogic.GetCustomReward(config.Id);
-            Profile.AddRacerCustome(custom.type, custom.racerId, custom.customId);
-            Popup_Rewards.AddCustomeCard(custom.type, custom.racerId, custom.customId);
+            Profile.AddRacerCustom(custom.type, custom.racerId, custom.customId);
+            Popup_Rewards.AddCustomCard(custom.type, custom.racerId, custom.customId);
         }
 
         Popup_Rewards.Display().DisplayPurchaseReward();

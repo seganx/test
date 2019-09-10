@@ -103,7 +103,7 @@ public static class RaceLogic
     private static void SetRewardsToProfile()
     {
         if (raceResult.rewards.custome != null)
-            Profile.AddRacerCustome(raceResult.rewards.custome.type, raceResult.rewards.custome.racerId, raceResult.rewards.custome.customId);
+            Profile.AddRacerCustom(raceResult.rewards.custome.type, raceResult.rewards.custome.racerId, raceResult.rewards.custome.customId);
         if (raceResult.rewards.racerId > 0)
             Profile.AddRacerCard(raceResult.rewards.racerId, raceResult.rewards.racerCount);
         if (raceResult.rewards.gems > 0)

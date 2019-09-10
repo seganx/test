@@ -9,12 +9,14 @@ public class State_Custome : GameState
     [SerializeField] private RacerCustomPresenter noneCustome = null;
     [SerializeField] private UiCustomeItem colorPrefab = null;
     [SerializeField] private UiCustomeItem itemPrefab = null;
+    [SerializeField] private UiCustomePackage package = null;
     [SerializeField] private Button assignButton = null;
     [SerializeField] private LocalText priceLabel = null;
     [SerializeField] private RectTransform colorSelected = null;
     [SerializeField] private UiShowHide colorsShowHide = null;
     [SerializeField] private UiShowHide custumsShowHide = null;
     [SerializeField] private UiShowHide itemsShowHide = null;
+    [SerializeField] private UiShowHide leftPanelShowHide = null;
 
     private RacerCustomeType selectedCustome = RacerCustomeType.None;
     private RacerPresenter racer = null;
@@ -27,6 +29,7 @@ public class State_Custome : GameState
     {
         GarageCamera.SetCameraId(0);
         custumsShowHide.Show();
+        leftPanelShowHide.Hide();
         racer = GarageRacer.racer;
         config = RacerFactory.Racer.GetConfig(racer.Id);
 
@@ -38,7 +41,6 @@ public class State_Custome : GameState
         colorSelected.SetAsLastSibling();
 
         assignButton.onClick.AddListener(OnAssignButtonClick);
-        assignButton.gameObject.SetActive(false);
 
         PopupQueue.Add(.5f, () => Popup_Tutorial.Display(92));
     }
@@ -47,7 +49,6 @@ public class State_Custome : GameState
     {
         GarageRacerImager.RemoveImageOpaque(racer.Id);
         ValidateChanges();
-        assignButton.gameObject.SetActive(false);
         return base.PreClose();
     }
 
@@ -67,7 +68,8 @@ public class State_Custome : GameState
             case RacerCustomeType.WindowColor: DisplayColor(defaultColorId = racer.WindowColor); break;
             case RacerCustomeType.LightsColor: DisplayColor(defaultColorId = racer.LightsColor); break;
         }
-        assignButton.gameObject.SetActive(true);
+        package.Setup(selectedCustome, racer.Id, () => OnCostumeSelected(index));
+        leftPanelShowHide.Show();
     }
 
     public void DisplayCustomes(List<RacerCustomPresenter> list, int currCustom, int currColor, bool displayDefault)
@@ -83,7 +85,7 @@ public class State_Custome : GameState
             foreach (var item in list)
                 itemPrefab.Clone<UiCustomeItem>()
                     .Setup(item, LocalizationService.Get(111040 + item.Id), currCustom == item.Id, OnCostumeItemSelected)
-                    .SetIntractable(Profile.IsUnlockedCustome(selectedCustome, racer.Id, item.Id));
+                    .SetIntractable(Profile.IsUnlockedCustom(selectedCustome, racer.Id, item.Id));
         }
         else
         {
@@ -91,7 +93,7 @@ public class State_Custome : GameState
             foreach (var item in list)
                 itemPrefab.Clone<UiCustomeItem>()
                     .Setup(item, index++.ToString(), currCustom == item.Id, OnCostumeItemSelected)
-                    .SetIntractable(Profile.IsUnlockedCustome(selectedCustome, racer.Id, item.Id));
+                    .SetIntractable(Profile.IsUnlockedCustom(selectedCustome, racer.Id, item.Id));
         }
 
         if (displayDefault)
@@ -106,7 +108,7 @@ public class State_Custome : GameState
 
     public void OnCostumeItemSelected(RacerCustomPresenter custome)
     {
-        isCustomeLocked = Profile.IsUnlockedCustome(selectedCustome, racer.Id, custome.Id) == false;
+        isCustomeLocked = Profile.IsUnlockedCustom(selectedCustome, racer.Id, custome.Id) == false;
 
         switch (selectedCustome)
         {
@@ -282,7 +284,7 @@ public class State_Custome : GameState
             itemsShowHide.Hide();
             custumsShowHide.Show();
             selectedCustome = RacerCustomeType.None;
-            assignButton.gameObject.SetActive(false);
+            leftPanelShowHide.Hide();
         }
         else base.Back();
     }

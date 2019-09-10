@@ -101,8 +101,8 @@ public class UiLoadingBoxFreePackage : TimerPresenter
                 case 3:
                     {
                         var reward = RewardLogic.GetCustomReward();
-                        Profile.AddRacerCustome(reward.type, reward.racerId, reward.customId);
-                        Popup_Rewards.AddCustomeCard(reward.type, reward.racerId, reward.customId);
+                        Profile.AddRacerCustom(reward.type, reward.racerId, reward.customId);
+                        Popup_Rewards.AddCustomCard(reward.type, reward.racerId, reward.customId);
                     }
                     break;
             }

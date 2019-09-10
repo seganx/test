@@ -132,7 +132,7 @@ public class Popup_Rewards : GameState
             rewards.Add(new RewardItem() { racerid = _racerId, count = _count });
     }
 
-    public static void AddCustomeCard(RacerCustomeType type, int _racerId, int _customeId)
+    public static void AddCustomCard(RacerCustomeType type, int _racerId, int _customeId)
     {
         if (rewards.Exists(x => x.customeType == type && x.racerid == _racerId && x.customid == _customeId)) return;
         rewards.Add(new RewardItem() { customeType = type, racerid = _racerId, customid = _customeId });
@@ -158,7 +158,7 @@ public class Popup_Rewards : GameState
     public static Popup_Rewards Display(RewardLogic.RaceReward reward, System.Action onNextTask = null)
     {
         if (reward.custome != null)
-            AddCustomeCard(reward.custome.type, reward.custome.racerId, reward.custome.customId);
+            AddCustomCard(reward.custome.type, reward.custome.racerId, reward.custome.customId);
         if (reward.racerId > 0)
             AddRacerCard(reward.racerId, reward.racerCount);
         if (reward.gems > 0)

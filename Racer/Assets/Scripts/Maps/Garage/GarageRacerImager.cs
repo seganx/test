@@ -244,7 +244,7 @@ public class GarageRacerImager : MonoBehaviour
         foreach (var config in RacerFactory.Racer.AllConfigs)
         {
             var racerprofile = Profile.GetRacer(config.Id);
-            var test = GetImageOpaque(config.Id, racerprofile != null ? racerprofile.custom : config.DefaultRacerCustom, UiGarageRacerItem.racerImageWidth, UiGarageRacerItem.racerImageHeight);
+            GetImageOpaque(config.Id, racerprofile != null ? racerprofile.custom : config.DefaultRacerCustom, UiGarageRacerItem.racerImageWidth, UiGarageRacerItem.racerImageHeight);
         }
     }
 }
