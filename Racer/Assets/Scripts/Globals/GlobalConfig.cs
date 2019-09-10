@@ -170,12 +170,14 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
             [System.Serializable]
             public class SpecialPackage
             {
-                public string[] skus = { string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty };
-                public int[] prices = { 0, 0, 0, 0, 0, 0 };
-                public int[] gems = { 0, 0, 0, 0, 0, 0 };
-                public int[] coins = { 0, 0, 0, 0, 0, 0 };
+                public string sku = string.Empty;
+                public int price = 0;
+                public int realPrice = 0;
+                public int gem = 0;
+                public int coin = 0;
                 public int customes = 0;
                 public int discount = 0;
+                public Vector3Int racerIds = new Vector3Int(0, 0, 0);
             }
 
             [System.Serializable]

@@ -11,6 +11,7 @@ public class Popup_ShopSpecialRacer : GameState
     [SerializeField] private Transform cardHolder = null;
     [SerializeField] private LocalText cardsLabel = null;
     [SerializeField] private LocalText priceLabel = null;
+    [SerializeField] private LocalText realPriceLabel = null;
     [SerializeField] private LocalText discountLabel = null;
     [SerializeField] private Button purchaseButton = null;
 
