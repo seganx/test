@@ -17,7 +17,6 @@ public class Popup_ShopSpecialRacer : GameState
 
     public Popup_ShopSpecialRacer Setup(GlobalConfig.Data.Shop.SpecialPackage pack, System.Action onPurchase)
     {
-
         var rconfig = RacerFactory.Racer.GetConfig(pack.PopupRacerId);
         racerImage.sprite = GarageRacerImager.GetImageTransparent(rconfig.Id, rconfig.DefaultRacerCustom, racerImage.rectTransform.rect.width, racerImage.rectTransform.rect.height);
         descLabel.SetFormatedText(pack.discount, rconfig.CardCount);
@@ -42,7 +41,6 @@ public class Popup_ShopSpecialRacer : GameState
                     PurchaseSystem.Consume();
                     ProfileLogic.SyncWidthServer(true, done => { });
                     if (onPurchase != null) onPurchase();
-
 #if DATABEEN
                     DataBeen.SendPurchase(pack.sku, msg);
 #endif

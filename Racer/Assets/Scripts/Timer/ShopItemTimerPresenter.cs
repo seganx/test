@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using LocalPush;
 
-public class CombiedShopItemTimerPresenter : TimerPresenter
+public class ShopItemTimerPresenter : TimerPresenter
 {
     [SerializeField] private LocalText timerText;
 

@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using LocalPush;
 
-public class LegendShopTimerPresenter : TimerPresenter
+public class UiBlackMarketTimer : TimerPresenter
 {
     [SerializeField] private LocalText timerText = null;
     [SerializeField] private LocalText refreshPriceText = null;
@@ -14,8 +14,8 @@ public class LegendShopTimerPresenter : TimerPresenter
 
     public int RefreshRemainCount
     {
-        get { return PlayerPrefsEx.GetInt("LegendShopTimerPresenter.RefreshRemainCount", 3); }
-        set { PlayerPrefsEx.SetInt("LegendShopTimerPresenter.RefreshRemainCount", value); }
+        get { return PlayerPrefsEx.GetInt("UiBlackMarketTimer.RefreshRemainCount", 3); }
+        set { PlayerPrefsEx.SetInt("UiBlackMarketTimer.RefreshRemainCount", value); }
     }
 
     public override void Start()
