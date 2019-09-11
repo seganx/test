@@ -170,11 +170,13 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
             [System.Serializable]
             public class CombinedPackage
             {
-                public int gemPrice = 0;
+                public int racerIndex = 0;
+                public int coinGemValue = 0;
                 public int coin = 0;
+                public int coinDiscount = 0;
+                public int coinBackgroundIndex = 0;
+                public float racerGemValueFactor = 0;
                 public int customes = 0;
-                public int racerCartValue = 0;
-                public Vector2Int cardsGroups = new Vector2Int(1, 2);
             }
 
             [System.Serializable]

@@ -6,76 +6,73 @@ using UnityEngine.UI;
 
 public class UiShopCombinedPackage : MonoBehaviour
 {
-    [SerializeField] private LocalText customeCardsLabel = null;
-    [SerializeField] private LocalText gemsLabel = null;
     [SerializeField] private LocalText coinsLabel = null;
-    [SerializeField] private LocalText[] discountLabels = null;
-    [SerializeField] private LocalText priceLabel = null;
-    [SerializeField] private LocalText realPriceLabel = null;
-    [SerializeField] private LocalText racerGroupId = null;
-    [SerializeField] private Button purchaseButton = null;
+    [SerializeField] private LocalText coinDiscountLabel = null;
+    [SerializeField] private Image coinBackground = null;
+    [SerializeField] private LocalText racerInfoLabel = null;
     [SerializeField] private Image racerImage = null;
+    [SerializeField] private LocalText gemPriceLabel = null;
+    [SerializeField] private Button purchaseButton = null;
+    [SerializeField] private Sprite[] images = null;
 
-    private int packIndex = 0;
-    private RacerConfig config = null;
-    private int gems = 0;
+    //private int packIndex = 0;
+    private RacerConfig racerConfig = null;
     private int coins = 0;
+    private int totalGemPrice = 0;
+
+    public void Start()
+    {
+        Setup(0);
+    }
 
     public UiShopCombinedPackage Setup(int index)
     {
-        packIndex = index;
-        var racerId = 0;// GetRacerId(index);
-        config = RacerFactory.Racer.GetConfig(racerId);
-
-        var pack = GlobalConfig.Shop.leagueSpecialPackages[index % GlobalConfig.Shop.leagueSpecialPackages.Count];
-        var price = pack.price;
-        var sku = pack.sku;
-        gems = pack.gem;
+        var pack = GlobalConfig.Shop.combinedPackages[index % GlobalConfig.Shop.combinedPackages.Count];
+        coinBackground.sprite = images[index % images.Length];
         coins = pack.coin;
-
-        racerImage.sprite = GarageRacerImager.GetImageTransparent(racerId, config.DefaultRacerCustom, racerImage.rectTransform.rect.width, racerImage.rectTransform.rect.height);
-        customeCardsLabel.SetFormatedText(pack.customes);
-        gemsLabel.SetText(gems.ToString("#,0"));
         coinsLabel.SetText(coins.ToString("#,0"));
-        priceLabel.SetFormatedText(price);
-        realPriceLabel.SetFormatedText(pack.realPrice);
-        racerGroupId.SetFormatedText(config.GroupId);
-        foreach (var item in discountLabels)
-            item.SetFormatedText(pack.discount);
+        coinDiscountLabel.gameObject.SetActive(pack.coinDiscount > 0);
+        coinDiscountLabel.SetFormatedText(pack.coinDiscount);
+
+        var racerId = pack.racerIndex; // todo_
+        racerConfig = RacerFactory.Racer.GetConfig(racerId);
+        racerImage.sprite = racerConfig.halfIcon;
+        racerInfoLabel.SetFormatedText(pack.customes);
+
+        var racerGemValue = Mathf.RoundToInt(pack.racerGemValueFactor * racerConfig.Price) / 25 * 25;
+        totalGemPrice = pack.coinGemValue + racerGemValue;
+        gemPriceLabel.SetFormatedText(totalGemPrice);
 
         purchaseButton.onClick.AddListener(() =>
         {
             purchaseButton.SetInteractable(false);
-            PurchaseSystem.Purchase(PurchaseProvider.Bazaar, sku, (success, msg) =>
+            Game.SpendGem(totalGemPrice, () =>
             {
                 purchaseButton.SetInteractable(true);
-                if (success)
-                {
-                    DisplayRewards(pack);
-                    PurchaseSystem.Consume();
-                    Destroy(gameObject);
+                DisplayRewards(pack);
+                PurchaseSystem.Consume();
+                Destroy(gameObject);
 
 #if DATABEEN
-                    DataBeen.SendPurchase(sku, msg);
+                //DataBeen.SendPurchase(sku, msg);
 #endif
-                }
             });
         });
 
         return this;
     }
 
-    private void DisplayRewards(GlobalConfig.Data.Shop.SpecialPackage pack)
+    private void DisplayRewards(GlobalConfig.Data.Shop.CombinedPackage pack)
     {
-        Profile.EarnResouce(gems, coins);
-        Popup_Rewards.AddResource(gems, coins);
+        Profile.EarnResouce(0, coins);
+        Popup_Rewards.AddResource(0, coins);
 
-        Profile.AddRacerCard(config.Id, config.CardCount);
-        Popup_Rewards.AddRacerCard(config.Id, config.CardCount);
+        Profile.AddRacerCard(racerConfig.Id, 1);
+        Popup_Rewards.AddRacerCard(racerConfig.Id, 1);
 
         for (int i = 0; i < pack.customes; i++)
         {
-            var custom = RewardLogic.GetCustomReward(config.Id);
+            var custom = RewardLogic.GetCustomReward(racerConfig.Id);
             Profile.AddRacerCustom(custom.type, custom.racerId, custom.customId);
             Popup_Rewards.AddCustomCard(custom.type, custom.racerId, custom.customId);
         }
