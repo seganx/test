@@ -36,6 +36,11 @@ public class State_Home : GameState
         }
     }
 
+    private void OnDestroy()
+    {
+        MapPosition = mapTransform.anchoredPosition;
+    }
+
     private void Start()
     {
         UiHeader.Show();
@@ -109,12 +114,6 @@ public class State_Home : GameState
 
             Popup_RateUs.CheckAndDisplay();
         });
-    }
-
-    public override float PreClose()
-    {
-        MapPosition = mapTransform.anchoredPosition;
-        return base.PreClose();
     }
 
     public override void Back()

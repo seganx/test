@@ -27,7 +27,7 @@ public class Popup_RateUs : GameState
     public override void Back()
     {
         base.Back();
-        PlayerInjoyed = 0;
+        PlayerInjoyed /= 2;
         RateUsValue = 0;
     }
 
@@ -70,18 +70,18 @@ public class Popup_RateUs : GameState
         set { PlayerPrefsEx.SetInt("Popup_RateUs.RateUsValue", value); }
     }
 
-    public static void SetPlayerInjoy(bool playerInjoyed)
+    public static void SetPlayerInjoy(bool playerInjoyed, int step = 1)
     {
         if (playerInjoyed)
-            PlayerInjoyed++;
+            PlayerInjoyed += step;
         else
-            PlayerInjoyed = 0;
+            PlayerInjoyed--;
     }
 
     public static void CheckAndDisplay()
     {
-        if (Profile.TotalRaces < 6) return;
-        if (RateUsValue > 0 || PlayerInjoyed < 2) return;
+        if (Profile.TotalRaces < 15) return;
+        if (RateUsValue > 0 || PlayerInjoyed < 30) return;
         PopupQueue.Add(0, () => gameManager.OpenPopup<Popup_RateUs>());
     }
 
@@ -89,7 +89,7 @@ public class Popup_RateUs : GameState
     public static void Test()
     {
         RateUsValue = 0;
-        PlayerInjoyed = 2;
+        PlayerInjoyed = 30;
         CheckAndDisplay();
     }
 }

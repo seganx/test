@@ -11,6 +11,7 @@ public class TimerManager : Base
 
     public enum Type // don't change the values!
     {
+        Null = 0,
         AdTimer = 1, LoadingBoxItem0 = 2, FullFuelTimer = 3, StartDiscountTimer = 4, FinishDiscountTimer = 5,
         LegendShopActivatorTimer = 6, LegendShopTimer = 7, LeagueStartTimer = 8, LeagueEndTimer = 9, RacerSpecialOfferTimer = 10,
         CombinedShopItemTimer = 11, LoadingBoxItem1 = 12,
@@ -27,8 +28,9 @@ public class TimerManager : Base
     }
 
     [Serializable]
-    public class Timer
+    private class Timer
     {
+        public Type type = Type.Null;
         public long startTime = 0;
         public float duration = 0;
     }
@@ -36,13 +38,13 @@ public class TimerManager : Base
     private void Awake()
     {
         IsTimeValid = false;
-        timers = PlayerPrefsEx.DeserializeBinary(serializeKey, new Dictionary<Type, Timer>());
-        foreach (Type timerType in Enum.GetValues(typeof(Type)))
-            if (!timers.ContainsKey(timerType))
-                timers.Add(timerType, new Timer());
-        PlayerPrefsEx.SerializeBinary(serializeKey, timers);
-
+        Load();
         StartCoroutine(TryValidateTime());
+    }
+
+    private void OnApplicationQuit()
+    {
+        Save();
     }
 
     IEnumerator TryValidateTime()
@@ -54,25 +56,17 @@ public class TimerManager : Base
             yield return new WaitUntil(() => isTimeValidating == true);
         }
     }
-    /*
-    private void OnApplicationPause(bool pause)
-    {
-        if (pause)
-            IsTimeValid = false;
-    }
-
-    private void OnApplicationFocus(bool focus)
-    {
-        if (!focus)
-            IsTimeValid = false;
-    }
-    */
 
     ////////////////////////////////////////////////////////
     /// STATIC MEMBER
     ////////////////////////////////////////////////////////
+    [Serializable]
+    private class SerializableData
+    {
+        public List<Timer> timers = new List<Timer>();
+    }
+
     private static TimeSpan deltaTime;
-    //private static DateTime leagueStartTime;
     private static DateTime leagueEndTime;
     private static bool isTimeValidating = false;
     private static Dictionary<Type, Timer> timers = new Dictionary<Type, Timer>();
@@ -80,6 +74,30 @@ public class TimerManager : Base
     public static bool IsTimeValid { get; private set; }
     public static DateTime ServerTime { get { return DateTime.Now + deltaTime; } }
     public static long ServerSeconds { get { return ServerTime.Ticks / TimeSpan.TicksPerSecond; } }
+
+    private static void Save()
+    {
+        var data = new SerializableData();
+        foreach (var item in timers)
+            data.timers.Add(new Timer() { type = item.Key, startTime = item.Value.startTime, duration = item.Value.duration });
+        PlayerPrefsEx.Serialize(serializeKey, data);
+    }
+
+    private static void Load()
+    {
+        // load data
+        var data = PlayerPrefsEx.Deserialize(serializeKey, new SerializableData());
+
+        // validate data
+        foreach (Type timerType in Enum.GetValues(typeof(Type)))
+            if (data.timers.Exists(x => x.type == timerType) == false)
+                data.timers.Add(new Timer() { type = timerType });
+
+        // convert data to dictunary
+        timers.Clear();
+        foreach (var item in data.timers)
+            timers.Add(item.type, item);
+    }
 
     public static void SetTimer(Type timerType, float duration, long startTime = 0)
     {
@@ -92,7 +110,7 @@ public class TimerManager : Base
         timers[timerType].startTime = startTime == 0 ? ServerSeconds : startTime;
         timers[timerType].duration = duration;
 
-        PlayerPrefsEx.SerializeBinary(serializeKey, timers);
+        Save();
     }
 
     public static void ValidateTime()
@@ -148,15 +166,6 @@ public class TimerManager : Base
     {
         get { return PlayerPrefs.GetInt(timerManagerInitOnceString, 0) == 1; }
         set { PlayerPrefs.SetInt(timerManagerInitOnceString, value ? 1 : 0); }
-    }
-
-
-
-
-    [Console("shop", "legends")]
-    public static void OpenLegendShop()
-    {
-        SetTimer(Type.LegendShopActivatorTimer, 5, 0);
     }
 
 #if OFF

@@ -74,6 +74,7 @@ public class Popup_Rewards : GameState
     private Popup_Rewards DisplayRacerCard(int racerId, int count)
     {
         racerCardPrefab.Clone<UiRewardRacerCard>().Setup(racerId, count).transform.SetAsLastSibling();
+        Popup_RateUs.SetPlayerInjoy(true, 3);
         return this;
     }
 
