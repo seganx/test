@@ -233,7 +233,6 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
             public int gemToCoin = 200;
             public int instaToGem = 100;
             public int nicknamePrice = 1200;
-            public int combinedPackagesNextTime = 43200;
             public int leagueSpecialPackagesNextTime = 172800;
             public int blackMarketRefreshTime = 21600;
             public int[] blackMarketRefreshPrices = new int[] { 200, 80, 20 };
