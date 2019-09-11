@@ -6,27 +6,29 @@ using UnityEngine.UI;
 
 public class UiShopCombinedPackage : MonoBehaviour
 {
+    [SerializeField] private Image coinBackground = null;
     [SerializeField] private LocalText coinsLabel = null;
     [SerializeField] private LocalText coinDiscountLabel = null;
-    [SerializeField] private Image coinBackground = null;
-    [SerializeField] private LocalText racerInfoLabel = null;
+    [SerializeField] private LocalText infoLabel = null;
+    [SerializeField] private Text racerNameLabel = null;
     [SerializeField] private Image racerImage = null;
     [SerializeField] private LocalText gemPriceLabel = null;
     [SerializeField] private Button purchaseButton = null;
     [SerializeField] private Sprite[] images = null;
 
-    //private int packIndex = 0;
     private RacerConfig racerConfig = null;
     private int coins = 0;
     private int totalGemPrice = 0;
 
-    public void Start()
-    {
-        Setup(0);
-    }
-
     public UiShopCombinedPackage Setup(int index)
     {
+        var racerId = GetRacerId(index);
+        if (racerId < 1)
+        {
+            Destroy(gameObject);
+            return this;
+        }
+
         var pack = GlobalConfig.Shop.combinedPackages[index % GlobalConfig.Shop.combinedPackages.Count];
         coinBackground.sprite = images[index % images.Length];
         coins = pack.coin;
@@ -34,10 +36,10 @@ public class UiShopCombinedPackage : MonoBehaviour
         coinDiscountLabel.gameObject.SetActive(pack.coinDiscount > 0);
         coinDiscountLabel.SetFormatedText(pack.coinDiscount);
 
-        var racerId = pack.racerIndex; // todo_
         racerConfig = RacerFactory.Racer.GetConfig(racerId);
         racerImage.sprite = racerConfig.halfIcon;
-        racerInfoLabel.SetFormatedText(pack.customes);
+        infoLabel.SetFormatedText(pack.customes);
+        racerNameLabel.text = racerConfig.Name;
 
         var racerGemValue = Mathf.RoundToInt(pack.racerGemValueFactor * racerConfig.Price) / 25 * 25;
         totalGemPrice = pack.coinGemValue + racerGemValue;
@@ -45,17 +47,10 @@ public class UiShopCombinedPackage : MonoBehaviour
 
         purchaseButton.onClick.AddListener(() =>
         {
-            purchaseButton.SetInteractable(false);
             Game.SpendGem(totalGemPrice, () =>
             {
-                purchaseButton.SetInteractable(true);
                 DisplayRewards(pack);
-                PurchaseSystem.Consume();
-                Destroy(gameObject);
-
-#if DATABEEN
-                //DataBeen.SendPurchase(sku, msg);
-#endif
+                SetRacerId(index, 0);
             });
         });
 
@@ -82,8 +77,26 @@ public class UiShopCombinedPackage : MonoBehaviour
         Destroy(gameObject);
     }
 
-
     ////////////////////////////////////////////////////////////
     /// STATIC MEMBERS
     ////////////////////////////////////////////////////////////
+    public static int GetRacerId(int index)
+    {
+        var res = PlayerPrefsEx.GetInt("UiShopCombinedPackage.RacerId." + index, 0);
+        if (res < 1)
+        {
+            res = RewardLogic.SelectRacerReward();
+            if (Profile.IsUnlockedRacer(res)) res = RewardLogic.SelectRacerReward();
+            if (Profile.IsUnlockedRacer(res)) res = RewardLogic.SelectRacerReward();
+            if (Profile.IsUnlockedRacer(res)) res = RewardLogic.SelectRacerReward();
+            if (Profile.IsUnlockedRacer(res)) res = RewardLogic.SelectRacerReward();
+        }
+        SetRacerId(index, res);
+        return res;
+    }
+
+    public static void SetRacerId(int index, int racerId)
+    {
+        PlayerPrefsEx.SetInt("UiShopCombinedPackage.RacerId." + index, racerId);
+    }
 }

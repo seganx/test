@@ -170,7 +170,6 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
             [System.Serializable]
             public class CombinedPackage
             {
-                public int racerIndex = 0;
                 public int coinGemValue = 0;
                 public int coin = 0;
                 public int coinDiscount = 0;

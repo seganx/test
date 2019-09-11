@@ -7,6 +7,7 @@ namespace SeganX
     {
         [SerializeField] private bool active = false;
         [SerializeField] private int selectedIndex = 0;
+        [Space(50)]
         [Header("List of devices for test")]
         [SerializeField] private string[] deviceList = new string[0];
 

@@ -67,7 +67,7 @@ public class ShopLogic : MonoBehaviour
                 pack.item = GlobalConfig.Shop.leagueSpecialPackages[pack.packgIndex];
 
             // remove unused items
-            data.packages.RemoveAll(x => CanDisplay(x.packgIndex) == false || GetRemainedTime(x.packgIndex) < 1);
+            data.packages.RemoveAll(x => CanDisplay(x.packgIndex) == false);
 
             // add new items
             if (CurrIndex != data.lastIndex)
@@ -100,46 +100,45 @@ public class ShopLogic : MonoBehaviour
             SetTimer(index);
         }
 
-        private static bool CanDisplay(int index)
+        public static bool CanDisplay(int index)
         {
             var pack = Packages.Find(x => x.packgIndex == index);
             if (pack == null) return false;
-            return Profile.IsUnlockedRacer(pack.racerId) == false;
+            if (Profile.IsUnlockedRacer(pack.racerId) || GetRemainedTime(index) < 1)
+            {
+                if (index == data.lastIndex)
+                    data.lastIndex = -1;
+                return false;
+            }
+            return true;
+        }
+
+        public static TimerManager.Type GetTimerType(int index)
+        {
+            switch (index)
+            {
+                case 0: return TimerManager.Type.ShopSpecialPackage0;
+                case 1: return TimerManager.Type.ShopSpecialPackage1;
+                case 2: return TimerManager.Type.ShopSpecialPackage2;
+                case 3: return TimerManager.Type.ShopSpecialPackage3;
+                case 4: return TimerManager.Type.ShopSpecialPackage4;
+                case 5: return TimerManager.Type.ShopSpecialPackage5;
+                case 6: return TimerManager.Type.ShopSpecialPackage6;
+                case 7: return TimerManager.Type.ShopSpecialPackage7;
+                case 8: return TimerManager.Type.ShopSpecialPackage8;
+                case 9: return TimerManager.Type.ShopSpecialPackage9;
+            }
+            return TimerManager.Type.ShopSpecialPackage0;
         }
 
         private static void SetTimer(int index)
         {
-            switch (index)
-            {
-                case 0: TimerManager.SetTimer(TimerManager.Type.ShopSpecialPackage0, GlobalConfig.Shop.leagueSpecialPackagesNextTime); break;
-                case 1: TimerManager.SetTimer(TimerManager.Type.ShopSpecialPackage1, GlobalConfig.Shop.leagueSpecialPackagesNextTime); break;
-                case 2: TimerManager.SetTimer(TimerManager.Type.ShopSpecialPackage2, GlobalConfig.Shop.leagueSpecialPackagesNextTime); break;
-                case 3: TimerManager.SetTimer(TimerManager.Type.ShopSpecialPackage3, GlobalConfig.Shop.leagueSpecialPackagesNextTime); break;
-                case 4: TimerManager.SetTimer(TimerManager.Type.ShopSpecialPackage4, GlobalConfig.Shop.leagueSpecialPackagesNextTime); break;
-                case 5: TimerManager.SetTimer(TimerManager.Type.ShopSpecialPackage5, GlobalConfig.Shop.leagueSpecialPackagesNextTime); break;
-                case 6: TimerManager.SetTimer(TimerManager.Type.ShopSpecialPackage6, GlobalConfig.Shop.leagueSpecialPackagesNextTime); break;
-                case 7: TimerManager.SetTimer(TimerManager.Type.ShopSpecialPackage7, GlobalConfig.Shop.leagueSpecialPackagesNextTime); break;
-                case 8: TimerManager.SetTimer(TimerManager.Type.ShopSpecialPackage8, GlobalConfig.Shop.leagueSpecialPackagesNextTime); break;
-                case 9: TimerManager.SetTimer(TimerManager.Type.ShopSpecialPackage9, GlobalConfig.Shop.leagueSpecialPackagesNextTime); break;
-            }
+            TimerManager.SetTimer(GetTimerType(index), GlobalConfig.Shop.leagueSpecialPackagesNextTime);
         }
 
         private static int GetRemainedTime(int index)
         {
-            switch (index)
-            {
-                case 0: return TimerManager.GetRemainTime(TimerManager.Type.ShopSpecialPackage0);
-                case 1: return TimerManager.GetRemainTime(TimerManager.Type.ShopSpecialPackage1);
-                case 2: return TimerManager.GetRemainTime(TimerManager.Type.ShopSpecialPackage2);
-                case 3: return TimerManager.GetRemainTime(TimerManager.Type.ShopSpecialPackage3);
-                case 4: return TimerManager.GetRemainTime(TimerManager.Type.ShopSpecialPackage4);
-                case 5: return TimerManager.GetRemainTime(TimerManager.Type.ShopSpecialPackage5);
-                case 6: return TimerManager.GetRemainTime(TimerManager.Type.ShopSpecialPackage6);
-                case 7: return TimerManager.GetRemainTime(TimerManager.Type.ShopSpecialPackage7);
-                case 8: return TimerManager.GetRemainTime(TimerManager.Type.ShopSpecialPackage8);
-                case 9: return TimerManager.GetRemainTime(TimerManager.Type.ShopSpecialPackage9);
-            }
-            return 0;
+            return TimerManager.GetRemainTime(GetTimerType(index));
         }
     }
 
@@ -161,7 +160,7 @@ public class ShopLogic : MonoBehaviour
         {
             if (Package == null) return;
             PopupWasDisplayed = true;
-            Game.Instance.OpenPopup<Popup_ShopSpecialRacer>().Setup(Package, onPurchase);
+            Game.Instance.OpenPopup<Popup_ShopSpecialPackage>().Setup(Package, onPurchase);
         }
 
         public static void TryToCreateNewPackage()

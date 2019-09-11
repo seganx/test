@@ -6,12 +6,14 @@ using UnityEngine.UI;
 
 public class State_Shop : GameState
 {
-    [SerializeField] private UiShopResourcePackage gemsPackagePrefab = null;
     [SerializeField] private UiShopSpecialPackage specialPackagePrefab = null;
+    [SerializeField] private UiShopCombinedPackage combinedPackagePrefab = null;
+    [SerializeField] private UiShopResourcePackage gemsPackagePrefab = null;
 
     private void Awake()
     {
         specialPackagePrefab.gameObject.SetActive(false);
+        combinedPackagePrefab.gameObject.SetActive(false);
     }
 
     private void Start()
@@ -48,6 +50,10 @@ public class State_Shop : GameState
         for (int i = 0; i < GlobalConfig.Shop.gemPackages.Count; i++)
             gemsPackagePrefab.Clone<UiShopResourcePackage>().SetupAsGemsPack(i);
         Destroy(gemsPackagePrefab.gameObject);
+
+        for (int i = 0; i < GlobalConfig.Shop.combinedPackages.Count; i++)
+            combinedPackagePrefab.Clone<UiShopCombinedPackage>().Setup(i).gameObject.SetActive(true);
+        Destroy(combinedPackagePrefab.gameObject);
 
         ShopLogic.SpecialOffer.Refresh();
         foreach (var item in ShopLogic.SpecialOffer.Packages)

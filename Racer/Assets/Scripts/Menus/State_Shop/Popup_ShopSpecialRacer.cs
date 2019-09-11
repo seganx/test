@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Popup_ShopSpecialRacer : GameState
+public class Popup_ShopSpecialPackage : GameState
 {
     [SerializeField] private Image racerImage = null;
     [SerializeField] private LocalText descLabel = null;
@@ -15,7 +15,7 @@ public class Popup_ShopSpecialRacer : GameState
     [SerializeField] private LocalText discountLabel = null;
     [SerializeField] private Button purchaseButton = null;
 
-    public Popup_ShopSpecialRacer Setup(GlobalConfig.Data.Shop.SpecialPackage pack, System.Action onPurchase)
+    public Popup_ShopSpecialPackage Setup(ShopLogic.SpecialOffer.Package pack, System.Action onPurchase)
     {
 #if off
         var rconfig = RacerFactory.Racer.GetConfig(pack.PopupRacerId);
