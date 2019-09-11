@@ -71,7 +71,7 @@ public class UiLoadingBoxFreePackage : TimerPresenter
 
             UpdateVisual();
 
-            switch (UnityEngine.Random.Range(0, 100) % 4)
+            switch (UnityEngine.Random.Range(0, 100) % 3)
             {
                 case 0:
                     {
@@ -97,14 +97,14 @@ public class UiLoadingBoxFreePackage : TimerPresenter
                         Popup_Rewards.AddRacerCard(racerid, 1);
                     }
                     break;
-
+                    /*
                 case 3:
                     {
                         var reward = RewardLogic.GetCustomReward();
                         Profile.AddRacerCustom(reward.type, reward.racerId, reward.customId);
                         Popup_Rewards.AddCustomCard(reward.type, reward.racerId, reward.customId);
                     }
-                    break;
+                    break;*/
             }
 
             Popup_Rewards.Display();
