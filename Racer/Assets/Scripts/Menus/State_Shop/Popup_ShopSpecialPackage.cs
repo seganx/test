@@ -4,35 +4,37 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UiShopSpecialPackage : MonoBehaviour
+public class Popup_ShopSpecialPackage : GameState
 {
-    [SerializeField] private LocalText customeCardsLabel = null;
     [SerializeField] private ShopItemTimerPresenter timer = null;
-    [SerializeField] private LocalText gemsLabel = null;
-    [SerializeField] private LocalText coinsLabel = null;
-    [SerializeField] private LocalText[] discountLabels = null;
+    [SerializeField] private Image racerImage = null;
+    [SerializeField] private LocalText descLabel = null;
+    [SerializeField] private Transform cardHolder = null;
+    [SerializeField] private LocalText cardsLabel = null;
     [SerializeField] private LocalText priceLabel = null;
     [SerializeField] private LocalText realPriceLabel = null;
-    [SerializeField] private LocalText racerGroupId = null;
+    [SerializeField] private LocalText discountLabel = null;
     [SerializeField] private Button purchaseButton = null;
-    [SerializeField] private Image racerImage = null;
+    [SerializeField] private LocalText customeCardsLabel = null;
+    [SerializeField] private LocalText gemsLabel = null;
+    [SerializeField] private LocalText coinsLabel = null;
 
     private RacerConfig config = null;
 
-    public UiShopSpecialPackage Setup(ShopLogic.SpecialOffer.Package pack)
+    public Popup_ShopSpecialPackage Setup(ShopLogic.SpecialOffer.Package pack, System.Action onPurchase)
     {
-        config = RacerFactory.Racer.GetConfig(pack.racerId);
-
         timer.timerType = ShopLogic.SpecialOffer.GetTimerType(pack.packgIndex);
-        racerImage.sprite = GarageRacerImager.GetImageTransparent(pack.racerId, config.DefaultRacerCustom, racerImage.rectTransform.rect.width, racerImage.rectTransform.rect.height);
+        config = RacerFactory.Racer.GetConfig(pack.racerId);
+        racerImage.sprite = GarageRacerImager.GetImageTransparent(config.Id, config.DefaultRacerCustom, racerImage.rectTransform.rect.width, racerImage.rectTransform.rect.height);
+        descLabel.SetFormatedText(pack.item.discount, config.CardCount);
+        GlobalFactory.CreateRacerCard(pack.racerId, cardHolder);
+        cardsLabel.SetFormatedText(config.CardCount);
+        priceLabel.SetFormatedText(pack.item.price.ToString("#,0"));
+        realPriceLabel.SetFormatedText(pack.item.realPrice.ToString("#,0"));
+        discountLabel.SetText(pack.item.discount.ToString());
         customeCardsLabel.SetFormatedText(pack.item.customes);
         gemsLabel.SetText(pack.item.gem.ToString("#,0"));
         coinsLabel.SetText(pack.item.coin.ToString("#,0"));
-        priceLabel.SetFormatedText(pack.item.price);
-        realPriceLabel.SetFormatedText(pack.item.realPrice);
-        racerGroupId.SetFormatedText(config.GroupId);
-        foreach (var item in discountLabels)
-            item.SetFormatedText(pack.item.discount);
 
         purchaseButton.onClick.AddListener(() =>
         {
@@ -43,16 +45,17 @@ public class UiShopSpecialPackage : MonoBehaviour
                 {
                     DisplayRewards(pack);
                     PurchaseSystem.Consume();
-                    Destroy(gameObject);
-
 #if DATABEEN
                     DataBeen.SendPurchase(pack.item.sku, msg);
 #endif
+                    Back();
+                    if (onPurchase != null) onPurchase();
                 }
                 else purchaseButton.SetInteractable(true);
             });
         });
 
+        UiShowHide.ShowAll(transform);
         return this;
     }
 
@@ -73,6 +76,5 @@ public class UiShopSpecialPackage : MonoBehaviour
 
         Popup_Rewards.Display().DisplayPurchaseReward();
         ProfileLogic.SyncWidthServer(true, done => { });
-        Destroy(gameObject);
     }
 }

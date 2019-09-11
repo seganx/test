@@ -2,34 +2,52 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UiShopSpecialPopup : MonoBehaviour
 {
+    [SerializeField] private UiShowHide holder = null;
     [SerializeField] private LocalText infoLabel = null;
     [SerializeField] private ShopItemTimerPresenter timer = null;
+    [SerializeField] private Button button = null;
+
+
+    private void Awake()
+    {
+        holder.gameObject.SetActive(false);
+        timer.gameObject.SetActive(false);
+    }
 
     private IEnumerator Start()
     {
-        ShopLogic.SpecialOffer.Refresh();
-        if (ShopLogic.SpecialOffer.Packages.Count > 0)
+        if (Profile.TotalRaces > 10)
         {
-            var package = ShopLogic.SpecialOffer.Packages.LastOne();
-            if (ShopLogic.SpecialOffer.CanDisplay(package.packgIndex))
+            ShopLogic.SpecialOffer.Refresh();
+            if (ShopLogic.SpecialOffer.Packages.Count > 0)
             {
-                infoLabel.SetFormatedText(package.item.discount);
-                timer.timerType = ShopLogic.SpecialOffer.GetTimerType(package.packgIndex);
-                timer.gameObject.SetActive(true);
-
-                if (CanDisplayPopup)
+                var package = ShopLogic.SpecialOffer.Packages.LastOne();
+                if (ShopLogic.SpecialOffer.CanDisplay(package.packgIndex))
                 {
-                    yield return new WaitForSeconds(1);
-                    Game.Instance.OpenPopup<Popup_ShopSpecialPackage>().Setup(package, () =>
+                    infoLabel.SetFormatedText(package.item.discount);
+                    timer.timerType = ShopLogic.SpecialOffer.GetTimerType(package.packgIndex);
+
+                    button.onClick.AddListener(() => Game.Instance.OpenPopup<Popup_ShopSpecialPackage>().Setup(package, () => Destroy(holder.gameObject)));
+
+                    timer.gameObject.SetActive(true);
+                    holder.gameObject.SetActive(true);
+                    holder.Show();
+
+                    if (CanDisplayPopup)
                     {
-                        package = null;
-                    });
+                        yield return new WaitForSeconds(1);
+                        yield return new WaitUntil(() => Game.Instance.CurrentPopup == null);
+                        CanDisplayPopup = false;
+                        button.onClick.Invoke();
+                    }
                 }
             }
         }
+        else Destroy(holder.gameObject);
     }
 
 
