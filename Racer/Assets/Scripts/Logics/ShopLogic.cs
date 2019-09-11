@@ -35,6 +35,7 @@ public class ShopLogic : MonoBehaviour
         [System.Serializable]
         private class SerializableData
         {
+            public int lastRacerId = 0;
             public int lastIndex = -1;
             public List<Package> packages = new List<Package>();
         }
@@ -92,9 +93,10 @@ public class ShopLogic : MonoBehaviour
             };
 
             //  verify that selected racer is locked
-            if (Profile.IsUnlockedRacer(pack.racerId)) pack.racerIndex = ++pack.racerIndex % 3;
-            if (Profile.IsUnlockedRacer(pack.racerId)) pack.racerIndex = ++pack.racerIndex % 3;
-            if (Profile.IsUnlockedRacer(pack.racerId)) return;
+            if (data.lastRacerId == pack.racerId || Profile.IsUnlockedRacer(pack.racerId)) pack.racerIndex = ++pack.racerIndex % 3;
+            if (data.lastRacerId == pack.racerId || Profile.IsUnlockedRacer(pack.racerId)) pack.racerIndex = ++pack.racerIndex % 3;
+            if (data.lastRacerId == pack.racerId || Profile.IsUnlockedRacer(pack.racerId)) return;
+            data.lastRacerId = pack.racerId;
 
             Packages.Add(pack);
             SetTimer(index);
