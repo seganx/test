@@ -27,6 +27,8 @@ public class State_UnlockRacer : GameState
     {
         UiHeader.Hide();
         GarageCamera.SetCameraId(7);
+        Popup_RateUs.SetPlayerInjoy(true, 5);
+
 
         var config = RacerFactory.Racer.GetConfig(racerId);
 

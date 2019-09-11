@@ -47,7 +47,8 @@ public static class Profile
 
     public static bool LeagueResultExist
     {
-        get { return data.rewardedPosition.Value != 0 && data.rewardedScore != 0; }
+        get { return data.rewardedPosition.Value != 0 && data.rewardedScore.Value != 0; }
+        set { data.rewardedPosition = 0; data.rewardedScore = 0; }
     }
 
     public static int LeagueResultScore

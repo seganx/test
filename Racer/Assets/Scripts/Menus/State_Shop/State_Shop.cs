@@ -55,13 +55,15 @@ public class State_Shop : GameState
             combinedPackagePrefab.Clone<UiShopCombinedPackage>().Setup(i).gameObject.SetActive(true);
         Destroy(combinedPackagePrefab.gameObject);
 
-        ShopLogic.SpecialOffer.Refresh();
-        foreach (var item in ShopLogic.SpecialOffer.Packages)
+        if (Profile.TotalRaces > 10)
+        {
+            ShopLogic.SpecialOffer.Refresh();
+            foreach (var item in ShopLogic.SpecialOffer.Packages)
                 specialPackagePrefab.Clone<UiShopSpecialPackage>().Setup(item).gameObject.SetActive(true);
+        }
         Destroy(specialPackagePrefab.gameObject);
 
         UiShowHide.ShowAll(transform);
-
         PopupQueue.Add(.5f, () => Popup_Tutorial.Display(71));
     }
 }

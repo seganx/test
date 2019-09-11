@@ -133,6 +133,9 @@ public class State_LeagueStart : GameState
                 Popup_Rewards.AddRacerCard(racerid, 1);
             }
             Popup_Rewards.Display();
+
+            Profile.LeagueResultExist = false;
+            ProfileLogic.SyncWidthServer(true, done => { });
         });
     }
 }

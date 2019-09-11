@@ -36,7 +36,7 @@ public class Popup_RaceResult : GameState
             else onNextTask();
         });
 
-        Popup_RateUs.SetPlayerInjoy(RaceModel.stats.playerRank < 1);
+        Popup_RateUs.SetPlayerInjoy(RaceModel.stats.playerRank < 2, 2);
 
        return this;
     }
