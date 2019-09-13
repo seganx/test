@@ -215,6 +215,7 @@ public class RacerAudio : Base
         audioSource.spatialBlend = 1;
         if (playNow)
             audioSource.Play();
+        audioSource.minDistance = 3;
         return audioSource;
     }
 }
