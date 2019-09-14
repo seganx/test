@@ -21,7 +21,7 @@ public class Popup_ShopSpecialPackage : GameState
 
     private RacerConfig config = null;
 
-    public Popup_ShopSpecialPackage Setup(ShopLogic.SpecialOffer.Package pack, System.Action onPurchase)
+    public Popup_ShopSpecialPackage Setup(ShopLogic.SpecialOffer.Package pack, System.Action<ShopLogic.SpecialOffer.Package> onPurchase)
     {
         timer.timerType = ShopLogic.SpecialOffer.GetTimerType(pack.packgIndex);
         config = RacerFactory.Racer.GetConfig(pack.racerId);
@@ -49,7 +49,7 @@ public class Popup_ShopSpecialPackage : GameState
                     DataBeen.SendPurchase(pack.item.sku, msg);
 #endif
                     Back();
-                    if (onPurchase != null) onPurchase();
+                    if (onPurchase != null) onPurchase(pack);
                 }
                 else purchaseButton.SetInteractable(true);
             });

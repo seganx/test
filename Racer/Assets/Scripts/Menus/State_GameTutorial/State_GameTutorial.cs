@@ -28,8 +28,6 @@ public class State_GameTutorial : GameState
         RaceModel.traffic.distanceRatio = GlobalConfig.Race.traffics.speedFactor;
 
         PlayNetwork.IsOffline = true;
-        PlayNetwork.EloScore = Profile.EloScore;
-        PlayNetwork.EloPower = Profile.CurrentRacerPower;
         PlayNetwork.MapId = RaceModel.specs.mapId;
         PlayNetwork.MaxPlayerCount = RaceModel.specs.maxPlayerCount;
 

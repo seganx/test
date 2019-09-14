@@ -46,9 +46,9 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
         public class MatchMaking
         {
             public int joinTimeout = 15;
-            public int eloPowerGap = 50;
-            public int eloScoreGap = 50;
-            public int eloScoreMaxGap = 200;
+            public int eloScoreCount = 8;
+            public Vector2 eloScoreParams = new Vector2(0.5f, -500);
+            public Vector2 eloPowerParams = new Vector2(0.1f, 0);
         }
 
         [System.Serializable]
@@ -305,6 +305,7 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
         public List<Shop> shop = new List<Shop>();
         public Probabilities probabilities = new Probabilities();
         public List<ProfilePreset> profilePreset = new List<ProfilePreset>() { new ProfilePreset() };
+        public string[] chats = new string[] { "Hello" };
     }
 
     public int gamekey = 0;
@@ -357,6 +358,7 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
     public static Data.Shop Shop { get { return Instance.data.shop[Cohort % Instance.data.shop.Count]; } }
     public static List<Data.ProfilePreset> ProfilePresets { get { return Instance.data.profilePreset; } }
     public static Data.Probabilities Probabilities { get { return Instance.data.probabilities; } }
+    public static string[] Chats { get { return Instance.data.chats; } }
 
     private static int Cohort { get; set; }
 
@@ -396,6 +398,11 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
             PlayerPrefsEx.SetInt("GlobalConfig.Cohort", Cohort);
         }
         return true;
+    }
+
+    public static string GetChat(int index)
+    {
+        return Chats[index % Chats.Length];
     }
 
     public static class Leagues

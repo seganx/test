@@ -51,7 +51,11 @@ public class PlayNetwork : MonoBehaviour
     {
         if (IsOffline == false)
         {
-            joinGap = GlobalConfig.MatchMaking.eloScoreGap;
+            eloScoreMaxGap = Mathf.Max(GlobalConfig.MatchMaking.eloScoreCount, Mathf.RoundToInt(GlobalConfig.MatchMaking.eloScoreParams.x * EloScore + GlobalConfig.MatchMaking.eloScoreParams.y));
+            eloScoreGap = eloScoreMaxGap / GlobalConfig.MatchMaking.eloScoreCount;
+            eloPowerMaxGap = Mathf.RoundToInt(GlobalConfig.MatchMaking.eloPowerParams.x * EloPower + GlobalConfig.MatchMaking.eloPowerParams.y);
+
+            joinGap = eloScoreGap;
             JoinRoom();
         }
         else CreateRoom();
@@ -59,20 +63,20 @@ public class PlayNetwork : MonoBehaviour
 
     private void JoinRoom()
     {
-        TypedLobby sqlLobby = new TypedLobby("myLobby", LobbyType.SqlLobby);
         var sqlLobbyFilter = string.Format("C0 = \"{0}\" AND C1 >= {1} AND C1 <= {2} AND C2 >= {3} AND C2 <= {4}",
             VersionedName,
             EloScore - joinGap, EloScore + joinGap,
-            EloPower - GlobalConfig.MatchMaking.eloPowerGap, EloPower + GlobalConfig.MatchMaking.eloPowerGap);
-        var joined = PhotonNetwork.JoinRandomRoom(null, 0, MatchmakingMode.FillRoom, sqlLobby, sqlLobbyFilter);
-        print("PhotonNetwork.JoinRandomRoom(): " + joined);
+            EloPower - eloPowerMaxGap, EloPower + eloPowerMaxGap);
+        TypedLobby sqlLobby = new TypedLobby("myLobby", LobbyType.SqlLobby);
+        PhotonNetwork.JoinRandomRoom(null, 0, MatchmakingMode.FillRoom, sqlLobby, sqlLobbyFilter);
+        Debug.LogFormat("{0} : JoinRoom eloScore[{1}] eloScoreGap[{2}] eloScoreMaxGap[{3}] eloPower[{4}] eloPowerMaxGap[{5}] sqlLobby[{6}]", name, EloScore, eloScoreGap, eloScoreMaxGap, EloPower, eloPowerMaxGap, sqlLobbyFilter);
     }
 
     public void OnPhotonRandomJoinFailed(object[] codeAndMsg)
     {
-        if (joinGap < GlobalConfig.MatchMaking.eloScoreMaxGap)
+        if (joinGap < eloScoreMaxGap)
         {
-            joinGap += GlobalConfig.MatchMaking.eloScoreGap;
+            joinGap += eloScoreGap;
             JoinRoom();
         }
         else CreateRoom();
@@ -92,7 +96,6 @@ public class PlayNetwork : MonoBehaviour
         roomOptions.PlayerTtl = 1;
         roomOptions.CustomRoomProperties = roomProperies;
         roomOptions.CustomRoomPropertiesForLobby = new string[] { "C0", "C1", "C2" };
-
 
         TypedLobby sqlLobby = new TypedLobby("myLobby", LobbyType.SqlLobby);
         PhotonNetwork.CreateRoom(null, roomOptions, sqlLobby);
@@ -180,6 +183,9 @@ public class PlayNetwork : MonoBehaviour
     ///////////////////////////////////////////////////////////////////////////////////
     //  STATIC MEMBERS
     ///////////////////////////////////////////////////////////////////////////////////
+    private static int eloPowerMaxGap = 0;
+    private static int eloScoreGap = 0;
+    private static int eloScoreMaxGap = 0;
     private static int joinGap = 0;
     private static double roomInitTime = 0;
     private static double playInitTime = 0;
@@ -225,6 +231,20 @@ public class PlayNetwork : MonoBehaviour
             return (float)diff;
         }
     }
+
+#if OFF
+    public static void Setup(bool offline, byte maxPlayerCount, int mapId, int eloScore, int eloScoreMaxGap, int eloPower, int eloPowerMaxGap)
+    {
+        IsOffline = offline;
+        MaxPlayerCount = maxPlayerCount;
+        MapId = mapId;
+        EloScore = eloScore;
+        EloScoreMaxGap = eloScoreMaxGap;
+        EloPower = eloPower;
+        EloPowerMaxGap = eloPowerMaxGap;
+        scoreGap = 
+    }
+#endif
 
     public static void Connect(System.Action onConnected, System.Action<double> onStart, System.Action<Error> onError)
     {

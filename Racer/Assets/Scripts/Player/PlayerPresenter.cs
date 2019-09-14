@@ -28,13 +28,11 @@ public abstract class PlayerPresenter : Base
     protected virtual void OnEnable()
     {
         all.Add(this);
-        allPlayers.Add(player);
     }
 
     protected virtual void OnDisable()
     {
         all.Remove(this);
-        if (all.Count < 2) allPlayers.Clear();
     }
 
     public virtual void Setup(PlayerData playerdata)
@@ -160,10 +158,14 @@ public abstract class PlayerPresenter : Base
         UpdateSteeringPosition(deltaTime);
     }
 
+    public virtual void SendChat(int index)
+    {
+        ChatLogic.Add(player.name, index);
+    }
+
     ////////////////////////////////////////////////////////////
     /// STATIC MEMBERS
     ////////////////////////////////////////////////////////////
-    public static List<PlayerData> allPlayers = new List<PlayerData>(10);
     public static List<PlayerPresenter> all = new List<PlayerPresenter>(10);
     public static PlayerPresenter local = null;
 
@@ -177,9 +179,9 @@ public abstract class PlayerPresenter : Base
 
     public static void UpdateRanks()
     {
-        allPlayers.Sort((x, y) => y.CurrPosition > x.CurrPosition ? 1 : (y.CurrPosition == x.CurrPosition ? 0 : -1));
-        for (int i = 0; i < allPlayers.Count; i++)
-            allPlayers[i].CurrRank = i;
+        all.Sort((x, y) => y.player.CurrPosition > x.player.CurrPosition ? 1 : (y.player.CurrPosition == x.player.CurrPosition ? 0 : -1));
+        for (int i = 0; i < all.Count; i++)
+            all[i].player.CurrRank = i;
     }
 
     public static void SetReadyToRace()

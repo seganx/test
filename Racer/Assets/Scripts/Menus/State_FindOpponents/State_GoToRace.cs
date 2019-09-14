@@ -116,9 +116,6 @@ public class State_GoToRace : GameState
 
         PlayerPresenterOnline.Create(playerData, false);
 
-        if (PhotonNetwork.isMasterClient)
-            BotPresenter.InitializeBots(RaceModel.specs.maxPlayerCount - PlayNetwork.PlayersCount);
-
         RacerCameraConfig.Instance.currentMode = RacerCamera.Mode.StickingFollower;
         state = State.Counting;
 
@@ -139,15 +136,21 @@ public class State_GoToRace : GameState
         searchbar.SetActive(false);
         playersInfoBar.SetActive(true);
 
-        if (PlayerPresenter.allPlayers.Count < RaceModel.specs.maxPlayerCount)
+        if (PlayerPresenter.all.Count < PlayNetwork.PlayersCount)
             yield return new WaitForSeconds(1);
-        if (PlayerPresenter.allPlayers.Count < RaceModel.specs.maxPlayerCount)
+        if (PlayerPresenter.all.Count < PlayNetwork.PlayersCount)
             yield return new WaitForSeconds(1);
 
-        foreach (var player in PlayerPresenter.allPlayers)
+        if (PhotonNetwork.isMasterClient)
         {
-            if (player.IsPlayer) continue;
-            opponentInfo.Clone<UiGoToRacePlayerInfo>().Setup(player).gameObject.SetActive(true);
+            var presenter = PlayerPresenter.all.FindMin(x => x.player.RacerPower);
+            BotPresenter.InitializeBots(RaceModel.specs.maxPlayerCount - PlayNetwork.PlayersCount, presenter.player.Score, presenter.player.RacerId, presenter.player.RacerPower);
+        }
+
+        foreach (var player in PlayerPresenter.all)
+        {
+            if (player.player.IsPlayer) continue;
+            opponentInfo.Clone<UiGoToRacePlayerInfo>().Setup(player.player).gameObject.SetActive(true);
         }
         Destroy(opponentInfo.gameObject);
 

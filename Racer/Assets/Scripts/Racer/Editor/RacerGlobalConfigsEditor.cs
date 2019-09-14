@@ -88,7 +88,7 @@ public class RacerGlobalConfigsEditor : Editor
         {
             var filename = EditorUtility.SaveFilePanel("Save exported data", Path.GetDirectoryName(Application.dataPath), "racers", "txt");
             if (filename.HasContent(4))
-                File.WriteAllText(filename, JsonUtility.ToJson(obj.data), System.Text.Encoding.UTF8);
+                File.WriteAllText(filename, JsonUtility.ToJson(obj.data, false), System.Text.Encoding.UTF8);
         }
         if (GUILayout.Button("Import"))
         {

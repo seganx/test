@@ -6,29 +6,33 @@ using UnityEngine;
 public class BotPresenter : Base
 {
     private PlayerPresenterOnline player = null;
+    private bool doViraj = false;
     private int defaultSteering = 1;
     private float nosTimer = 0;
+
     private bool CanControl { get { return player.player.IsPlayer || PlayNetwork.IsMaster; } }
+    private bool IsTimeValid { get { return RaceModel.stats.playTime > 5; } }
 
     private IEnumerator Start()
     {
+        nosTimer = Random.Range(0, 0.5f);
         player = GetComponent<PlayerPresenterOnline>();
 
-        var waitWhile = new WaitForSeconds(2);
+        var waitWhile = new WaitForSeconds(1);
         yield return waitWhile;
 
         while (true)
         {
-            defaultSteering = Random.Range(0, 100) > 50 ? 1 : -1;
-            if (Random.Range(0, 100) < GlobalConfig.Race.bots.crashChance)
-                player.OnCrashed();
+            doViraj = Random.Range(0, 100) < 60;
+            defaultSteering = Random.Range(0, 100) < 50 ? 1 : -1;
+            if (Random.Range(0, 100) < GlobalConfig.Race.bots.crashChance) player.OnCrashed();
             yield return waitWhile;
         }
     }
 
     private void FixedUpdate()
     {
-        if (CanControl == false) return;
+        if (IsTimeValid == false || CanControl == false) return;
 
         var isleft = player.racer.transform.localPosition.x < -RoadPresenter.RoadWidth * 0.4f;
         var isright = player.racer.transform.localPosition.x > RoadPresenter.RoadWidth * 0.4f;
@@ -40,8 +44,11 @@ public class BotPresenter : Base
             player.SteeringValue = isright ? -1 : 1;
         else if (right)
             player.SteeringValue = isleft ? 1 : -1;
+        else if (player.player.CurrPosition < 400)
+            player.SteeringValue = Mathf.MoveTowards(player.SteeringValue, doViraj ? (isleft ? 1 : (isright ? -1 : defaultSteering)) : 0, Time.deltaTime * 2);
         else
             player.SteeringValue = Mathf.MoveTowards(player.SteeringValue, 0, Time.deltaTime * 2);
+
 
         var nosMaxTime = 1;
         if (RaceModel.IsTutorial)
@@ -78,11 +85,11 @@ public class BotPresenter : Base
     ////////////////////////////////////////////////////////////////////////////////////
     //  STATIC MEMEBRS
     ////////////////////////////////////////////////////////////////////////////////////
-    public static void InitializeBots(int count)
+    public static void InitializeBots(int count, int playerScore, int playerRacerId, int playerPower)
     {
         for (int i = 0; i < count; i++)
         {
-            var botScore = Random.Range(Profile.Score - 50, Profile.Score + 50);
+            var botScore = Random.Range(playerScore - 50, playerScore + 50);
             var botRank = Random.Range(Profile.Position - 50, Profile.Position + 50);
 
             RacerProfile botRacer = null;
@@ -91,7 +98,7 @@ public class BotPresenter : Base
                 var config = RacerFactory.Racer.GetConfig(370);
                 botRacer = CreateRandomRacerProfile(i, Random.Range(config.MinPower, config.MaxPower), config.Id, Random.Range(config.MinPower, config.MaxPower));
             }
-            else botRacer = CreateRandomRacerProfile(i, Profile.Score, Profile.SelectedRacer, Profile.CurrentRacerPower);
+            else botRacer = CreateRandomRacerProfile(i, playerScore, playerRacerId, playerPower);
 
             var pdata = new PlayerData(RaceModel.IsOnline ? GlobalFactory.GetRandomName() : "Player " + i, botScore, botRank, botRacer);
             PlayerPresenterOnline.Create(pdata, true);
@@ -131,12 +138,12 @@ public class BotPresenter : Base
                 targetPower = Mathf.RoundToInt(playerPower + 2 * GlobalConfig.Race.bots.powers[0].y);
         }
 
-        var res = new RacerProfile() { id = SelectRacer(targetPower) };
+        var res = new RacerProfile() { id = SelectRacer(targetPower, playerRacerId) };
         var config = RacerFactory.Racer.GetConfig(res.id);
         res.cards = config.CardCount;
         res.level.Level = 1;
 
-        if (Profile.TotalRaces > 4)
+        if (Profile.TotalRaces > 10)
         {
             var maxUpgradeLevel = RacerGlobalConfigs.Data.maxUpgradeLevel[res.level.Level] + 1;
             res.level.SpeedLevel = Random.Range(0, maxUpgradeLevel / 2);
@@ -156,12 +163,12 @@ public class BotPresenter : Base
         return res;
     }
 
-    private static int SelectRacer(int targetPower)
+    private static int SelectRacer(int targetPower, int playerRacerId)
     {
         targetPower = Mathf.Max(targetPower, RacerFactory.Racer.AllConfigs[0].MinPower);
         var list = RacerFactory.Racer.AllConfigs.FindAll(x => x.MinPower.Between(targetPower + GlobalConfig.Race.bots.powerRange.x, targetPower + GlobalConfig.Race.bots.powerRange.y));
         if (list.Count < 1) list = RacerFactory.Racer.AllConfigs;
-        var center = list.FindIndex(x => x.Id == Profile.SelectedRacer);
+        var center = list.FindIndex(x => x.Id == playerRacerId);
         var index = SelectProbability(list.Count, center - 1, 4, 0.5f);
         return list[index].Id;
     }

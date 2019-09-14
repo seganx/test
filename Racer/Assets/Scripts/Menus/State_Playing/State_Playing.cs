@@ -37,8 +37,8 @@ public class State_Playing : GameState
         }
 
         PlayerPresenter.UpdateRanks();
-        for (int i = 0; i < PlayerPresenter.allPlayers.Count; i++)
-            PlayerPresenter.allPlayers[i].CurrNitrous = i * GlobalConfig.Race.nosStartFactor;
+        for (int i = 0; i < PlayerPresenter.all.Count; i++)
+            PlayerPresenter.all[i].player.CurrNitrous = i * GlobalConfig.Race.nosStartFactor;
 
         while (true)
         {
@@ -58,7 +58,8 @@ public class State_Playing : GameState
         float deltaTime = Time.deltaTime;
 
         //  compute racers speed
-        float gametime = PlayNetwork.PlayTime / RaceModel.specs.maxPlayTime;
+        RaceModel.stats.playTime = PlayNetwork.PlayTime;
+        float gametime = RaceModel.stats.playTime / RaceModel.specs.maxPlayTime;
         float speedtime = Mathf.Clamp01(1 - Mathf.Pow(Mathf.Abs(gametime - 1), 1.5f));
         RaceModel.stats.globalSpeed = Mathf.Min(speedtime * forwardSpeedDelta + RaceModel.specs.minForwardSpeed, RaceModel.specs.maxForwardSpeed);
 
@@ -85,7 +86,7 @@ public class State_Playing : GameState
         {
             HandleUserActions();
 
-            if (PlayNetwork.PlayTime > RaceModel.specs.maxPlayTime)
+            if (RaceModel.stats.playTime > RaceModel.specs.maxPlayTime)
             {
                 allowUserHandle = false;
                 FinishRace();

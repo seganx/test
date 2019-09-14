@@ -8,6 +8,7 @@ public class Popup_RaceResult : GameState
 {
     [SerializeField] private UiRaceResultItem prefabItem = null;
     [SerializeField] private LocalText positionLabel = null;
+    [SerializeField] private LocalText distanceLabel = null;
     [SerializeField] private Image prevLeagueIcon = null;
     [SerializeField] private Image currLeagueIcon = null;
     [SerializeField] private Image nextLeagueIcon = null;
@@ -44,14 +45,17 @@ public class Popup_RaceResult : GameState
     private void Start()
     {
         positionLabel.SetFormatedText(RaceModel.stats.playerRank + 1);
-        foreach (var player in PlayerPresenter.allPlayers)
-        {
-            var rac = RacerFactory.Racer.GetConfig(player.RacerId);
-            if (rac == null) continue;
-            var item = prefabItem.Clone<UiRaceResultItem>().Setup(player.CurrRank + 1, player.name, rac.Name, player.RacerPower, player.Score,
-                player.IsPlayer ? RaceLogic.raceResult.rewardScore : GlobalConfig.Race.positionScore[player.CurrRank]);
+        distanceLabel.SetFormatedText(RaceModel.stats.playerBehindDistance.ToString("0.0"));
+        distanceLabel.transform.parent.gameObject.SetActive(RaceModel.stats.playerBehindDistance > 0);
 
-            if (player.IsPlayer) item.GetComponent<Image>().color = Color.blue;
+        foreach (var racer in PlayerPresenter.all)
+        {
+            var rac = RacerFactory.Racer.GetConfig(racer.player.RacerId);
+            if (rac == null) continue;
+            var item = prefabItem.Clone<UiRaceResultItem>().Setup(racer.player.CurrRank + 1, racer.player.name, rac.Name, racer.player.RacerPower, racer.player.Score,
+                racer.player.IsPlayer ? RaceLogic.raceResult.rewardScore : GlobalConfig.Race.positionScore[racer.player.CurrRank]);
+
+            if (racer.player.IsPlayer) item.GetComponent<Image>().color = Color.blue;
         }
         Destroy(prefabItem.gameObject);
 

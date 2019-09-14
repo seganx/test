@@ -171,6 +171,18 @@ public class PlayerPresenterOnline : PlayerPresenter
         base.Horn(play);
     }
 
+    public override void SendChat(int index)
+    {
+        base.SendChat(index);
+        photonView.RPC("NetSendChat", PhotonTargets.Others, index);
+    }
+
+    [PunRPC]
+    public void NetSendChat(int index)
+    {
+        base.SendChat(index);
+    }
+
     ////////////////////////////////////////////////////////////
     /// STATIC MEMBERS
     ////////////////////////////////////////////////////////////

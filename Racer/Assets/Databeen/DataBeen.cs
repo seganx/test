@@ -104,8 +104,8 @@ public class DataBeen : MonoBehaviour
 
         if (res.error.HasContent())
             Debug.Log("DataBeen Sent: " + res.text + " Error: " + res.error);
-        else
-            Debug.Log("DataBeen Sent: " + res.text);
+        //else
+        //    Debug.Log("DataBeen Sent: " + res.text);
     }
 
     private Data<T> CreateData<T>()

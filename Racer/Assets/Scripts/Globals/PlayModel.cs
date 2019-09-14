@@ -24,10 +24,13 @@ public static class RaceModel
 
     public class Stats
     {
+        public float playTime = 0;
         public float globalSpeed = 0;
         public float playerSpeed = 0;
         public float playerPosition = 0;
         public int playerRank = 0;
+        public float playerBehindDistance = 0;
+        public float playerMaxBehindDistance = 0;
     }
 
     public class Traffic

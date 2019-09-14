@@ -23,27 +23,39 @@ public class UiShopSpecialPopup : MonoBehaviour
         if (Profile.TotalRaces > 10)
         {
             ShopLogic.SpecialOffer.Refresh();
+
             if (ShopLogic.SpecialOffer.Packages.Count > 0)
             {
+                // update the button view
                 var package = ShopLogic.SpecialOffer.Packages.LastOne();
                 if (ShopLogic.SpecialOffer.CanDisplay(package.packgIndex))
                 {
                     infoLabel.SetFormatedText(package.item.discount);
                     timer.timerType = ShopLogic.SpecialOffer.GetTimerType(package.packgIndex);
-
-                    button.onClick.AddListener(() => Game.Instance.OpenPopup<Popup_ShopSpecialPackage>().Setup(package, () => Destroy(holder.gameObject)));
-
+                    button.onClick.AddListener(() => Game.Instance.OpenPopup<Popup_ShopSpecialPackage>().Setup(package, pack => Destroy(holder.gameObject)));
                     timer.gameObject.SetActive(true);
                     holder.gameObject.SetActive(true);
                     holder.Show();
+                }
 
-                    if (CanDisplayPopup)
+                if (firstRun)
+                {
+                    yield return new WaitForSeconds(1);
+                    yield return new WaitUntil(() => Game.Instance.CurrentPopup == null);
+                    firstRun = false;
+                    foreach (var item in ShopLogic.SpecialOffer.Packages)
                     {
-                        yield return new WaitForSeconds(1);
-                        yield return new WaitUntil(() => Game.Instance.CurrentPopup == null);
-                        CanDisplayPopup = false;
-                        button.onClick.Invoke();
+                        Game.Instance.OpenPopup<Popup_ShopSpecialPackage>().Setup(item, pack =>
+                        {
+                            if (pack == package)
+                                Destroy(holder.gameObject);
+                        });
                     }
+                }
+                else if (popupPackage != package)
+                {
+                    popupPackage = package;
+                    button.onClick.Invoke();
                 }
             }
         }
@@ -54,5 +66,6 @@ public class UiShopSpecialPopup : MonoBehaviour
     ////////////////////////////////////////////////////////////
     /// STATIC MEMBERS
     ////////////////////////////////////////////////////////////
-    private static bool CanDisplayPopup = true;
+    private static bool firstRun = true;
+    private static ShopLogic.SpecialOffer.Package popupPackage = null;
 }
