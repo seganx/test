@@ -42,17 +42,16 @@ public class Popup_Rewards : GameState
         yield return waitTime;
 
         // first open racer cards
-        int waitCount = 0;
         for (int i = 0; i < rewardContent.childCount; i++)
         {
             var item = rewardContent.GetChild<UiRewardRacerCard>(i);
             if (item == null) continue;
-            waitCount++;
-            item.SetOnOpen(() => waitCount--).gameObject.SetActive(true);
-        }
 
-        // wait to open them all
-        yield return new WaitWhile(() => waitCount > 0);
+            // display and wait
+            item.gameObject.SetActive(true);
+            yield return new WaitUntil(() => item.IsOpened);
+            yield return waitTime;
+        }
 
         // open remained items
         for (int i = 0; i < rewardContent.childCount; i++)

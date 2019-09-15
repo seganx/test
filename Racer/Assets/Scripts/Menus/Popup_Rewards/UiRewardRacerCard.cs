@@ -18,7 +18,6 @@ public class UiRewardRacerCard : Base
     private void Awake()
     {
         IsOpened = false;
-        openButton.gameObject.SetActive(true);
     }
 
     public UiRewardRacerCard Setup(RacerConfig config, int count)
@@ -27,6 +26,13 @@ public class UiRewardRacerCard : Base
         groupLabel.SetText(config.GroupId.ToString());
         image.sprite = config.halfIcon;
         nameLabel.text = config.Name;
+
+        openButton.onClick.AddListener(() =>
+        {
+            openButton.interactable = false;
+            DelayCall(animator.PlayById(1).length, () => IsOpened = true);
+        });
+
         return this;
     }
 
@@ -34,17 +40,6 @@ public class UiRewardRacerCard : Base
     {
         var config = RacerFactory.Racer.GetConfig(racerId);
         return Setup(config, count);
-    }
-
-    public UiRewardRacerCard SetOnOpen(System.Action callback)
-    {
-        openButton.gameObject.SetActive(callback != null);
-        openButton.onClick.AddListener(() =>
-        {
-            openButton.interactable = false;
-            DelayCall(animator.PlayById(1).length, callback);
-        });
-        return this;
     }
 
 }
