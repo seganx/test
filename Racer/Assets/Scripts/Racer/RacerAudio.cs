@@ -44,7 +44,7 @@ public class RacerAudio : Base
         asphaltSkidAudioSource = InitAudio(asphaltSkidAudioClip, true, true);
         nosStartAudioSrouce = InitAudio(nosStartAudioClip, false, false, AUDIO_RATIO);
         nosLoopAudioSource = InitAudio(nosLoopAudioClip, true, false, AUDIO_RATIO);
-        hornAudioSource = InitAudio(hornAudioClip, true, false, 1);
+        hornAudioSource = InitAudio(hornAudioClip, true, false, 1, 5);
 
         if (turboIdleAudioClip)
             turboIdleAudioSource = InitAudio(turboIdleAudioClip, true, true);
@@ -194,6 +194,14 @@ public class RacerAudio : Base
         }
     }
 
+    public void BoostNitors()
+    {
+        if (isUsingNos)
+        {
+            nosStartAudioSrouce.Play();
+        }
+    }
+
     public void PlayHornAudio()
     {
         hornAudioSource.Play();
@@ -206,7 +214,7 @@ public class RacerAudio : Base
     }
 
 
-    AudioSource InitAudio(AudioClip clip, bool loop, bool playNow, float volume = 0)
+    AudioSource InitAudio(AudioClip clip, bool loop, bool playNow, float volume = 0, float minDistance = 2)
     {
         AudioSource audioSource = gameObject.AddComponent<AudioSource>();
         audioSource.clip = clip;
@@ -215,7 +223,7 @@ public class RacerAudio : Base
         audioSource.spatialBlend = 1;
         if (playNow)
             audioSource.Play();
-        audioSource.minDistance = 3;
+        audioSource.minDistance = minDistance;
         return audioSource;
     }
 }

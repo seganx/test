@@ -52,11 +52,12 @@ public class UiShopSpecialPopup : MonoBehaviour
                         });
                     }
                 }
-                else if (popupPackage != package)
+                else if (popupId != package.racerId)
                 {
-                    popupPackage = package;
                     button.onClick.Invoke();
                 }
+
+                popupId = package.racerId;
             }
         }
         else Destroy(holder.gameObject);
@@ -67,5 +68,5 @@ public class UiShopSpecialPopup : MonoBehaviour
     /// STATIC MEMBERS
     ////////////////////////////////////////////////////////////
     private static bool firstRun = true;
-    private static ShopLogic.SpecialOffer.Package popupPackage = null;
+    private static int popupId = 0;
 }

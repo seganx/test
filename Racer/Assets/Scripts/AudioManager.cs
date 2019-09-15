@@ -1,25 +1,23 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 public class AudioManager : Base
 {
     #region fields
-    [SerializeField]
-    AudioSource musicAudioSource;
-    [SerializeField]
-    MusicClipData[] myMusicClipDatasArr;
+    [SerializeField] private AudioSource musicAudioSource = null;
+    [SerializeField] private MusicClipData[] myMusicClipDatasArr = null;
 
-    bool isFadingOut = false;
-    float maxVolume;
-    readonly float maxFxVolume = .5f;
+    private bool isFadingOut = false;
+    private float musicMaxVolume = 1;
+    private readonly float maxFxVolume = 1;
 
     public static AudioManager Instance { get; private set; }
     #endregion
 
     #region properties
-    readonly string isMusicOnString = "IsMusicOn";
+    private readonly string isMusicOnString = "IsMusicOn";
 
     public bool IsMusicOn
     {
@@ -31,7 +29,7 @@ public class AudioManager : Base
         }
     }
 
-    readonly string isFxOnString = "IsFxOn";
+    private readonly string isFxOnString = "IsFxOn";
     public bool IsFxOn
     {
         get { return PlayerPrefs.GetInt(isFxOnString, 1) == 1; }
@@ -44,13 +42,13 @@ public class AudioManager : Base
     #endregion
 
     #region methods
-    void Awake()
+    private void Awake()
     {
         Instance = this;
 
         musicAudioSource.ignoreListenerPause = true;
         musicAudioSource.ignoreListenerVolume = true;
-        maxVolume = musicAudioSource.volume;
+        musicMaxVolume = musicAudioSource.volume;
         musicAudioSource.volume = 0;
 
         if (!IsMusicOn)
@@ -83,7 +81,7 @@ public class AudioManager : Base
         }
     }
 
-    void PlayMusic(AudioClip clip)
+    private void PlayMusic(AudioClip clip)
     {
         musicAudioSource.clip = clip;
         musicAudioSource.Play();
@@ -98,27 +96,28 @@ public class AudioManager : Base
         }));
     }
 
-    IEnumerator DoFadeIn(float fadeInDuration)
+    private IEnumerator DoFadeIn(float fadeInDuration)
     {
         if (fadeInDuration <= 0)
-            musicAudioSource.volume = maxVolume;
+            musicAudioSource.volume = musicMaxVolume;
 
-        while (musicAudioSource.volume < maxVolume && !isFadingOut)
+        while (musicAudioSource.volume < musicMaxVolume && !isFadingOut)
         {
-            musicAudioSource.volume += maxVolume * Time.deltaTime / fadeInDuration;
-            musicAudioSource.volume = Mathf.Min(musicAudioSource.volume, maxVolume);
+            musicAudioSource.volume += musicMaxVolume * Time.deltaTime / fadeInDuration;
+            musicAudioSource.volume = Mathf.Min(musicAudioSource.volume, musicMaxVolume);
             yield return null;
         }
     }
 
-    int fadeOutCounter;
-    IEnumerator DoFadeOut(float fadeOutDuration, Action onFinished)
+    private int fadeOutCounter;
+
+    private IEnumerator DoFadeOut(float fadeOutDuration, Action onFinished)
     {
         isFadingOut = true;
         int counter = ++fadeOutCounter;
         while (musicAudioSource.volume > 0)
         {
-            musicAudioSource.volume -= maxVolume * Time.deltaTime / fadeOutDuration;
+            musicAudioSource.volume -= musicMaxVolume * Time.deltaTime / fadeOutDuration;
             yield return null;
         }
         if (counter == fadeOutCounter)

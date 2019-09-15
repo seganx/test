@@ -23,7 +23,7 @@ public class BotPresenter : Base
 
         while (true)
         {
-            doViraj = Random.Range(0, 100) < 60;
+            doViraj = RaceModel.IsOnline && Random.Range(0, 100) < 30;
             defaultSteering = Random.Range(0, 100) < 50 ? 1 : -1;
             if (Random.Range(0, 100) < GlobalConfig.Race.bots.crashChance) player.OnCrashed();
             yield return waitWhile;
@@ -85,6 +85,15 @@ public class BotPresenter : Base
     ////////////////////////////////////////////////////////////////////////////////////
     //  STATIC MEMEBRS
     ////////////////////////////////////////////////////////////////////////////////////
+#if OFF
+    private static List<ProfileData> candidates = new List<ProfileData>();
+    private static int candidatesBaseScore = 0;
+    public static void UpdateCandidates()
+    {
+        if (Mathf.Abs(Profile.Score - candidatesBaseScore) < 100) return;
+    }
+#endif
+
     public static void InitializeBots(int count, int playerScore, int playerRacerId, int playerPower)
     {
         for (int i = 0; i < count; i++)
@@ -96,61 +105,33 @@ public class BotPresenter : Base
             if (RaceModel.IsTutorial)
             {
                 var config = RacerFactory.Racer.GetConfig(370);
-                botRacer = CreateRandomRacerProfile(i, Random.Range(config.MinPower, config.MaxPower), config.Id, Random.Range(config.MinPower, config.MaxPower));
+                botRacer = CreateRandomRacerProfile(config.Id, Random.Range(config.MinPower, config.MaxPower));
             }
-            else botRacer = CreateRandomRacerProfile(i, playerScore, playerRacerId, playerPower);
+            else botRacer = CreateRandomRacerProfile(playerRacerId, playerPower);
 
             var pdata = new PlayerData(RaceModel.IsOnline ? GlobalFactory.GetRandomName() : "Player " + i, botScore, botRank, botRacer);
             PlayerPresenterOnline.Create(pdata, true);
         }
     }
 
-    private static RacerProfile CreateRandomRacerProfile(int index, int playerScore, int playerRacerId, int playerPower)
+    private static RacerProfile CreateRandomRacerProfile(int playerRacerId, int playerPower)
     {
         int targetPower = 0;
         if (RaceModel.IsOnline)
         {
-            if (index == 0)
-            {
-                targetPower = playerPower;
-            }
-            else if (index == 1)
-            {
-                var factor = GlobalConfig.Race.bots.powers[RacerFactory.Racer.GetConfig(playerRacerId).GroupId];
-                targetPower = Mathf.RoundToInt(factor.x * playerScore + factor.y);
-            }
-            else
-            {
-                var factor = GlobalConfig.Race.bots.powers[RacerFactory.Racer.GetConfig(playerRacerId).GroupId];
-                targetPower = Mathf.RoundToInt(factor.x * playerScore + factor.y + GlobalConfig.Race.bots.powers[0].y);
-
-                //var factor = GlobalConfig.Race.bots.powers[0];
-                //targetPower = Mathf.RoundToInt(factor.x * playerScore + factor.y);
-            }
+            var factor = GlobalConfig.Race.bots.powers[RacerFactory.Racer.GetConfig(playerRacerId).GroupId];
+            targetPower = Mathf.RoundToInt(factor.x * playerPower + factor.y);
         }
         else
         {
-            if (index == 0)
-                targetPower = playerPower;
-            else if (index == 1)
-                targetPower = Mathf.RoundToInt(playerPower + GlobalConfig.Race.bots.powers[0].y);
-            else
-                targetPower = Mathf.RoundToInt(playerPower + 2 * GlobalConfig.Race.bots.powers[0].y);
+            var factor = GlobalConfig.Race.bots.powers[0];
+            targetPower = Mathf.RoundToInt(factor.x * playerPower + factor.y);
         }
 
         var res = new RacerProfile() { id = SelectRacer(targetPower, playerRacerId) };
         var config = RacerFactory.Racer.GetConfig(res.id);
         res.cards = config.CardCount;
         res.level.Level = 1;
-
-        if (Profile.TotalRaces > 10)
-        {
-            var maxUpgradeLevel = RacerGlobalConfigs.Data.maxUpgradeLevel[res.level.Level] + 1;
-            res.level.SpeedLevel = Random.Range(0, maxUpgradeLevel / 2);
-            res.level.NitroLevel = Random.Range(0, maxUpgradeLevel / 2);
-            res.level.BodyLevel = Random.Range(0, maxUpgradeLevel / 2);
-            res.level.SteeringLevel = Random.Range(0, maxUpgradeLevel / 2);
-        }
 
         res.custom = config.DefaultRacerCustom;
         res.custom.BodyColor = RacerFactory.Colors.AllColors.RandomOne().id;
