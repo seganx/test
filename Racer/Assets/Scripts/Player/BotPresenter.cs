@@ -23,7 +23,7 @@ public class BotPresenter : Base
 
         while (true)
         {
-            doViraj = RaceModel.IsOnline && Random.Range(0, 100) < 30;
+            doViraj = RaceModel.IsOnline && Random.Range(0, 100) < 10;
             defaultSteering = Random.Range(0, 100) < 50 ? 1 : -1;
             if (Random.Range(0, 100) < GlobalConfig.Race.bots.crashChance) player.OnCrashed();
             yield return waitWhile;
