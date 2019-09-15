@@ -29,19 +29,38 @@ public class Popup_Rewards : GameState
 
     private IEnumerator Start()
     {
+        if (gemPrefab) Destroy(gemPrefab.gameObject);
+        if (coinPrefab) Destroy(coinPrefab.gameObject);
+        if (racerCardPrefab) Destroy(racerCardPrefab.gameObject);
+        if (racerCustomePrefab) Destroy(racerCustomePrefab.gameObject);
+
         for (int i = 0; i < rewardContent.childCount; i++)
             rewardContent.GetChild(i).gameObject.SetActive(false);
 
         UiShowHide.ShowAll(transform);
+        var waitTime = new WaitForSeconds(0.75f);
+        yield return waitTime;
 
-        var waitTime = new WaitForSeconds(0.5f);
+        // first open racer cards
+        int waitCount = 0;
+        for (int i = 0; i < rewardContent.childCount; i++)
+        {
+            var item = rewardContent.GetChild<UiRewardRacerCard>(i);
+            if (item == null) continue;
+            waitCount++;
+            item.SetOnOpen(() => waitCount--).gameObject.SetActive(true);
+        }
+
+        // wait to open them all
+        yield return new WaitWhile(() => waitCount > 0);
+
+        // open remained items
         for (int i = 0; i < rewardContent.childCount; i++)
         {
             var item = rewardContent.GetChild(i);
-            if (gemPrefab && gemPrefab.transform == item) continue;
-            if (coinPrefab && coinPrefab.transform == item) continue;
-            if (racerCardPrefab && racerCardPrefab.transform == item) continue;
-            if (racerCustomePrefab && racerCustomePrefab.transform == item) continue;
+            if (item.gameObject.activeSelf) continue;
+
+            // wait and display
             yield return waitTime;
             item.gameObject.SetActive(true);
         }
@@ -73,7 +92,7 @@ public class Popup_Rewards : GameState
 
     private Popup_Rewards DisplayRacerCard(int racerId, int count)
     {
-        racerCardPrefab.Clone<UiRewardRacerCard>().Setup(racerId, count).transform.SetAsLastSibling();
+        racerCardPrefab.Clone<UiRewardRacerCard>().Setup(racerId, count).transform.SetAsFirstSibling();
         Popup_RateUs.SetPlayerInjoy(true, 3);
         return this;
     }
@@ -158,10 +177,10 @@ public class Popup_Rewards : GameState
 
     public static Popup_Rewards Display(RewardLogic.RaceReward reward, System.Action onNextTask = null)
     {
-        if (reward.custome != null)
-            AddCustomCard(reward.custome.type, reward.custome.racerId, reward.custome.customId);
         if (reward.racerId > 0)
             AddRacerCard(reward.racerId, reward.racerCount);
+        if (reward.custome != null)
+            AddCustomCard(reward.custome.type, reward.custome.racerId, reward.custome.customId);
         if (reward.gems > 0)
             AddResource(reward.gems, 0);
         if (reward.coins > 0)

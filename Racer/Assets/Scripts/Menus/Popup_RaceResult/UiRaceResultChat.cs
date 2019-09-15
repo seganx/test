@@ -10,7 +10,6 @@ public class UiRaceResultChat : Base
 
     private void Awake()
     {
-
         if (RaceModel.IsOnline)
         {
             itemPrefab.gameObject.SetActive(false);

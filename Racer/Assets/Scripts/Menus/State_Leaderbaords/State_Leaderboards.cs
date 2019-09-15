@@ -7,23 +7,30 @@ using UnityEngine.UI;
 
 public class State_Leaderboards : GameState
 {
+    [SerializeField] private LocalText title = null;
     [SerializeField] private Image playerLeagueIcon = null;
     [SerializeField] private Toggle playerLeagueToggle = null;
     [SerializeField] private Toggle topLeagueToggle = null;
     [SerializeField] private UiLeaderboardItem prefabItem = null;
 
-    private static List<LeaderboardProfileResponse> playerList = null;
-    private static List<LeaderboardProfileResponse> topList = null;
+    private const int listUpdateDuration = 5;
+
+    private void OnDestroy()
+    {
+        LastPosition = prefabItem.transform.parent.AsRectTransform().anchoredPosition.y;
+    }
 
     private void Start()
     {
         UiHeader.Show();
         UiShowHide.ShowAll(transform);
+        title.SetFormatedText(listUpdateDuration);
+
+        ValidateLists();
 
         PopupQueue.Add(.5f, () => Popup_Tutorial.Display(33));
 
         playerLeagueIcon.sprite = GlobalFactory.League.GetBigIcon(Profile.League);
-
         prefabItem.gameObject.SetActive(false);
         topLeagueToggle.isOn = false;
         playerLeagueToggle.isOn = false;
@@ -65,23 +72,32 @@ public class State_Leaderboards : GameState
             topLeagueToggle.isOn = true;
     }
 
+    private void ValidateLists()
+    {
+        if (playerList == null || topList == null) return;
+        if ((System.DateTime.Now - lastListUpdate).TotalMinutes < listUpdateDuration) return;
+        lastListUpdate = System.DateTime.Now;
+        playerList = null;
+        topList = null;
+    }
+
     private void DisplayList(List<LeaderboardProfileResponse> list)
     {
         prefabItem.transform.parent.RemoveChildrenBut(0);
         foreach (var item in list)
             prefabItem.Clone<UiLeaderboardItem>().Setup(item.nickname, item.profileId, item.score, item.position).gameObject.SetActive(true);
+
+        DelayCall(0.1f, () => prefabItem.transform.parent.SetAnchordPositionY(LastPosition));
     }
 
-    public override float PreClose()
-    {
-        var lastTime = PlayerPrefs.GetFloat("Leaderboard.UpdateTime", 0);
-        if (System.DateTime.Now.Minute - lastTime > 15)
-        {
-            playerList = null;
-            topList = null;
-            PlayerPrefs.SetFloat("Leaderboard.UpdateTime", System.DateTime.Now.Minute);
-        }
-        PlayerPrefs.SetInt("Leaderboard.TabIndex", playerLeagueToggle.isOn ? 0 : 1);
-        return base.PreClose();
-    }
+
+
+    ///////////////////////////////////////////////////////////////////////////////////
+    //  STATIC MEMBERS
+    ///////////////////////////////////////////////////////////////////////////////////
+    private static List<LeaderboardProfileResponse> playerList = null;
+    private static List<LeaderboardProfileResponse> topList = null;
+    private static System.DateTime lastListUpdate = new System.DateTime(0);
+    private static float LastPosition { get; set; }
+
 }

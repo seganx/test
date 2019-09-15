@@ -250,6 +250,8 @@ public class State_Upgrade : GameState
         {
             UpgradeWindowVisible = true;
             upgradeWindow.pictures.SetActiveChild((int)selectedType);
+            var subPictures = upgradeWindow.pictures.GetChild((int)selectedType);
+            subPictures.SetActiveChild(Mathf.Clamp(SelectedLevel, 0, subPictures.childCount - 1));
             upgradeWindow.level.SetFormatedText(SelectedLevel);
             upgradeWindow.buyButton.gameObject.SetActive(SelectedLevel < config.MaxUpgradeLevel);
             upgradeWindow.priceTitle.SetFormatedText(SelectedLevel + 1);

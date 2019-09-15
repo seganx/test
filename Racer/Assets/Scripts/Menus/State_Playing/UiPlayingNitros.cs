@@ -86,7 +86,10 @@ public class UiPlayingNitros : MonoBehaviour
         {
             Stat.SetLastNitroUseSlot(IsBoostInRange);
             if (IsBoostInRange)
+            {
                 PlayerPresenter.local.BoostNitros();
+                nosFullAudio.Play();
+            }
             ActiveNosBoost = false;
             boostCoods.x = -1;
         }

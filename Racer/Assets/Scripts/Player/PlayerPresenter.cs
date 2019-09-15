@@ -130,6 +130,7 @@ public abstract class PlayerPresenter : Base
     public virtual void BoostNitros()
     {
         player.CurrNitrous = Mathf.Clamp01(player.CurrNitrous + 0.5f);
+        BroadcastMessage("BoostNitors", SendMessageOptions.DontRequireReceiver);
     }
 
     public virtual void PlayingUpdate(float speedTime, float deltaTime)
