@@ -20,10 +20,11 @@ public class BotPresenter : Base
 
         var waitWhile = new WaitForSeconds(1);
         yield return waitWhile;
+        bool canViraj = RaceModel.IsOnline && Random.Range(0, 100) < GlobalConfig.Race.bots.canVirajChance;
 
         while (true)
         {
-            doViraj = RaceModel.IsOnline && Random.Range(0, 100) < 30;
+            doViraj = canViraj && Random.Range(0, 100) < GlobalConfig.Race.bots.doVirajChance;
             defaultSteering = Random.Range(0, 100) < 50 ? 1 : -1;
             if (Random.Range(0, 100) < GlobalConfig.Race.bots.crashChance) player.OnCrashed();
             yield return waitWhile;
@@ -132,6 +133,12 @@ public class BotPresenter : Base
         var config = RacerFactory.Racer.GetConfig(res.id);
         res.cards = config.CardCount;
         res.level.Level = 1;
+
+        var maxUpgradeLevel = RacerGlobalConfigs.Data.maxUpgradeLevel[res.level.Level] + 1;
+        res.level.SpeedLevel = Random.Range(0, maxUpgradeLevel / 2 + 1);
+        res.level.NitroLevel = Random.Range(0, maxUpgradeLevel / 2 + 1);
+        res.level.BodyLevel = Random.Range(0, maxUpgradeLevel);
+        res.level.SteeringLevel = Random.Range(0, maxUpgradeLevel);
 
         res.custom = config.DefaultRacerCustom;
         res.custom.BodyColor = RacerFactory.Colors.AllColors.RandomOne().id;
