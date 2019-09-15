@@ -60,6 +60,8 @@ public class State_Playing : GameState
         //  compute racers speed
         RaceModel.stats.playTime = PlayNetwork.PlayTime;
         float gametime = RaceModel.stats.playTime / RaceModel.specs.maxPlayTime;
+
+        gametime = Mathf.Min(gametime, 1);
         float speedtime = Mathf.Clamp01(1 - Mathf.Pow(Mathf.Abs(gametime - 1), 1.5f));
         RaceModel.stats.globalSpeed = Mathf.Min(speedtime * forwardSpeedDelta + RaceModel.specs.minForwardSpeed, RaceModel.specs.maxForwardSpeed);
 
@@ -103,8 +105,8 @@ public class State_Playing : GameState
         else
 #endif
             PlayerPresenter.local.SteeringValue = UiPlayingGesture.GoToLeft ? -1 : (UiPlayingGesture.GoToRight ? 1 : 0);
-            //PlayerPresenter.local.SteeringValue = InputManager.Left.isPointerDown ? -1 : (InputManager.Right.isPointerDown ? 1 : 0);
-            RacerCamera.steeringValue = PlayerPresenter.local.SteeringValue;
+        //PlayerPresenter.local.SteeringValue = InputManager.Left.isPointerDown ? -1 : (InputManager.Right.isPointerDown ? 1 : 0);
+        RacerCamera.steeringValue = PlayerPresenter.local.SteeringValue;
         PlayerPresenter.local.Horn(InputManager.Horn.isPointerDown);
     }
 
