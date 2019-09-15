@@ -134,9 +134,7 @@ public class BotPresenter : Base
         res.cards = config.CardCount;
         res.level.Level = 1;
 
-        var maxUpgradeLevel = RacerGlobalConfigs.Data.maxUpgradeLevel[res.level.Level] + 1;
-        res.level.SpeedLevel = Random.Range(0, maxUpgradeLevel / 2 + 1);
-        res.level.NitroLevel = Random.Range(0, maxUpgradeLevel / 2 + 1);
+        var maxUpgradeLevel = RacerGlobalConfigs.Data.maxUpgradeLevel[res.level.Level];
         res.level.BodyLevel = Random.Range(0, maxUpgradeLevel);
         res.level.SteeringLevel = Random.Range(0, maxUpgradeLevel);
 
