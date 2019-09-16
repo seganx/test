@@ -44,7 +44,7 @@ public class RacerAudio : Base
         asphaltSkidAudioSource = InitAudio(asphaltSkidAudioClip, true, true);
         nosStartAudioSrouce = InitAudio(nosStartAudioClip, false, false, AUDIO_RATIO);
         nosLoopAudioSource = InitAudio(nosLoopAudioClip, true, false, AUDIO_RATIO);
-        hornAudioSource = InitAudio(hornAudioClip, true, false, 1, 5);
+        hornAudioSource = InitAudio(hornAudioClip, true, false, 1, 3);
 
         if (turboIdleAudioClip)
             turboIdleAudioSource = InitAudio(turboIdleAudioClip, true, true);
