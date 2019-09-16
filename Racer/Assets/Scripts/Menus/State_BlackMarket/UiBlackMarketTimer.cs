@@ -25,7 +25,7 @@ public class UiBlackMarketTimer : TimerPresenter
         UpdateRefreshGui();
         refreshBuyButton.onClick.AddListener(() =>
         {
-            Game.SpendGem(GlobalConfig.Shop.blackMarketRefreshPrices[RefreshRemainCount - 1], () =>
+            Game.SpendGem(GlobalConfig.Shop.blackMarket.refreshPrices[RefreshRemainCount - 1], () =>
             {
                 RefreshRemainCount--;
                 UpdateRefreshGui();
@@ -40,12 +40,12 @@ public class UiBlackMarketTimer : TimerPresenter
         if (RefreshRemainCount > 0)
         {
             refreshBuyButton.SetInteractable(true);
-            refreshPriceText.SetText(GlobalConfig.Shop.blackMarketRefreshPrices[RefreshRemainCount - 1].ToString());
+            refreshPriceText.SetText(GlobalConfig.Shop.blackMarket.refreshPrices[RefreshRemainCount - 1].ToString());
         }
         else
             refreshBuyButton.SetInteractable(false);
 
-        refreshRemainCounterText.SetFormatedText(RefreshRemainCount, GlobalConfig.Shop.blackMarketRefreshPrices.Length);
+        refreshRemainCounterText.SetFormatedText(RefreshRemainCount, GlobalConfig.Shop.blackMarket.refreshPrices.Length);
     }
 
     public override void UpdateTimerText(int remainTime)
@@ -59,7 +59,7 @@ public class UiBlackMarketTimer : TimerPresenter
     private void RemainedTimeFinished(int remainTime)
     {
         UiBlackMarketPackage.CreatePackages();
-        int newTime = GlobalConfig.Shop.blackMarketRefreshTime + remainTime % GlobalConfig.Shop.blackMarketRefreshTime;
+        int newTime = GlobalConfig.Shop.blackMarket.refreshTime + remainTime % GlobalConfig.Shop.blackMarket.refreshTime;
         if (State_Settings.IsLegendStoreActive)
             NotificationManager.SendWithAppIcon(newTime, NotificationType.LegendStore);
 

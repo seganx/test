@@ -18,6 +18,7 @@ public class State_Leaderboards : GameState
     private void OnDestroy()
     {
         LastPosition = prefabItem.transform.parent.AsRectTransform().anchoredPosition.y;
+        PlayerPrefs.SetInt("Leaderboard.TabIndex", playerLeagueToggle.isOn ? 0 : 1);
     }
 
     private void Start()
@@ -89,7 +90,6 @@ public class State_Leaderboards : GameState
 
         DelayCall(0.1f, () => prefabItem.transform.parent.SetAnchordPositionY(LastPosition));
     }
-
 
 
     ///////////////////////////////////////////////////////////////////////////////////

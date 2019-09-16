@@ -38,8 +38,7 @@ public class Popup_Rewards : GameState
             rewardContent.GetChild(i).gameObject.SetActive(false);
 
         UiShowHide.ShowAll(transform);
-        var waitTime = new WaitForSeconds(0.75f);
-        yield return waitTime;
+        yield return new WaitForSeconds(0.5f);
 
         // first open racer cards
         for (int i = 0; i < rewardContent.childCount; i++)
@@ -50,7 +49,7 @@ public class Popup_Rewards : GameState
             // display and wait
             item.gameObject.SetActive(true);
             yield return new WaitUntil(() => item.IsOpened);
-            yield return waitTime;
+            yield return new WaitForSeconds(0.1f);
         }
 
         // open remained items
@@ -60,7 +59,7 @@ public class Popup_Rewards : GameState
             if (item.gameObject.activeSelf) continue;
 
             // wait and display
-            yield return waitTime;
+            yield return new WaitForSeconds(0.75f);
             item.gameObject.SetActive(true);
         }
     }

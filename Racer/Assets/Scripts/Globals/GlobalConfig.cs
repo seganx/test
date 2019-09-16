@@ -141,14 +141,6 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
         public class Shop
         {
             [System.Serializable]
-            public class BlackMarketPackage
-            {
-                public int maxCount = 0;
-                public float basePriceFactor = 0;
-                public float priceRatio = 0;
-            }
-
-            [System.Serializable]
             public class LoadingBox
             {
                 public int nextTime = 0;
@@ -232,15 +224,44 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
                 public float[] upgradeCostsRatio = new float[] { 1, 1.630435f, 2.608696f, 3.913043f, 5.652174f, 7.913043f, 11.08696f, 15.5f, 21.71739f, 30.3913f, 42.56522f, 59.56522f, 97.82609f };
             }
 
+            [System.Serializable]
+            public class BlackMarket
+            {
+                [System.Serializable]
+                public class InterestedSearch
+                {
+                    public int minCandidateCount = 3;
+                    public int[] minReqCards = new int[] { 90, 90, 90, 10, 10, 20, 20 };
+                }
+
+                [System.Serializable]
+                public class SuggestionSearch
+                {
+                    public List<int> bestRacerIds = new List<int>();
+                    public int[] maxReqCards = new int[] { 90, 90, 90, 10, 10, 20, 20 };
+                }
+
+                [System.Serializable]
+                public class Package
+                {
+                    public int maxCount = 5;
+                    public float basePriceFactor = 0.05f;
+                    public float priceRatio = 0.015f;
+                }
+
+                public int refreshTime = 21600;
+                public int[] refreshPrices = new int[] { 200, 80, 20 };
+                public List<Package> packages = new List<Package>();
+                public InterestedSearch interestedSearch = new InterestedSearch();
+                public SuggestionSearch suggestionSearch = new SuggestionSearch();
+            }
+
             public int gemToTime = 90;
             public int gemToCoin = 200;
             public int instaToGem = 100;
             public int nicknamePrice = 1200;
             public int leagueSpecialPackagesNextTime = 172800;
-            public int blackMarketRefreshTime = 21600;
-            public int[] blackMarketRefreshPrices = new int[] { 200, 80, 20 };
-
-            public List<BlackMarketPackage> blackMarketPackages = new List<BlackMarketPackage>();
+            public BlackMarket blackMarket = new BlackMarket();
             public List<LoadingBox> loadingBoxPackage = new List<LoadingBox>();
             public List<CombinedPackage> combinedPackages = new List<CombinedPackage>();
             public List<SpecialPackage> leagueSpecialPackages = new List<SpecialPackage>();

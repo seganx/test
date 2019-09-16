@@ -90,9 +90,21 @@ public static class RaceLogic
         Profile.UnlockRacer(preset.racerId);
         Profile.SelectedRacer = preset.racerId;
 
+        var earncards = new List<int>(preset.rndCards);
+        earncards.Add(preset.racerId);
+
         for (int i = 0; i < preset.rndCards; i++)
         {
             var racerid = RewardLogic.SelectRacerReward();
+            if (earncards.Contains(racerid)) racerid = RewardLogic.SelectRacerReward();
+            if (earncards.Contains(racerid)) racerid = RewardLogic.SelectRacerReward();
+            if (earncards.Contains(racerid)) racerid = RewardLogic.SelectRacerReward();
+            if (earncards.Contains(racerid)) racerid = RewardLogic.SelectRacerReward();
+            if (earncards.Contains(racerid)) racerid = RewardLogic.SelectRacerReward();
+            if (earncards.Contains(racerid)) racerid = RewardLogic.SelectRacerReward();
+            if (earncards.Contains(racerid)) racerid = RewardLogic.SelectRacerReward();
+            earncards.Add(racerid);
+
             Profile.AddRacerCard(racerid, 1);
             Popup_Rewards.AddRacerCard(racerid, 1);
         }

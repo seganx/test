@@ -164,6 +164,12 @@ public static class Profile
         return data.racers.Find(x => x.id == id);
     }
 
+    public static int GetCurrentRacerCards(int racerId)
+    {
+        var rp = GetRacer(racerId);
+        return (rp == null) ? 0 : rp.cards;
+    }
+
     public static int AddRacerCard(int racerId, int count)
     {
         var rp = GetRacer(racerId);

@@ -39,7 +39,7 @@ public class State_BlackMarket : GameState
 
     private void DisplayItems()
     {
-        for (int i = 0; i < GlobalConfig.Shop.blackMarketPackages.Count; i++)
+        for (int i = 0; i < GlobalConfig.Shop.blackMarket.packages.Count; i++)
             racerCardPackagePrefab.Clone<UiBlackMarketPackage>().Setup(i);
         Destroy(racerCardPackagePrefab.gameObject);
 

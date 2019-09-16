@@ -158,7 +158,7 @@ public class TimerManager : Base
     {
         SetTimer(Type.LoadingBoxItem0, GlobalConfig.Shop.loadingBoxPackage[0].nextTime);
         SetTimer(Type.LoadingBoxItem1, GlobalConfig.Shop.loadingBoxPackage[1].nextTime);
-        SetTimer(Type.LegendShopActivatorTimer, GlobalConfig.Shop.blackMarketRefreshTime);
+        SetTimer(Type.LegendShopActivatorTimer, GlobalConfig.Shop.blackMarket.refreshTime);
     }
 
     static string timerManagerInitOnceString = "TimerManagerInitOnce";
