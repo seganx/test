@@ -51,6 +51,11 @@ public class PlayNetwork : MonoBehaviour
     {
         if (IsOffline == false)
         {
+            print("countOfPlayers: " + PhotonNetwork.countOfPlayers);
+            print("countOfPlayers: " + PhotonNetwork.countOfPlayersInRooms);
+            print("countOfPlayers: " + PhotonNetwork.countOfPlayersOnMaster);
+            print("countOfPlayers: " + PhotonNetwork.countOfRooms);
+
             eloScoreMaxGap = Mathf.Max(GlobalConfig.MatchMaking.eloScoreCount, Mathf.RoundToInt(GlobalConfig.MatchMaking.eloScoreParams.x * EloScore + GlobalConfig.MatchMaking.eloScoreParams.y));
             eloScoreGap = eloScoreMaxGap / GlobalConfig.MatchMaking.eloScoreCount;
             eloPowerMaxGap = Mathf.RoundToInt(GlobalConfig.MatchMaking.eloPowerParams.x * EloPower + GlobalConfig.MatchMaking.eloPowerParams.y);
