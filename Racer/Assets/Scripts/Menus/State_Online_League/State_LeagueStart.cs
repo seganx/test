@@ -79,7 +79,7 @@ public class State_LeagueStart : GameState
         {
             if (Profile.IsUnlockedRacer(rconfig.Id))
             {
-                if (rconfig.GroupId != leagueInfo.startGroup)
+                if (rconfig.GroupId == leagueInfo.startGroup)
                 {
                     ShopLogic.SpecialOffer.Refresh();
 
@@ -92,7 +92,7 @@ public class State_LeagueStart : GameState
                             leagueOfferPackage = item;
                     }
                     leagueOfferPackage = new ShopLogic.SpecialOffer.Package();
-                    leagueOfferPackage.racerIndex = 220;
+                    leagueOfferPackage.racerIndex = 130;
                     leagueOfferPackage.packgIndex = 2;
                     leagueOfferPackage.item = GlobalConfig.Shop.leagueSpecialPackages[leagueOfferPackage.packgIndex];
 
