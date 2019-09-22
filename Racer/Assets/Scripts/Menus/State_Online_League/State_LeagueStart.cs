@@ -58,10 +58,10 @@ public class State_LeagueStart : GameState
         });
         leaderboardButton.onClick.AddListener(() => gameManager.OpenState<State_Leaderboards>());
 
-        var leagueInfo = GlobalConfig.Leagues.GetByIndex(Profile.League);
+        leagueStartGroup = GlobalConfig.Leagues.GetByIndex(Profile.League).startGroup;
         startButton.onClick.AddListener(() =>
         {
-            SetupGarage(leagueInfo);
+            state_Garage = gameManager.OpenState<State_Garage>().Setup(leagueStartGroup, OnNextTask);
             PopupQueue.Add(.5f, () => Popup_Tutorial.Display(32));
         });
 
@@ -73,54 +73,53 @@ public class State_LeagueStart : GameState
             PopupQueue.Add(.5f, () => Popup_Tutorial.Display(39, true, () => FuelTimerPresenter.FullFuel()));
     }
 
-    private void SetupGarage(GlobalConfig.Data.League leagueInfo)
+    int leagueStartGroup;
+    State_Garage state_Garage;
+
+    void OnNextTask(RacerConfig rconfig)
     {
-        gameManager.OpenState<State_Garage>().Setup(leagueInfo.startGroup, rconfig =>
+        if (Profile.IsUnlockedRacer(rconfig.Id))
         {
-            if (Profile.IsUnlockedRacer(rconfig.Id))
+            if (rconfig.GroupId == leagueStartGroup)
             {
-                if (rconfig.GroupId == leagueInfo.startGroup)
+                ShopLogic.SpecialOffer.Refresh();
+
+                ShopLogic.SpecialOffer.Package leagueOfferPackage = null;
+                foreach (var item in ShopLogic.SpecialOffer.Packages)
                 {
-                    ShopLogic.SpecialOffer.Refresh();
-
-                    ShopLogic.SpecialOffer.Package leagueOfferPackage = null;
-                    foreach (var item in ShopLogic.SpecialOffer.Packages)
-                    {
-                        RacerConfig packageRacerConfig = null;
-                        packageRacerConfig = RacerFactory.Racer.GetConfig(item.racerId);
-                        if (packageRacerConfig.GroupId == leagueInfo.startGroup)
-                            leagueOfferPackage = item;
-                    }
-                    leagueOfferPackage = new ShopLogic.SpecialOffer.Package();
-                    leagueOfferPackage.racerIndex = 130;
-                    leagueOfferPackage.packgIndex = 2;
-                    leagueOfferPackage.item = GlobalConfig.Shop.leagueSpecialPackages[leagueOfferPackage.packgIndex];
-
-
-                    if (leagueOfferPackage != null)
-                    {
-                        gameManager.OpenPopup<Popup_LeagueRacerOffer>().Setup(leagueInfo.startGroup, resume =>
-                        {
-                            if (resume)
-                                StartOnlineGame(leagueInfo.startGroup);
-                            else
-                                Game.Instance.OpenPopup<Popup_ShopSpecialPackage>().Setup(leagueOfferPackage, pack => { SetupGarage(leagueInfo); });
-                        });
-                    }
-                    else
-                    {
-                        var str = string.Format(LocalizationService.Get(111141), leagueInfo.startGroup);
-                        gameManager.OpenPopup<Popup_Confirm>().Setup(str, true, isok =>
-                        {
-                            if (isok) StartOnlineGame(leagueInfo.startGroup);
-                        });
-                    }
+                    RacerConfig packageRacerConfig = null;
+                    packageRacerConfig = RacerFactory.Racer.GetConfig(item.racerId);
+                    if (packageRacerConfig.GroupId == leagueStartGroup)
+                        leagueOfferPackage = item;
                 }
-                else StartOnlineGame(leagueInfo.startGroup);
-            }
-            else gameManager.OpenPopup<Popup_RacerCardInfo>();
+                leagueOfferPackage = new ShopLogic.SpecialOffer.Package();
+                leagueOfferPackage.racerIndex = 1;
+                leagueOfferPackage.packgIndex = 2;
+                leagueOfferPackage.item = GlobalConfig.Shop.leagueSpecialPackages[leagueOfferPackage.packgIndex];
 
-        });
+
+                if (leagueOfferPackage != null)
+                {
+                    gameManager.OpenPopup<Popup_LeagueRacerOffer>().Setup(leagueStartGroup, resume =>
+                    {
+                        if (resume)
+                            StartOnlineGame(leagueStartGroup);
+                        else
+                            Game.Instance.OpenPopup<Popup_ShopSpecialPackage>().Setup(leagueOfferPackage, pack => { state_Garage.Setup(leagueStartGroup, OnNextTask); });
+                    });
+                }
+                else
+                {
+                    var str = string.Format(LocalizationService.Get(111141), leagueStartGroup);
+                    gameManager.OpenPopup<Popup_Confirm>().Setup(str, true, isok =>
+                    {
+                        if (isok) StartOnlineGame(leagueStartGroup);
+                    });
+                }
+            }
+            else StartOnlineGame(leagueStartGroup);
+        }
+        else gameManager.OpenPopup<Popup_RacerCardInfo>();
     }
 
     private void StartOnlineGame(int racegroup)
