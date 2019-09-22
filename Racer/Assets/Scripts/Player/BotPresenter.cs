@@ -111,6 +111,7 @@ public class BotPresenter : Base
             else botRacer = CreateRandomRacerProfile(playerRacerId, playerPower);
 
             var pdata = new PlayerData(RaceModel.IsOnline ? GlobalFactory.GetRandomName() : "Player " + i, botScore, botRank, botRacer);
+            Debug.LogWarning("bot " + pdata.name + " joined.");
             PlayerPresenterOnline.Create(pdata, true);
         }
     }

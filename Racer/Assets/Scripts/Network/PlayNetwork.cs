@@ -51,7 +51,7 @@ public class PlayNetwork : MonoBehaviour
     {
         if (IsOffline == false)
         {
-            print("countOfPlayers: " + PhotonNetwork.countOfPlayers);
+            Debug.LogWarning("countOfPlayers: " + PhotonNetwork.countOfPlayers);
             print("countOfPlayersInRooms: " + PhotonNetwork.countOfPlayersInRooms);
             print("countOfPlayersOnMaster: " + PhotonNetwork.countOfPlayersOnMaster);
             print("countOfRooms: " + PhotonNetwork.countOfRooms);
