@@ -16,11 +16,31 @@ public class UiGarageRacerItem : Base
     [SerializeField] private Text nameLabel = null;
     [SerializeField] private GameObject unlockButton = null;
 
+    private RacerConfig config = null;
+
     public UiGarageRacerItem Setup(RacerConfig config, System.Action<UiGarageRacerItem> callback)
     {
+        this.config = config;
+
+        UpdateVisual();
+
+        var button = transform.GetComponent<Button>(true, true);
+        button.onClick.AddListener(() =>
+        {
+            button.SetInteractable(false);
+            callback(this);
+            DelayCall(1, () => button.SetInteractable(true));
+        });
+
+        return this;
+    }
+
+    public void UpdateVisual()
+    {
+        if (config == null) return;
+
         nameLabel.SetText(config.Name);
         nameLabel.rectTransform.parent.SetAnchordWidth(nameLabel.preferredWidth + 4);
-
 
         var racerprofile = Profile.GetRacer(config.Id);
         if (racerprofile == null)
@@ -48,15 +68,5 @@ public class UiGarageRacerItem : Base
             rankLabel.SetFormatedText(config.ComputePower(racerprofile.level.SpeedLevel, racerprofile.level.NitroLevel, racerprofile.level.SteeringLevel, racerprofile.level.BodyLevel), config.MaxPower);
             unlockButton.SetActive(unlocking);
         }
-
-        var button = transform.GetComponent<Button>(true, true);
-        button.onClick.AddListener(() =>
-        {
-            button.SetInteractable(false);
-            callback(this);
-            DelayCall(1, () => button.SetInteractable(true));
-        });
-
-        return this;
     }
 }

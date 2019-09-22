@@ -20,27 +20,16 @@ public class State_Garage : GameState
         set { PlayerPrefs.SetFloat("StateGarage.LastPosition", value); }
     }
 
-    public State_Garage Setup(int targetGroup, System.Action<RacerConfig> onNextTask)
+    public State_Garage Setup(int displayTargetGroup, System.Action<RacerConfig> onNextTask)
     {
         OnNextTask = onNextTask;
-
-        if (targetGroup > 0)
-        {
-            cars = RacerFactory.Racer.AllConfigs.FindAll(x => x.GroupId == targetGroup);
-            if (cars.Exists(x => Profile.IsUnlockedRacer(x.Id)) == false)
-                cars.AddRange(RacerFactory.Racer.AllConfigs.FindAll(x => x.GroupId == targetGroup - 1));
-
-            descLabel.gameObject.SetActive(true);
-            descLabel.SetFormatedText(targetGroup);
-        }
-        else
-            cars = null;
-
+        targetGroup = displayTargetGroup;
         return this;
     }
 
     private void Awake()
     {
+        container = itemPrefab.parentRectTransform;
         descLabel.gameObject.SetActive(false);
     }
 
@@ -52,9 +41,18 @@ public class State_Garage : GameState
 
         inventoryButton.onClick.AddListener(() => gameManager.OpenPopup<Popup_Confirm>().Setup(111103, false, null));
 
-        if (cars == null || cars.Count < 1)
-            cars = RacerFactory.Racer.AllConfigs;
+        List<RacerConfig> cars = null;
 
+        if (targetGroup > 0)
+        {
+            cars = RacerFactory.Racer.AllConfigs.FindAll(x => x.GroupId == targetGroup);
+            if (cars.Exists(x => Profile.IsUnlockedRacer(x.Id)) == false)
+                cars.AddRange(RacerFactory.Racer.AllConfigs.FindAll(x => x.GroupId == targetGroup - 1));
+
+            descLabel.gameObject.SetActive(true);
+            descLabel.SetFormatedText(targetGroup);
+        }
+        else cars = RacerFactory.Racer.AllConfigs;
         cars.Sort((x, y) => x.GroupId == y.GroupId ? x.Id - y.Id : x.GroupId - y.GroupId);
 
         int lastgroupid = -1;
@@ -90,12 +88,10 @@ public class State_Garage : GameState
             itempos.y = itempos.y < -1 ? 0 : -(itemPrefab.parentRectTransform.rect.height - itemPrefab.rectTransform.rect.height);
         }
         itemPrefab.parentRectTransform.SetAnchordWidth(itempos.x + itemPrefab.rectTransform.rect.width + itemSpace);
-
-        container = itemPrefab.parentRectTransform;
-        container.SetAnchordPositionX(LastPosition);
-
         Destroy(separatorPrefab.gameObject);
         Destroy(itemPrefab.gameObject);
+
+        container.SetAnchordPositionX(LastPosition);
     }
 
     public override float PreClose()
@@ -105,10 +101,20 @@ public class State_Garage : GameState
         return base.PreClose();
     }
 
+    public void RefreshItems()
+    {
+        for (int i = 0; i < container.childCount; i++)
+        {
+            var item = container.GetChild<UiGarageRacerItem>(i);
+            if (item == null) continue;
+            item.UpdateVisual();
+        }
+    }
+
 
     ////////////////////////////////////////////////////////////
     /// STATIC MEMBERS
     ////////////////////////////////////////////////////////////
     private static System.Action<RacerConfig> OnNextTask = carid => gameManager.OpenState<State_Upgrade>();
-    private static List<RacerConfig> cars = null;
+    private static int targetGroup = 0;
 }

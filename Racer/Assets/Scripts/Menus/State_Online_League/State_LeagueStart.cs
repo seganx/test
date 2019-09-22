@@ -75,7 +75,9 @@ public class State_LeagueStart : GameState
 
     private void SetupGarage(GlobalConfig.Data.League leagueInfo)
     {
-        gameManager.OpenState<State_Garage>().Setup(leagueInfo.startGroup, rconfig =>
+        State_Garage garage = null;
+
+        garage = gameManager.OpenState<State_Garage>().Setup(leagueInfo.startGroup, rconfig =>
         {
             if (Profile.IsUnlockedRacer(rconfig.Id))
             {
@@ -104,7 +106,7 @@ public class State_LeagueStart : GameState
                             if (resume)
                                 StartOnlineGame(leagueInfo.startGroup);
                             else
-                                Game.Instance.OpenPopup<Popup_ShopSpecialPackage>().Setup(leagueOfferPackage, pack => { SetupGarage(leagueInfo); });
+                                Game.Instance.OpenPopup<Popup_ShopSpecialPackage>().Setup(leagueOfferPackage, pack => garage.RefreshItems());
                         });
                     }
                     else
