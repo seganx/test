@@ -23,6 +23,13 @@ public class State_GoToRace : GameState
     private int lastPlayersCount = 0;
     private bool waitFirst = true;
 
+    private string lastPingValueString = "lastPingValue";
+    private int lastPingValue
+    {
+        set { PlayerPrefs.SetInt(lastPingValueString, value); }
+        get { return PlayerPrefs.GetInt(lastPingValueString, 50); }
+    }
+
     public State_GoToRace Setup(PlayerData playerdata)
     {
         playerData = playerdata;
@@ -51,10 +58,18 @@ public class State_GoToRace : GameState
         int tipsCounter = 1;
         while (true)
         {
-            int ping = PhotonNetwork.GetPing();
+            if (PlayNetwork.IsOffline) // disconnecte on last game
+            {
+                if (Random.value > .4f) lastPingValue += Random.Range(-2, 2);
+                lastPingValue = Mathf.Clamp(lastPingValue, 30, 90);
+            }
+            else
+                lastPingValue = PhotonNetwork.GetPing();
+
+
             countDownText.SetText(Mathf.Max(0, Mathf.RoundToInt(GlobalConfig.MatchMaking.joinTimeout - waitTime)).ToString());
-            pingLabel.SetFormatedText(ping);
-            pingLabel.target.color = ping < 100 ? Color.green : (ping < 300 ? Color.yellow : Color.red);
+            pingLabel.SetFormatedText(lastPingValue);
+            pingLabel.target.color = lastPingValue < 100 ? Color.green : (lastPingValue < 300 ? Color.yellow : Color.red);
             tipsLabel.SetFormatedText(LocalizationService.Get(111020 + (TipsNumber % 9)));
             if (tipsCounter++ % 15 == 0) TipsNumber++;
             yield return new WaitForSeconds(1);

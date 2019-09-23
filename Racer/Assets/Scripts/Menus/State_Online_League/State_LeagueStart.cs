@@ -80,7 +80,7 @@ public class State_LeagueStart : GameState
     {
         if (Profile.IsUnlockedRacer(rconfig.Id))
         {
-            if (rconfig.GroupId == leagueStartGroup)
+            if (rconfig.GroupId != leagueStartGroup)
             {
                 ShopLogic.SpecialOffer.Refresh();
 
@@ -92,10 +92,10 @@ public class State_LeagueStart : GameState
                     if (packageRacerConfig.GroupId == leagueStartGroup)
                         leagueOfferPackage = item;
                 }
-                leagueOfferPackage = new ShopLogic.SpecialOffer.Package();
+                /*leagueOfferPackage = new ShopLogic.SpecialOffer.Package();
                 leagueOfferPackage.racerIndex = 1;
                 leagueOfferPackage.packgIndex = 2;
-                leagueOfferPackage.item = GlobalConfig.Shop.leagueSpecialPackages[leagueOfferPackage.packgIndex];
+                leagueOfferPackage.item = GlobalConfig.Shop.leagueSpecialPackages[leagueOfferPackage.packgIndex];*/
 
 
                 if (leagueOfferPackage != null)
@@ -132,8 +132,8 @@ public class State_LeagueStart : GameState
         RaceModel.specs.maxPlayTime = GlobalConfig.Race.maxTime;
         RaceModel.traffic.baseDistance = GlobalConfig.Race.traffics.baseDistance;
         RaceModel.traffic.distanceRatio = GlobalConfig.Race.traffics.speedFactor;
-
-        PlayNetwork.IsOffline = false;
+        PlayNetwork.IsOffline = PlayNetwork.IsDisconnectedOnLastOnline;
+        PlayNetwork.IsDisconnectedOnLastOnline = false;
         PlayNetwork.EloScore = Profile.EloScore;
         PlayNetwork.EloPower = Profile.CurrentRacerPower;
         PlayNetwork.MapId = RaceModel.specs.mapId;

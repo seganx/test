@@ -49,7 +49,9 @@ public class PlayNetwork : MonoBehaviour
     #region Network Starting
     public void OnConnectedToMaster()
     {
-        if (IsOffline == false)
+        if (IsOffline)
+            CreateRoom();
+        else
         {
             Debug.LogWarning("countOfPlayers: " + PhotonNetwork.countOfPlayers);
             print("countOfPlayersInRooms: " + PhotonNetwork.countOfPlayersInRooms);
@@ -63,7 +65,6 @@ public class PlayNetwork : MonoBehaviour
             joinGap = eloScoreGap;
             JoinRoom();
         }
-        else CreateRoom();
     }
 
     private void JoinRoom()
@@ -151,6 +152,7 @@ public class PlayNetwork : MonoBehaviour
 
     public void OnConnectionFail(DisconnectCause cause)
     {
+        IsDisconnectedOnLastOnline = true;
         if (callbackError != null) callbackError(Error.ConnectionFail);
     }
 
@@ -207,6 +209,7 @@ public class PlayNetwork : MonoBehaviour
     public static int EloScore { get; set; }
     public static int EloPower { get; set; }
     public static bool IsOffline { get; set; }
+    public static bool IsDisconnectedOnLastOnline { get; set; }
     public static bool IsJoined { get { return PhotonNetwork.inRoom; } }
     public static bool IsMaster { get { return PhotonNetwork.isMasterClient; } }
     public static int PlayerId { get { return PhotonNetwork.player.ID; } }
