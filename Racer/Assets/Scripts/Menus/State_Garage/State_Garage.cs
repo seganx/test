@@ -41,8 +41,21 @@ public class State_Garage : GameState
 
         inventoryButton.onClick.AddListener(() => gameManager.OpenPopup<Popup_Confirm>().Setup(111103, false, null));
 
-        List<RacerConfig> cars = null;
+        DisplayItems();
 
+        container.SetAnchordPositionX(LastPosition);
+    }
+
+    public override float PreClose()
+    {
+        if (container != null)
+            LastPosition = container.anchoredPosition.x;
+        return base.PreClose();
+    }
+
+    public void DisplayItems()
+    {
+        List<RacerConfig> cars = null;
         if (targetGroup > 0)
         {
             cars = RacerFactory.Racer.AllConfigs.FindAll(x => x.GroupId == targetGroup);
@@ -55,6 +68,9 @@ public class State_Garage : GameState
         else cars = RacerFactory.Racer.AllConfigs;
         cars.Sort((x, y) => x.GroupId == y.GroupId ? x.Id - y.Id : x.GroupId - y.GroupId);
 
+        container.RemoveChildren(2);
+        separatorPrefab.gameObject.SetActive(true);
+        itemPrefab.gameObject.SetActive(true);
         int lastgroupid = -1;
         Vector3 itempos = Vector3.zero;
         foreach (var car in cars)
@@ -88,27 +104,9 @@ public class State_Garage : GameState
             itempos.y = itempos.y < -1 ? 0 : -(itemPrefab.parentRectTransform.rect.height - itemPrefab.rectTransform.rect.height);
         }
         itemPrefab.parentRectTransform.SetAnchordWidth(itempos.x + itemPrefab.rectTransform.rect.width + itemSpace);
-        Destroy(separatorPrefab.gameObject);
-        Destroy(itemPrefab.gameObject);
 
-        container.SetAnchordPositionX(LastPosition);
-    }
-
-    public override float PreClose()
-    {
-        if (container != null)
-            LastPosition = container.anchoredPosition.x;
-        return base.PreClose();
-    }
-
-    public void RefreshItems()
-    {
-        for (int i = 0; i < container.childCount; i++)
-        {
-            var item = container.GetChild<UiGarageRacerItem>(i);
-            if (item == null) continue;
-            item.UpdateVisual();
-        }
+        separatorPrefab.gameObject.SetActive(false);
+        itemPrefab.gameObject.SetActive(false);
     }
 
 

@@ -6,6 +6,7 @@ Shader "SeganX/UI/AlphaGlow"
         _MainTex("Sprite", 2D) = "white" {}
         _LightTex("Light Sprite", 2D) = "white" {}
         _GlowColor("Glow Color", Color) = (1,1,1,1)
+        _GlowSpeed("Glow Speed", Float) = 2.5
         _ColorStrength("Color Strength", Float) = 1
 
         _Queue("Queue", Int) = 3002
@@ -76,6 +77,7 @@ Shader "SeganX/UI/AlphaGlow"
                 sampler2D _LightTex;
                 uniform float4 _MainTex_ST;
                 uniform float4 _LightTex_ST;
+                float _GlowSpeed;
 
                 vs_out vert(vs_in v)
                 {
@@ -84,7 +86,7 @@ Shader "SeganX/UI/AlphaGlow"
                     o.col = v.col;
                     o.uv0 = TRANSFORM_TEX(v.uv0, _MainTex);
                     o.uv1 = TRANSFORM_TEX(v.uv0, _LightTex);
-                    o.uv1.x -= _Time.x * 2.5f;
+                    o.uv1.x -= _Time.x * _GlowSpeed;
 
     #ifdef UNITY_HALF_TEXEL_OFFSET
                     o.pos.xy += (_ScreenParams.zw - 1.0)*float2(-1,1);

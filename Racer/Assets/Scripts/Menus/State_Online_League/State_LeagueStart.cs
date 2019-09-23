@@ -105,7 +105,7 @@ public class State_LeagueStart : GameState
                         if (resume)
                             StartOnlineGame(leagueStartGroup);
                         else
-                            Game.Instance.OpenPopup<Popup_ShopSpecialPackage>().Setup(leagueOfferPackage, pack => state_Garage.RefreshItems());
+                            Game.Instance.OpenPopup<Popup_ShopSpecialPackage>().Setup(leagueOfferPackage, pack => state_Garage.DisplayItems());
                     });
                 }
                 else
