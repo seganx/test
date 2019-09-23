@@ -10,7 +10,7 @@ public class Popup_ShopSpecialPackage : GameState
     [SerializeField] private Image racerImage = null;
     [SerializeField] private LocalText descLabel = null;
     [SerializeField] private Transform cardHolder = null;
-    [SerializeField] private LocalText cardsLabel = null;
+    [SerializeField] private LocalText racerGroupLabel = null;
     [SerializeField] private LocalText priceLabel = null;
     [SerializeField] private LocalText realPriceLabel = null;
     [SerializeField] private LocalText discountLabel = null;
@@ -28,7 +28,7 @@ public class Popup_ShopSpecialPackage : GameState
         racerImage.sprite = GarageRacerImager.GetImageTransparent(config.Id, config.DefaultRacerCustom, racerImage.rectTransform.rect.width, racerImage.rectTransform.rect.height);
         descLabel.SetFormatedText(pack.item.discount, config.CardCount);
         GlobalFactory.CreateRacerCard(pack.racerId, cardHolder);
-        cardsLabel.SetFormatedText(config.CardCount);
+        racerGroupLabel.SetFormatedText(config.GroupId);
         priceLabel.SetFormatedText(pack.item.price.ToString("#,0"));
         realPriceLabel.SetFormatedText(pack.item.realPrice.ToString("#,0"));
         discountLabel.SetText(pack.item.discount.ToString());

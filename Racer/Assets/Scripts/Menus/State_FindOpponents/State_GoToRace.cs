@@ -58,7 +58,7 @@ public class State_GoToRace : GameState
         int tipsCounter = 1;
         while (true)
         {
-            if (PlayNetwork.IsOffline) // disconnecte on last game
+            if (PlayNetwork.IsOffline) // disconnect on last game
             {
                 if (Random.value > .4f) lastPingValue += Random.Range(-2, 2);
                 lastPingValue = Mathf.Clamp(lastPingValue, 30, 90);
