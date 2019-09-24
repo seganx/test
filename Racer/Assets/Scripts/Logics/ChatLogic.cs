@@ -29,4 +29,9 @@ public class ChatLogic : MonoBehaviour
         }
         else return null;
     }
+
+    public static void Clear()
+    {
+        chats.Clear();
+    }
 }
