@@ -140,6 +140,7 @@ public class State_GoToRace : GameState
             Network.SendScore(Profile.Score);
             FuelTimerPresenter.ReduceFuel();
         }
+        ChatLogic.Clear();
 
         StartCoroutine(DisplayPlayersInfo());
     }
