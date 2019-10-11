@@ -87,8 +87,6 @@ namespace SeganX
                 if (instance == null)
                 {
                     DontDestroyOnLoad(instance = new GameObject().AddComponent<WWWHandler>());
-
-
                 }
                 return instance;
             }

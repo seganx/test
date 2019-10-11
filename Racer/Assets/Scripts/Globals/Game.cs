@@ -12,6 +12,14 @@ public class Game : GameManager<Game>
     {
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
         Application.targetFrameRate = 25;
+
+        SeganX.Console.Info.SetOnDisplayInfo(info => {
+
+            string str = "Ver: " + Application.version;
+            str += PhotonNetwork.connected ? (" Onlines: " + PhotonNetwork.countOfPlayers + " Rooms: " + PhotonNetwork.countOfRooms) : "Not in Lobby";
+            str += "\nId: " + SeganX.Console.Info.DisplayDeviceID;
+            return str;
+        });
     }
 
     private IEnumerator Start()

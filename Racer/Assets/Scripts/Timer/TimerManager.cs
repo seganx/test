@@ -15,15 +15,15 @@ public class TimerManager : Base
         AdTimer = 1, LoadingBoxItem0 = 2, FullFuelTimer = 3, StartDiscountTimer = 4, FinishDiscountTimer = 5,
         LegendShopActivatorTimer = 6, LegendShopTimer = 7, LeagueStartTimer = 8, LeagueEndTimer = 9, RacerSpecialOfferTimer = 10,
         CombinedShopItemTimer = 11, LoadingBoxItem1 = 12,
-        ShopSpecialPackage0 = 20, 
-        ShopSpecialPackage1 = 21, 
-        ShopSpecialPackage2 = 22, 
-        ShopSpecialPackage3 = 23, 
-        ShopSpecialPackage4 = 24, 
-        ShopSpecialPackage5 = 25, 
-        ShopSpecialPackage6 = 26, 
-        ShopSpecialPackage7 = 27, 
-        ShopSpecialPackage8 = 28, 
+        ShopSpecialPackage0 = 20,
+        ShopSpecialPackage1 = 21,
+        ShopSpecialPackage2 = 22,
+        ShopSpecialPackage3 = 23,
+        ShopSpecialPackage4 = 24,
+        ShopSpecialPackage5 = 25,
+        ShopSpecialPackage6 = 26,
+        ShopSpecialPackage7 = 27,
+        ShopSpecialPackage8 = 28,
         ShopSpecialPackage9 = 29,
     }
 
@@ -47,7 +47,7 @@ public class TimerManager : Base
         Save();
     }
 
-    IEnumerator TryValidateTime()
+    private IEnumerator TryValidateTime()
     {
         int tryCount = 0;
         while (!IsTimeValid && tryCount++ < 5)
@@ -115,32 +115,28 @@ public class TimerManager : Base
 
     public static void ValidateTime()
     {
-        if (!isTimeValidating)
+        if (isTimeValidating) return;
+        isTimeValidating = true;
+
+        IsTimeValid = false;
+        Network.GetConfig((msg, res) =>
         {
-
-            IsTimeValid = false;
-
-            isTimeValidating = true;
-            Network.GetConfig((msg, res) =>
+            isTimeValidating = false;
+            if (msg == Network.Message.ok)
             {
-                isTimeValidating = false;
-                if (msg == Network.Message.ok)
+                IsTimeValid = true;
+                deltaTime = new DateTime(res.serverTime, DateTimeKind.Utc) - DateTime.Now;
+                leagueEndTime = new DateTime(res.league1EndDate, DateTimeKind.Utc);
+
+                if (!TimerManagerInitOnce)
                 {
-                    IsTimeValid = true;
-                    deltaTime = new DateTime(res.serverTime, DateTimeKind.Utc) - DateTime.Now;
-                    //leagueStartTime = new DateTime(res.league1StartDate, DateTimeKind.Utc);
-                    leagueEndTime = new DateTime(res.league1EndDate, DateTimeKind.Utc);
-
-                    if (!TimerManagerInitOnce)
-                    {
-                        TimerManagerInitOnce = true;
-                        InitDefaultValues();
-                    }
-
-                    Debug.Log("TimerManager Validated");
+                    TimerManagerInitOnce = true;
+                    InitDefaultValues();
                 }
-            });
-        }
+
+                Debug.Log("TimerManager Validated");
+            }
+        });
     }
 
     public static int GetRemainTime(Type timerType)
@@ -161,8 +157,9 @@ public class TimerManager : Base
         SetTimer(Type.LegendShopActivatorTimer, GlobalConfig.Shop.blackMarket.refreshTime);
     }
 
-    static string timerManagerInitOnceString = "TimerManagerInitOnce";
-    static bool TimerManagerInitOnce
+    private static string timerManagerInitOnceString = "TimerManagerInitOnce";
+
+    private static bool TimerManagerInitOnce
     {
         get { return PlayerPrefs.GetInt(timerManagerInitOnceString, 0) == 1; }
         set { PlayerPrefs.SetInt(timerManagerInitOnceString, value ? 1 : 0); }

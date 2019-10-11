@@ -53,11 +53,7 @@ public class PlayNetwork : MonoBehaviour
             CreateRoom();
         else
         {
-            Debug.LogWarning("countOfPlayers: " + PhotonNetwork.countOfPlayers);
-            print("countOfPlayersInRooms: " + PhotonNetwork.countOfPlayersInRooms);
-            print("countOfPlayersOnMaster: " + PhotonNetwork.countOfPlayersOnMaster);
-            print("countOfRooms: " + PhotonNetwork.countOfRooms);
-
+            Debug.LogWarning("countOfPlayers: " + PhotonNetwork.countOfPlayers + "\ncountOfPlayersInRooms: " + PhotonNetwork.countOfPlayersInRooms + "\ncountOfPlayersOnMaster: " + PhotonNetwork.countOfPlayersOnMaster + "\ncountOfRooms: " + PhotonNetwork.countOfRooms);
             eloScoreMaxGap = Mathf.Max(GlobalConfig.MatchMaking.eloScoreCount, Mathf.RoundToInt(GlobalConfig.MatchMaking.eloScoreParams.x * EloScore + GlobalConfig.MatchMaking.eloScoreParams.y));
             eloScoreGap = eloScoreMaxGap / GlobalConfig.MatchMaking.eloScoreCount;
             eloPowerMaxGap = Mathf.RoundToInt(GlobalConfig.MatchMaking.eloPowerParams.x * EloPower + GlobalConfig.MatchMaking.eloPowerParams.y);
