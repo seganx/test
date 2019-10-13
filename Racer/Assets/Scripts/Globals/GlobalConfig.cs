@@ -113,7 +113,8 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
             public float maxTime = 60;
             public float startSpeed = 50;
             public float racerDistance = 5;
-            public float nosMaxDistance = 2;
+            public float nosTrafficMaxDistance = 4;
+            public float nosTrafficFactor = 0.1f;
             public float nosBonusWidth = 40;
             public float nosBonusMinPercentage = 0.4f;
             public float nosStartFactor = 0.1f;
