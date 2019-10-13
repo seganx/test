@@ -133,6 +133,7 @@ public class UiLoadingBoxFreePackage : TimerPresenter
 
     public override void SetActiveTimerObjects(bool active)
     {
+        buyButton.gameObject.SetActive(active);
         getButton.gameObject.SetActive(!active);
         if (deactiveButtonGameObject)
             deactiveButtonGameObject.SetActive(active);
