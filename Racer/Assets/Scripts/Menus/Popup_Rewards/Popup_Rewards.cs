@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public class Popup_Rewards : GameState
@@ -9,13 +10,15 @@ public class Popup_Rewards : GameState
     [SerializeField] private GameObject titleReward = null;
     [SerializeField] private LocalText titleRaceReward = null;
     [SerializeField] private LocalText titlePurchaseReward = null;
-    [SerializeField] private Transform rewardContent = null;
+    [SerializeField] private RectTransform rewardContent = null;
     [SerializeField] private UiRewardItemResource gemPrefab = null;
     [SerializeField] private UiRewardItemResource coinPrefab = null;
     [SerializeField] private UiRewardRacerCard racerCardPrefab = null;
     [SerializeField] private UiRewardCustomeCard racerCustomePrefab = null;
 
     private System.Action onNextTaskFunc = null;
+    private ScrollRect scroller = null;
+    private float contentPos = 0;
 
     private void Awake()
     {
@@ -23,6 +26,7 @@ public class Popup_Rewards : GameState
         titleRaceReward.gameObject.SetActive(false);
         titlePurchaseReward.gameObject.SetActive(false);
 
+        scroller = rewardContent.GetComponentInParent<ScrollRect>(true);
         for (int i = 0; i < rewardContent.childCount; i++)
             rewardContent.GetChild(i).gameObject.SetActive(false);
     }
@@ -39,6 +43,7 @@ public class Popup_Rewards : GameState
 
         UiShowHide.ShowAll(transform);
         yield return new WaitForSeconds(0.5f);
+        contentPos = rewardContent.anchoredPosition.x;
 
         // first open racer cards
         for (int i = 0; i < rewardContent.childCount; i++)
@@ -50,17 +55,39 @@ public class Popup_Rewards : GameState
             item.gameObject.SetActive(true);
             yield return new WaitUntil(() => item.IsOpened);
             yield return new WaitForSeconds(0.1f);
+            MoveContentToLeft(item.rectTransform.rect.width);
         }
 
         // open remained items
         for (int i = 0; i < rewardContent.childCount; i++)
         {
-            var item = rewardContent.GetChild(i);
+            var item = rewardContent.GetChild<RectTransform>(i);
             if (item.gameObject.activeSelf) continue;
 
             // wait and display
             yield return new WaitForSeconds(0.75f);
             item.gameObject.SetActive(true);
+            MoveContentToLeft(item.rect.width);
+        }
+    }
+
+    private void MoveContentToLeft(float itemWidth)
+    {
+        if (rewardContent.rect.width + rewardContent.anchoredPosition.x > 800) return;
+        contentPos = contentPos - (itemWidth + 50);
+    }
+
+    private void Update()
+    {
+        if (Mathf.Abs(scroller.velocity.x) > 0)
+        {
+            contentPos = rewardContent.anchoredPosition.x;
+        }
+        else
+        {
+            var pos = rewardContent.anchoredPosition;
+            pos.x += (contentPos - pos.x) * Time.deltaTime * 20;
+            rewardContent.anchoredPosition = pos;
         }
     }
 

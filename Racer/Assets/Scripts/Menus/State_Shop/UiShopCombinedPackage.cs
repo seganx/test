@@ -62,7 +62,7 @@ public class UiShopCombinedPackage : Base
         ProfileLogic.SyncWidthServer(true, done => { });
 
 #if DATABEEN
-        DataBeen.SendContentView("CombinedPack_" + pack.coin, "CombinedPack_" + pack.coin);
+        DataBeen.SendContentView("CombinedPack_" + pack.price, "CombinedPack_" + pack.price);
 #endif
     }
 }
