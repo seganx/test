@@ -136,6 +136,7 @@ public class State_LeagueStart : GameState
         PlayNetwork.IsDisconnectedOnLastOnline = false;
         PlayNetwork.EloScore = Profile.EloScore;
         PlayNetwork.EloPower = Profile.CurrentRacerPower;
+        PlayNetwork.EloGroup = Profile.CurrentRacerGroup;
         PlayNetwork.MapId = RaceModel.specs.mapId;
         PlayNetwork.MaxPlayerCount = RaceModel.specs.maxPlayerCount;
 

@@ -138,6 +138,7 @@ public class State_Home : GameState
         PlayNetwork.IsOffline = true;
         PlayNetwork.EloScore = Profile.EloScore;
         PlayNetwork.EloPower = Profile.CurrentRacerPower;
+        PlayNetwork.EloGroup = Profile.CurrentRacerGroup;
         PlayNetwork.MapId = RaceModel.specs.mapId;
         PlayNetwork.MaxPlayerCount = RaceModel.specs.maxPlayerCount;
 

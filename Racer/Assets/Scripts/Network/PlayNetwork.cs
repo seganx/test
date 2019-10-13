@@ -57,6 +57,7 @@ public class PlayNetwork : MonoBehaviour
             eloScoreMaxGap = Mathf.Max(GlobalConfig.MatchMaking.eloScoreCount, Mathf.RoundToInt(GlobalConfig.MatchMaking.eloScoreParams.x * EloScore + GlobalConfig.MatchMaking.eloScoreParams.y));
             eloScoreGap = eloScoreMaxGap / GlobalConfig.MatchMaking.eloScoreCount;
             eloPowerMaxGap = Mathf.RoundToInt(GlobalConfig.MatchMaking.eloPowerParams.x * EloPower + GlobalConfig.MatchMaking.eloPowerParams.y);
+            eloGroupMaxGap = Mathf.RoundToInt(GlobalConfig.MatchMaking.eloGroupParams.x * EloGroup + GlobalConfig.MatchMaking.eloGroupParams.y);
 
             joinGap = eloScoreGap;
             JoinRoom();
@@ -65,10 +66,13 @@ public class PlayNetwork : MonoBehaviour
 
     private void JoinRoom()
     {
-        var sqlLobbyFilter = string.Format("C0 = \"{0}\" AND C1 >= {1} AND C1 <= {2} AND C2 >= {3} AND C2 <= {4}",
-            VersionedName,
-            EloScore - joinGap, EloScore + joinGap,
-            EloPower - eloPowerMaxGap, EloPower + eloPowerMaxGap);
+        var sqlLobbyFilter = string.Format(
+            GlobalConfig.MatchMaking.eloSqlLobby,
+            VersionedName,                                          // as C0 : {0}
+            EloScore - joinGap, EloScore + joinGap,                 // as C1 : {1} {2}
+            EloPower - eloPowerMaxGap, EloPower + eloPowerMaxGap,   // as C2 : {3} {4}
+            EloGroup - eloGroupMaxGap, EloGroup + eloGroupMaxGap    // as C3 : {5} {6}
+            ); 
         TypedLobby sqlLobby = new TypedLobby("myLobby", LobbyType.SqlLobby);
         PhotonNetwork.JoinRandomRoom(null, 0, MatchmakingMode.FillRoom, sqlLobby, sqlLobbyFilter);
         Debug.LogFormat("{0} : JoinRoom eloScore[{1}] eloScoreGap[{2}] eloScoreMaxGap[{3}] eloPower[{4}] eloPowerMaxGap[{5}] sqlLobby[{6}]", name, EloScore, eloScoreGap, eloScoreMaxGap, EloPower, eloPowerMaxGap, sqlLobbyFilter);
@@ -92,6 +96,7 @@ public class PlayNetwork : MonoBehaviour
         roomProperies.Add("C0", VersionedName);
         roomProperies.Add("C1", EloScore);
         roomProperies.Add("C2", EloPower);
+        roomProperies.Add("C3", EloGroup);
 
         RoomOptions roomOptions = new RoomOptions();
         roomOptions.MaxPlayers = MaxPlayerCount;
@@ -186,6 +191,7 @@ public class PlayNetwork : MonoBehaviour
     ///////////////////////////////////////////////////////////////////////////////////
     //  STATIC MEMBERS
     ///////////////////////////////////////////////////////////////////////////////////
+    private static int eloGroupMaxGap = 0;
     private static int eloPowerMaxGap = 0;
     private static int eloScoreGap = 0;
     private static int eloScoreMaxGap = 0;
@@ -204,6 +210,7 @@ public class PlayNetwork : MonoBehaviour
     public static int MapId { get; set; }
     public static int EloScore { get; set; }
     public static int EloPower { get; set; }
+    public static int EloGroup { get; set; }
     public static bool IsOffline { get; set; }
     public static bool IsDisconnectedOnLastOnline { get; set; }
     public static bool IsJoined { get { return PhotonNetwork.inRoom; } }

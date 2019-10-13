@@ -90,7 +90,7 @@ public class State_Garage : GameState
                 if (Profile.IsUnlockingRacer(car.Id) && Profile.UnlockRacer(car.Id))
                 {
                     gameManager.OpenState<State_UnlockRacer>().Setup(car.Id);
-                    ProfileLogic.SyncWidthServer(true, success => Debug.Log("Profile Uploaded: " + success));
+                    ProfileLogic.SyncWidthServer(true, success => { });
                 }
                 else
                 {

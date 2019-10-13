@@ -109,18 +109,21 @@ public static class RaceLogic
             Popup_Rewards.AddRacerCard(racerid, 1);
         }
 
-        ProfileLogic.SyncWidthServer(true, success => Debug.Log("Profile Uploaded: " + success));
+        ProfileLogic.SyncWidthServer(true, success => { });
     }
 
     private static void SetRewardsToProfile()
     {
         if (raceResult.rewards.custome != null)
             Profile.AddRacerCustom(raceResult.rewards.custome.type, raceResult.rewards.custome.racerId, raceResult.rewards.custome.customId);
-        if (raceResult.rewards.racerId > 0)
+        if (raceResult.rewards.racerId > 0 && raceResult.rewards.racerCount > 0)
             Profile.AddRacerCard(raceResult.rewards.racerId, raceResult.rewards.racerCount);
         if (raceResult.rewards.gems > 0)
             Profile.EarnResouce(raceResult.rewards.gems, 0);
         if (raceResult.rewards.coins > 0)
             Profile.EarnResouce(0, raceResult.rewards.coins);
+
+        if (raceResult.rewards.racerCount < 0)
+            Debug.LogWarning("raceResult.rewards.racerCount: " + raceResult.rewards.racerCount);
     }
 }

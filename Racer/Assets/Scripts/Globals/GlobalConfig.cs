@@ -48,7 +48,9 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
             public int joinTimeout = 15;
             public int eloScoreCount = 8;
             public Vector2 eloScoreParams = new Vector2(0.5f, -500);
-            public Vector2 eloPowerParams = new Vector2(0.1f, 0);
+            public Vector2 eloPowerParams = new Vector2(0, 1000);
+            public Vector2 eloGroupParams = new Vector2(0, 0);
+            public string eloSqlLobby = "C0 = \"{0}\" AND C1 >= {1} AND C1 <= {2} AND C2 >= {3} AND C2 <= {4} AND C3 >= {5} AND C3 <= {6}";
         }
 
         [System.Serializable]
@@ -166,12 +168,14 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
             [System.Serializable]
             public class CombinedPackage
             {
-                public int coinGemValue = 0;
                 public int coin = 0;
                 public int coinDiscount = 0;
                 public int coinBackgroundIndex = 0;
-                public float racerGemValueFactor = 0;
                 public int customes = 0;
+                public int racers = 4;
+                public int racersCenter = 5;
+                public int racersRaduis = 5;
+                public int price = 200;
             }
 
             [System.Serializable]

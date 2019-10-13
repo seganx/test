@@ -75,6 +75,15 @@ public static class Profile
         }
     }
 
+    public static int CurrentRacerGroup
+    {
+        get
+        {
+            var racerconfig = RacerFactory.Racer.GetConfig(SelectedRacer);
+            return racerconfig == null ? 0 : racerconfig.GroupId;
+        }
+    }
+
     public static int SelectedRacer
     {
         get { return data.selectedRacer; }

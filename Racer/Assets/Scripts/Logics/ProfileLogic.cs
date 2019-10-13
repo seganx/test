@@ -20,6 +20,17 @@ public class ProfileLogic : MonoBehaviour
         SaveToLocal();
     }
 
+    //private IEnumerator Start()
+    //{
+    //    var wait = new WaitForSeconds(5);
+    //    while (true)
+    //    {
+    //        if (Synced == false)
+    //            SaveToLocal();
+    //        yield return wait;
+    //    }
+    //}
+
     ////////////////////////////////////////////////////////
     /// STATIC MEMBER
     ////////////////////////////////////////////////////////
@@ -34,6 +45,8 @@ public class ProfileLogic : MonoBehaviour
 
     public static void SyncWidthServer(bool sendProfile, System.Action<bool> nextTask)
     {
+        SaveToLocal();
+
         if (IsRacersConfigUpdated == false)
         {
             var address = GlobalConfig.Instance.address + GlobalConfig.Instance.version + "/racers.txt?" + System.DateTime.Now.Ticks;

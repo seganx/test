@@ -35,7 +35,7 @@ public class Game : GameManager<Game>
 #endif
 
         //  first try to connect to internet
-        Http.requestTimeout = GlobalConfig.Server.requestTimeout / 3;
+        Http.requestTimeout = GlobalConfig.Server.requestTimeout / 2;
         ProfileLogic.SyncWidthServer(false, success =>
         {
             Http.requestTimeout = GlobalConfig.Server.requestTimeout;
