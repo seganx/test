@@ -6,6 +6,7 @@ public class RacerTrafficCounter : MonoBehaviour
 {
     private TrafficCar trafficCar = null;
 
+    public float SideDistance { set; get; }
     public int TotalTrafficPassed { get; set; }
 
     private void FixedUpdate()
@@ -27,6 +28,7 @@ public class RacerTrafficCounter : MonoBehaviour
             if (trafficCar.CanMove)
             {
                 TotalTrafficPassed++;
+                SideDistance = Mathf.Abs(transform.position.x - trafficCar.transform.position.x);
                 SendMessageUpwards("OnTrafficPassed", this, SendMessageOptions.DontRequireReceiver);
             }
 

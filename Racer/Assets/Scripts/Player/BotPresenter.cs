@@ -119,9 +119,10 @@ public class BotPresenter : Base
     private static RacerProfile CreateRandomRacerProfile(int playerRacerId, int playerPower)
     {
         int targetPower = 0;
+        int groupId = RacerFactory.Racer.GetConfig(playerRacerId).GroupId;
         if (RaceModel.IsOnline)
         {
-            var factor = GlobalConfig.Race.bots.powers[RacerFactory.Racer.GetConfig(playerRacerId).GroupId];
+            var factor = GlobalConfig.Race.bots.powers[groupId];
             targetPower = Mathf.RoundToInt(factor.x * playerPower + factor.y);
         }
         else
@@ -130,7 +131,7 @@ public class BotPresenter : Base
             targetPower = Mathf.RoundToInt(factor.x * playerPower + factor.y);
         }
 
-        var res = new RacerProfile() { id = SelectRacer(targetPower, playerRacerId) };
+        var res = new RacerProfile() { id = SelectRacer(groupId, targetPower, playerRacerId) };
         var config = RacerFactory.Racer.GetConfig(res.id);
         res.cards = config.CardCount;
         res.level.Level = 1;
@@ -150,10 +151,11 @@ public class BotPresenter : Base
         return res;
     }
 
-    private static int SelectRacer(int targetPower, int playerRacerId)
+    private static int SelectRacer(int groupId, int targetPower, int playerRacerId)
     {
         targetPower = Mathf.Max(targetPower, RacerFactory.Racer.AllConfigs[0].MinPower);
-        var list = RacerFactory.Racer.AllConfigs.FindAll(x => x.MinPower.Between(targetPower + GlobalConfig.Race.bots.powerRange.x, targetPower + GlobalConfig.Race.bots.powerRange.y));
+        var list = RacerFactory.Racer.AllConfigs.FindAll(x => x.GroupId == groupId && x.MinPower.Between(targetPower + GlobalConfig.Race.bots.powerRange.x, targetPower + GlobalConfig.Race.bots.powerRange.y));
+        if (list.Count < 1) list = RacerFactory.Racer.AllConfigs.FindAll(x => x.GroupId == groupId);
         if (list.Count < 1) list = RacerFactory.Racer.AllConfigs;
         var center = list.FindIndex(x => x.Id == playerRacerId);
         var index = SelectProbability(list.Count, center - 1, 4, 0.5f);

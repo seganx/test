@@ -48,6 +48,7 @@ public abstract class PlayerPresenter : Base
 
         if (player.IsPlayer)
         {
+            racer.gameObject.AddComponent<RacerTrafficCounter>();
             racer.gameObject.AddComponent<AudioListener>();
             transform.GetChild(0).ScaleLocalPosition(1, racer.Size.y / 1.279f, 0.5f + 0.4f * (racer.Size.z / 3.4f));
         }
@@ -162,6 +163,13 @@ public abstract class PlayerPresenter : Base
     public virtual void SendChat(int index)
     {
         ChatLogic.Add(player.name, index);
+    }
+
+    public virtual void OnTrafficPassed(RacerTrafficCounter sender)
+    {
+        if (IsNitrosFull || IsNitrosUsing || sender.SideDistance > 4) return;
+        var value = Mathf.Clamp01(4 - sender.SideDistance) * 0.1f;
+        player.CurrNitrous += value;
     }
 
     ////////////////////////////////////////////////////////////
