@@ -17,6 +17,9 @@ public class UiLoadingBoxFreePackage : TimerPresenter
     [SerializeField] private GameObject deactiveButtonGameObject = null;
     [SerializeField] private LocalText timerText = null;
 
+    [SerializeField] private Button buyButton = null;
+    [SerializeField] private LocalText gemPriceText = null;
+
     private GlobalConfig.Data.Shop.LoadingBox data = null;
 
     private bool IsSameDay
@@ -64,51 +67,62 @@ public class UiLoadingBoxFreePackage : TimerPresenter
 
                 newTime = seconds + (minutes * 60) + (hours * 3600);
             }
-            
+
             if (State_Settings.IsFreePackageNotificationActive && newTime > 3600)
                 NotificationManager.SendWithAppIcon(newTime, NotificationType.FreePackage);
             StartTimer(newTime);
 
             UpdateVisual();
 
-            switch (UnityEngine.Random.Range(0, 100) % 3)
-            {
-                case 0:
-                    {
-                        var gems = data.gemValues.RandomOne();
-                        Profile.EarnResouce(gems, 0);
-                        Popup_Rewards.AddResource(gems, 0);
-                    }
-                    break;
-
-                case 1:
-                    {
-                        var coins = data.coinValues.RandomOne();
-                        Profile.EarnResouce(0, coins);
-                        Popup_Rewards.AddResource(0, coins);
-                    }
-                    break;
-
-                case 2:
-                    {
-                        var list = RacerFactory.Racer.AllConfigs.FindAll(x => x.GroupId.Between(data.cardsGroups.x, data.cardsGroups.y));
-                        var racerid = list.Count > 0 ? list.RandomOne().Id : RewardLogic.SelectRacerReward();
-                        Profile.AddRacerCard(racerid, 1);
-                        Popup_Rewards.AddRacerCard(racerid, 1);
-                    }
-                    break;
-                    /*
-                case 3:
-                    {
-                        var reward = RewardLogic.GetCustomReward();
-                        Profile.AddRacerCustom(reward.type, reward.racerId, reward.customId);
-                        Popup_Rewards.AddCustomCard(reward.type, reward.racerId, reward.customId);
-                    }
-                    break;*/
-            }
-
-            Popup_Rewards.Display();
+            ShowReward();
         });
+
+        gemPriceText.SetText(data.gemPrice.ToString());
+        buyButton.onClick.AddListener(() =>
+        {
+            Game.SpendGem(data.gemPrice, ShowReward);
+        });
+    }
+
+    public void ShowReward()
+    {
+        switch (UnityEngine.Random.Range(0, 100) % 3)
+        {
+            case 0:
+                {
+                    var gems = data.gemValues.RandomOne();
+                    Profile.EarnResouce(gems, 0);
+                    Popup_Rewards.AddResource(gems, 0);
+                }
+                break;
+
+            case 1:
+                {
+                    var coins = data.coinValues.RandomOne();
+                    Profile.EarnResouce(0, coins);
+                    Popup_Rewards.AddResource(0, coins);
+                }
+                break;
+
+            case 2:
+                {
+                    var list = RacerFactory.Racer.AllConfigs.FindAll(x => x.GroupId.Between(data.cardsGroups.x, data.cardsGroups.y));
+                    var racerid = list.Count > 0 ? list.RandomOne().Id : RewardLogic.SelectRacerReward();
+                    Profile.AddRacerCard(racerid, 1);
+                    Popup_Rewards.AddRacerCard(racerid, 1);
+                }
+                break;
+                /*
+            case 3:
+                {
+                    var reward = RewardLogic.GetCustomReward();
+                    Profile.AddRacerCustom(reward.type, reward.racerId, reward.customId);
+                    Popup_Rewards.AddCustomCard(reward.type, reward.racerId, reward.customId);
+                }
+                break;*/
+        }
+
+        Popup_Rewards.Display();
     }
 
     public override void UpdateTimerText(int remainTime)
