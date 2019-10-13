@@ -15,6 +15,10 @@ public class Popup_Rewards : GameState
     [SerializeField] private UiRewardItemResource coinPrefab = null;
     [SerializeField] private UiRewardRacerCard racerCardPrefab = null;
     [SerializeField] private UiRewardCustomeCard racerCustomePrefab = null;
+    [SerializeField] private UiShowHide bottomBar = null;
+    [SerializeField] private LocalText inventoryDesc = null;
+    [SerializeField] private Button inventoryButton = null;
+
 
     private System.Action onNextTaskFunc = null;
     private ScrollRect scroller = null;
@@ -29,6 +33,8 @@ public class Popup_Rewards : GameState
         scroller = rewardContent.GetComponentInParent<ScrollRect>(true);
         for (int i = 0; i < rewardContent.childCount; i++)
             rewardContent.GetChild(i).gameObject.SetActive(false);
+
+        inventoryButton.onClick.AddListener(() => gameManager.OpenPopup<Popup_Inventory>().Setup(UpdateInventoryDesc));
     }
 
     private IEnumerator Start()
@@ -41,7 +47,9 @@ public class Popup_Rewards : GameState
         for (int i = 0; i < rewardContent.childCount; i++)
             rewardContent.GetChild(i).gameObject.SetActive(false);
 
+        UpdateInventoryDesc();
         UiShowHide.ShowAll(transform);
+        bottomBar.Hide();
         yield return new WaitForSeconds(0.5f);
         contentPos = rewardContent.anchoredPosition.x;
 
@@ -55,8 +63,13 @@ public class Popup_Rewards : GameState
             item.gameObject.SetActive(true);
             yield return new WaitUntil(() => item.IsOpened);
             yield return new WaitForSeconds(0.1f);
-            MoveContentToLeft(item.rectTransform.rect.width);
+            if (i < rewardContent.childCount - 1)
+            {
+                item = rewardContent.GetChild<UiRewardRacerCard>(i + 1);
+                if (item != null) MoveContentToLeft(item.rectTransform.rect.width);
+            }
         }
+        bottomBar.Show();
 
         // open remained items
         for (int i = 0; i < rewardContent.childCount; i++)
@@ -67,8 +80,19 @@ public class Popup_Rewards : GameState
             // wait and display
             yield return new WaitForSeconds(0.75f);
             item.gameObject.SetActive(true);
-            MoveContentToLeft(item.rect.width);
+            if (i < rewardContent.childCount - 1)
+            {
+                item = rewardContent.GetChild<RectTransform>(i);
+                if (item != null) MoveContentToLeft(item.rect.width);
+            }
         }
+    }
+
+    private void UpdateInventoryDesc()
+    {
+        int rcards = Popup_Inventory.ComputeNumberOfCards();
+        inventoryDesc.SetFormatedText(rcards);
+        inventoryDesc.gameObject.SetActive(rcards > 0);
     }
 
     private void MoveContentToLeft(float itemWidth)

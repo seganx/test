@@ -264,6 +264,7 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
             public int gemToCoin = 200;
             public int instaToGem = 100;
             public int nicknamePrice = 1200;
+            public float inventorySellFactor = 2.0f;
             public int leagueSpecialPackagesNextTime = 172800;
             public BlackMarket blackMarket = new BlackMarket();
             public List<LoadingBox> loadingBoxPackage = new List<LoadingBox>();
@@ -404,7 +405,7 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
 #if UNITY_EDITOR
         if (Instance.offline)
         {
-            SeganX.Console.Logger.Enabled = Server.debug;
+            //SeganX.Console.Logger.Enabled = Server.debug;
             return true;
         }
 #endif

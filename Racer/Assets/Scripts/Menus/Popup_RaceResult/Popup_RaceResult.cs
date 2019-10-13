@@ -20,21 +20,10 @@ public class Popup_RaceResult : GameState
 
     public Popup_RaceResult Setup(System.Action onNextTask)
     {
-        RaceLogic.OnRaceFinished();
-
         nextButton.onClick.AddListener(() =>
         {
             base.Back();
-            if (RaceLogic.raceResult.rewards != null)
-            {
-                var popup = Popup_Rewards.Display(RaceLogic.raceResult.rewards, onNextTask);
-                if (RaceModel.IsOnline || RaceModel.IsOnline) // todo_ what?!
-                {
-                    var rewardsList = RaceModel.IsOnline ? GlobalConfig.Race.rewardsOnline : GlobalConfig.Race.rewardsOffline;
-                    popup.DisplayRacerReward(rewardsList[0].coins, rewardsList[1].coins, rewardsList[2].coins, rewardsList[3].coins);
-                }
-            }
-            else onNextTask();
+            onNextTask();
         });
 
         Popup_RateUs.SetPlayerInjoy(RaceModel.stats.playerRank < 2, 2);
@@ -104,7 +93,6 @@ public class Popup_RaceResult : GameState
 
     public override void Back()
     {
-        base.Back();
         nextButton.onClick.Invoke();
     }
 }

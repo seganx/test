@@ -39,7 +39,8 @@ public class State_Garage : GameState
         UiHeader.Show();
         UiShowHide.ShowAll(transform);
 
-        inventoryButton.onClick.AddListener(() => gameManager.OpenPopup<Popup_Confirm>().Setup(111103, false, null));
+        inventoryButton.SetInteractable(Popup_Inventory.ComputeNumberOfCards() > 0);
+        inventoryButton.onClick.AddListener(() => gameManager.OpenPopup<Popup_Inventory>().Setup(() => inventoryButton.SetInteractable(Popup_Inventory.ComputeNumberOfCards() > 0)));
 
         DisplayItems();
 

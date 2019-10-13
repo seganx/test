@@ -112,6 +112,7 @@ public class State_Playing : GameState
 
     private void FinishRace()
     {
+        RaceLogic.OnRaceFinished();
         UiShowHide.HideAll(transform);
         DisplayFinalCamera();
         PlayerPresenter.local.gameObject.AddComponent<BotPresenter>();
@@ -127,7 +128,7 @@ public class State_Playing : GameState
     private void DisplayFinalCamera()
     {
         RacerCameraConfig.Instance.currentMode = (RacerCamera.Mode)Random.Range(1, 8);
-        DelayCall(3, () => DisplayFinalCamera());
+        DelayCall(1, () => DisplayFinalCamera());
     }
 
     public override void Back()
@@ -145,6 +146,18 @@ public class State_Playing : GameState
             Game.LoadMap(0);
             Game.Instance.ClosePopup(true);
             gameManager.OpenState<State_Home>(true);
+
+            if (RaceLogic.raceResult.rewards != null)
+            {
+                var popup = Popup_Rewards.Display(RaceLogic.raceResult.rewards);
+
+                // fill out the text description about rewards
+                if (RaceModel.IsOnline || RaceModel.IsFreeDrive)
+                {
+                    var rewardsList = RaceModel.IsOnline ? GlobalConfig.Race.rewardsOnline : GlobalConfig.Race.rewardsOffline;
+                    popup.DisplayRacerReward(rewardsList[0].coins, rewardsList[1].coins, rewardsList[2].coins, rewardsList[3].coins);
+                }
+            }
         });
     }
 

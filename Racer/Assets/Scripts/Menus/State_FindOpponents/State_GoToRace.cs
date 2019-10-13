@@ -183,13 +183,6 @@ public class State_GoToRace : GameState
         gameManager.OpenState<State_Playing>(true);
     }
 
-    private void ExitToMainMenu()
-    {
-        Game.LoadMap(0);
-        Game.Instance.ClosePopup(true);
-        Game.Instance.OpenState<State_Home>(true);
-    }
-
     public override void Back()
     {
         //PlayNetwork.Stop(ExitToMainMenu);
