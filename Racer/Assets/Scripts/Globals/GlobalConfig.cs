@@ -145,6 +145,7 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
             [System.Serializable]
             public class LoadingBox
             {
+                public int gemPrice = 0;
                 public int nextTime = 0;
                 public int dailyCount = 0;
                 public List<int> gemValues = new List<int>();
