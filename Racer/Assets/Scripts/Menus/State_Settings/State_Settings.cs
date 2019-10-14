@@ -1,10 +1,7 @@
 ﻿using SeganX;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using LocalPush;
-using System;
 
 public class State_Settings : GameState
 {
@@ -19,6 +16,7 @@ public class State_Settings : GameState
     [SerializeField] private Toggle playMusic = null;
     [SerializeField] private Toggle playSfx = null;
     [SerializeField] private Toggle matchMakingWaitMoreToggle = null;
+    [SerializeField] private Toggle displayHudToggle = null;
     [SerializeField] private Button telegramButton = null;
     [SerializeField] private Button emailButton = null;
     [SerializeField] private Button testGraphicButton = null;
@@ -43,6 +41,7 @@ public class State_Settings : GameState
         playMusic.isOn = AudioManager.Instance.IsMusicOn;
         playSfx.isOn = AudioManager.Instance.IsFxOn;
         matchMakingWaitMoreToggle.isOn = State_GoToRace.WaitMore;
+        displayHudToggle.isOn = PlayerHud.DisplayBox;
 
         notifFullFuel.onValueChanged.AddListener((active) => IsFullFuelActiveNotificationActive = active);
         notifFreePackage.onValueChanged.AddListener((active) => IsFreePackageNotificationActive = active);
@@ -52,6 +51,7 @@ public class State_Settings : GameState
         playMusic.onValueChanged.AddListener((active) => AudioManager.Instance.IsMusicOn = active);
         playSfx.onValueChanged.AddListener((active) => AudioManager.Instance.IsFxOn = active);
         matchMakingWaitMoreToggle.onValueChanged.AddListener((active) => State_GoToRace.WaitMore = active);
+        displayHudToggle.onValueChanged.AddListener((active) => PlayerHud.DisplayBox = active);
 
         telegramButton.onClick.AddListener(() => Application.OpenURL(GlobalConfig.Socials.contactTelegramUrl));
         emailButton.onClick.AddListener(() => SendEmail());
@@ -73,8 +73,8 @@ public class State_Settings : GameState
 
     void SendEmail()
     {
-        string subject = MyEscapeURL("ارتباط");
-        string body = MyEscapeURL("\n\n\n\n\n\n" + SystemInfo.operatingSystem + "\n" + SystemInfo.deviceModel);
+        string subject = MyEscapeURL("Support");
+        string body = MyEscapeURL("\n\n\n\n\n\n" + SystemInfo.operatingSystem + "\n" + SystemInfo.deviceModel + "\n" + Profile.UserId + "\n" + Core.DeviceId);
         Application.OpenURL("mailto:" + GlobalConfig.Socials.contactEmailUrl + "?subject=" + subject + "&body=" + body);
     }
 

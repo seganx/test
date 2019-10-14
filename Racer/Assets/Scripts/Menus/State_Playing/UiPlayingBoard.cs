@@ -9,10 +9,9 @@ public class UiPlayingBoard : Base
     [System.Serializable]
     public class PlayerItem
     {
-        public Text nameLabel = null;
-        public Text numberLabel = null;
-        public Text deltaPositionLabel = null;
         public RectTransform transform = null;
+        public Text nameLabel = null;
+        public Image numberImage = null;
         private PlayerData data = null;
 
         public bool IsLeft { get; set; }
@@ -22,6 +21,7 @@ public class UiPlayingBoard : Base
     }
 
     [SerializeField] private LocalText positionLabel = null;
+    [SerializeField] private Sprite[] positionSprites = null;
     [SerializeField] private List<PlayerItem> items = new List<PlayerItem>(4);
 
     private void Awake()
@@ -75,41 +75,19 @@ public class UiPlayingBoard : Base
         {
             var item = instance.items[i];
             item.transform.SetAsLastSibling();
-            item.numberLabel.text = (i + 1) + ".";
+            item.numberImage.sprite = instance.positionSprites[i % instance.positionSprites.Length];
             UpdateItemColor(item);
             if (item.IsPlayer)
                 instance.positionLabel.SetFormatedText(i + 1, RaceModel.specs.maxPlayerCount);
         }
-
-
-        //instance.items[0].deltaPositionLabel.text = "+" + (instance.items[0].Grade - (instance.items[1].Player == null ? 0 : instance.items[1].Grade));
-        //instance.items[1].deltaPositionLabel.text = "-" + ((instance.items[0].Player == null ? 0 : instance.items[0].Grade) - instance.items[1].Grade);
-        //instance.items[2].deltaPositionLabel.text = "-" + ((instance.items[1].Player == null ? 0 : instance.items[1].Grade) - instance.items[2].Grade);
-        //instance.items[3].deltaPositionLabel.text = "-" + ((instance.items[2].Player == null ? 0 : instance.items[2].Grade) - instance.items[3].Grade);
-        for (int i = 0; i < instance.items.Count; i++)
-            instance.items[i].deltaPositionLabel.transform.parent.gameObject.SetActive(false);
-
-#if OFF
-        for (int i = instance.items.LastIndex(); i >= 0; i--)
-        {
-            var item = instance.items[i];
-            if (item.Player != null)
-            {
-                var grade = lastgrade > 0 ? (item.Player.CurrGrade - lastgrade) : 0;
-                item.deltaPositionLabel.text = grade.ToString();
-                lastgrade = item.Player.CurrGrade;
-            }
-            else item.deltaPositionLabel.text = "0";
-        }
-#endif
     }
 
     private static void UpdateItemColor(PlayerItem item)
     {
         if (item.Player == null) return;
         if (item.Player.IsPlayer)
-            item.deltaPositionLabel.color = item.nameLabel.color = item.numberLabel.color = Color.green;
+            item.nameLabel.color = Color.green;
         else
-            item.deltaPositionLabel.color = item.nameLabel.color = item.numberLabel.color = item.IsLeft ? Color.gray : Color.white;
+            item.nameLabel.color = item.IsLeft ? Color.gray : Color.white;
     }
 }

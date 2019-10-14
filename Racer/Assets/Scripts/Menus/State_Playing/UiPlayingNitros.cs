@@ -84,7 +84,6 @@ public class UiPlayingNitros : MonoBehaviour
 #endif
         ))
         {
-            Stat.SetLastNitroUseSlot(IsBoostInRange);
             if (IsBoostInRange)
             {
                 PlayerPresenter.local.BoostNitros();
@@ -107,10 +106,10 @@ public class UiPlayingNitros : MonoBehaviour
         {
             PlayerPresenter.local.UseNitrous();
 
-            if (RaceModel.IsTutorial || Random.value < Stat.NitroUsePercentage)
+            if (RaceModel.IsTutorial || Random.Range(0, 100) < GlobalConfig.Race.config.nosBonusChance)
             {
-                boostCoods.x = Random.Range(70.0f, 310 - GlobalConfig.Race.nosBonusWidth);
-                boostCoods.y = GlobalConfig.Race.nosBonusWidth + Random.Range(0, 20);
+                boostCoods.x = Random.Range(70.0f, 310 - GlobalConfig.Race.config.nosBonusWidth);
+                boostCoods.y = GlobalConfig.Race.config.nosBonusWidth + Random.Range(0, 20);
                 nitrosBonus.SetAnchordPositionX(boostCoods.x);
                 nitrosBonus.SetAnchordWidth(boostCoods.y);
                 ActiveNosBoost = true;
@@ -150,48 +149,6 @@ public class UiPlayingNitros : MonoBehaviour
             var nosmin = boostCoods.x / boostCoods.z;
             var nosmax = (boostCoods.x + boostCoods.y) / boostCoods.z;
             return nosmin < nos && nos < nosmax;
-        }
-    }
-
-
-    private static class Stat
-    {
-        private static int nitroUseSaveSlotCount = 6;
-
-        private static int LastNitroUseSaveSlotIndex
-        {
-            get { return PlayerPrefs.GetInt("UiPlayingNitros.LastNitroUseSaveSlotIndex"); }
-            set { PlayerPrefs.SetInt("UiPlayingNitros.LastNitroUseSaveSlotIndex", value); }
-        }
-
-        public static float NitroUsePercentage
-        {
-            get
-            {
-                int totalNitroUse = 0;
-                for (int i = 0; i < nitroUseSaveSlotCount; i++)
-                    if (GetNitroUseSlot(i))
-                        totalNitroUse++;
-
-                return Mathf.Max(GlobalConfig.Race.nosBonusMinPercentage, totalNitroUse / (float)nitroUseSaveSlotCount);
-            }
-        }
-
-        private static string GetNitroUseSlotString(int slotIndex)
-        {
-            return "UiPlayingNitros.NitroUseSaveSlot" + slotIndex.ToString();
-        }
-
-        public static void SetLastNitroUseSlot(bool use)
-        {
-            LastNitroUseSaveSlotIndex++;
-            LastNitroUseSaveSlotIndex = LastNitroUseSaveSlotIndex % nitroUseSaveSlotCount;
-            PlayerPrefs.SetInt(GetNitroUseSlotString(LastNitroUseSaveSlotIndex), use ? 1 : 0);
-        }
-
-        private static bool GetNitroUseSlot(int index)
-        {
-            return PlayerPrefs.GetInt(GetNitroUseSlotString(index)) == 1;
         }
     }
 }

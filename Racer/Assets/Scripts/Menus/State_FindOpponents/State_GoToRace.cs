@@ -152,16 +152,17 @@ public class State_GoToRace : GameState
         searchbar.SetActive(false);
         playersInfoBar.SetActive(true);
 
-        if (PlayerPresenter.all.Count < PlayNetwork.PlayersCount)
-            yield return new WaitForSeconds(1);
-        if (PlayerPresenter.all.Count < PlayNetwork.PlayersCount)
-            yield return new WaitForSeconds(1);
+        if (PlayerPresenter.all.Count < PlayNetwork.PlayersCount) yield return new WaitForSeconds(1);
+        if (PlayerPresenter.all.Count < PlayNetwork.PlayersCount) yield return new WaitForSeconds(1);
 
         if (PhotonNetwork.isMasterClient)
         {
             var presenter = PlayerPresenter.all.FindMin(x => x.player.RacerPower);
             BotPresenter.InitializeBots(RaceModel.specs.maxPlayerCount - PlayNetwork.PlayersCount, presenter.player.Score, presenter.player.RacerId, presenter.player.RacerPower);
         }
+
+        if (PlayerPresenter.all.Count < RaceModel.specs.maxPlayerCount) yield return new WaitForSeconds(1);
+        if (PlayerPresenter.all.Count < RaceModel.specs.maxPlayerCount) yield return new WaitForSeconds(1);
 
         foreach (var player in PlayerPresenter.all)
         {

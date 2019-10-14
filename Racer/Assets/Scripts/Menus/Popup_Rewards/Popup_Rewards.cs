@@ -78,13 +78,13 @@ public class Popup_Rewards : GameState
             if (item.gameObject.activeSelf) continue;
 
             // wait and display
-            yield return new WaitForSeconds(0.75f);
             item.gameObject.SetActive(true);
             if (i < rewardContent.childCount - 1)
             {
                 item = rewardContent.GetChild<RectTransform>(i);
                 if (item != null) MoveContentToLeft(item.rect.width);
             }
+            yield return new WaitForSeconds(0.75f);
         }
     }
 

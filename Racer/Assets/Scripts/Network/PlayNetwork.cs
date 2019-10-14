@@ -75,7 +75,7 @@ public class PlayNetwork : MonoBehaviour
             ); 
         TypedLobby sqlLobby = new TypedLobby("myLobby", LobbyType.SqlLobby);
         PhotonNetwork.JoinRandomRoom(null, 0, MatchmakingMode.FillRoom, sqlLobby, sqlLobbyFilter);
-        Debug.LogFormat("{0} : JoinRoom eloScore[{1}] eloScoreGap[{2}] eloScoreMaxGap[{3}] eloPower[{4}] eloPowerMaxGap[{5}] sqlLobby[{6}]", name, EloScore, eloScoreGap, eloScoreMaxGap, EloPower, eloPowerMaxGap, sqlLobbyFilter);
+        Debug.LogFormat("{0} : JoinRoom eloScore[{1}] eloPower[{2}] eloGroup[{3}] sqlLobby[{4}]", name, EloScore, EloPower, EloGroup, sqlLobbyFilter);
     }
 
     public void OnPhotonRandomJoinFailed(object[] codeAndMsg)
@@ -102,7 +102,7 @@ public class PlayNetwork : MonoBehaviour
         roomOptions.MaxPlayers = MaxPlayerCount;
         roomOptions.PlayerTtl = 1;
         roomOptions.CustomRoomProperties = roomProperies;
-        roomOptions.CustomRoomPropertiesForLobby = new string[] { "C0", "C1", "C2" };
+        roomOptions.CustomRoomPropertiesForLobby = new string[] { "C0", "C1", "C2", "C3" };
 
         TypedLobby sqlLobby = new TypedLobby("myLobby", LobbyType.SqlLobby);
         PhotonNetwork.CreateRoom(null, roomOptions, sqlLobby);

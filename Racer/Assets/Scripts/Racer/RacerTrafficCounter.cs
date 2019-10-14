@@ -4,10 +4,18 @@ using UnityEngine;
 
 public class RacerTrafficCounter : MonoBehaviour
 {
+    private float width = 1;
     private TrafficCar trafficCar = null;
 
     public float SideDistance { set; get; }
     public int TotalTrafficPassed { get; set; }
+    public bool SideLeft { get; set; }
+
+    private void Start()
+    {
+        var racer = transform.GetComponent<RacerPresenter>();
+        width = racer.Size.x / 2;
+    }
 
     private void FixedUpdate()
     {
@@ -28,7 +36,8 @@ public class RacerTrafficCounter : MonoBehaviour
             if (trafficCar.CanMove)
             {
                 TotalTrafficPassed++;
-                SideDistance = Mathf.Abs(transform.position.x - trafficCar.transform.position.x);
+                SideLeft = transform.position.x > trafficCar.transform.position.x;
+                SideDistance = Mathf.Abs(transform.position.x - trafficCar.transform.position.x) - width - trafficCar.Width * 0.5f;                
                 SendMessageUpwards("OnTrafficPassed", this, SendMessageOptions.DontRequireReceiver);
             }
 

@@ -53,6 +53,7 @@ public class Popup_Inventory : GameState
             bottomDesc.transform.parent.gameObject.SetActive(container.childCount > 1);
             bottomDesc.SetFormatedText(UiInventoryCardItem.TotalCount, UiInventoryCardItem.TotalPrice);
             yield return wait;
+            if (UiInventoryCardItem.TotalCount < 1) Back();
         }
     }
 

@@ -11,7 +11,7 @@ public class AudioManager : Base
 
     private bool isFadingOut = false;
     private float musicMaxVolume = 1;
-    private readonly float maxFxVolume = 1;
+    private readonly float maxFxVolume = 0.75f;
 
     public static AudioManager Instance { get; private set; }
     #endregion
