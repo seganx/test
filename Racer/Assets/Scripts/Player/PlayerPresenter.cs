@@ -153,7 +153,7 @@ public abstract class PlayerPresenter : Base
         }
         else if (IsNitrosFull == false)
         {
-            player.CurrNitrous += player.RacerNitrous * GlobalConfig.Race.config.nosTimeFactor * deltaTime;
+            player.CurrNitrous += player.RacerNitrous * GlobalConfig.Race.nosTimeFactor * deltaTime;
         }
 
         UpdateForwardPosition(deltaTime);
@@ -167,11 +167,11 @@ public abstract class PlayerPresenter : Base
 
     public virtual void OnTrafficPassed(RacerTrafficCounter sender)
     {
-        if (IsNitrosFull || IsNitrosUsing || sender.SideDistance > GlobalConfig.Race.config.nosTrafficMaxDistance) return;
-        var delta = GlobalConfig.Race.config.nosTrafficMaxDistance - GlobalConfig.Race.config.nosTrafficMinDistance;
-        var vbase = GlobalConfig.Race.config.nosTrafficMaxDistance - sender.SideDistance;
+        if (IsNitrosFull || IsNitrosUsing || sender.SideDistance > GlobalConfig.Race.nosTrafficMaxDistance) return;
+        var delta = GlobalConfig.Race.nosTrafficMaxDistance - GlobalConfig.Race.nosTrafficMinDistance;
+        var vbase = GlobalConfig.Race.nosTrafficMaxDistance - sender.SideDistance;
         var trafficNosPercent = Mathf.Clamp01(vbase / delta);
-        var value = trafficNosPercent * GlobalConfig.Race.config.nosTrafficFactor * player.RacerNitrous;
+        var value = trafficNosPercent * GlobalConfig.Race.nosTrafficFactor * player.RacerNitrous;
         player.CurrNitrous += value;
         PlayerHud.DisplaySideNitros(trafficNosPercent * 100, sender.SideLeft);
     }
@@ -202,7 +202,7 @@ public abstract class PlayerPresenter : Base
         all.Sort((x, y) => Random.Range(-99999, 99999));
         for (int i = 0; i < all.Count; i++)
         {
-            float nospos = i * GlobalConfig.Race.config.startRacerDistance;
+            float nospos = i * GlobalConfig.Race.startRacerDistance;
             float rodseg = 2 * RoadPresenter.RoadWidth / 4;
             all[i].ReadyToRace(nospos, (i % 3) * rodseg - rodseg);
         }

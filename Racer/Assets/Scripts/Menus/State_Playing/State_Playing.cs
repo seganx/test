@@ -38,7 +38,7 @@ public class State_Playing : GameState
 
         PlayerPresenter.UpdateRanks();
         for (int i = 0; i < PlayerPresenter.all.Count; i++)
-            PlayerPresenter.all[i].player.CurrNitrous = i * GlobalConfig.Race.config.startNosFactor;
+            PlayerPresenter.all[i].player.CurrNitrous = i * GlobalConfig.Race.startNosFactor;
 
         while (true)
         {

@@ -15,7 +15,7 @@ public class UiInventoryCardItem : MonoBehaviour
 
     public UiInventoryCardItem Setup(RacerConfig config, int count)
     {
-        int eachPrice = Mathf.CeilToInt(config.CardCount / GlobalConfig.Shop.inventorySellFactor);
+        int eachPrice = Mathf.CeilToInt(config.Price * GlobalConfig.Shop.inventorySellFactor);
         int price = eachPrice * count;
 
         TotalCount += count;

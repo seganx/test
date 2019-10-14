@@ -106,10 +106,10 @@ public class UiPlayingNitros : MonoBehaviour
         {
             PlayerPresenter.local.UseNitrous();
 
-            if (RaceModel.IsTutorial || Random.Range(0, 100) < GlobalConfig.Race.config.nosBonusChance)
+            if (RaceModel.IsTutorial || Random.Range(0, 100) < GlobalConfig.Race.nosBonusChance)
             {
-                boostCoods.x = Random.Range(70.0f, 310 - GlobalConfig.Race.config.nosBonusWidth);
-                boostCoods.y = GlobalConfig.Race.config.nosBonusWidth + Random.Range(0, 20);
+                boostCoods.x = Random.Range(70.0f, 310 - GlobalConfig.Race.nosBonusWidth);
+                boostCoods.y = GlobalConfig.Race.nosBonusWidth + Random.Range(0, 20);
                 nitrosBonus.SetAnchordPositionX(boostCoods.x);
                 nitrosBonus.SetAnchordWidth(boostCoods.y);
                 ActiveNosBoost = true;

@@ -76,19 +76,6 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
         public class Race
         {
             [System.Serializable]
-            public class Config
-            {
-                public float startRacerDistance = 2;
-                public float startNosFactor = 0.1f;
-                public float nosTrafficMinDistance = 1;
-                public float nosTrafficMaxDistance = 2;
-                public float nosTrafficFactor = 0.1f;
-                public float nosTimeFactor = 0.5f;
-                public int nosBonusWidth = 40;
-                public int nosBonusChance = 100;
-            }
-
-            [System.Serializable]
             public class Bots
             {
                 public float rayDistance = -14;
@@ -125,14 +112,20 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
 
             public float maxTime = 60;
             public float startSpeed = 50;
-            public Config[] configs = new Config[] { new Config(), new Config() };
+            public float startRacerDistance = 1.6f;
+            public float startNosFactor = 0.25f;
+            public float nosTrafficMinDistance = 1;
+            public float nosTrafficMaxDistance = 2;
+            public float nosTrafficFactor = 0.03f;
+            public float nosTimeFactor = 0.025f;
+            public int nosBonusWidth = 40;
+            public int nosBonusChance = 100;
             public int[] positionScore = new int[] { 10, 5, 1, -1 };
             public float[] groupMaxSpeed = new float[] { 100 };
             public Bots bots = new Bots();
             public Traffics traffics = new Traffics();
             public List<Rewards> rewardsOnline = new List<Rewards>();
             public List<Rewards> rewardsOffline = new List<Rewards>();
-            public Config config { get { return configs[Cohort % configs.Length]; } }
             public float GetGroupMaxSpeed(int groupIndex) { return groupMaxSpeed[Mathf.Clamp(groupIndex, 0, groupMaxSpeed.Length - 1)]; }
         }
 
