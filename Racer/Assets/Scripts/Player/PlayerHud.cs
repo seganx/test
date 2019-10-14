@@ -72,6 +72,6 @@ public class PlayerHud : MonoBehaviour
     {
         if (instance == null) return;
         instance.nitrosLabelBasePos.x = instance.player.racer.Size.x * (sideLeft ? -0.5f : 0.5f);
-        instance.nitrosLabel.Play(value.ToString("+0").Persian(), instance.nitrosLabelBasePos, instance.nitrosLabelBasePos + Vector3.up * 0.5f, 1, 0.5f);
+        instance.nitrosLabel.Play("%" + value.ToString("0").Persian(), instance.nitrosLabelBasePos, instance.nitrosLabelBasePos + Vector3.up * 0.5f, 1, 0.5f);
     }
 }

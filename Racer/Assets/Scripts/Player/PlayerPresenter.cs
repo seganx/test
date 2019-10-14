@@ -170,9 +170,10 @@ public abstract class PlayerPresenter : Base
         if (IsNitrosFull || IsNitrosUsing || sender.SideDistance > GlobalConfig.Race.config.nosTrafficMaxDistance) return;
         var delta = GlobalConfig.Race.config.nosTrafficMaxDistance - GlobalConfig.Race.config.nosTrafficMinDistance;
         var vbase = GlobalConfig.Race.config.nosTrafficMaxDistance - sender.SideDistance;
-        var value = Mathf.Clamp01(vbase / delta) * GlobalConfig.Race.config.nosTrafficFactor;
+        var trafficNosPercent = Mathf.Clamp01(vbase / delta);
+        var value = trafficNosPercent * GlobalConfig.Race.config.nosTrafficFactor * player.RacerNitrous;
         player.CurrNitrous += value;
-        PlayerHud.DisplaySideNitros(value * 100, sender.SideLeft);
+        PlayerHud.DisplaySideNitros(trafficNosPercent * 100, sender.SideLeft);
     }
 
     ////////////////////////////////////////////////////////////
