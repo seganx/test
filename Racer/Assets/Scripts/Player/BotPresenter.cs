@@ -106,9 +106,9 @@ public class BotPresenter : Base
             if (RaceModel.IsTutorial)
             {
                 var config = RacerFactory.Racer.GetConfig(370);
-                botRacer = CreateRandomRacerProfile(config.Id, Random.Range(config.MinPower, config.MaxPower));
+                botRacer = CreateRandomRacerProfile(config.Id, Random.Range(config.MinPower, config.MaxPower), playerScore);
             }
-            else botRacer = CreateRandomRacerProfile(playerRacerId, playerPower);
+            else botRacer = CreateRandomRacerProfile(playerRacerId, playerPower, playerScore);
 
             var pdata = new PlayerData(RaceModel.IsOnline ? GlobalFactory.GetRandomName() : "Player " + i, botScore, botRank, botRacer);
             Debug.LogWarning("bot " + pdata.name + " joined.");
@@ -116,14 +116,14 @@ public class BotPresenter : Base
         }
     }
 
-    private static RacerProfile CreateRandomRacerProfile(int playerRacerId, int playerPower)
+    private static RacerProfile CreateRandomRacerProfile(int playerRacerId, int playerPower, int playerScore)
     {
         int targetPower = 0;
         int groupId = RacerFactory.Racer.GetConfig(playerRacerId).GroupId;
         if (RaceModel.IsOnline)
         {
             var factor = GlobalConfig.Race.bots.powers[groupId];
-            targetPower = Mathf.RoundToInt(factor.x * playerPower + factor.y);
+            targetPower = Mathf.RoundToInt(factor.x * playerScore + factor.y);
         }
         else
         {

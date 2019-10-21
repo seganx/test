@@ -46,6 +46,7 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
         public class MatchMaking
         {
             public int joinTimeout = 15;
+            public int[] joinTimeouts;
             public int eloScoreCount = 8;
             public Vector2 eloScoreParams = new Vector2(0.5f, -500);
             public Vector2 eloPowerParams = new Vector2(0, 1000);
@@ -150,6 +151,7 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
                 public int gemPrice = 0;
                 public int nextTime = 0;
                 public int dailyCount = 0;
+                public int cardChance = 50;
                 public List<int> gemValues = new List<int>();
                 public List<int> coinValues = new List<int>();
                 public Vector2Int cardsGroups = new Vector2Int(0, 20);

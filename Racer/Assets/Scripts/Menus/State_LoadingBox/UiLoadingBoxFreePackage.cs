@@ -86,40 +86,27 @@ public class UiLoadingBoxFreePackage : TimerPresenter
 
     public void ShowReward()
     {
-        switch (UnityEngine.Random.Range(0, 100) % 3)
+        if (UnityEngine.Random.Range(0, 100) < data.cardChance)
         {
-            case 0:
-                {
-                    var gems = data.gemValues.RandomOne();
-                    Profile.EarnResouce(gems, 0);
-                    Popup_Rewards.AddResource(gems, 0);
-                }
-                break;
-
-            case 1:
-                {
-                    var coins = data.coinValues.RandomOne();
-                    Profile.EarnResouce(0, coins);
-                    Popup_Rewards.AddResource(0, coins);
-                }
-                break;
-
-            case 2:
-                {
-                    var list = RacerFactory.Racer.AllConfigs.FindAll(x => x.GroupId.Between(data.cardsGroups.x, data.cardsGroups.y));
-                    var racerid = list.Count > 0 ? list.RandomOne().Id : RewardLogic.SelectRacerReward();
-                    Profile.AddRacerCard(racerid, 1);
-                    Popup_Rewards.AddRacerCard(racerid, 1);
-                }
-                break;
-                /*
-            case 3:
-                {
-                    var reward = RewardLogic.GetCustomReward();
-                    Profile.AddRacerCustom(reward.type, reward.racerId, reward.customId);
-                    Popup_Rewards.AddCustomCard(reward.type, reward.racerId, reward.customId);
-                }
-                break;*/
+            var gems = data.gemValues.RandomOne();
+            Profile.EarnResouce(gems, 0);
+            Popup_Rewards.AddResource(gems, 0);
+        }
+        else
+        {
+            if (UnityEngine.Random.value < .5f)
+            {
+                var coins = data.coinValues.RandomOne();
+                Profile.EarnResouce(0, coins);
+                Popup_Rewards.AddResource(0, coins);
+            }
+            else
+            {
+                var list = RacerFactory.Racer.AllConfigs.FindAll(x => x.GroupId.Between(data.cardsGroups.x, data.cardsGroups.y));
+                var racerid = list.Count > 0 ? list.RandomOne().Id : RewardLogic.SelectRacerReward();
+                Profile.AddRacerCard(racerid, 1);
+                Popup_Rewards.AddRacerCard(racerid, 1);
+            }
         }
 
         Popup_Rewards.Display();
