@@ -45,7 +45,6 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
         [System.Serializable]
         public class MatchMaking
         {
-            public int joinTimeout = 15;
             public int[] joinTimeouts;
             public int eloScoreCount = 8;
             public Vector2 eloScoreParams = new Vector2(0.5f, -500);

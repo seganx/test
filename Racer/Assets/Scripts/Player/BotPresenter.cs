@@ -18,6 +18,13 @@ public class BotPresenter : Base
         nosTimer = Random.Range(0, 0.5f);
         player = GetComponent<PlayerPresenterOnline>();
 
+        var trafficCounter = player.transform.GetComponent<RacerTrafficCounter>(true, true);
+        if (trafficCounter)
+        {
+            trafficCounter.MinSizeDistance = 15;
+            trafficCounter.MaxSizeDistance = 20;
+        }
+
         var waitWhile = new WaitForSeconds(1);
         yield return waitWhile;
         bool canViraj = RaceModel.IsOnline && Random.Range(0, 100) < GlobalConfig.Race.bots.canVirajChance;
@@ -137,8 +144,10 @@ public class BotPresenter : Base
         res.level.Level = 1;
 
         var maxUpgradeLevel = RacerGlobalConfigs.Data.maxUpgradeLevel[res.level.Level];
-        res.level.BodyLevel = Random.Range(0, maxUpgradeLevel);
+        res.level.SpeedLevel = Random.Range(0, maxUpgradeLevel);
+        res.level.NitroLevel = Random.Range(0, maxUpgradeLevel);
         res.level.SteeringLevel = Random.Range(0, maxUpgradeLevel);
+        res.level.BodyLevel = Random.Range(0, maxUpgradeLevel);
 
         res.custom = config.DefaultRacerCustom;
         res.custom.BodyColor = RacerFactory.Colors.AllColors.RandomOne().id;

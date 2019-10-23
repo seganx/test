@@ -167,9 +167,9 @@ public abstract class PlayerPresenter : Base
 
     public virtual void OnTrafficPassed(RacerTrafficCounter sender)
     {
-        if (IsNitrosFull || IsNitrosUsing || sender.SideDistance > GlobalConfig.Race.nosTrafficMaxDistance) return;
-        var delta = GlobalConfig.Race.nosTrafficMaxDistance - GlobalConfig.Race.nosTrafficMinDistance;
-        var vbase = GlobalConfig.Race.nosTrafficMaxDistance - sender.SideDistance;
+        if (IsNitrosFull || IsNitrosUsing || sender.SideDistance > sender.MaxSizeDistance) return;
+        var delta = sender.MaxSizeDistance - sender.MinSizeDistance;
+        var vbase = sender.MaxSizeDistance - sender.SideDistance;
         var trafficNosPercent = Mathf.Clamp01(vbase / delta);
         var value = trafficNosPercent * GlobalConfig.Race.nosTrafficFactor * player.RacerNitrous;
         player.CurrNitrous += value;

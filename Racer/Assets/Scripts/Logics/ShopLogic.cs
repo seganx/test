@@ -102,6 +102,19 @@ public class ShopLogic : MonoBehaviour
             SetTimer(index);
         }
 
+        public static bool CanDisplay(Package pack)
+        {
+            if (pack == null) return false;
+            int index = Packages.IndexOf(pack);
+            if (index < 0 || Profile.IsUnlockedRacer(pack.racerId) || GetRemainedTime(index) < 1)
+            {
+                if (index == data.lastIndex)
+                    data.lastIndex = -1;
+                return false;
+            }
+            return true;
+        }
+
         public static bool CanDisplay(int index)
         {
             var pack = Packages.Find(x => x.packgIndex == index);

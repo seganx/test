@@ -15,6 +15,11 @@ public static class RaceLogic
 
     public static RaceResult raceResult = new RaceResult();
 
+    public static void OnRaceStarted()
+    {
+        raceResult = new RaceResult();
+    }
+
     public static void OnRaceFinished()
     {
         switch (RaceModel.mode)

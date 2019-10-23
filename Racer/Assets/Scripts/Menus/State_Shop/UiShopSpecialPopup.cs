@@ -43,9 +43,11 @@ public class UiShopSpecialPopup : MonoBehaviour
                     yield return new WaitForSeconds(1);
                     yield return new WaitUntil(() => Game.Instance.CurrentPopup == null);
                     firstRun = false;
-                    foreach (var item in ShopLogic.SpecialOffer.Packages)
+                    for (int i = ShopLogic.SpecialOffer.Packages.Count - 3; i < ShopLogic.SpecialOffer.Packages.Count; i++)
                     {
-                        Game.Instance.OpenPopup<Popup_ShopSpecialPackage>().Setup(item, pack =>
+                        if (i < 0) continue;
+
+                        Game.Instance.OpenPopup<Popup_ShopSpecialPackage>().Setup(ShopLogic.SpecialOffer.Packages[i], pack =>
                         {
                             if (pack == package)
                                 Destroy(holder.gameObject);

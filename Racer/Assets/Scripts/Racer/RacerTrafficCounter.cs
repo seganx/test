@@ -8,8 +8,16 @@ public class RacerTrafficCounter : MonoBehaviour
     private TrafficCar trafficCar = null;
 
     public float SideDistance { set; get; }
+    public float MinSizeDistance { set; get; }
+    public float MaxSizeDistance { set; get; }
     public int TotalTrafficPassed { get; set; }
     public bool SideLeft { get; set; }
+
+    private void Awake()
+    {
+        MinSizeDistance = GlobalConfig.Race.nosTrafficMinDistance;
+        MaxSizeDistance = GlobalConfig.Race.nosTrafficMaxDistance;
+    }
 
     private void Start()
     {

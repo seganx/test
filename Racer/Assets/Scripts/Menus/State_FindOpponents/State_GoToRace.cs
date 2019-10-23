@@ -22,17 +22,18 @@ public class State_GoToRace : GameState
     private State state = State.Waiting;
     private int lastPlayersCount = 0;
     private bool waitFirst = true;
+    private int joinTimeout = 10;
 
-    private string lastPingValueString = "lastPingValue";
-    private int lastPingValue
+    private int LastPingValue
     {
-        set { PlayerPrefs.SetInt(lastPingValueString, value); }
-        get { return PlayerPrefs.GetInt(lastPingValueString, 50); }
+        set { PlayerPrefs.SetInt("lastPingValue", value); }
+        get { return PlayerPrefs.GetInt("lastPingValue", 50); }
     }
 
     public State_GoToRace Setup(PlayerData playerdata)
     {
         playerData = playerdata;
+        joinTimeout = GlobalConfig.MatchMaking.joinTimeouts[Mathf.Clamp(RaceModel.specs.racersGroup - 1, 0, GlobalConfig.MatchMaking.joinTimeouts.Length)];
         return this;
     }
 
@@ -60,16 +61,16 @@ public class State_GoToRace : GameState
         {
             if (PlayNetwork.IsOffline) // disconnect on last game
             {
-                if (Random.value > .4f) lastPingValue += Random.Range(-2, 2);
-                lastPingValue = Mathf.Clamp(lastPingValue, 30, 90);
+                if (Random.value > .4f) LastPingValue += Random.Range(-2, 2);
+                LastPingValue = Mathf.Clamp(LastPingValue, 30, 90);
             }
             else
-                lastPingValue = PhotonNetwork.GetPing();
+                LastPingValue = PhotonNetwork.GetPing();
 
 
-            countDownText.SetText(Mathf.Max(0, Mathf.RoundToInt(GlobalConfig.MatchMaking.joinTimeout - waitTime)).ToString());
-            pingLabel.SetFormatedText(lastPingValue);
-            pingLabel.target.color = lastPingValue < 100 ? Color.green : (lastPingValue < 300 ? Color.yellow : Color.red);
+            countDownText.SetText(Mathf.Max(0, Mathf.RoundToInt(joinTimeout - waitTime)).ToString());
+            pingLabel.SetFormatedText(LastPingValue);
+            pingLabel.target.color = LastPingValue < 100 ? Color.green : (LastPingValue < 300 ? Color.yellow : Color.red);
             tipsLabel.SetFormatedText(LocalizationService.Get(111020 + (TipsNumber % 9)));
             if (tipsCounter++ % 15 == 0) TipsNumber++;
             yield return new WaitForSeconds(1);
@@ -83,7 +84,7 @@ public class State_GoToRace : GameState
             case State.Waiting:
                 {
                     waitTime += Time.deltaTime;
-                    if (RaceModel.IsOnline == false || waitTime > GlobalConfig.MatchMaking.joinTimeout || PlayNetwork.PlayersCount == RaceModel.specs.maxPlayerCount)
+                    if (RaceModel.IsOnline == false || waitTime > joinTimeout || PlayNetwork.PlayersCount == RaceModel.specs.maxPlayerCount)
                     {
                         if (waitFirst && WaitMore && PlayNetwork.PlayersCount < 2)
                         {
@@ -141,7 +142,7 @@ public class State_GoToRace : GameState
             FuelTimerPresenter.ReduceFuel();
         }
         ChatLogic.Clear();
-
+        RaceLogic.OnRaceStarted();
         StartCoroutine(DisplayPlayersInfo());
     }
 
@@ -189,6 +190,16 @@ public class State_GoToRace : GameState
         //PlayNetwork.Stop(ExitToMainMenu);
     }
 
+    public void ExitToMainMenu()
+    {
+        enabled = false;
+        PlayNetwork.Disconnect(() =>
+        {
+            Game.LoadMap(0);
+            Game.Instance.ClosePopup(true);
+            gameManager.OpenState<State_Home>(true);
+        });
+    }
 
     ////////////////////////////////////////////////////////
     /// STATIC MEMBER

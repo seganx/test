@@ -14,8 +14,11 @@ public class UiRaceResultItem : MonoBehaviour
     [SerializeField] private LocalText addScoreLabel = null;
     [SerializeField] private Image leagueIcon = null;
 
-    public UiRaceResultItem Setup(int position, string nickName, string racerName, int racerPower, int score, int addscore)
+    private PlayerPresenter player = null;
+
+    public UiRaceResultItem Setup(PlayerPresenter player, int position, string nickName, string racerName, int racerPower, int score, int addscore)
     {
+        this.player = player;
         positionLabel.SetText(position.ToString());
         nameLabel.SetText(nickName);
         racerLabel.text = racerName;
@@ -27,5 +30,15 @@ public class UiRaceResultItem : MonoBehaviour
         int league = GlobalConfig.Leagues.GetIndex(score, 0);
         leagueIcon.sprite = GlobalFactory.League.GetSmallIcon(league);
         return this;
+    }
+
+    private IEnumerator Start()
+    {
+        var wait = new WaitForSeconds(1);
+        while (true)
+        {
+            nameLabel.color = player != null ? Color.white : Color.gray;
+            yield return wait;
+        }
     }
 }
