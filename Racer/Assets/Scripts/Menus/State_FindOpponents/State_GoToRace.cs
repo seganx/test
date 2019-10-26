@@ -33,7 +33,6 @@ public class State_GoToRace : GameState
     public State_GoToRace Setup(PlayerData playerdata)
     {
         playerData = playerdata;
-        joinTimeout = GlobalConfig.MatchMaking.joinTimeouts[Mathf.Clamp(RaceModel.specs.racersGroup - 1, 0, GlobalConfig.MatchMaking.joinTimeouts.Length)];
         return this;
     }
 
@@ -41,6 +40,8 @@ public class State_GoToRace : GameState
     {
         GarageCamera.SetCameraId(1);
         UiHeader.Hide();
+
+        joinTimeout = GlobalConfig.MatchMaking.joinTimeouts[Mathf.Clamp(RaceModel.specs.racersGroup, 0, GlobalConfig.MatchMaking.joinTimeouts.Length)];
 
         PlayNetwork.Connect(() => { },
         StartGame,

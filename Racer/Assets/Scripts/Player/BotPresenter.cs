@@ -18,7 +18,7 @@ public class BotPresenter : Base
         nosTimer = Random.Range(0, 0.5f);
         player = GetComponent<PlayerPresenterOnline>();
 
-        var trafficCounter = player.transform.GetComponent<RacerTrafficCounter>(true, true);
+        var trafficCounter = player.racer.gameObject.AddComponent<RacerTrafficCounter>();
         if (trafficCounter)
         {
             trafficCounter.MinSizeDistance = 15;
