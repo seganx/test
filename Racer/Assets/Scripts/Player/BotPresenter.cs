@@ -58,7 +58,7 @@ public class BotPresenter : Base
             player.SteeringValue = Mathf.MoveTowards(player.SteeringValue, 0, Time.deltaTime * 2);
 
 
-        var nosMaxTime = 1;
+        var nosMaxTime = 0;
         if (RaceModel.IsTutorial)
         {
             if (player.player.CurrRank == 0)

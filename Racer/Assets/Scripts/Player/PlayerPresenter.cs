@@ -173,7 +173,8 @@ public abstract class PlayerPresenter : Base
         var trafficNosPercent = Mathf.Clamp01(vbase / delta);
         var value = trafficNosPercent * GlobalConfig.Race.nosTrafficFactor * player.RacerNitrous;
         player.CurrNitrous += value;
-        PlayerHud.DisplaySideNitros(trafficNosPercent * 100, sender.SideLeft);
+        if (player.IsPlayer)
+            PlayerHud.DisplaySideNitros(trafficNosPercent * 100, sender.SideLeft);
     }
 
     ////////////////////////////////////////////////////////////

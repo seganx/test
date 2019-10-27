@@ -40,7 +40,13 @@ namespace SeganX
         private IEnumerator DoDownloadText(string url, string postdata, Dictionary<string, string> header, Action<WWW> callback, Action<float> onProgressCallback = null)
         {
             WWW res = null;
-            yield return new WaitForSeconds(0.5f);
+
+            // handle reqest delay time
+            {
+                var deltaTime = Time.time - requestTime;
+                requestTime = Time.time;
+                yield return new WaitForSeconds(Mathf.Clamp01(1 - deltaTime));
+            }
 
             if (postdata.HasContent() || header != null)
             {
@@ -120,6 +126,7 @@ namespace SeganX
         public static Status status = Status.Ready;
         public static string userheader = string.Empty;
         public static int requestTimeout = 15;
+        private static float requestTime = 0;
         private static Http instance = null;
 
         internal static Http Instance
@@ -155,7 +162,7 @@ namespace SeganX
                 status = Status.Ready;
                 callback(ws.text.GetWithoutBOM());
             }
-            else if (ws.error.HasContent() &&  ws.error[0] == '5')
+            else if (ws.error.HasContent() && ws.error[0] == '5')
             {
                 status = Status.ServerError;
                 callback(null);
