@@ -54,13 +54,13 @@ public class UiRaceResultItem : MonoBehaviour
             {
                 if (RaceModel.IsOnline && chatlist.Count > 1)
                 {
-                    if (presenter != null && Random.Range(0, 100) < 27 && presenter.GetComponent<BotPresenter>(true, true) != null)
+                    if (presenter != null && Random.Range(0, 100) < GlobalConfig.Race.bots.chatChance && presenter.GetComponent<BotPresenter>(true, true) != null)
                     {
                         int chatIndex = chatlist.RandomOne();
                         chatlist.Remove(chatIndex);
                         presenter.SendChat(chatIndex);
                     }
-                    else if (Random.Range(0, 100) < 20) presenter = null;
+                    else if (Random.Range(0, 100) < GlobalConfig.Race.bots.chatLeaveChance) presenter = null;
                 }
                 else
                 {
@@ -69,7 +69,7 @@ public class UiRaceResultItem : MonoBehaviour
             }
 
             nameLabel.color = presenter != null ? Color.white : Color.gray;
-            yield return new WaitForSeconds(Random.Range(1.5f, 3));
+            yield return new WaitForSeconds(Random.Range(2.5f, 4.5f));
         }
     }
 }

@@ -53,7 +53,6 @@ public static class RewardLogic
     public static int SelectRacerReward()
     {
         var center = FindSelectRacerCenter();
-        //center += GlobalConfig.Probabilities.rewardRacerRadius / 2;
         var index = SelectProbability(RacerFactory.Racer.AllConfigs.Count, center, GlobalConfig.Probabilities.rewardRacerRadius);
         return RacerFactory.Racer.AllConfigs[index].Id;
     }

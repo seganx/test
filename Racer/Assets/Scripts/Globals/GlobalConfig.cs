@@ -83,6 +83,8 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
                 public int crashChance = 10;
                 public int canVirajChance = 30;
                 public int doVirajChance = 30;
+                public int chatChance = 35;
+                public int chatLeaveChance = 25;
                 public Vector2Int powerRange = new Vector2Int(-300, 400);
                 public Vector2[] powers = new Vector2[] { Vector2.one, Vector2.one, Vector2.one, Vector2.one, Vector2.one, Vector2.one, Vector2.one };
             }
