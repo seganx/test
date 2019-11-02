@@ -17,6 +17,7 @@ public abstract class PlayerPresenter : Base
     public virtual bool IsInactive { get { return false; } }
     public virtual bool IsMine { get { return true; } }
     public virtual bool IsMaster { get { return true; } }
+    public virtual bool IsSceneObject { get { return false; } }
     public float SteeringValue { get; set; }
     public bool PlayingHorn { get; set; }
     public float Nitros { get { return player.CurrNitrous; } }

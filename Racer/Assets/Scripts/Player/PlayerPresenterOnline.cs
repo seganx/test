@@ -15,6 +15,7 @@ public class PlayerPresenterOnline : PlayerPresenter
     public override bool IsInactive { get { return photonView.owner == null ? false : photonView.owner.IsInactive; } }
     public override bool IsMine { get { return photonView.isMine; } }
     public override bool IsMaster { get { return photonView.owner == null ? false : photonView.owner.IsMasterClient; } }
+    public override bool IsSceneObject { get { return photonView.isSceneView; } }
 
     protected override void OnEnable()
     {

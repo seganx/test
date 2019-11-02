@@ -36,9 +36,11 @@ public class UiRaceResultItem : MonoBehaviour
 
     private IEnumerator Start()
     {
+        BotPresenter bot = (RaceModel.IsOnline && presenter != null && presenter.IsMine && presenter.IsSceneObject && PlayNetwork.IsMaster) ? presenter.GetComponent<BotPresenter>(true, true) : null;
+
         // prepare chat list
         var chatlist = new List<int>();
-        if (RaceModel.IsOnline && presenter != null && presenter.player.IsPlayer == false)
+        if (bot != null)
         {
             for (int i = 0; i < GlobalConfig.Chats.Count; i++)
             {
@@ -50,7 +52,7 @@ public class UiRaceResultItem : MonoBehaviour
         yield return new WaitForSeconds(Random.Range(4f, 6f));
         while (true)
         {
-            if (presenter != null && presenter.player.IsPlayer == false)
+            if (bot != null)
             {
                 if (RaceModel.IsOnline && chatlist.Count > 1)
                 {
@@ -59,7 +61,7 @@ public class UiRaceResultItem : MonoBehaviour
                         presenter = null;
                     }
 
-                    if (presenter != null && Random.Range(0, 100) < GlobalConfig.Race.bots.chatChance && presenter.GetComponent<BotPresenter>(true, true) != null)
+                    if (presenter != null && Random.Range(0, 100) < GlobalConfig.Race.bots.chatChance)
                     {
                         int chatIndex = chatlist.RandomOne();
                         chatlist.Remove(chatIndex);
