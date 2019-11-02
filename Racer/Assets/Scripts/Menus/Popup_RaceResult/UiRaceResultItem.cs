@@ -14,11 +14,13 @@ public class UiRaceResultItem : MonoBehaviour
     [SerializeField] private LocalText addScoreLabel = null;
     [SerializeField] private Image leagueIcon = null;
 
-    private PlayerPresenter player = null;
+    private PlayerPresenter presenter = null;
+    private int position = 0;
 
-    public UiRaceResultItem Setup(PlayerPresenter player, int position, string nickName, string racerName, int racerPower, int score, int addscore)
+    public UiRaceResultItem Setup(PlayerPresenter playerPresenter, int position, string nickName, string racerName, int racerPower, int score, int addscore)
     {
-        this.player = player;
+        presenter = playerPresenter;
+        this.position = position;
         positionLabel.SetText(position.ToString());
         nameLabel.SetText(nickName);
         racerLabel.text = racerName;
@@ -34,11 +36,40 @@ public class UiRaceResultItem : MonoBehaviour
 
     private IEnumerator Start()
     {
-        var wait = new WaitForSeconds(1);
+        // prepare chat list
+        var chatlist = new List<int>();
+        if (RaceModel.IsOnline && presenter != null && presenter.player.IsPlayer == false)
+        {
+            for (int i = 0; i < GlobalConfig.Chats.Count; i++)
+            {
+                if (GlobalConfig.Chats[i].IsPositionMatch(position))
+                    chatlist.Add(i);
+            }
+        }
+
+        yield return new WaitForSeconds(Random.Range(3f, 5f));
         while (true)
         {
-            nameLabel.color = player != null ? Color.white : Color.gray;
-            yield return wait;
+            if (presenter != null && presenter.player.IsPlayer == false)
+            {
+                if (RaceModel.IsOnline && chatlist.Count > 1)
+                {
+                    if (presenter != null && Random.Range(0, 100) < 30 && presenter.GetComponent<BotPresenter>(true, true) != null)
+                    {
+                        int chatIndex = chatlist.RandomOne();
+                        chatlist.Remove(chatIndex);
+                        presenter.SendChat(chatIndex);
+                    }
+                    else if (Random.Range(0, 100) < 20) presenter = null;
+                }
+                else
+                {
+                    presenter = null;
+                }
+            }
+
+            nameLabel.color = presenter != null ? Color.white : Color.gray;
+            yield return new WaitForSeconds(Random.Range(1.5f, 3));
         }
     }
 }

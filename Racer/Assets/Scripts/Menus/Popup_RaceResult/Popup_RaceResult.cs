@@ -41,7 +41,13 @@ public class Popup_RaceResult : GameState
         {
             var rac = RacerFactory.Racer.GetConfig(racer.player.RacerId);
             if (rac == null) continue;
-            var item = prefabItem.Clone<UiRaceResultItem>().Setup(racer, racer.player.CurrRank + 1, racer.player.name, rac.Name, racer.player.RacerPower, racer.player.Score,
+            var item = prefabItem.Clone<UiRaceResultItem>().Setup(
+                racer, 
+                racer.player.CurrRank + 1, 
+                racer.player.name, 
+                rac.Name, 
+                racer.player.RacerPower, 
+                racer.player.Score,
                 racer.player.IsPlayer ? RaceLogic.raceResult.rewardScore : GlobalConfig.Race.positionScore[racer.player.CurrRank]);
 
             if (racer.player.IsPlayer) item.GetComponent<Image>().color = Color.blue;

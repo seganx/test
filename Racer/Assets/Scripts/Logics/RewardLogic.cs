@@ -53,7 +53,7 @@ public static class RewardLogic
     public static int SelectRacerReward()
     {
         var center = FindSelectRacerCenter();
-        center += GlobalConfig.Probabilities.rewardRacerRadius / 2;
+        //center += GlobalConfig.Probabilities.rewardRacerRadius / 2;
         var index = SelectProbability(RacerFactory.Racer.AllConfigs.Count, center, GlobalConfig.Probabilities.rewardRacerRadius);
         return RacerFactory.Racer.AllConfigs[index].Id;
     }
@@ -93,7 +93,7 @@ public static class RewardLogic
     }
 
 
-    public static int SelectProbability(int lenght, int center, int radius, float heightFactor = 0.5f)
+    public static int SelectProbability(int lenght, int center, int radius, float heightFactor = 1)
     {
         var list = new List<int>(lenght * 3);
         for (int i = 0; i < lenght; i++)
@@ -113,7 +113,7 @@ public static class RewardLogic
         return list[index];
     }
 
-    public static int SelectProbabilityForward(int lenght, int center, int radius, float heightFactor = 0.5f)
+    public static int SelectProbabilityForward(int lenght, int center, int radius, float heightFactor = 1)
     {
         var list = new List<int>(lenght * 3);
         for (int i = 0; i < lenght; i++)

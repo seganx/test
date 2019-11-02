@@ -18,11 +18,11 @@ public class Popup_ChatPool : GameState
 
     private void Start()
     {
-        for (int i = 0; i < GlobalConfig.Chats.Length; i++)
+        for (int i = 0; i < GlobalConfig.Chats.Count; i++)
         {
             int index = i;
             var obj = itemPrefab.Clone<Button>();
-            obj.GetComponentInChildren<LocalText>().SetText(GlobalConfig.Chats[i]);
+            obj.GetComponentInChildren<LocalText>().SetText(GlobalConfig.GetChat(i));
             obj.onClick.AddListener(() =>
             {
                 Back();

@@ -168,8 +168,6 @@ public class BotPresenter : Base
         var list = RacerFactory.Racer.AllConfigs.FindAll(x => x.GroupId == groupId && x.MinPower.Between(targetPower + GlobalConfig.Race.bots.powerRange.x, targetPower + GlobalConfig.Race.bots.powerRange.y));
         if (list.Count < 1) list = RacerFactory.Racer.AllConfigs.FindAll(x => x.GroupId == groupId);
         if (list.Count < 1) list = RacerFactory.Racer.AllConfigs;
-        foreach (var item in list)
-            Debug.LogWarning(item.Name);
         var center = list.FindIndex(x => x.Id == playerRacerId);
         var index = SelectProbability(list.Count, center - 1, 4, 0.5f);
         return list[index].Id;

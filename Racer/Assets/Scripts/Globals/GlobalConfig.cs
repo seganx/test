@@ -322,9 +322,18 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
         {
             public int rewardRacerRadius = 3;
             public int blackmarketRacerRadius = 5;
-            public int shopSpecialRacerRadius = 4;
         }
 
+        [System.Serializable]
+        public class Chat
+        {
+            public enum Position : int { _1th, _2th, _3th, _4th }
+            [PersianPreview]
+            public string text = string.Empty;
+            [EnumFlag]
+            public Position botPosition = 0;
+            public bool IsPositionMatch(int position) { return botPosition.IsFlagOn(1 << (position - 1)); }
+        }
 
         public Update forceUpdate = new Update();
         public Server server = new Server();
@@ -338,6 +347,7 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
         public Probabilities probabilities = new Probabilities();
         public List<ProfilePreset> profilePreset = new List<ProfilePreset>() { new ProfilePreset() };
         public string[] chats = new string[] { "Hello" };
+        public List<Chat> chatList = new List<Chat>();
     }
 
     public int gamekey = 0;
@@ -390,7 +400,7 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
     public static Data.Shop Shop { get { return Instance.data.shop[Cohort % Instance.data.shop.Count]; } }
     public static List<Data.ProfilePreset> ProfilePresets { get { return Instance.data.profilePreset; } }
     public static Data.Probabilities Probabilities { get { return Instance.data.probabilities; } }
-    public static string[] Chats { get { return Instance.data.chats; } }
+    public static List<Data.Chat> Chats { get { return Instance.data.chatList; } }
 
     private static int Cohort { get; set; }
 
@@ -434,7 +444,7 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
 
     public static string GetChat(int index)
     {
-        return Chats[index % Chats.Length];
+        return Chats[index % Chats.Count].text;
     }
 
     public static class Leagues
