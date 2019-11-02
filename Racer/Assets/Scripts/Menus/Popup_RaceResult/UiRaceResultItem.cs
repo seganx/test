@@ -36,23 +36,18 @@ public class UiRaceResultItem : MonoBehaviour
 
     private IEnumerator Start()
     {
-        BotPresenter bot = (RaceModel.IsOnline && presenter != null && presenter.IsMine && presenter.IsSceneObject && PlayNetwork.IsMaster) ? presenter.GetComponent<BotPresenter>(true, true) : null;
-
         // prepare chat list
         var chatlist = new List<int>();
-        if (bot != null)
+        for (int i = 0; i < GlobalConfig.Chats.Count; i++)
         {
-            for (int i = 0; i < GlobalConfig.Chats.Count; i++)
-            {
-                if (GlobalConfig.Chats[i].IsPositionMatch(position))
-                    chatlist.Add(i);
-            }
+            if (GlobalConfig.Chats[i].IsPositionMatch(position))
+                chatlist.Add(i);
         }
 
         yield return new WaitForSeconds(Random.Range(4f, 6f));
         while (true)
         {
-            if (bot != null)
+            if (RaceModel.IsOnline && presenter != null && presenter.IsSceneObject && PlayNetwork.IsMaster && presenter.GetComponent<BotPresenter>(true, true) != null)
             {
                 if (RaceModel.IsOnline && chatlist.Count > 1)
                 {
