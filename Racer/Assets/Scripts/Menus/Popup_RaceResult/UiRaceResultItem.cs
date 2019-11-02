@@ -54,7 +54,7 @@ public class UiRaceResultItem : MonoBehaviour
             {
                 if (RaceModel.IsOnline && chatlist.Count > 1)
                 {
-                    if (presenter != null && Random.Range(0, 100) < 30 && presenter.GetComponent<BotPresenter>(true, true) != null)
+                    if (presenter != null && Random.Range(0, 100) < 27 && presenter.GetComponent<BotPresenter>(true, true) != null)
                     {
                         int chatIndex = chatlist.RandomOne();
                         chatlist.Remove(chatIndex);
