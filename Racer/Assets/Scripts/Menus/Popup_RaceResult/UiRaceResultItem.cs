@@ -47,20 +47,24 @@ public class UiRaceResultItem : MonoBehaviour
             }
         }
 
-        yield return new WaitForSeconds(Random.Range(3f, 5f));
+        yield return new WaitForSeconds(Random.Range(4f, 6f));
         while (true)
         {
             if (presenter != null && presenter.player.IsPlayer == false)
             {
                 if (RaceModel.IsOnline && chatlist.Count > 1)
                 {
+                    if (Random.Range(0, 100) < GlobalConfig.Race.bots.chatLeaveChance)
+                    {
+                        presenter = null;
+                    }
+
                     if (presenter != null && Random.Range(0, 100) < GlobalConfig.Race.bots.chatChance && presenter.GetComponent<BotPresenter>(true, true) != null)
                     {
                         int chatIndex = chatlist.RandomOne();
                         chatlist.Remove(chatIndex);
                         presenter.SendChat(chatIndex);
                     }
-                    else if (Random.Range(0, 100) < GlobalConfig.Race.bots.chatLeaveChance) presenter = null;
                 }
                 else
                 {
