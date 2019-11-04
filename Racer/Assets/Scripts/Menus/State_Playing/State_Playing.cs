@@ -149,6 +149,9 @@ public class State_Playing : GameState
 
             if (RaceLogic.raceResult.rewards != null)
             {
+                if (RaceModel.IsOnline || RaceModel.IsFreeDrive)
+                    Popup_Rewards.AddLootbox();
+
                 var popup = Popup_Rewards.Display(RaceLogic.raceResult.rewards);
 
                 // fill out the text description about rewards

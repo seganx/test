@@ -110,6 +110,7 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
                 public int gemChance = 0;
                 public int racerCardChance = 0;
                 public int customeChance = 0;
+                public int cardLootFactor = 100;
             }
 
             public float maxTime = 60;
@@ -141,6 +142,8 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
             public int rewardCoin = 0;
             public int rewardCards = 0;
             public Vector2Int cardsGroups = new Vector2Int(0, 20);
+            public Vector3Int lootboxRacerIds = Vector3Int.zero;
+            public int lootboxValue = 10;
         }
 
         [System.Serializable]
@@ -300,7 +303,6 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
             }
             */
         }
-
 
         [System.Serializable]
         public class ProfilePreset

@@ -24,6 +24,7 @@ public class ProfileData
     public int skill { get { return data.i5.Value; } set { data.i5 = value; } }
     public int usedFreeItem { get { return data.i6.Value; } set { data.i6 = value; } }
     public int totalRaces { get { return data.i7.Value; } set { data.i7 = value; } }
+    public int cardLootboxChance { get { return data.i8.Value; } set { data.i8 = value; } }
     public List<string> purchasedItems { get { return data.a1; } set { data.a1 = value; } }
     public List<RacerProfile> racers { get { return data.a2; } set { data.a2 = value; } }
 
@@ -81,6 +82,8 @@ public class ProfileData
         public CryptoInt i5 = 0; // skills
         public CryptoInt i6 = 0; // used free item
         public CryptoInt i7 = 0; // total races
+        public CryptoInt i8 = 0; // total races
+
 
         public bool IsEqualTo(NetData other)
         {
@@ -93,6 +96,7 @@ public class ProfileData
             if (i5.Value != other.i5.Value) return false;
             if (i6.Value != other.i6.Value) return false;
             if (i7.Value != other.i7.Value) return false;
+            if (i8.Value != other.i8.Value) return false;
             if (a1.Count != other.a1.Count) return false;
             if (a2.Count != other.a2.Count) return false;
 

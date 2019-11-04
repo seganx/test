@@ -108,6 +108,12 @@ public static class Profile
         set { data.totalRaces = value; }
     }
 
+    public static int CardLootboxChance
+    {
+        get { return data.cardLootboxChance; }
+        set { data.cardLootboxChance = value; }
+    }
+
     public static ProfileData Data
     {
         get { return data; }

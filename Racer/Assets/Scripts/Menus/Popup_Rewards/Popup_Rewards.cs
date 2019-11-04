@@ -11,6 +11,7 @@ public class Popup_Rewards : GameState
     [SerializeField] private LocalText titleRaceReward = null;
     [SerializeField] private LocalText titlePurchaseReward = null;
     [SerializeField] private RectTransform rewardContent = null;
+    [SerializeField] private UiRewardRacerLootbox lootbox = null;
     [SerializeField] private UiRewardItemResource gemPrefab = null;
     [SerializeField] private UiRewardItemResource coinPrefab = null;
     [SerializeField] private UiRewardRacerCard racerCardPrefab = null;
@@ -29,11 +30,7 @@ public class Popup_Rewards : GameState
         titleReward.gameObject.SetActive(true);
         titleRaceReward.gameObject.SetActive(false);
         titlePurchaseReward.gameObject.SetActive(false);
-
         scroller = rewardContent.GetComponentInParent<ScrollRect>(true);
-        for (int i = 0; i < rewardContent.childCount; i++)
-            rewardContent.GetChild(i).gameObject.SetActive(false);
-
         inventoryButton.onClick.AddListener(() => gameManager.OpenPopup<Popup_Inventory>().Setup(UpdateInventoryDesc));
     }
 
@@ -53,7 +50,25 @@ public class Popup_Rewards : GameState
         yield return new WaitForSeconds(0.5f);
         contentPos = rewardContent.anchoredPosition.x;
 
-        // first open racer cards
+        // first open loot box
+        if (lootbox != null)
+        {
+            if (displayLootbox)
+            {
+                lootbox.transform.SetAsFirstSibling();
+                lootbox.gameObject.SetActive(true);
+                yield return new WaitUntil(() => lootbox.IsOpened);
+                MoveContentToLeft(lootbox.rectTransform.rect.width);
+            }
+            else
+            {
+                Destroy(lootbox.gameObject);
+                yield return new WaitForEndOfFrame();
+            }
+        }
+        displayLootbox = false;
+
+        // then open racer cards
         for (int i = 0; i < rewardContent.childCount; i++)
         {
             var item = rewardContent.GetChild<UiRewardRacerCard>(i);
@@ -180,6 +195,7 @@ public class Popup_Rewards : GameState
     }
 
     private static List<RewardItem> rewards = new List<RewardItem>(10);
+    private static bool displayLootbox = false;
 
     public static void AddResource(int _gems, int _coins)
     {
@@ -205,6 +221,11 @@ public class Popup_Rewards : GameState
     {
         if (rewards.Exists(x => x.customeType == type && x.racerid == _racerId && x.customid == _customeId)) return;
         rewards.Add(new RewardItem() { customeType = type, racerid = _racerId, customid = _customeId });
+    }
+
+    public static void AddLootbox()
+    {
+        displayLootbox = true;
     }
 
     public static Popup_Rewards Display(System.Action onNextTask = null)
