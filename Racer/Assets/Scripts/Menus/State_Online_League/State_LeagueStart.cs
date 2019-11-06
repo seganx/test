@@ -8,12 +8,14 @@ public class State_LeagueStart : GameState
 {
     [SerializeField] private LocalText scoreLabel = null;
     [SerializeField] private LocalText rankLabel = null;
-    [SerializeField] private LocalText giftRacerInfoLabel = null;
+    [SerializeField] private LocalText rentRacerInfoLabel = null;
     [SerializeField] private Button bigIcon = null;
     [SerializeField] private Button rewardButton = null;
     [SerializeField] private Button startButton = null;
     [SerializeField] private Button leaderboardButton = null;
     [SerializeField] private Button claimRewardsButton = null;
+    [SerializeField] private GameObject normalStartButtonTextGameObject = null;
+    [SerializeField] private GameObject rentStartButtonTextGameObject = null;
 
     private void Start()
     {
@@ -47,7 +49,12 @@ public class State_LeagueStart : GameState
     {
         scoreLabel.SetFormatedText(Profile.Score);
         rankLabel.SetText(Profile.PositionString);
-        giftRacerInfoLabel.SetFormatedText(RaceLogic.RentRemainCount);
+        rentRacerInfoLabel.SetFormatedText(RentRacerRemainCount);
+        normalStartButtonTextGameObject.SetActive(RentRacerRemainCount > 0);
+        rentStartButtonTextGameObject.SetActive(RentRacerRemainCount <= 0);
+        if (RentRacerRemainCount <= 0)
+            PopupQueue.Add(.5f, () => Popup_Tutorial.Display(36));
+
         bigIcon.targetGraphic.As<Image>().sprite = GlobalFactory.League.GetBigIcon(Profile.League);
         claimRewardsButton.gameObject.SetActive(Profile.LeagueResultExist);
 
@@ -145,34 +152,6 @@ public class State_LeagueStart : GameState
         gameManager.OpenState<State_GoToRace>();
     }
 
-    private void StartOnlineGameWithRentCar()
-    {
-        int group = Random.Range(Mathf.Clamp(Profile.League + 1, 2, 5), 6);
-        var racerconf = RacerFactory.Racer.AllConfigs.FindAll(x => x.GroupId == group).RandomOne();
-        var racerdata = RaceLogic.CreateRandomRacerProfile(racerconf.Id);
-        var racerpowe = racerconf.ComputePower(racerdata.level.SpeedLevel, racerdata.level.NitroLevel, racerdata.level.SteeringLevel, racerdata.level.BodyLevel);
-        var userscore = RaceLogic.ComputeScoreFromPower(group, racerpowe);
-        var playerdata = new PlayerData(Profile.Name, userscore, Profile.Position, racerdata);
-
-        RaceModel.Reset(RaceModel.Mode.Online);
-        RaceModel.specs.mapId = RaceModel.SelectRandomMap();
-        RaceModel.specs.racersGroup = group;
-        RaceModel.specs.maxPlayerCount = 4;
-        RaceModel.specs.maxPlayTime = GlobalConfig.Race.maxTime;
-        RaceModel.traffic.baseDistance = GlobalConfig.Race.traffics.baseDistance;
-        RaceModel.traffic.distanceRatio = GlobalConfig.Race.traffics.speedFactor;
-
-        PlayNetwork.IsOffline = PlayNetwork.IsDisconnectedOnLastOnline;
-        PlayNetwork.IsDisconnectedOnLastOnline = false;
-        PlayNetwork.EloScore = playerdata.Score;
-        PlayNetwork.EloPower = playerdata.RacerPower;
-        PlayNetwork.EloGroup = RaceModel.specs.racersGroup;
-        PlayNetwork.MapId = RaceModel.specs.mapId;
-        PlayNetwork.MaxPlayerCount = RaceModel.specs.maxPlayerCount;
-
-        gameManager.OpenState<State_GoToRace>().Setup(playerdata);
-    }
-
     private void ClaimRewards()
     {
         Popup_Loading.Display();
@@ -201,5 +180,12 @@ public class State_LeagueStart : GameState
             Profile.LeagueResultExist = false;
             ProfileLogic.SyncWidthServer(true, done => { });
         });
+    }
+
+    static string rentRacerRemainCountString = "rentRacerRemainCount";
+    public static int RentRacerRemainCount
+    {
+        get { return PlayerPrefs.GetInt(rentRacerRemainCountString, GlobalConfig.MatchMaking.rentRacerCount); }
+        set { PlayerPrefs.SetInt(rentRacerRemainCountString, value); }
     }
 }
