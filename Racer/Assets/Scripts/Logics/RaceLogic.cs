@@ -17,8 +17,8 @@ public static class RaceLogic
 
     public static int RentRemainCount
     {
-        get { return PlayerPrefs.GetInt("RaceLogic.RentRemainCount", GlobalConfig.MatchMaking.giftRacerCount); }
-        set { PlayerPrefs.SetInt("RaceLogic.RentRemainCount", value); }
+        get { return PlayerPrefs.GetInt("RaceLogic.RentRemainCount", GlobalConfig.MatchMaking.rentRacerCount); }
+        set { PlayerPrefs.SetInt("RaceLogic.RentRemainCount", value < 0 ? GlobalConfig.MatchMaking.rentRacerCount : value); }
     }
 
     public static void OnRaceStarted()
