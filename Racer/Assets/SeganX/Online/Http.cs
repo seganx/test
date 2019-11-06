@@ -45,7 +45,7 @@ namespace SeganX
             {
                 var deltaTime = Time.time - requestTime;
                 requestTime = Time.time;
-                yield return new WaitForSeconds(Mathf.Clamp01(1 - deltaTime));
+                yield return new WaitForSeconds(Mathf.Clamp01(1.5f - deltaTime));
             }
 
             if (postdata.HasContent() || header != null)

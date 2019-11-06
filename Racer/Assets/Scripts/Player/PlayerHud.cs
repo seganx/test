@@ -44,7 +44,10 @@ public class PlayerHud : MonoBehaviour
             {
                 numberImage.sprite = positionSprites[player.player.CurrRank % positionSprites.Length];
                 var depth = transform.position.z - Camera.main.transform.position.z;
-                box.alpha = Mathf.Clamp01((depth - 1) / 3.0f);
+                float fadeFrom = 3;
+                float fadeTo = 20;
+                float fadeDis = (fadeTo - fadeFrom) * 0.5f;
+                box.alpha = Mathf.Clamp01(1 - Mathf.Pow((depth - fadeFrom - 1) / fadeDis - 1, 2));
                 box.transform.localScale = Vector3.one * Mathf.Lerp(0.002f, 0.015f, Mathf.Clamp01(depth / 50.0f));
                 yield return wait;
             }
