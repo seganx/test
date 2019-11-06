@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class UiRewardRacerLootbox : Base
 {
+    [SerializeField] private LocalText chanceLabel = null;
     [SerializeField] private RectTransform chanceCircle = null;
     [SerializeField] private Image circleImage = null;
     [SerializeField] private Image circlePlusImage = null;
@@ -46,14 +47,15 @@ public class UiRewardRacerLootbox : Base
         {
             float currLootvalue = Profile.CardLootboxChance;
             Profile.CardLootboxChance += rewardLootValue;
+            float nextLootValue = Profile.CardLootboxChance;
 
-            float nextLootValue = Profile.CardLootboxChance + rewardLootValue;
             var wait = new WaitForEndOfFrame();
             while (Mathf.Abs(currLootvalue - nextLootValue) > 1)
             {
                 yield return wait;
                 currLootvalue = Mathf.Lerp(currLootvalue, nextLootValue, Time.deltaTime * 2);
                 circlePlusImage.SetFillAmount(currLootvalue, 100);
+                chanceLabel.SetFormatedText(currLootvalue + 0.5f);
             }
         }
     }

@@ -350,7 +350,6 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
         public List<Shop> shop = new List<Shop>();
         public Probabilities probabilities = new Probabilities();
         public List<ProfilePreset> profilePreset = new List<ProfilePreset>() { new ProfilePreset() };
-        public string[] chats = new string[] { "Hello" };
         public List<Chat> chatList = new List<Chat>();
     }
 
