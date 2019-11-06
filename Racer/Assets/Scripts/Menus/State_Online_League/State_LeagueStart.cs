@@ -8,12 +8,14 @@ public class State_LeagueStart : GameState
 {
     [SerializeField] private LocalText scoreLabel = null;
     [SerializeField] private LocalText rankLabel = null;
-    [SerializeField] private LocalText giftRacerInfoLabel = null;
+    [SerializeField] private LocalText rentRacerInfoLabel = null;
     [SerializeField] private Button bigIcon = null;
     [SerializeField] private Button rewardButton = null;
     [SerializeField] private Button startButton = null;
     [SerializeField] private Button leaderboardButton = null;
     [SerializeField] private Button claimRewardsButton = null;
+    [SerializeField] private GameObject normalStartButtonTextGameObject = null;
+    [SerializeField] private GameObject rentStartButtonTextGameObject = null;
 
     private void Start()
     {
@@ -47,7 +49,12 @@ public class State_LeagueStart : GameState
     {
         scoreLabel.SetFormatedText(Profile.Score);
         rankLabel.SetText(Profile.PositionString);
-        giftRacerInfoLabel.SetFormatedText(GiftRacerRemainCount);
+        rentRacerInfoLabel.SetFormatedText(RentRacerRemainCount);
+        normalStartButtonTextGameObject.SetActive(RentRacerRemainCount > 0);
+        rentStartButtonTextGameObject.SetActive(RentRacerRemainCount <= 0);
+        if (RentRacerRemainCount <= 0)
+            PopupQueue.Add(.5f, () => Popup_Tutorial.Display(36));
+
         bigIcon.targetGraphic.As<Image>().sprite = GlobalFactory.League.GetBigIcon(Profile.League);
         claimRewardsButton.gameObject.SetActive(Profile.LeagueResultExist);
 
@@ -175,10 +182,10 @@ public class State_LeagueStart : GameState
         });
     }
 
-    static string giftRacerRemainCountString = "giftRacerRemainCount";
-    public static int GiftRacerRemainCount
+    static string rentRacerRemainCountString = "rentRacerRemainCount";
+    public static int RentRacerRemainCount
     {
-        get { return PlayerPrefs.GetInt(giftRacerRemainCountString, GlobalConfig.MatchMaking.giftRacerCount); }
-        set { PlayerPrefs.SetInt(giftRacerRemainCountString, value); }
+        get { return PlayerPrefs.GetInt(rentRacerRemainCountString, GlobalConfig.MatchMaking.rentRacerCount); }
+        set { PlayerPrefs.SetInt(rentRacerRemainCountString, value); }
     }
 }

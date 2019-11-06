@@ -141,7 +141,7 @@ public class State_GoToRace : GameState
             Profile.Score -= 1;
             Network.SendScore(Profile.Score);
             FuelTimerPresenter.ReduceFuel();
-            State_LeagueStart.GiftRacerRemainCount--;
+            State_LeagueStart.RentRacerRemainCount--;
         }
         ChatLogic.Clear();
         RaceLogic.OnRaceStarted();
