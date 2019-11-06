@@ -47,6 +47,7 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
         {
             public int[] joinTimeouts;
             public int eloScoreCount = 8;
+            public int giftRacerCount = 15;
             public Vector2 eloScoreParams = new Vector2(0.5f, -500);
             public Vector2 eloPowerParams = new Vector2(0, 1000);
             public Vector2 eloGroupParams = new Vector2(0, 0);

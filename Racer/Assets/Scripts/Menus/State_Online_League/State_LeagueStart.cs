@@ -8,6 +8,7 @@ public class State_LeagueStart : GameState
 {
     [SerializeField] private LocalText scoreLabel = null;
     [SerializeField] private LocalText rankLabel = null;
+    [SerializeField] private LocalText giftRacerInfoLabel = null;
     [SerializeField] private Button bigIcon = null;
     [SerializeField] private Button rewardButton = null;
     [SerializeField] private Button startButton = null;
@@ -46,6 +47,7 @@ public class State_LeagueStart : GameState
     {
         scoreLabel.SetFormatedText(Profile.Score);
         rankLabel.SetText(Profile.PositionString);
+        giftRacerInfoLabel.SetFormatedText(GiftRacerRemainCount);
         bigIcon.targetGraphic.As<Image>().sprite = GlobalFactory.League.GetBigIcon(Profile.League);
         claimRewardsButton.gameObject.SetActive(Profile.LeagueResultExist);
 
@@ -171,5 +173,12 @@ public class State_LeagueStart : GameState
             Profile.LeagueResultExist = false;
             ProfileLogic.SyncWidthServer(true, done => { });
         });
+    }
+
+    static string giftRacerRemainCountString = "giftRacerRemainCount";
+    public static int GiftRacerRemainCount
+    {
+        get { return PlayerPrefs.GetInt(giftRacerRemainCountString, GlobalConfig.MatchMaking.giftRacerCount); }
+        set { PlayerPrefs.SetInt(giftRacerRemainCountString, value); }
     }
 }
