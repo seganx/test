@@ -15,6 +15,12 @@ public static class RaceLogic
 
     public static RaceResult raceResult = new RaceResult();
 
+    public static int RentRemainCount
+    {
+        get { return PlayerPrefs.GetInt("RaceLogic.RentRemainCount", GlobalConfig.MatchMaking.giftRacerCount); }
+        set { PlayerPrefs.SetInt("RaceLogic.RentRemainCount", value); }
+    }
+
     public static void OnRaceStarted()
     {
         raceResult = new RaceResult();
@@ -130,5 +136,35 @@ public static class RaceLogic
 
         if (raceResult.rewards.racerCount < 0)
             Debug.LogWarning("raceResult.rewards.racerCount: " + raceResult.rewards.racerCount);
+    }
+
+    public static RacerProfile CreateRandomRacerProfile(int racerId)
+    {
+        var res = new RacerProfile() { id = racerId };
+        var config = RacerFactory.Racer.GetConfig(res.id);
+        res.cards = config.CardCount;
+        res.level.Level = 1;
+
+        var maxUpgradeLevel = RacerGlobalConfigs.Data.maxUpgradeLevel[res.level.Level];
+        res.level.SpeedLevel = Random.Range(0, maxUpgradeLevel);
+        res.level.NitroLevel = Random.Range(0, maxUpgradeLevel);
+        res.level.SteeringLevel = Random.Range(0, maxUpgradeLevel);
+        res.level.BodyLevel = Random.Range(0, maxUpgradeLevel);
+
+        res.custom = config.DefaultRacerCustom;
+        res.custom.BodyColor = RacerFactory.Colors.AllColors.RandomOne().id;
+        res.custom.Wheel = RacerFactory.Wheel.GetPrefabs(config.Id).RandomOne().Id;
+        res.custom.Spoiler = Random.Range(0, 100) < 10 ? RacerFactory.Spoiler.GetPrefabs(config.Id).RandomOne().Id : 0;
+        res.custom.Vinyl = Random.Range(0, 100) < 10 ? RacerFactory.Vinyl.GetPrefabs(config.Id).RandomOne().Id : 0;
+        res.custom.Hood = Random.Range(0, 100) < 10 && RacerFactory.Hood.GetPrefabs(config.Id).Count > 0 ? RacerFactory.Hood.GetPrefabs(config.Id).RandomOne().Id : 0;
+        res.custom.Roof = Random.Range(0, 100) < 10 && RacerFactory.Roof.GetPrefabs(config.Id).Count > 0 ? RacerFactory.Roof.GetPrefabs(config.Id).RandomOne().Id : 0;
+
+        return res;
+    }
+
+    public static int ComputeScoreFromPower(int group, int power)
+    {
+        var factor = GlobalConfig.Race.bots.powers[group];
+        return Mathf.RoundToInt((power - factor.y) / factor.x);
     }
 }

@@ -47,7 +47,7 @@ public class State_LeagueStart : GameState
     {
         scoreLabel.SetFormatedText(Profile.Score);
         rankLabel.SetText(Profile.PositionString);
-        giftRacerInfoLabel.SetFormatedText(GiftRacerRemainCount);
+        giftRacerInfoLabel.SetFormatedText(RaceLogic.RentRemainCount);
         bigIcon.targetGraphic.As<Image>().sprite = GlobalFactory.League.GetBigIcon(Profile.League);
         claimRewardsButton.gameObject.SetActive(Profile.LeagueResultExist);
 
@@ -145,6 +145,34 @@ public class State_LeagueStart : GameState
         gameManager.OpenState<State_GoToRace>();
     }
 
+    private void StartOnlineGameWithRentCar()
+    {
+        int group = Random.Range(Mathf.Clamp(Profile.League + 1, 2, 5), 6);
+        var racerconf = RacerFactory.Racer.AllConfigs.FindAll(x => x.GroupId == group).RandomOne();
+        var racerdata = RaceLogic.CreateRandomRacerProfile(racerconf.Id);
+        var racerpowe = racerconf.ComputePower(racerdata.level.SpeedLevel, racerdata.level.NitroLevel, racerdata.level.SteeringLevel, racerdata.level.BodyLevel);
+        var userscore = RaceLogic.ComputeScoreFromPower(group, racerpowe);
+        var playerdata = new PlayerData(Profile.Name, userscore, Profile.Position, racerdata);
+
+        RaceModel.Reset(RaceModel.Mode.Online);
+        RaceModel.specs.mapId = RaceModel.SelectRandomMap();
+        RaceModel.specs.racersGroup = group;
+        RaceModel.specs.maxPlayerCount = 4;
+        RaceModel.specs.maxPlayTime = GlobalConfig.Race.maxTime;
+        RaceModel.traffic.baseDistance = GlobalConfig.Race.traffics.baseDistance;
+        RaceModel.traffic.distanceRatio = GlobalConfig.Race.traffics.speedFactor;
+
+        PlayNetwork.IsOffline = PlayNetwork.IsDisconnectedOnLastOnline;
+        PlayNetwork.IsDisconnectedOnLastOnline = false;
+        PlayNetwork.EloScore = playerdata.Score;
+        PlayNetwork.EloPower = playerdata.RacerPower;
+        PlayNetwork.EloGroup = RaceModel.specs.racersGroup;
+        PlayNetwork.MapId = RaceModel.specs.mapId;
+        PlayNetwork.MaxPlayerCount = RaceModel.specs.maxPlayerCount;
+
+        gameManager.OpenState<State_GoToRace>().Setup(playerdata);
+    }
+
     private void ClaimRewards()
     {
         Popup_Loading.Display();
@@ -173,12 +201,5 @@ public class State_LeagueStart : GameState
             Profile.LeagueResultExist = false;
             ProfileLogic.SyncWidthServer(true, done => { });
         });
-    }
-
-    static string giftRacerRemainCountString = "giftRacerRemainCount";
-    public static int GiftRacerRemainCount
-    {
-        get { return PlayerPrefs.GetInt(giftRacerRemainCountString, GlobalConfig.MatchMaking.giftRacerCount); }
-        set { PlayerPrefs.SetInt(giftRacerRemainCountString, value); }
     }
 }
