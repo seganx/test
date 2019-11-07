@@ -27,8 +27,7 @@ public class UiRewardRacerLootbox : Base
         {
             var lindex = Profile.League;
             var cars = RacerFactory.Racer.AllConfigs.FindAll(x => x.GroupId == lindex);
-            if (cars.Exists(x => Profile.IsUnlockedRacer(x.Id)) == false)
-                lindex--;
+            if (cars.Exists(x => Profile.IsUnlockedRacer(x.Id)) == false) lindex--;
             var league = GlobalConfig.Leagues.GetByIndex(lindex);
             config = Profile.IsUnlockedRacer(league.lootboxRacerIds.x) ? null : RacerFactory.Racer.GetConfig(league.lootboxRacerIds.x);
             if (config == null) config = Profile.IsUnlockedRacer(league.lootboxRacerIds.y) ? null : RacerFactory.Racer.GetConfig(league.lootboxRacerIds.y);
