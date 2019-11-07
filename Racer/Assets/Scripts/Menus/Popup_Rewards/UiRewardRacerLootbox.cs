@@ -25,14 +25,31 @@ public class UiRewardRacerLootbox : Base
         var rewardata = rewardsList[Mathf.Clamp(RaceModel.stats.playerRank, 0, rewardsList.Count - 1)];
         if (rewardata.cardLootFactor > 0)
         {
+            // find a league which player has at least one car
             var lindex = Profile.League;
             var cars = RacerFactory.Racer.AllConfigs.FindAll(x => x.GroupId == lindex);
             if (cars.Exists(x => Profile.IsUnlockedRacer(x.Id)) == false) lindex--;
             var league = GlobalConfig.Leagues.GetByIndex(lindex);
-            config = Profile.IsUnlockedRacer(league.lootboxRacerIds.x) ? null : RacerFactory.Racer.GetConfig(league.lootboxRacerIds.x);
-            if (config == null) config = Profile.IsUnlockedRacer(league.lootboxRacerIds.y) ? null : RacerFactory.Racer.GetConfig(league.lootboxRacerIds.y);
-            if (config == null) config = Profile.IsUnlockedRacer(league.lootboxRacerIds.z) ? null : RacerFactory.Racer.GetConfig(league.lootboxRacerIds.z);
-            if (config != null) rewardLootValue = league.lootboxValue * rewardata.cardLootFactor / 100;
+
+            // select a racer
+            var selectedId = GetLastRacerId(lindex);
+            if (selectedId > 0 && Profile.IsUnlockedRacer(selectedId) == false)
+            {
+                config = RacerFactory.Racer.GetConfig(selectedId);
+            }
+            else
+            {
+                int rindex = Random.Range(0, 100) % 3;
+                config = Profile.IsUnlockedRacer(league.lootboxRacerIds[rindex]) ? null : RacerFactory.Racer.GetConfig(league.lootboxRacerIds[rindex]);
+                if (config == null) config = Profile.IsUnlockedRacer(league.lootboxRacerIds[++rindex % 3]) ? null : RacerFactory.Racer.GetConfig(league.lootboxRacerIds[rindex]);
+                if (config == null) config = Profile.IsUnlockedRacer(league.lootboxRacerIds[++rindex % 3]) ? null : RacerFactory.Racer.GetConfig(league.lootboxRacerIds[rindex]);
+            }
+
+            if (config != null)
+            {
+                rewardLootValue = league.lootboxValue * rewardata.cardLootFactor / 100;
+                SetLastRacerId(lindex, config.Id);
+            }
         }
 
         if (config == null)
@@ -92,4 +109,13 @@ public class UiRewardRacerLootbox : Base
         IsOpened = true;
     }
 
+    private int GetLastRacerId(int leagueIndex)
+    {
+        return PlayerPrefs.GetInt("Lootbox.RacerId." + leagueIndex, 0);
+    }
+
+    private void SetLastRacerId(int leagueIndex, int racerId)
+    {
+        PlayerPrefs.SetInt("Lootbox.RacerId." + leagueIndex, racerId);
+    }
 }
