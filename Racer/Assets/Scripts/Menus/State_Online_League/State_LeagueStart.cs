@@ -83,7 +83,11 @@ public class State_LeagueStart : GameState
 
         UiShowHide.ShowAll(transform);
 
-        PopupQueue.Add(.5f, () => Popup_Tutorial.Display(31));
+        PopupQueue.Add(.5f, () =>
+        {
+            if (Popup_Tutorial.Display(31) == null)
+                Popup_Tutorial.Display(??);
+        });
 
         if (Profile.TotalRaces < 30 && FuelTimerPresenter.FuelCount <= 0)
             PopupQueue.Add(.5f, () => Popup_Tutorial.Display(39, true, () => FuelTimerPresenter.FullFuel()));
