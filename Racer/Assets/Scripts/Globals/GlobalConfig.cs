@@ -124,6 +124,8 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
             public float nosTimeFactor = 0.025f;
             public int nosBonusWidth = 40;
             public int nosBonusChance = 100;
+            public Vector2Int hudFadeDistance = new Vector2Int(1, 25);
+            public float[] cameraOffsets = new float[] { 0, 0.1f, 0.3f, 0.5f };
             public int[] positionScore = new int[] { 10, 5, 1, -1 };
             public float[] groupMaxSpeed = new float[] { 100 };
             public Bots bots = new Bots();
@@ -385,7 +387,10 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
 
     public void OnExport(object sender)
     {
-        var filename = UnityEditor.EditorUtility.SaveFilePanel("Save exported data", System.IO.Path.GetDirectoryName(Application.dataPath), "config", "txt");
+        var path = System.IO.Path.GetDirectoryName(Application.dataPath + "/../../Configs/" + version + "/");
+        if (System.IO.Directory.Exists(path) == false)
+            System.IO.Directory.CreateDirectory(path);
+        var filename = UnityEditor.EditorUtility.SaveFilePanel("Save exported data", path, "config", "txt");
         if (filename.HasContent(4))
             System.IO.File.WriteAllText(filename, JsonUtility.ToJson(data, false), System.Text.Encoding.UTF8);
     }

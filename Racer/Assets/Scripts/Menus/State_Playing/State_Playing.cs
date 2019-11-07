@@ -70,6 +70,7 @@ public class State_Playing : GameState
         RaceModel.stats.playerSpeed = PlayerPresenter.local.player.CurrSpeed;
         RaceModel.stats.playerPosition = PlayerPresenter.local.player.CurrPosition;
 
+        RacerCamera.offset.y = Mathf.Lerp(RacerCamera.offset.y, GlobalConfig.Race.cameraOffsets[PlayerPresenter.local.player.CurrRank], deltaTime);
         RacerCamera.offset.z = Mathf.Lerp(RacerCamera.offset.z, -cameraMode * 0.6f, deltaTime * 3);
         RacerCamera.UpdateAll(deltaTime);
 

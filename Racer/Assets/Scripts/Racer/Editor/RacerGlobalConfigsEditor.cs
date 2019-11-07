@@ -86,7 +86,10 @@ public class RacerGlobalConfigsEditor : Editor
 
         if (GUILayout.Button("Export"))
         {
-            var filename = EditorUtility.SaveFilePanel("Save exported data", Path.GetDirectoryName(Application.dataPath), "racers", "txt");
+            var path = Path.GetDirectoryName(Application.dataPath + "/../../Configs/" + GlobalConfig.Instance.version + "/");
+            if (Directory.Exists(path) == false)
+                Directory.CreateDirectory(path);
+            var filename = EditorUtility.SaveFilePanel("Save exported data", path, "racers", "txt");
             if (filename.HasContent(4))
                 File.WriteAllText(filename, JsonUtility.ToJson(obj.data, false), System.Text.Encoding.UTF8);
         }
@@ -131,16 +134,16 @@ public class RacerGlobalConfigsEditor : Editor
         if (foldRacersGrid)
         {
             //if (DrawLinearParamButton("Group", ref obj.editorGroupParam))
-              //  for (int i = 0; i < list.Count; i++)
-                //    list[i].groupId = Mathf.FloorToInt(obj.editorGroupParam.x + obj.editorGroupParam.y * i);
+            //  for (int i = 0; i < list.Count; i++)
+            //    list[i].groupId = Mathf.FloorToInt(obj.editorGroupParam.x + obj.editorGroupParam.y * i);
 
             //if (DrawLinearParamButton("Cards", ref obj.editorCardsParam))
-              //  for (int i = 0; i < list.Count; i++)
-                //    list[i].cardCount = Mathf.FloorToInt(obj.editorCardsParam.x + obj.editorCardsParam.y * i);
+            //  for (int i = 0; i < list.Count; i++)
+            //    list[i].cardCount = Mathf.FloorToInt(obj.editorCardsParam.x + obj.editorCardsParam.y * i);
 
             //if (DrawLinearParamButton("Price", ref obj.editorPriceParam))
-              //  for (int i = 0; i < list.Count; i++)
-                //    list[i].price = Mathf.FloorToInt(obj.editorPriceParam.x + obj.editorPriceParam.y * i);
+            //  for (int i = 0; i < list.Count; i++)
+            //    list[i].price = Mathf.FloorToInt(obj.editorPriceParam.x + obj.editorPriceParam.y * i);
 
             if (DrawLinearParamButton("Speed", ref obj.editorSpeedParam))
                 for (int i = 0; i < list.Count; i++)
