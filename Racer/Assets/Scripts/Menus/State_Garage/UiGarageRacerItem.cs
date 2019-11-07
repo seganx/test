@@ -72,7 +72,7 @@ public class UiGarageRacerItem : Base
         {
             racerImage.sprite = GarageRacerImager.GetImageOpaque(config.Id, config.DefaultRacerCustom, racerImageWidth, racerImageHeight);
 
-            racerImage.color = Color.gray;
+            racerImage.color = offer != null ? Color.white : Color.gray;
             racerImage.SetColorAlpha(offer != null ? 1 : 0);
             cardsImage.SetColorAlpha(0);
             cardsLabel.SetFormatedText(0, config.CardCount);
