@@ -25,7 +25,7 @@ public class PlayerHud : MonoBehaviour
         {
             box.transform.SetParent(player.racer.transform);
             var pos = box.transform.localPosition;
-            pos.y = player.racer.bluePrint.roof.transform.position.y + 0.5f;
+            pos.y = player.racer.bluePrint.roof.transform.position.y + 0.3f;
             box.transform.localPosition = pos;
         }
         else box.gameObject.SetActive(false);
