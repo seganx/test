@@ -46,7 +46,8 @@ public class Popup_LeaguePrize : GameState
 
         var league = GlobalConfig.Leagues.GetByIndex(index);
         scoreLabel.SetFormatedText(league.startScore);
-        topXLabel.SetFormatedText(league.startRank);
+        topXLabel.SetFormatedText(league.startScore, league.startRank);
+        topOneLabel.SetFormatedText(league.startScore);
         gemLabel.SetFormatedText(league.rewardGem);
         coinLabel.SetFormatedText(league.rewardCoin);
         cardsLabel.SetFormatedText(league.rewardCards);
