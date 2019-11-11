@@ -29,7 +29,7 @@ public class UiPlayingBehindDistance : MonoBehaviour
 
         while (RaceModel.stats.playTime < RaceModel.specs.maxPlayTime)
         {
-            UpdateVisual();
+            UpdateData();
             yield return waitTime;
         }
     }
@@ -40,12 +40,12 @@ public class UiPlayingBehindDistance : MonoBehaviour
             rectTransform.SetAnchordPositionX(position.current);
     }
 
-    private void UpdateVisual()
+    private void UpdateData()
     {
         var local = PlayerPresenter.local;
-        var playerIndex = PlayerPresenter.all.IndexOf(local);
-        var nextOpp = PlayerPresenter.all[Mathf.Clamp(playerIndex - 1, 0, PlayerPresenter.all.LastIndex())];
-        var prevOpp = PlayerPresenter.all[Mathf.Clamp(playerIndex + 1, 0, PlayerPresenter.all.LastIndex())];
+        var index = PlayerPresenter.all.IndexOf(local);
+        var nextOpp = PlayerPresenter.all[Mathf.Clamp(index - 1, 0, PlayerPresenter.all.LastIndex())];
+        var prevOpp = PlayerPresenter.all[Mathf.Clamp(index + 1, 0, PlayerPresenter.all.LastIndex())];
 
         // compute distance
         RaceModel.stats.playerForwardDistance = nextOpp.player.CurrPosition - local.player.CurrPosition;
