@@ -174,7 +174,8 @@ public class State_LeagueStart : GameState
         var racerconf = RacerFactory.Racer.AllConfigs.FindAll(x => x.GroupId == group).RandomOne();
         var racerdata = RaceLogic.CreateRandomRacerProfile(racerconf.Id);
         var racerpowe = racerconf.ComputePower(racerdata.level.SpeedLevel, racerdata.level.NitroLevel, racerdata.level.SteeringLevel, racerdata.level.BodyLevel);
-        var userscore = RaceLogic.ComputeScoreFromPower(group, racerpowe);
+        var basescore = RaceLogic.ComputeScoreFromPower(group, racerpowe);
+        var userscore = Random.Range(basescore + GlobalConfig.rentCar.scoreOffset.x, basescore + GlobalConfig.rentCar.scoreOffset.y);
         var playerdata = new PlayerData(Profile.Name, userscore, Profile.Position, racerdata);
 
         RaceModel.Reset(RaceModel.Mode.Online);

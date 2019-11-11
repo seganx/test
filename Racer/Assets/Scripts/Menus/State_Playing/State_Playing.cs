@@ -12,7 +12,7 @@ public class State_Playing : GameState
     [SerializeField] private AudioSource[] timerAudios = null;
 
     private float forwardSpeedDelta = 0;
-    private bool allowUserHandle = true;
+    private bool allowUserHandle = false;
     private int timerAudioPlayed = -1;
     private bool isGamePaused = false;
     private int cameraMode = 0;
@@ -21,7 +21,7 @@ public class State_Playing : GameState
     {
         UiShowHide.ShowAll(transform);
         RacerCamera.offset.z = -10;
-        gameManager.OpenPopup<Popup_PlayingCountDown>();
+        gameManager.OpenPopup<Popup_PlayingCountDown>().Setup(() => allowUserHandle = true);
 
 
         RaceModel.specs.minForwardSpeed = GlobalConfig.Race.startSpeed;
@@ -105,7 +105,7 @@ public class State_Playing : GameState
             PlayerPresenter.local.SteeringValue = leftRight;
         else
 #endif
-            PlayerPresenter.local.SteeringValue = UiPlayingGesture.GoToLeft ? -1 : (UiPlayingGesture.GoToRight ? 1 : 0);
+            PlayerPresenter.local.SteeringValue = UiPlayingGesture.Steering;
         //PlayerPresenter.local.SteeringValue = InputManager.Left.isPointerDown ? -1 : (InputManager.Right.isPointerDown ? 1 : 0);
         RacerCamera.steeringValue = PlayerPresenter.local.SteeringValue;
         PlayerPresenter.local.Horn(InputManager.Horn.isPointerDown);

@@ -7,6 +7,14 @@ public class Popup_PlayingCountDown : GameState
 {
     public Transform counterPictures = null;
 
+    private System.Action onCloseFunc = null;
+
+    public Popup_PlayingCountDown Setup(System.Action onClose)
+    {
+        onCloseFunc = onClose;
+        return this;
+    }
+
     private void Awake()
     {
         counterPictures.SetActiveChild(-1);
@@ -25,6 +33,8 @@ public class Popup_PlayingCountDown : GameState
         yield return waitFor;
         yield return new WaitForSeconds(.5f);
         base.Back();
+        if (onCloseFunc != null)
+            onCloseFunc();
     }
 
     public override void Back()

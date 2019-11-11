@@ -80,7 +80,10 @@ namespace SeganX
             }
             else yield return new WaitUntil(() => res.isDone || (Time.time - ret) > requestTimeout);
 
-            Debug.Log("Received " + res.bytesDownloaded + " bytes from " + url + ":\n" + res.text);
+            if (res.isDone)
+                Debug.Log("Received " + res.bytesDownloaded + " bytes from " + url + ":\n" + res.text);
+            else
+                Debug.Log("Failed to download from " + url);
             callback(res);
 #if OFF
             UnityWebRequest res = postdata == null ? UnityWebRequest.Get(url) : UnityWebRequest.Post(url, postdata);

@@ -86,7 +86,7 @@ public class RacerGlobalConfigsEditor : Editor
 
         if (GUILayout.Button("Export"))
         {
-            var path = Path.GetDirectoryName(Application.dataPath + "/../../Configs/" + GlobalConfig.Instance.version + "/");
+            var path = Directory.GetParent(Application.dataPath).Parent.FullName + "/Configs/" + GlobalConfig.Instance.version;
             if (Directory.Exists(path) == false)
                 Directory.CreateDirectory(path);
             var filename = EditorUtility.SaveFilePanel("Save exported data", path, "racers", "txt");

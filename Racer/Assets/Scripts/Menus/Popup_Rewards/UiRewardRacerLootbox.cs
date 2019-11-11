@@ -27,7 +27,7 @@ public class UiRewardRacerLootbox : Base
         {
             // find a league which player has at least one car
             var lindex = Profile.League;
-            var cars = RacerFactory.Racer.AllConfigs.FindAll(x => x.GroupId == (lindex - 1));
+            var cars = RacerFactory.Racer.AllConfigs.FindAll(x => x.GroupId == (lindex + 1));
             if (cars.Exists(x => Profile.IsUnlockedRacer(x.Id)) == false) lindex--;
             var league = GlobalConfig.Leagues.GetByIndex(lindex);
 

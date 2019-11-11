@@ -41,20 +41,24 @@ public class State_GoToRace : GameState
         GarageCamera.SetCameraId(1);
         UiHeader.Hide();
 
-        joinTimeout = GlobalConfig.MatchMaking.joinTimeouts[Mathf.Clamp(RaceModel.specs.racersGroup, 0, GlobalConfig.MatchMaking.joinTimeouts.Length)];
-
-        PlayNetwork.Connect(() => { },
-        StartGame,
-        OnNetworkError);
-
         searchbar.SetActive(RaceModel.IsOnline);
         playersInfoBar.SetActive(false);
         opponentInfo.gameObject.SetActive(false);
-
-
         if (playerData == null)
             playerData = new PlayerData(Profile.Name, Profile.Score, Profile.Position, Profile.CurrentRacer);
         playerInfo.Setup(playerData);
+
+        if (RaceModel.IsTutorial == false)
+        {
+            var waitForSelect = true;
+            gameManager.OpenPopup<Popup_SteeringMode>().Setup(() => waitForSelect = false);
+            yield return new WaitWhile(() => waitForSelect);
+        }
+        else RaceModel.Steering = RaceModel.SteeringMode.Easy;
+
+        // connect to photon server
+        PlayNetwork.Connect(() => { }, StartGame, OnNetworkError);
+        joinTimeout = GlobalConfig.MatchMaking.joinTimeouts[Mathf.Clamp(RaceModel.specs.racersGroup, 0, GlobalConfig.MatchMaking.joinTimeouts.Length)];
 
         // entring loop
         int tipsCounter = 1;

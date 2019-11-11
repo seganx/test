@@ -47,7 +47,6 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
         {
             public int[] joinTimeouts;
             public int eloScoreCount = 8;
-            public int rentRacerCount = 15;
             public Vector2 eloScoreParams = new Vector2(0.5f, -500);
             public Vector2 eloPowerParams = new Vector2(0, 1000);
             public Vector2 eloGroupParams = new Vector2(0, 0);
@@ -72,6 +71,14 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
             public int count = 5;
             public int time = 10;
         }
+
+        [System.Serializable]
+        public class RentCar
+        {
+            public int racerInterval = 5;
+            public Vector2Int scoreOffset = new Vector2Int(-100, 25);
+        }
+
 
         [System.Serializable]
         public class Race
@@ -348,6 +355,7 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
         public MatchMaking matchMaking = new MatchMaking();
         public Socials socials = new Socials();
         public Recharge recharg = new Recharge();
+        public RentCar rentCar = new RentCar();
         public Race race = new Race();
         public List<League> leagues = new List<League>();
         public List<Shop> shop = new List<Shop>();
@@ -387,7 +395,7 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
 
     public void OnExport(object sender)
     {
-        var path = System.IO.Path.GetDirectoryName(Application.dataPath + "/../../Configs/" + version + "/");
+        var path = System.IO.Directory.GetParent(Application.dataPath).Parent.FullName + "/Configs/" + version;
         if (System.IO.Directory.Exists(path) == false)
             System.IO.Directory.CreateDirectory(path);
         var filename = UnityEditor.EditorUtility.SaveFilePanel("Save exported data", path, "config", "txt");
@@ -404,6 +412,7 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
     public static Data.Photon Photon { get { return Instance.data.photon; } }
     public static Data.MatchMaking MatchMaking { get { return Instance.data.matchMaking; } }
     public static Data.Recharge Recharg { get { return Instance.data.recharg; } }
+    public static Data.RentCar rentCar { get { return Instance.data.rentCar; } }
     public static Data.Race Race { get { return Instance.data.race; } }
     public static Data.Socials Socials { get { return Instance.data.socials; } }
     public static Data.Shop Shop { get { return Instance.data.shop[Cohort % Instance.data.shop.Count]; } }

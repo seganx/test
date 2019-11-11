@@ -19,7 +19,11 @@ public class GlobalFactory : StaticConfig<GlobalFactory>
     {
         public List<string> names = new List<string>();
         public int range = 100;
-        public int index = 0;
+        public static int index
+        {
+            get { return PlayerPrefs.GetInt("PlayersName.Index", 0); }
+            set { PlayerPrefs.SetInt("PlayersName.Index", value); }
+        }
     }
 
     [System.Serializable]
@@ -97,8 +101,8 @@ public class GlobalFactory : StaticConfig<GlobalFactory>
     public static string GetRandomName()
     {
         var playersName = Instance.playersName;
-        var res = playersName.names[Random.Range(playersName.index, playersName.index + playersName.range) % playersName.names.Count];
-        playersName.index += playersName.range;
+        var res = playersName.names[Random.Range(PlayersName.index, PlayersName.index + playersName.range) % playersName.names.Count];
+        PlayersName.index += playersName.range;
         return res;
     }
 
