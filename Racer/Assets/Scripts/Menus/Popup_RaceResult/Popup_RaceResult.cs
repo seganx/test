@@ -34,8 +34,10 @@ public class Popup_RaceResult : GameState
     private void Start()
     {
         positionLabel.SetFormatedText(RaceModel.stats.playerRank + 1);
-        distanceLabel.SetFormatedText(RaceModel.stats.playerBehindDistance.ToString("0.0"));
-        distanceLabel.transform.parent.gameObject.SetActive(RaceModel.stats.playerBehindDistance > 0);
+        if (RaceModel.stats.playerForwardDistance > 0)
+            distanceLabel.SetFormatedText(RaceModel.stats.playerForwardDistance.ToString("0.0"));
+        else
+            distanceLabel.SetFormatedText(RaceModel.stats.playerBehindDistance.ToString("0.0"));
 
         foreach (var racer in PlayerPresenter.all)
         {

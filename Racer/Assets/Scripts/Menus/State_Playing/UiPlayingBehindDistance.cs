@@ -42,36 +42,23 @@ public class UiPlayingBehindDistance : MonoBehaviour
 
     private void UpdateVisual()
     {
-        // verify that player is not latest
         var local = PlayerPresenter.local;
         var playerIndex = PlayerPresenter.all.IndexOf(local);
-        if (playerIndex == PlayerPresenter.all.Count - 1)
-        {
-            RaceModel.stats.playerBehindDistance = 0;
-            holder.SetActive(false);
-            return;
-        }
-
-        // find behind racer
-        var opponent = PlayerPresenter.all[playerIndex + 1];
+        var nextOpp = PlayerPresenter.all[Mathf.Clamp(playerIndex - 1, 0, PlayerPresenter.all.LastIndex())];
+        var prevOpp = PlayerPresenter.all[Mathf.Clamp(playerIndex + 1, 0, PlayerPresenter.all.LastIndex())];
 
         // compute distance
-        RaceModel.stats.playerBehindDistance = local.player.CurrPosition - opponent.player.CurrPosition;
-        if (RaceModel.stats.playerMaxBehindDistance < RaceModel.stats.playerBehindDistance)
-            RaceModel.stats.playerMaxBehindDistance = RaceModel.stats.playerBehindDistance;
-        if (RaceModel.stats.playerBehindDistance < minDistance)
-        {
-            holder.SetActive(false);
-            return;
-        }
+        RaceModel.stats.playerForwardDistance = nextOpp.player.CurrPosition - local.player.CurrPosition;
+        RaceModel.stats.playerBehindDistance = local.player.CurrPosition - prevOpp.player.CurrPosition;
 
         // display distance
-        label.text = RaceModel.stats.playerBehindDistance.ToString("0.0") + "m";
-
-        // update position
-        var pos = opponent.racer.transform.position.x - Camera.main.transform.position.x;
-        position.destination = Mathf.Clamp(pos * positionRange, -500, 500);
-
-        holder.SetActive(true);
+        if (RaceModel.stats.playerBehindDistance > minDistance)
+        {
+            label.text = RaceModel.stats.playerBehindDistance.ToString("0.0") + "m";
+            var pos = prevOpp.racer.transform.position.x - Camera.main.transform.position.x;
+            position.destination = Mathf.Clamp(pos * positionRange, -500, 500);
+            holder.SetActive(true);
+        }
+        else holder.SetActive(false);
     }
 }

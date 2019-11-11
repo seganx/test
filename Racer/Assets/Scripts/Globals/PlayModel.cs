@@ -30,8 +30,8 @@ public static class RaceModel
         public float playerSpeed = 0;
         public float playerPosition = 0;
         public int playerRank = 0;
+        public float playerForwardDistance = 0;
         public float playerBehindDistance = 0;
-        public float playerMaxBehindDistance = 0;
     }
 
     public class Traffic
