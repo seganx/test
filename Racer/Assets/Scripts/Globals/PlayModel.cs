@@ -6,12 +6,13 @@ using UnityEngine;
 public static class RaceModel
 {
     public enum Mode { Online, Campain, Quests, FreeDrive, Tutorial }
-    public enum SteeringMode : int { Null, Default, Easy, Tilt }
+    public enum SteeringMode : int { Null, Normal, Easy, Tilt }
 
     public static Mode mode = Mode.Online;
 
     public class Specifications
     {
+        public SteeringMode steering = SteeringMode.Null;
         public int mapId = 1;
         public int skyId = 0;
         public int weatherId = 0;
@@ -45,7 +46,6 @@ public static class RaceModel
     public static Stats stats = new Stats();
     public static Traffic traffic = new Traffic();
 
-    private static SteeringMode steering = SteeringMode.Null;
 
     public static bool IsOnline { get { return mode == Mode.Online; } }
     public static bool IsCampain { get { return mode == Mode.Campain; } }
@@ -53,22 +53,6 @@ public static class RaceModel
     public static bool IsFreeDrive { get { return mode == Mode.FreeDrive; } }
     public static bool IsTutorial { get { return mode == Mode.Tutorial; } }
 
-    public static SteeringMode Steering
-    {
-        get
-        {
-            if (steering == SteeringMode.Null)
-                steering = (SteeringMode)PlayerPrefs.GetInt("RaceModel.Steering", (int)SteeringMode.Default);
-            return steering;
-        }
-
-        set
-        {
-            if (steering == value) return;
-            steering = value;
-            PlayerPrefs.SetInt("RaceModel.Steering", (int)value);
-        }
-    }
 
     public static int SelectRandomMap()
     {

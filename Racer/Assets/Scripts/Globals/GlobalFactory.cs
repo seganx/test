@@ -40,7 +40,6 @@ public class GlobalFactory : StaticConfig<GlobalFactory>
         public Font font = null;
     }
 
-
     [SerializeField] private UiRacerCard racerCardPrefab = null;
     [SerializeField] private TextMesh racerPlate = null;
     [SerializeField] private ParticleSystem racerShiftingParticle = null;
@@ -48,6 +47,7 @@ public class GlobalFactory : StaticConfig<GlobalFactory>
     [SerializeField] private PlayersName playersName = new PlayersName();
     [SerializeField] private List<LeagueInfo> leagues = new List<LeagueInfo>();
     [SerializeField] private List<FontInfo> fonts = new List<FontInfo>();
+    [SerializeField] private List<Sprite> steeringModes = new List<Sprite>();
 
 
     protected override void OnInitialize()
@@ -104,6 +104,11 @@ public class GlobalFactory : StaticConfig<GlobalFactory>
         var res = playersName.names[Random.Range(PlayersName.index, PlayersName.index + playersName.range) % playersName.names.Count];
         PlayersName.index += playersName.range;
         return res;
+    }
+
+    public static Sprite GetSteeringIcon(RaceModel.SteeringMode mode)
+    {
+        return Instance.steeringModes[(int)mode % Instance.steeringModes.Count];
     }
 
     public static UiRacerCard CreateRacerCard(int racerId, Transform parent)

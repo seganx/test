@@ -27,28 +27,28 @@ public class Popup_SteeringMode : GameState
             tiltModeButton.SetInteractable(SystemInfo.supportsAccelerometer);
         }
 
-        switch (RaceModel.Steering)
+        switch (Settings.SteeringMode)
         {
-            case RaceModel.SteeringMode.Default: selected.SetAnchordPositionX(defaultModeButton.transform.GetAnchordPosition().x); break;
+            case RaceModel.SteeringMode.Normal: selected.SetAnchordPositionX(defaultModeButton.transform.GetAnchordPosition().x); break;
             case RaceModel.SteeringMode.Easy: selected.SetAnchordPositionX(runnerModeButton.transform.GetAnchordPosition().x); break;
             case RaceModel.SteeringMode.Tilt: selected.SetAnchordPositionX(tiltModeButton.transform.GetAnchordPosition().x); break;
         }
 
         defaultModeButton.onClick.AddListener(() =>
         {
-            RaceModel.Steering = RaceModel.SteeringMode.Default;
+            RaceModel.specs.steering = Settings.SteeringMode = RaceModel.SteeringMode.Normal;
             Back();
         });
 
         runnerModeButton.onClick.AddListener(() =>
         {
-            RaceModel.Steering = RaceModel.SteeringMode.Easy;
+            RaceModel.specs.steering = Settings.SteeringMode = RaceModel.SteeringMode.Easy;
             Back();
         });
 
         tiltModeButton.onClick.AddListener(() =>
         {
-            RaceModel.Steering = RaceModel.SteeringMode.Tilt;
+            RaceModel.specs.steering = Settings.SteeringMode = RaceModel.SteeringMode.Tilt;
             Back();
         });
 

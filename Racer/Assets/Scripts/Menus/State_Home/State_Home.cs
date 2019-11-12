@@ -59,19 +59,19 @@ public class State_Home : GameState
 
         garageButton.onClick.AddListener(() =>
         {
-            gameManager.OpenState<State_Garage>().Setup(0, rc => gameManager.OpenState<State_PhotoMode>());
+            gameManager.OpenState<State_Garage>().Setup(0, false, rc => gameManager.OpenState<State_PhotoMode>());
             PopupQueue.Add(.5f, () => Popup_Tutorial.Display(61));
         });
 
         upgradeButton.onClick.AddListener(() =>
         {
-            gameManager.OpenState<State_Garage>().Setup(0, rc => gameManager.OpenState<State_Upgrade>());
+            gameManager.OpenState<State_Garage>().Setup(0, false, rc => gameManager.OpenState<State_Upgrade>());
             PopupQueue.Add(.5f, () => Popup_Tutorial.Display(41, true, () => Profile.TotalRaces++));
         });
 
         customButton.onClick.AddListener(() =>
         {
-            gameManager.OpenState<State_Garage>().Setup(0, rc =>
+            gameManager.OpenState<State_Garage>().Setup(0, false, rc =>
             {
                 if (Profile.IsUnlockedRacer(rc.Id))
                     gameManager.OpenState<State_Custome>();
@@ -83,7 +83,7 @@ public class State_Home : GameState
 
         offlineButton.onClick.AddListener(() =>
         {
-            gameManager.OpenState<State_Garage>().Setup(0, rc =>
+            gameManager.OpenState<State_Garage>().Setup(0, true, rc =>
             {
                 if (Profile.IsUnlockedRacer(rc.Id))
                     StartOffline();
@@ -128,6 +128,7 @@ public class State_Home : GameState
     {
         RaceModel.Reset(RaceModel.Mode.FreeDrive);
 
+        RaceModel.specs.steering = Settings.SteeringMode;
         RaceModel.specs.mapId = RaceModel.SelectRandomMap();
         RaceModel.specs.maxPlayerCount = 4;
         RaceModel.specs.maxPlayTime = GlobalConfig.Race.maxTime;

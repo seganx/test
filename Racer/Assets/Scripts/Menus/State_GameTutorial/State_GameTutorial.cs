@@ -16,7 +16,7 @@ public class State_GameTutorial : GameState
     public void OnStartTutorial()
     {
         RaceModel.Reset(RaceModel.Mode.Tutorial);
-
+        RaceModel.specs.steering = RaceModel.SteeringMode.Easy;
         RaceModel.specs.mapId = 2;
         RaceModel.specs.maxPlayerCount = 2;
         RaceModel.specs.maxPlayTime = 90;

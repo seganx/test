@@ -53,7 +53,7 @@ public class UiHeader : Base
 
         garageButton.onClick.AddListener(() =>
         {
-            gameManager.OpenState<State_Garage>().Setup(0, rc => gameManager.OpenState<State_PhotoMode>());
+            gameManager.OpenState<State_Garage>().Setup(0, false, rc => gameManager.OpenState<State_PhotoMode>());
             PopupQueue.Add(.5f, () => Popup_Tutorial.Display(61));
         });
 

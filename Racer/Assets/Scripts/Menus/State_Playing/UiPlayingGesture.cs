@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 [DefaultExecutionOrder(-90)]
 public class UiPlayingGesture : Base, IEndDragHandler, IDragHandler, IBeginDragHandler, IPointerDownHandler, IPointerUpHandler
 {
-    [SerializeField] private float easyRange = 0.5f;
+    [SerializeField] private float easyRange = 0.1f;
 
     private Vector2 beginDragPos = Vector2.zero;
     private bool easyStarted = false;
@@ -53,9 +53,9 @@ public class UiPlayingGesture : Base, IEndDragHandler, IDragHandler, IBeginDragH
         Vector2 localPoint;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(parentRectTransform, eventData.position, eventData.enterEventCamera ?? eventData.pressEventCamera, out localPoint);
 
-        switch (RaceModel.Steering)
+        switch (RaceModel.specs.steering)
         {
-            case RaceModel.SteeringMode.Default:
+            case RaceModel.SteeringMode.Normal:
                 {
                     if (localPoint.x < -100)
                         Steering = -1;
@@ -91,9 +91,9 @@ public class UiPlayingGesture : Base, IEndDragHandler, IDragHandler, IBeginDragH
         Vector2 localPoint;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(parentRectTransform, eventData.position, eventData.enterEventCamera ?? eventData.pressEventCamera, out localPoint);
 
-        switch (RaceModel.Steering)
+        switch (RaceModel.specs.steering)
         {
-            case RaceModel.SteeringMode.Default:
+            case RaceModel.SteeringMode.Normal:
                 if (localPoint.x < 0 && Steering < 0)
                     Steering = 0;
                 else if (localPoint.x > 0 && Steering > 0)
@@ -112,9 +112,9 @@ public class UiPlayingGesture : Base, IEndDragHandler, IDragHandler, IBeginDragH
     {
         if (PlayerPresenter.local == null) return;
 
-        switch (RaceModel.Steering)
+        switch (RaceModel.specs.steering)
         {
-            case RaceModel.SteeringMode.Default:
+            case RaceModel.SteeringMode.Normal:
                 break;
 
             case RaceModel.SteeringMode.Easy:
@@ -122,9 +122,9 @@ public class UiPlayingGesture : Base, IEndDragHandler, IDragHandler, IBeginDragH
                 {
                     var delta = easyDest - PlayerPresenter.local.racer.transform.localPosition.x;
                     if (delta > easyRange)
-                        Steering = 1;
+                        Steering = Mathf.Clamp01(delta);
                     else if (delta < -easyRange)
-                        Steering = -1;
+                        Steering = Mathf.Clamp(delta, -1, 0);
                     else
                         Steering = 0;
                 }

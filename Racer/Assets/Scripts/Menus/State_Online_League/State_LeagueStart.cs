@@ -72,7 +72,7 @@ public class State_LeagueStart : GameState
         {
             if (RaceLogic.RentRemainCount > 0)
             {
-                state_Garage = gameManager.OpenState<State_Garage>().Setup(leagueStartGroup, OnNextTask);
+                state_Garage = gameManager.OpenState<State_Garage>().Setup(leagueStartGroup, true, OnNextTask);
                 PopupQueue.Add(.5f, () => Popup_Tutorial.Display(32));
             }
             else
@@ -150,13 +150,14 @@ public class State_LeagueStart : GameState
     private void StartOnlineGame(int racegroup)
     {
         RaceModel.Reset(RaceModel.Mode.Online);
-
+        RaceModel.specs.steering = Settings.SteeringMode;
         RaceModel.specs.mapId = RaceModel.SelectRandomMap();
         RaceModel.specs.racersGroup = racegroup;
         RaceModel.specs.maxPlayerCount = 4;
         RaceModel.specs.maxPlayTime = GlobalConfig.Race.maxTime;
         RaceModel.traffic.baseDistance = GlobalConfig.Race.traffics.baseDistance;
         RaceModel.traffic.distanceRatio = GlobalConfig.Race.traffics.speedFactor;
+
         PlayNetwork.IsOffline = PlayNetwork.IsDisconnectedOnLastOnline;
         PlayNetwork.IsDisconnectedOnLastOnline = false;
         PlayNetwork.EloScore = Profile.EloScore;
@@ -179,6 +180,7 @@ public class State_LeagueStart : GameState
         var playerdata = new PlayerData(Profile.Name, userscore, Profile.Position, racerdata);
 
         RaceModel.Reset(RaceModel.Mode.Online);
+        RaceModel.specs.steering = Settings.SteeringMode;
         RaceModel.specs.mapId = RaceModel.SelectRandomMap();
         RaceModel.specs.racersGroup = group;
         RaceModel.specs.maxPlayerCount = 4;

@@ -7,6 +7,9 @@ using UnityEngine.UI;
 public class State_Garage : GameState
 {
     [SerializeField] private Button inventoryButton = null;
+    [SerializeField] private Button steeringButton = null;
+    [SerializeField] private Image steeringImage = null;
+    [SerializeField] private GameObject steeringHelp = null;
     [SerializeField] private LocalText descLabel = null;
     [SerializeField] private RectTransform separatorPrefab = null;
     [SerializeField] private UiGarageRacerItem itemPrefab = null;
@@ -20,10 +23,11 @@ public class State_Garage : GameState
         set { PlayerPrefs.SetFloat("StateGarage.LastPosition", value); }
     }
 
-    public State_Garage Setup(int displayTargetGroup, System.Action<RacerConfig> onNextTask)
+    public State_Garage Setup(int displayTargetGroup, bool displaySteeringMode, System.Action<RacerConfig> onNextTask)
     {
         OnNextTask = onNextTask;
         targetGroup = displayTargetGroup;
+        selectSteeringMode = displaySteeringMode;
         return this;
     }
 
@@ -41,6 +45,22 @@ public class State_Garage : GameState
 
         inventoryButton.SetInteractable(Popup_Inventory.ComputeNumberOfCards() > 0);
         inventoryButton.onClick.AddListener(() => gameManager.OpenPopup<Popup_Inventory>().Setup(() => inventoryButton.SetInteractable(Popup_Inventory.ComputeNumberOfCards() > 0)));
+
+        if (selectSteeringMode)
+        {
+            steeringButton.gameObject.SetActive(true);
+            steeringImage.sprite = GlobalFactory.GetSteeringIcon(Settings.SteeringMode);
+            steeringHelp.gameObject.SetActive(PlayerPrefs.GetInt("State_Garage.Steering.Help", 1) > 0);
+            PlayerPrefs.SetInt("State_Garage.Steering.Help", 0);
+
+            steeringButton.onClick.AddListener(() =>
+            {
+                steeringHelp.gameObject.SetActive(false);
+                gameManager.OpenPopup<Popup_SteeringMode>().Setup(() => steeringImage.sprite = GlobalFactory.GetSteeringIcon(Settings.SteeringMode));
+            });
+        }
+        else steeringButton.gameObject.SetActive(false);
+
 
         DisplayItems();
 
@@ -116,4 +136,5 @@ public class State_Garage : GameState
     ////////////////////////////////////////////////////////////
     private static System.Action<RacerConfig> OnNextTask = carid => gameManager.OpenState<State_Upgrade>();
     private static int targetGroup = 0;
+    private static bool selectSteeringMode = false;
 }
