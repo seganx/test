@@ -119,7 +119,7 @@ public class BotPresenter : Base
             }
             else botRacer = CreateRandomRacerProfile(playerRacerId, playerPower, playerScore);
 
-            var botname = (GlobalConfig.Leagues.GetIndex(botScore, botRank) < 3) ? GlobalFactory.GetRandomName() : (GlobalFactory.GetRandomName() + " bot");
+            var botname = (botRank > 150) ? GlobalFactory.GetRandomName() : (GlobalFactory.GetRandomName() + " bot");
             var pdata = new PlayerData(RaceModel.IsOnline ? botname : "Player " + i, botScore, botRank, botRacer);
             PlayerPresenterOnline.Create(pdata, true);
         }
