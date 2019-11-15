@@ -47,7 +47,7 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
         {
             public int[] joinTimeouts;
             public int eloScoreCount = 8;
-            public Vector2 eloScoreParams = new Vector2(0.5f, -500);
+            public Vector2[] eloScoreParams = new Vector2[] { new Vector2(0.7f, -690) };
             public Vector2 eloPowerParams = new Vector2(0, 1000);
             public Vector2 eloGroupParams = new Vector2(0, 0);
             public string eloSqlLobby = "C0 = \"{0}\" AND C1 >= {1} AND C1 <= {2} AND C2 >= {3} AND C2 <= {4} AND C3 >= {5} AND C3 <= {6}";

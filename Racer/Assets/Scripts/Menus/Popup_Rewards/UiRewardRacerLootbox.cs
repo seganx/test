@@ -73,7 +73,7 @@ public class UiRewardRacerLootbox : Base
             while (Mathf.Abs(currLootvalue - nextLootValue) > 1)
             {
                 yield return wait;
-                currLootvalue = Mathf.Lerp(currLootvalue, nextLootValue, Time.deltaTime * 2);
+                currLootvalue = Mathf.Lerp(currLootvalue, nextLootValue, Time.deltaTime);
                 circlePlusImage.SetFillAmount(currLootvalue, 100);
                 chanceLabel.SetFormatedText(currLootvalue + 0.5f);
             }

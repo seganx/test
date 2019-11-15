@@ -221,16 +221,16 @@ public class State_Upgrade : GameState
         switch (selectedType)
         {
             case UpgradeType.Speed:
-                PopupQueue.Add(.5f, () => Popup_Tutorial.Display(43));
+                PopupQueue.Add(0.25f, () => Popup_Tutorial.Display(43));
                 break;
             case UpgradeType.Nitors:
-                PopupQueue.Add(.5f, () => Popup_Tutorial.Display(44));
+                PopupQueue.Add(0.25f, () => Popup_Tutorial.Display(44));
                 break;
             case UpgradeType.Steering:
-                PopupQueue.Add(.5f, () => Popup_Tutorial.Display(45));
+                PopupQueue.Add(0.25f, () => Popup_Tutorial.Display(45));
                 break;
             case UpgradeType.Body:
-                PopupQueue.Add(.5f, () => Popup_Tutorial.Display(46));
+                PopupQueue.Add(0.25f, () => Popup_Tutorial.Display(46));
                 break;
             case UpgradeType.Null:
                 break;
