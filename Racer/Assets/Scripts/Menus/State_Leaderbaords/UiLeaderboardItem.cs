@@ -37,7 +37,7 @@ public class UiLeaderboardItem : MonoBehaviour
                     else
                     {
                         var warning = string.Format(LocalizationService.Get(111143), nickname);
-                        Game.Instance.OpenPopup<Popup_Confirm>().Setup(warning, false, null);
+                        Game.Instance.OpenPopup<Popup_Confirm>().Setup(warning, false, true, null);
                     }
                 });
             });

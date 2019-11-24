@@ -26,7 +26,7 @@ public class UiHomeLockItem : MonoBehaviour
                 image.color = button.colors.disabledColor;
 
             button.onClick.RemoveAllListeners();
-            button.onClick.AddListener(() => Game.Instance.OpenPopup<Popup_Confirm>().Setup(111142, false, null));
+            button.onClick.AddListener(() => Game.Instance.OpenPopup<Popup_Confirm>().Setup(111142, false, true, null));
         }
         else
         {

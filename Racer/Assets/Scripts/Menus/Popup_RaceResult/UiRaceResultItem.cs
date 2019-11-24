@@ -47,25 +47,24 @@ public class UiRaceResultItem : MonoBehaviour
         yield return new WaitForSeconds(Random.Range(4f, 6f));
         while (true)
         {
-            if (chatlist.Count > 1 &&
-                RaceModel.IsOnline &&
-                presenter != null &&
-                presenter.player.LeagueRank < 3 &&
-                presenter.IsSceneObject &&
-                PlayNetwork.IsMaster &&
-                presenter.GetComponent<BotPresenter>(true, true) != null)
+            // verify if this presenter is a bot
+            if (RaceModel.IsOnline && presenter != null && presenter.IsBot && PlayNetwork.IsMaster)
             {
-                if (Random.Range(0, 100) < GlobalConfig.Race.bots.chatLeaveChance)
-                    presenter = null;
-
-                if (presenter != null && Random.Range(0, 100) < GlobalConfig.Race.bots.chatChance)
+                // check if bot is ready to chat else make presenter to null
+                if (chatlist.Count > 1 && presenter.player.LeagueRank > 150)
                 {
-                    int chatIndex = chatlist.RandomOne();
-                    chatlist.Remove(chatIndex);
-                    presenter.SendChat(chatIndex);
+                    if (Random.Range(0, 100) < GlobalConfig.Race.bots.chatLeaveChance)
+                        presenter = null;
+
+                    if (presenter != null && Random.Range(0, 100) < GlobalConfig.Race.bots.chatChance)
+                    {
+                        int chatIndex = chatlist.RandomOne();
+                        chatlist.Remove(chatIndex);
+                        presenter.SendChat(chatIndex);
+                    }
                 }
+                else presenter = null;
             }
-            else presenter = null;
 
             nameLabel.color = presenter != null ? Color.white : Color.gray;
             yield return new WaitForSeconds(Random.Range(2.5f, 4.5f));

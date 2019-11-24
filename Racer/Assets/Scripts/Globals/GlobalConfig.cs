@@ -154,6 +154,7 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
             public Vector2Int cardsGroups = new Vector2Int(0, 20);
             public Vector3Int lootboxRacerIds = Vector3Int.zero;
             public int lootboxValue = 10;
+            public Vector2Int raceRewardRacerParam = new Vector2Int(0, 20);
         }
 
         [System.Serializable]

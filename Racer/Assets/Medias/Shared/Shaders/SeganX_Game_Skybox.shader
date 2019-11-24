@@ -1,6 +1,7 @@
 ﻿Shader "SeganX/Game/Skybox" 
 {
     Properties{
+        _Color("Diffuse Color", Color) = (1,1,1,1)
         _Rotation("Rotation", Range(0, 360)) = 0
         [NoScaleOffset] _FrontTex("Front [+Z]   (HDR)", 2D) = "grey" {}
         [NoScaleOffset] _BackTex("Back [-Z]   (HDR)", 2D) = "grey" {}
@@ -16,8 +17,10 @@
 
             CGINCLUDE
             #include "UnityCG.cginc"
+            #include "Lighting.cginc"
 
             float _Rotation;
+            fixed4 _Color;
             uniform float skyBloom;
             uniform float bloomSpecular;
 
@@ -55,7 +58,7 @@
 
             half4 skybox_frag(v2f i, sampler2D smp, half4 smpDecode)
             {
-                return half4(tex2D(smp, i.texcoord).rgb, skyBloom);
+                return half4(tex2D(smp, i.texcoord).rgb * _LightColor0.a, skyBloom) * _Color;
             }
             ENDCG
 

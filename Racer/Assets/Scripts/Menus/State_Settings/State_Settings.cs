@@ -62,7 +62,7 @@ public class State_Settings : GameState
         emailButton.onClick.AddListener(() => SendEmail());
         testGraphicButton.onClick.AddListener(() => gameManager.OpenPopup<Popup_AutoConfig>());
         surveyButton.onClick.AddListener(() => Application.OpenURL(GlobalConfig.Socials.contactSurveyUrl));
-        creditsButton.onClick.AddListener(() => gameManager.OpenPopup<Popup_Confirm>().Setup(111101, false, null));
+        creditsButton.onClick.AddListener(() => gameManager.OpenPopup<Popup_Confirm>().Setup(111101, false, true, null));
 
         GarageCamera.SetCameraId(1);
         UiShowHide.ShowAll(transform);

@@ -10,7 +10,6 @@ public class TrafficCar : MonoBehaviour
 
     private float forwardPosition;
     private float line;
-    private static List<MeshRenderer> meshes = new List<MeshRenderer>(5);
 
     public bool CanMove { get; private set; }
     public float Width { get; private set; }
@@ -20,7 +19,7 @@ public class TrafficCar : MonoBehaviour
         CanMove = true;
         this.line = line;
         forwardPosition = RaceModel.stats.playerPosition + GlobalConfig.Race.traffics.startDistance + distanceVariance;
-        nights.SetActive(false);
+        nights.SetActive(RaceModel.specs.nightMode);
 
         var carcolor = Color.HSVToRGB(color / 1000.0f, 0.65f, 0.75f);
         return SetColor(carcolor);
@@ -28,10 +27,14 @@ public class TrafficCar : MonoBehaviour
 
     public TrafficCar SetColor(Color color)
     {
-        meshes.Clear();
-        transform.GetComponentsInChildren(true, meshes);
-        for (int i = 0; i < meshes.Count; i++)
-            meshes[i].material.color = color;
+        for (int i = 0; i < body.childCount; i++)
+        {
+            var mesh = body.GetChild(i).GetComponent<MeshRenderer>();
+            if (mesh == null) continue;
+            if (mesh.gameObject == shadow) continue;
+            if (mesh.gameObject == nights) continue;
+            mesh.material.color = color;
+        }
         return this;
     }
 
@@ -39,6 +42,7 @@ public class TrafficCar : MonoBehaviour
     {
         CanMove = false;
         shadow.SetActive(false);
+        nights.SetActive(false);
         return this;
     }
 

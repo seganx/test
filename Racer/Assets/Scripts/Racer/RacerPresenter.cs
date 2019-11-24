@@ -231,7 +231,6 @@ public class RacerPresenter : MonoBehaviour
         }
     }
 
-
     private void Awake()
     {
         bodyRenderer = bodyTransform.GetComponent<Renderer>(true, true);
@@ -313,6 +312,27 @@ public class RacerPresenter : MonoBehaviour
         foreach (var rndr in rendrs)
             foreach (var mat in rndr.materials)
                 RacerMaterial.SetOpponent(mat, value);
+        return this;
+    }
+
+    public RacerPresenter SetLights(bool value)
+    {
+        var light_L = transform.FindRecursive("TL_L");
+        var light_R = transform.FindRecursive("TL_R");
+        if (light_L != null)
+        {
+            light_L.gameObject.SetActive(value);
+            var pos = light_L.transform.localPosition;
+            pos.z = -Size.z * 0.5f - 0.75f;
+            light_L.transform.localPosition = pos;
+        }
+        if (light_R != null)
+        {
+            light_R.gameObject.SetActive(value);
+            var pos = light_R.transform.localPosition;
+            pos.z = -Size.z * 0.5f - 0.75f;
+            light_R.transform.localPosition = pos;
+        }
         return this;
     }
 }

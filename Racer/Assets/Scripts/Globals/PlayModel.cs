@@ -16,6 +16,7 @@ public static class RaceModel
         public int mapId = 1;
         public int skyId = 0;
         public int weatherId = 0;
+        public bool nightMode = false;
 
         public byte maxPlayerCount = 4;
         public float maxPlayTime = 60;

@@ -77,6 +77,8 @@
 
                     UNITY_APPLY_FOG(i.fogCoord, res);
                     res.a = bloomSpecular * _Color.a;
+
+                    res.rgb *= _LightColor0.a;
                     return res;
                 }
                 ENDCG

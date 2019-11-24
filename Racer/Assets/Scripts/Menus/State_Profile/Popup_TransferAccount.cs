@@ -21,7 +21,7 @@ public class Popup_TransferAccount : GameState
                 Popup_Loading.Hide();
                 if (msg == Network.Message.ok)
                 {
-                    gameManager.OpenPopup<Popup_Confirm>().Setup(111064, false, ok =>
+                    gameManager.OpenPopup<Popup_Confirm>().Setup(111064, false, true, ok =>
                     {
                         PlayerPrefs.DeleteAll();
                         PlayerPrefsEx.ClearData();
@@ -29,7 +29,7 @@ public class Popup_TransferAccount : GameState
                         Application.Quit();
                     });
                 }
-                else gameManager.OpenPopup<Popup_Confirm>().Setup(111065, false, null);
+                else gameManager.OpenPopup<Popup_Confirm>().Setup(111065, false, true, null);
             });
         });
 

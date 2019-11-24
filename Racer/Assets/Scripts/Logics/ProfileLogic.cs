@@ -131,7 +131,7 @@ public class ProfileLogic : MonoBehaviour
                         PlayerPrefsEx.ClearData();
                         SaveToLocal();
                         SocialLogic.ForceDownloadFromServer = true;
-                        Game.Instance.OpenPopup<Popup_Confirm>().Setup(111068, false, ok => Application.Quit());
+                        Game.Instance.OpenPopup<Popup_Confirm>().Setup(111068, false, true, ok => Application.Quit());
                     }
                     else
                     {
@@ -153,7 +153,7 @@ public class ProfileLogic : MonoBehaviour
         else if (Profile.UserId != newprofile.userId)
         {
             Popup_Loading.Hide();
-            Game.Instance.OpenPopup<Popup_Confirm>().Setup(111067, false, yes =>
+            Game.Instance.OpenPopup<Popup_Confirm>().Setup(111067, false, true, yes =>
             {
                 PlayerPrefs.DeleteAll();
                 PlayerPrefsEx.ClearData();

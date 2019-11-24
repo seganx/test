@@ -104,10 +104,11 @@
                     half3 viewDir = normalize(UnityWorldSpaceViewDir(i.wrl));
                     half3 lightpos = normalize(float3(_WorldSpaceLightPos0.x, 0.25f, _WorldSpaceLightPos0.z));
                     float spec = specmap * pow(max(0, dot(i.norm, normalize(lightpos + viewDir))), _SpecularPower) * _SpecularAtten;
-                    res.rgb += (pow(res.rgb, 0.7f) * spec + pow(res.rgb * spec * 5, 4)) * _LightColor0.rgb;
-                    res.a = min(bloomSpecular, spec);
+                    res.rgb += (pow(res.rgb, 0.7f) * spec + pow(res.rgb * spec * 5, 4)) * _LightColor0.rgb * _LightColor0.a;
+                    res.a = min(bloomSpecular, spec) * _LightColor0.a;
 #endif
 
+                    res.rgb *= _LightColor0.a;
 
                     UNITY_APPLY_FOG(i.fogCoord, res);
                     return res;

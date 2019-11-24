@@ -95,6 +95,7 @@
                     res.rgb *= lerp(ambient, _LightColor0.rgb, dl);
 
                     res.a = bloomSpecular * _Color.a;
+                    res.rgb *= _LightColor0.a;
                     UNITY_APPLY_FOG(i.fogCoord, res);
                     return res;
                 }

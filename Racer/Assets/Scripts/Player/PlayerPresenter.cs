@@ -17,7 +17,6 @@ public abstract class PlayerPresenter : Base
     public virtual bool IsInactive { get { return false; } }
     public virtual bool IsMine { get { return true; } }
     public virtual bool IsMaster { get { return true; } }
-    public virtual bool IsSceneObject { get { return false; } }
     public float SteeringValue { get; set; }
     public bool PlayingHorn { get; set; }
     public float Nitros { get { return player.CurrNitrous; } }
@@ -25,6 +24,8 @@ public abstract class PlayerPresenter : Base
     public bool IsNitrosReady { get { return IsNitrosUsing == false && player.CurrNitrous >= 0.2f; } }
     public bool IsNitrosUsing { get; private set; }
     public bool IsNitrosPerfect { get; private set; }
+    public bool IsBot { get; set; }
+
 
     protected virtual void OnEnable()
     {
@@ -42,7 +43,7 @@ public abstract class PlayerPresenter : Base
         maxSteeringSpeed = player.RacerSteering;
 
         racer = RacerFactory.Racer.Create(player.RacerId, transform);
-        racer.SetupCustom(player.RacerCustom).SetupCameras(player.IsPlayer);
+        racer.SetupCustom(player.RacerCustom).SetupCameras(player.IsPlayer).SetLights(RaceModel.specs.nightMode);
         racer.BroadcastMessage("SetPlateText", player.name, SendMessageOptions.DontRequireReceiver);
         racer.AutoSteeringWheel = true;
         racer.AutoWheelRotation = true;

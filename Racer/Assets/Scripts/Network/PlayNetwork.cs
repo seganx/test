@@ -94,6 +94,7 @@ public class PlayNetwork : MonoBehaviour
         var roomProperies = new ExitGames.Client.Photon.Hashtable();
         roomProperies.Add("t", PhotonNetwork.time);
         roomProperies.Add("m", MapId);
+        roomProperies.Add("s", SkyId);
         roomProperies.Add("C0", VersionedName);
         roomProperies.Add("C1", EloScore);
         roomProperies.Add("C2", EloPower);
@@ -115,6 +116,7 @@ public class PlayNetwork : MonoBehaviour
         {
             roomInitTime = (double)PhotonNetwork.room.CustomProperties["t"];
             MapId = (int)PhotonNetwork.room.CustomProperties["m"];
+            SkyId = PhotonNetwork.room.CustomProperties.ContainsKey("s") ? (int)PhotonNetwork.room.CustomProperties["s"] : 0;
             callbackConnect();
             callbackConnect = null;
         }
@@ -209,6 +211,7 @@ public class PlayNetwork : MonoBehaviour
 
     public static byte MaxPlayerCount { get; set; }
     public static int MapId { get; set; }
+    public static int SkyId { get; set; }
     public static int EloScore { get; set; }
     public static int EloPower { get; set; }
     public static int EloGroup { get; set; }

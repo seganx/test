@@ -28,7 +28,7 @@ public static class RewardLogic
         set { PlayerPrefs.SetInt("RewardLogic.IsFirstRace", value ? 1 : 0); }
     }
 
-    public static RaceReward GetRaceReward(int racerCardChance, int customeChance, int gemChance, int gems, int coins)
+    public static RaceReward GetRaceReward(int racerCardChance, int customeChance, int gemChance, int gems, int coins, Vector2Int racerCardChanceParam)
     {
         var res = new RaceReward();
         res.coins = coins;
@@ -50,10 +50,13 @@ public static class RewardLogic
         return res;
     }
 
-    public static int SelectRacerReward()
+    public static int SelectRacerReward(int offset = 0, int radius = 0)
     {
         var center = FindSelectRacerCenter();
-        var index = SelectProbability(RacerFactory.Racer.AllConfigs.Count, center, GlobalConfig.Probabilities.rewardRacerRadius);
+        var index = SelectProbability(
+            RacerFactory.Racer.AllConfigs.Count, 
+            center + offset, 
+            radius > 0 ? radius : GlobalConfig.Probabilities.rewardRacerRadius);
         return RacerFactory.Racer.AllConfigs[index].Id;
     }
 

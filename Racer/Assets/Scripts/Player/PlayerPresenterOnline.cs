@@ -15,7 +15,6 @@ public class PlayerPresenterOnline : PlayerPresenter
     public override bool IsInactive { get { return photonView.owner == null ? false : photonView.owner.IsInactive; } }
     public override bool IsMine { get { return photonView.isMine; } }
     public override bool IsMaster { get { return photonView.owner == null ? false : photonView.owner.IsMasterClient; } }
-    public override bool IsSceneObject { get { return photonView.isSceneView; } }
 
     protected override void OnEnable()
     {
@@ -192,8 +191,11 @@ public class PlayerPresenterOnline : PlayerPresenter
         var ndata = new object[] { JsonUtility.ToJson(data) };
 
         if (asBot)
-            return PhotonNetwork.InstantiateSceneObject("Prefabs/Player", Vector3.zero, Quaternion.identity, 0, ndata).AddComponent<BotPresenter>().GetComponent<PlayerPresenterOnline>();
-        else
-            return PhotonNetwork.Instantiate("Prefabs/Player", Vector3.zero, Quaternion.identity, 0, ndata).GetComponent<PlayerPresenterOnline>();
+        {
+            var res = PhotonNetwork.InstantiateSceneObject("Prefabs/Player", Vector3.zero, Quaternion.identity, 0, ndata).AddComponent<BotPresenter>().GetComponent<PlayerPresenterOnline>();
+            res.IsBot = true;
+            return res;
+        }
+        else return PhotonNetwork.Instantiate("Prefabs/Player", Vector3.zero, Quaternion.identity, 0, ndata).GetComponent<PlayerPresenterOnline>();
     }
 }

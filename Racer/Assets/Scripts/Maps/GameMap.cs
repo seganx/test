@@ -6,25 +6,7 @@ using UnityEngine.Rendering;
 public class GameMap : MonoBehaviour
 {
     [Header("Environment")]
-    public Material skyBoxMaterial = null;
     public Light sunSource = null;
-
-    [Header("Environment Lighting")]
-    [ColorUsage(false, true, 0, 8, 0.125f, 3)]
-    public Color skyColor = Color.black;
-    [ColorUsage(false, true, 0, 8, 0.125f, 3)]
-    public Color equatorColor = Color.black;
-    [ColorUsage(false, true, 0, 8, 0.125f, 3)]
-    public Color groundColor = Color.black;
-
-    [Header("Environment Reflection")]
-    public Cubemap reflectionCubemap = null;
-
-    [Header("Fog Settings")]
-    public bool fogActive = false;
-    public Color fogColor = Color.black;
-    public float fogStrat = 300;
-    public float fogEnd = 500;
 
     [Header("SeganX Effects")]
     public CameraFX camerafx = null;
@@ -36,29 +18,19 @@ public class GameMap : MonoBehaviour
     public Material bloomPostMaterial = null;
     public Material postMaterial = null;
 
-
     public int Id { get; private set; }
 
-    // Use this for initialization
+    private GameMap Setup(int id, int skyId)
+    {
+        Id = id;
+        var sky = GetSky(id * 10 + skyId);
+        RaceModel.specs.nightMode = sky.isNight;
+        sky.Perform(this);
+        return this;
+    }
+
     private void Start()
     {
-        RenderSettings.skybox = skyBoxMaterial;
-        RenderSettings.sun = sunSource;
-
-        RenderSettings.ambientMode = AmbientMode.Trilight;
-        RenderSettings.ambientSkyColor = skyColor;
-        RenderSettings.ambientEquatorColor = equatorColor;
-        RenderSettings.ambientGroundColor = groundColor;
-
-        RenderSettings.customReflection = reflectionCubemap;
-        RenderSettings.defaultReflectionMode = reflectionCubemap == null ? DefaultReflectionMode.Skybox : DefaultReflectionMode.Custom;
-
-        RenderSettings.fogMode = FogMode.Linear;
-        RenderSettings.fog = fogActive;
-        RenderSettings.fogColor = fogColor;
-        RenderSettings.fogStartDistance = fogStrat;
-        RenderSettings.fogEndDistance = fogEnd;
-
         Shader.SetGlobalFloat("bloomSpecular", bloomSpecular);
         Shader.SetGlobalFloat("skyBloom", skyBloom);
 
@@ -83,21 +55,24 @@ public class GameMap : MonoBehaviour
     ////////////////////////////////////////////////////////
     public static GameMap Current = null;
 
-    private static GameMap CreateMap(int id)
+    private static GameMap CreateMap(int id, int skyId)
     {
         var prefab = ResourceEx.Load<GameMap>("Maps/", id);
-        var res = prefab != null ? prefab.Clone<GameMap>() : null;
-        if (res != null) res.Id = id;
-        return res;
+        return prefab == null ? null : prefab.Clone<GameMap>().Setup(id, skyId);        
     }
 
-    public static GameMap Load(int id)
+    public static GameMap Load(int id, int skyId)
     {
         if (Current != null)
         {
             Current.gameObject.SetActive(false);
             Destroy(Current.gameObject);
         }
-        return Current = CreateMap(id);
+        return Current = CreateMap(id, skyId);
+    }
+
+    private static MapSky GetSky(int id)
+    {
+        return ResourceEx.Load<MapSky>("Maps/", id);
     }
 }

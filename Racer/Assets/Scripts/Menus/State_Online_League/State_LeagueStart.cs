@@ -29,7 +29,7 @@ public class State_LeagueStart : GameState
             {
                 if (GlobalConfig.ForceUpdate.league)
                 {
-                    gameManager.OpenPopup<Popup_Confirm>().Setup(111100, true, yes =>
+                    gameManager.OpenPopup<Popup_Confirm>().Setup(111100, true, true, yes =>
                     {
                         if (yes)
                         {
@@ -41,7 +41,7 @@ public class State_LeagueStart : GameState
                 }
                 else DisplayItems();
             }
-            else gameManager.OpenPopup<Popup_Confirm>().Setup(111061, false, ok => Back());
+            else gameManager.OpenPopup<Popup_Confirm>().Setup(111061, false, true, ok => Back());
         });
     }
 
@@ -136,7 +136,7 @@ public class State_LeagueStart : GameState
                 else
                 {
                     var str = string.Format(LocalizationService.Get(111141), leagueStartGroup);
-                    gameManager.OpenPopup<Popup_Confirm>().Setup(str, true, isok =>
+                    gameManager.OpenPopup<Popup_Confirm>().Setup(str, true, true, isok =>
                     {
                         if (isok) StartOnlineGame(leagueStartGroup);
                     });
@@ -164,6 +164,7 @@ public class State_LeagueStart : GameState
         PlayNetwork.EloPower = Profile.CurrentRacerPower;
         PlayNetwork.EloGroup = Profile.CurrentRacerGroup;
         PlayNetwork.MapId = RaceModel.specs.mapId;
+        PlayNetwork.SkyId = RaceModel.specs.skyId;
         PlayNetwork.MaxPlayerCount = RaceModel.specs.maxPlayerCount;
 
         gameManager.OpenState<State_GoToRace>();
@@ -194,6 +195,7 @@ public class State_LeagueStart : GameState
         PlayNetwork.EloPower = playerdata.RacerPower;
         PlayNetwork.EloGroup = RaceModel.specs.racersGroup;
         PlayNetwork.MapId = RaceModel.specs.mapId;
+        PlayNetwork.SkyId = RaceModel.specs.skyId;
         PlayNetwork.MaxPlayerCount = RaceModel.specs.maxPlayerCount;
 
         gameManager.OpenState<State_GoToRace>().Setup(playerdata);

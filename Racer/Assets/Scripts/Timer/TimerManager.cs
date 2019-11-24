@@ -37,24 +37,29 @@ public class TimerManager : Base
 
     private void Awake()
     {
-        IsTimeValid = false;
         Load();
-        StartCoroutine(TryValidateTime());
+    }
+
+    private IEnumerator Start()
+    {
+        IsTimeValid = false;
+        while (IsTimeValid == false)
+        {
+            ValidateTime();
+            yield return new WaitUntil(() => isTimeValidating == true);
+            yield return new WaitForSeconds(5);
+        }
+
+        while (true)
+        {
+            yield return new WaitForSeconds(300);
+            ValidateTime();
+        }
     }
 
     private void OnApplicationQuit()
     {
         Save();
-    }
-
-    private IEnumerator TryValidateTime()
-    {
-        int tryCount = 0;
-        while (!IsTimeValid && tryCount++ < 5)
-        {
-            ValidateTime();
-            yield return new WaitUntil(() => isTimeValidating == true);
-        }
     }
 
     ////////////////////////////////////////////////////////
@@ -118,7 +123,6 @@ public class TimerManager : Base
         if (isTimeValidating) return;
         isTimeValidating = true;
 
-        IsTimeValid = false;
         Network.GetConfig((msg, res) =>
         {
             isTimeValidating = false;

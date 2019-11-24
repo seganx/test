@@ -82,6 +82,7 @@ Shader "Rune Studios/Rune's Vehicle Shader"
                     float3 specamb = specmap.rgb * cube * _Reflection1Force;
                     output += specamb;
 
+                    output.rgb *= _LightColor0.a;
                     UNITY_APPLY_FOG(i.fogCoord, output);
 
                     return float4(output, bloomSpecular);

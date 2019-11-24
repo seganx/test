@@ -98,12 +98,12 @@ public class DataBeen : MonoBehaviour
     private IEnumerator DoSendData(object data)
     {
         var json = JsonUtility.ToJson(data);
-        Debug.Log("DataBeen Sending: " + json);
+        //Debug.Log("DataBeen Sending: " + json);
         var res = new WWW("https://api.databeen.ir/v1/statistics", json.GetBytes(), header);
         yield return res;
 
-        if (res.error.HasContent())
-            Debug.Log("DataBeen Sent: " + res.text + " Error: " + res.error);
+        //if (res.error.HasContent())
+        //    Debug.Log("DataBeen Sent: " + res.text + " Error: " + res.error);
         //else
         //    Debug.Log("DataBeen Sent: " + res.text);
     }

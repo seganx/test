@@ -100,7 +100,7 @@ public class State_Home : GameState
 
         storyButton.onClick.AddListener(() =>
         {
-            gameManager.OpenPopup<Popup_Confirm>().Setup(111103, true, null);
+            gameManager.OpenPopup<Popup_Confirm>().Setup(111103, true, true, null);
 
         });
 
@@ -118,7 +118,7 @@ public class State_Home : GameState
 
     public override void Back()
     {
-        gameManager.OpenPopup<Popup_Confirm>().Setup(111063, true, yes =>
+        gameManager.OpenPopup<Popup_Confirm>().Setup(111063, true, true, yes =>
         {
             if (yes) Application.Quit();
         });
@@ -130,6 +130,7 @@ public class State_Home : GameState
 
         RaceModel.specs.steering = Settings.SteeringMode;
         RaceModel.specs.mapId = RaceModel.SelectRandomMap();
+        //RaceModel.specs.skyId = Random.Range(0, 1000) % 2;
         RaceModel.specs.maxPlayerCount = 4;
         RaceModel.specs.maxPlayTime = GlobalConfig.Race.maxTime;
 
@@ -141,6 +142,7 @@ public class State_Home : GameState
         PlayNetwork.EloPower = Profile.CurrentRacerPower;
         PlayNetwork.EloGroup = Profile.CurrentRacerGroup;
         PlayNetwork.MapId = RaceModel.specs.mapId;
+        PlayNetwork.SkyId = RaceModel.specs.skyId;
         PlayNetwork.MaxPlayerCount = RaceModel.specs.maxPlayerCount;
 
         gameManager.OpenState<State_GoToRace>();

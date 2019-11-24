@@ -28,7 +28,6 @@ public abstract class TimerPresenter : Base
 
     IEnumerator UpdateThenSendRemainTime()
     {
-        TimerManager.ValidateTime(); // call once
         while (!TimerManager.IsTimeValid)
             yield return new WaitForSeconds(1);
 

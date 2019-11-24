@@ -144,7 +144,7 @@ public class State_Playing : GameState
         enabled = false;
         PlayNetwork.Disconnect(() =>
         {
-            Game.LoadMap(0);
+            Game.LoadMap(0, 0);
             Game.Instance.ClosePopup(true);
             gameManager.OpenState<State_Home>(true);
 

@@ -31,6 +31,7 @@ public class State_GameTutorial : GameState
 
         PlayNetwork.IsOffline = true;
         PlayNetwork.MapId = RaceModel.specs.mapId;
+        PlayNetwork.SkyId = RaceModel.specs.skyId;
         PlayNetwork.MaxPlayerCount = RaceModel.specs.maxPlayerCount;
 
         var racerdata = new RacerProfile();

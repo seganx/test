@@ -125,7 +125,7 @@ public class State_GoToRace : GameState
     private void StartGame(double startTime)
     {
         StableRandom.Initialize(Mathf.RoundToInt((float)startTime));
-        Game.LoadMap(PlayNetwork.MapId);
+        Game.LoadMap(PlayNetwork.MapId, PlayNetwork.SkyId);
 
         PlayerPresenterOnline.Create(playerData, false);
 
@@ -193,7 +193,7 @@ public class State_GoToRace : GameState
         enabled = false;
         PlayNetwork.Disconnect(() =>
         {
-            Game.LoadMap(0);
+            Game.LoadMap(0, 0);
             Game.Instance.ClosePopup(true);
             gameManager.OpenState<State_Home>(true);
         });
@@ -226,7 +226,7 @@ public class State_GoToRace : GameState
                 if (gameManager.CurrentState.enabled)
                 {
                     gameManager.CurrentState.enabled = false;
-                    Game.Instance.OpenPopup<Popup_Confirm>().Setup(LocalizationService.Get(111102) + error, false, isok => PlayNetwork.Disconnect(() =>
+                    Game.Instance.OpenPopup<Popup_Confirm>().Setup(LocalizationService.Get(111102) + error, false, true, isok => PlayNetwork.Disconnect(() =>
                     {
                         gameManager.CurrentState.SendMessage("ExitToMainMenu", SendMessageOptions.DontRequireReceiver);
                     }));

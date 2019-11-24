@@ -40,7 +40,7 @@ public class State_Profile : GameState
         sendNicknamebutton.transform.SetActiveChild(hasNickname ? 1 : 0);
 
         //transferButton.onClick.AddListener(() => gameManager.OpenPopup<Popup_TransferAccount>());
-        transferButton.onClick.AddListener(() => gameManager.OpenPopup<Popup_Confirm>().Setup(111103, false, null));
+        transferButton.onClick.AddListener(() => gameManager.OpenPopup<Popup_Confirm>().Setup(111103, false, true, null));
 
         sendNicknamebutton.onClick.AddListener(() =>
         {
@@ -92,7 +92,7 @@ public class State_Profile : GameState
                     }
                 });
             }
-            else gameManager.OpenPopup<Popup_Confirm>().Setup(111121, false, null);
+            else gameManager.OpenPopup<Popup_Confirm>().Setup(111121, false, true, null);
         }
     }
 

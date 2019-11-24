@@ -25,7 +25,7 @@ public class Game : GameManager<Game>
     private IEnumerator Start()
     {
         Loaded = false;
-        GameMap.Load(0);
+        GameMap.Load(0, 0);
         Popup_Loading.Display();
         yield return new WaitForSeconds(1);
         PurchaseSystem.Initialize(GlobalConfig.Instance.cafeBazaarKey, GlobalConfig.Socials.storeUrl, (success, msg) => Debug.Log("Purchase system initialized: " + success + " " + msg));
@@ -52,9 +52,9 @@ public class Game : GameManager<Game>
     /// STATIC MEMBER
     ////////////////////////////////////////////////////////
     public static bool Loaded { get; private set; }
-    public static void LoadMap(int id)
+    public static void LoadMap(int id, int skyId)
     {
-        GameMap.Load(id);
+        GameMap.Load(id, skyId);
 
         if (id == 0)
             UiHeader.Show();
@@ -80,7 +80,7 @@ public class Game : GameManager<Game>
         if (Profile.SpendCoin(value))
             onSuccess();
         else
-            Instance.OpenPopup<Popup_Confirm>().Setup(111144, true, (confirm) =>
+            Instance.OpenPopup<Popup_Confirm>().Setup(111144, true, true, (confirm) =>
             {
                 if (confirm)
                     Instance.OpenState<State_Shop>();

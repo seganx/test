@@ -25,7 +25,7 @@ public class Popup_AccountSelection : GameState
 
         fromServerButton.onClick.AddListener(() =>
         {
-            gameManager.OpenPopup<Popup_Confirm>().Setup(111062, true, yes =>
+            gameManager.OpenPopup<Popup_Confirm>().Setup(111062, true, true, yes =>
             {
                 if (yes)
                 {
@@ -39,7 +39,7 @@ public class Popup_AccountSelection : GameState
 
     public override void Back()
     {
-        gameManager.OpenPopup<Popup_Confirm>().Setup(111069, true, yes =>
+        gameManager.OpenPopup<Popup_Confirm>().Setup(111069, true, true, yes =>
         {
             if (yes)
             {

@@ -46,12 +46,12 @@ public class Popup_RateUs : GameState
         base.Back();
         if (RateUsValue > 4)
         {
-            Game.Instance.OpenPopup<Popup_Confirm>().Setup(111118, true, yes =>
+            Game.Instance.OpenPopup<Popup_Confirm>().Setup(111118, true, true, yes =>
             {
                 if (yes) SocialAndSharing.RateUs(null, GlobalConfig.Socials.rateUrl);
             });
         }
-        else Game.Instance.OpenPopup<Popup_Confirm>().Setup(111119, false, null);
+        else Game.Instance.OpenPopup<Popup_Confirm>().Setup(111119, false, true, null);
     }
 
 

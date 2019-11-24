@@ -28,7 +28,7 @@ public class State_Shop : GameState
             {
                 if (GlobalConfig.ForceUpdate.shop)
                 {
-                    gameManager.OpenPopup<Popup_Confirm>().Setup(111100, true, yes =>
+                    gameManager.OpenPopup<Popup_Confirm>().Setup(111100, true, true, yes =>
                     {
                         if (yes)
                         {
@@ -41,7 +41,7 @@ public class State_Shop : GameState
                 else DisplayItems();
             }
             else
-                gameManager.OpenPopup<Popup_Confirm>().Setup(111060, false, ok => Back());
+                gameManager.OpenPopup<Popup_Confirm>().Setup(111060, false, true, ok => Back());
         });
     }
 

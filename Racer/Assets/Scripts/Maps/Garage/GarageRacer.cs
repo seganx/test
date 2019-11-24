@@ -36,7 +36,7 @@ public class GarageRacer : Base
         if (racer == null) return;
 
         var profile = Profile.GetRacer(id);
-        racer.SetupCustom(profile == null ? config.DefaultRacerCustom : profile.custom).SetupCameras(false);
+        racer.SetupCustom(profile == null ? config.DefaultRacerCustom : profile.custom).SetupCameras(false).SetLights(RaceModel.specs.nightMode);
         racer.transform.SetLocalPositionAndRotation(Vector3.back * 10 + Vector3.up * 10, Quaternion.identity);
         racer.AutoWheelRotation = true;
 
@@ -54,7 +54,7 @@ public class GarageRacer : Base
         racer = RacerFactory.Racer.Create(profile.id, GameMap.Current.transform);
         if (racer == null) return;
 
-        racer.SetupCustom(profile.custom).SetupCameras(false);
+        racer.SetupCustom(profile.custom).SetupCameras(false).SetLights(RaceModel.specs.nightMode);
         racer.transform.SetLocalPositionAndRotation(Vector3.back * 10 + Vector3.up * 10, Quaternion.identity);
         racer.AutoWheelRotation = true;
 

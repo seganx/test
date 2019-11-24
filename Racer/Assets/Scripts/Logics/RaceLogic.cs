@@ -53,7 +53,8 @@ public static class RaceLogic
 
         var rewardsList = RaceModel.IsOnline ? GlobalConfig.Race.rewardsOnline : GlobalConfig.Race.rewardsOffline;
         var preward = rewardsList[Mathf.Clamp(RaceModel.stats.playerRank, 0, rewardsList.Count - 1)];
-        raceResult.rewards = RewardLogic.GetRaceReward(preward.racerCardChance, preward.customeChance, preward.gemChance, preward.gems, preward.coins);
+        var league = GlobalConfig.Leagues.GetByIndex(raceResult.lastLeague);
+        raceResult.rewards = RewardLogic.GetRaceReward(preward.racerCardChance, preward.customeChance, preward.gemChance, preward.gems, preward.coins, league.raceRewardRacerParam);
 
         //  apply rewards to profile
         SetRewardsToProfile();
@@ -71,7 +72,7 @@ public static class RaceLogic
 
         var rewardsList = GlobalConfig.Race.rewardsOffline;
         var preward = rewardsList[Mathf.Clamp(RaceModel.stats.playerRank, 0, rewardsList.Count - 1)];
-        raceResult.rewards = RewardLogic.GetRaceReward(preward.racerCardChance, preward.customeChance, preward.gemChance, preward.gems, preward.coins);
+        raceResult.rewards = RewardLogic.GetRaceReward(preward.racerCardChance, preward.customeChance, preward.gemChance, preward.gems, preward.coins, Vector2Int.zero);
 
         //  apply rewards to profile
         SetRewardsToProfile();
