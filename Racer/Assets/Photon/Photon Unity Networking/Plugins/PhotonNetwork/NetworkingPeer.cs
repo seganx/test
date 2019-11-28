@@ -1627,19 +1627,19 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
         {
             if (operationResponse.ReturnCode == ErrorCode.OperationNotAllowedInCurrentState)
             {
-                Debug.LogError("Operation " + operationResponse.OperationCode + " could not be executed (yet). Wait for state JoinedLobby or ConnectedToMaster and their callbacks before calling operations. WebRPCs need a server-side configuration. Enum OperationCode helps identify the operation.");
+                Debug.Log("Operation " + operationResponse.OperationCode + " could not be executed (yet). Wait for state JoinedLobby or ConnectedToMaster and their callbacks before calling operations. WebRPCs need a server-side configuration. Enum OperationCode helps identify the operation.");
             }
             else if (operationResponse.ReturnCode == ErrorCode.PluginReportedError)
             {
-                Debug.LogError("Operation " + operationResponse.OperationCode + " failed in a server-side plugin. Check the configuration in the Dashboard. Message from server-plugin: " + operationResponse.DebugMessage);
+                Debug.Log("Operation " + operationResponse.OperationCode + " failed in a server-side plugin. Check the configuration in the Dashboard. Message from server-plugin: " + operationResponse.DebugMessage);
             }
             else if (operationResponse.ReturnCode == ErrorCode.NoRandomMatchFound)
             {
-                Debug.LogWarning("Operation failed: " + operationResponse.ToStringFull());
+                Debug.Log("Operation failed: " + operationResponse.ToStringFull());
             }
             else
             {
-                Debug.LogError("Operation failed: " + operationResponse.ToStringFull() + " Server: " + this.Server);
+                Debug.Log("Operation failed: " + operationResponse.ToStringFull() + " Server: " + this.Server);
             }
         }
 

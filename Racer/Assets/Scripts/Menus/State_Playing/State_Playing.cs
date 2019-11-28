@@ -20,7 +20,7 @@ public class State_Playing : GameState
     private IEnumerator Start()
     {
         UiShowHide.ShowAll(transform);
-        RacerCamera.offset.z = -10;
+        RacerCamera.eyeOffset.z = -10;
         gameManager.OpenPopup<Popup_PlayingCountDown>().Setup(() => allowUserHandle = true);
 
 
@@ -70,8 +70,9 @@ public class State_Playing : GameState
         RaceModel.stats.playerSpeed = PlayerPresenter.local.player.CurrSpeed;
         RaceModel.stats.playerPosition = PlayerPresenter.local.player.CurrPosition;
 
-        RacerCamera.offset.y = Mathf.Lerp(RacerCamera.offset.y, GlobalConfig.Race.cameraOffsets[PlayerPresenter.local.player.CurrRank], deltaTime);
-        RacerCamera.offset.z = Mathf.Lerp(RacerCamera.offset.z, -cameraMode * 0.6f, deltaTime * 3);
+        RacerCamera.targetOffset.y = Mathf.Lerp(RacerCamera.targetOffset.y, GlobalConfig.Race.cameraOffsets[PlayerPresenter.local.player.CurrRank] * 0.5f, deltaTime);
+        RacerCamera.eyeOffset.y = Mathf.Lerp(RacerCamera.eyeOffset.y, GlobalConfig.Race.cameraOffsets[PlayerPresenter.local.player.CurrRank], deltaTime);
+        RacerCamera.eyeOffset.z = Mathf.Lerp(RacerCamera.eyeOffset.z, -cameraMode * 0.6f, deltaTime * 3);
         RacerCamera.UpdateAll(deltaTime);
 
         var remainedTime = Mathf.Max(0, RaceModel.specs.maxPlayTime - PlayNetwork.PlayTime);
