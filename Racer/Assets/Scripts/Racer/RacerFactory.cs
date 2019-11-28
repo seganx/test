@@ -67,6 +67,11 @@ public static class RacerFactory
             return AllConfigs.Find(x => x.Id == id);
         }
 
+        public static RacerConfig GetConfigByIndex(int index)
+        {
+            return AllConfigs[Mathf.Clamp(index, 0, AllConfigs.Count - 1)];
+        }
+
         public static RacerPresenter Create(int id, Transform parent)
         {
             var config = GetConfig(id);

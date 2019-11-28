@@ -8,7 +8,7 @@ public class RacerAudio : Base
     AudioClip engineIdleAudioClip = null, engineSpeedUpAudioClip = null, windAudioClip = null, sandRollingAudioClip = null, asphaltRollingAudioClip = null, asphaltSkidAudioClip = null, nosStartAudioClip = null, nosLoopAudioClip = null, hornAudioClip = null, turboIdleAudioClip = null, turboSpeedAudioClip = null;
     AudioSource engineIdleAudioSource, engineSpeedUpAudioSource, windAudioSource, sandRollingAudioSource, asphaltRollingAudioSource, asphaltSkidAudioSource, nosStartAudioSrouce, nosLoopAudioSource, hornAudioSource, turboIdleAudioSource, turboSpeedAudioSource;
     Vector3 curSpeed;
-    const float AUDIO_RATIO = .8f;
+    const float AUDIO_RATIO = .7f;
     Transform mpTr;
     float dustArea, maxHorizontalSpeed = 3, shiftDelay, firstShiftUpSpeed, secondShiftUpSpeed;
     int gearsCount = 5, curGear = 1;

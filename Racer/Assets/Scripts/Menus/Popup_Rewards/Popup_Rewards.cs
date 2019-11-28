@@ -51,22 +51,19 @@ public class Popup_Rewards : GameState
         contentPos = rewardContent.anchoredPosition.x;
 
         // first open loot box
-        if (lootbox != null)
+        if (displayLootbox)
         {
-            if (displayLootbox)
-            {
-                lootbox.transform.SetAsFirstSibling();
-                lootbox.gameObject.SetActive(true);
-                yield return new WaitUntil(() => lootbox.IsOpened);
-                MoveContentToLeft(lootbox.rectTransform.rect.width);
-            }
-            else
-            {
-                Destroy(lootbox.gameObject);
-                yield return new WaitForEndOfFrame();
-            }
+            displayLootbox = false;
+            lootbox.transform.SetAsFirstSibling();
+            lootbox.gameObject.SetActive(true);
+            yield return new WaitUntil(() => lootbox.IsOpened);
+            MoveContentToLeft(lootbox.rectTransform.rect.width);
         }
-        displayLootbox = false;
+        else
+        {
+            lootbox.gameObject.SetActive(false);
+            yield return new WaitForEndOfFrame();
+        }
 
         // then open racer cards
         for (int i = 0; i < rewardContent.childCount; i++)
@@ -90,7 +87,7 @@ public class Popup_Rewards : GameState
         for (int i = 0; i < rewardContent.childCount; i++)
         {
             var item = rewardContent.GetChild<RectTransform>(i);
-            if (item.gameObject.activeSelf) continue;
+            if (item.gameObject.activeSelf || item.gameObject == lootbox.gameObject) continue;
 
             // wait and display
             item.gameObject.SetActive(true);

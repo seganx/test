@@ -53,7 +53,7 @@ public class UiRewardRacerLootbox : Base
         }
 
         if (config == null)
-            Destroy(gameObject);
+            gameObject.SetActive(false);
     }
 
     private IEnumerator Start()

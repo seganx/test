@@ -227,7 +227,7 @@ public class State_LeagueStart : GameState
             Popup_Rewards.Display();
 
             Profile.LeagueResultExist = false;
-            ProfileLogic.SyncWidthServer(true, done => { });
+            ProfileLogic.SyncWidthServer(false, done => { });
         });
     }
 }

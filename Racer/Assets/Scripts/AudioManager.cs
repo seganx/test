@@ -10,7 +10,7 @@ public class AudioManager : Base
     [SerializeField] private MusicClipData[] myMusicClipDatasArr = null;
 
     private bool isFadingOut = false;
-    private float musicMaxVolume = 1;
+    private float musicMaxVolume = 0.5f;
     private readonly float maxFxVolume = 0.75f;
 
     public static AudioManager Instance { get; private set; }

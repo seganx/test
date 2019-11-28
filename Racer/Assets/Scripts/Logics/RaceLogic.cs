@@ -121,7 +121,7 @@ public static class RaceLogic
             Popup_Rewards.AddRacerCard(racerid, 1);
         }
 
-        ProfileLogic.SyncWidthServer(true, success => { });
+        ProfileLogic.SyncWidthServer(false, success => { });
     }
 
     private static void SetRewardsToProfile()

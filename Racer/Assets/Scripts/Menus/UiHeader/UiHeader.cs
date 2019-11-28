@@ -57,7 +57,7 @@ public class UiHeader : Base
             PopupQueue.Add(.5f, () => Popup_Tutorial.Display(61));
         });
 
-        var syncCount = 0;
+        var syncColor = 0;
         var waitseconds = new WaitForSeconds(0.5f);
         while (true)
         {
@@ -67,14 +67,14 @@ public class UiHeader : Base
             coinLabel.SetText(Profile.Coin.ToString("#,0"));
             garageNotif.SetActive(Profile.IsUnlockingRacerExist);
 
-            syncCount++;
-            if (syncCount % 2 == 0) syncIcon.color = syncCount < 0 ? Color.yellow : (ProfileLogic.Synced ? Color.green : Color.red);
+            syncColor++;
+            if (syncColor % 2 == 0) syncIcon.color = syncColor < 0 ? Color.yellow : (ProfileLogic.Synced ? Color.green : Color.red);
 
-            if ((System.DateTime.Now - lastSyncTime).TotalSeconds > 60)
+            if ((System.DateTime.Now - lastSyncTime).TotalSeconds > 300)
             {
                 lastSyncTime = System.DateTime.Now;
                 if (ProfileLogic.Synced == false)
-                    ProfileLogic.SyncWidthServer(true, done => syncCount = 0);
+                    ProfileLogic.SyncWidthServer(true, done => syncColor = 0);
             }
 
             yield return waitseconds;

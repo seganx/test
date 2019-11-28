@@ -111,7 +111,7 @@ public class State_Garage : GameState
                 if (Profile.IsUnlockingRacer(car.Id) && Profile.UnlockRacer(car.Id))
                 {
                     gameManager.OpenState<State_UnlockRacer>().Setup(car.Id);
-                    ProfileLogic.SyncWidthServer(true, success => { });
+                    ProfileLogic.SyncWidthServer(false, success => { });
                 }
                 else
                 {
