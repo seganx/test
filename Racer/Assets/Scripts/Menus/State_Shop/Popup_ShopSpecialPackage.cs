@@ -45,6 +45,7 @@ public class Popup_ShopSpecialPackage : GameState
                 {
                     DisplayRewards(pack);
                     PurchaseSystem.Consume(pack.item.sku);
+                    AnalyticsManager.NewBuisinessEvent(pack.item.price, pack.item.sku);
 #if DATABEEN
                     DataBeen.SendPurchase(pack.item.sku, msg);
 #endif

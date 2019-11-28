@@ -34,6 +34,7 @@ public class UiShopResourcePackage : MonoBehaviour
                     Popup_Rewards.AddResource(pack.gems, 0);
                     Popup_Rewards.Display().DisplayPurchaseReward();
                     PurchaseSystem.Consume(pack.sku);
+                    AnalyticsManager.NewBuisinessEvent(pack.price, pack.sku);
                     ProfileLogic.SyncWidthServer(true, done => { });
 
 #if DATABEEN
