@@ -24,8 +24,8 @@ public class State_Shop : GameState
         ProfileLogic.SyncWidthServer(false, success =>
         {
             Popup_Loading.Hide();
-            if (success)
-            {
+            //if (success)
+            //{
                 if (GlobalConfig.ForceUpdate.shop)
                 {
                     gameManager.OpenPopup<Popup_Confirm>().Setup(111100, true, true, yes =>
@@ -39,9 +39,8 @@ public class State_Shop : GameState
                     });
                 }
                 else DisplayItems();
-            }
-            else
-                gameManager.OpenPopup<Popup_Confirm>().Setup(111060, false, true, ok => Back());
+            //}
+            //else gameManager.OpenPopup<Popup_Confirm>().Setup(111060, false, true, ok => Back());
         });
     }
 

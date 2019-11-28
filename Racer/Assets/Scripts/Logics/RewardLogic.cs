@@ -35,7 +35,7 @@ public static class RewardLogic
         if (Random.Range(0, 100) < gemChance)
             res.gems = gems;
         if (Random.Range(0, 100) < racerCardChance)
-            res.racerId = SelectRacerReward();
+            res.racerId = SelectRacerReward(racerCardChanceParam.x, racerCardChanceParam.y);
         if (Random.Range(0, 100) < customeChance)
             res.custome = GetCustomReward();
         return res;

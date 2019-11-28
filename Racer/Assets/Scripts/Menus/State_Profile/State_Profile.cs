@@ -46,10 +46,8 @@ public class State_Profile : GameState
         {
             if (nicknameInput.text.ComputeMD5(Core.Salt) == "1EB663B178CEFE01AF0C8D7FBDE59BBE")
                 GlobalConfig.DebugMode = true;
-            else if (hasNickname)
-                Game.SpendGem(GlobalConfig.Shop.nicknamePrice, OnSendNickname);
             else
-                OnSendNickname();
+                OnSendNickname(hasNickname);
         });
 
         syncButton.onClick.AddListener(() =>
@@ -73,23 +71,26 @@ public class State_Profile : GameState
         }
     }
 
-    public void OnSendNickname()
+    public void OnSendNickname(bool hasNickname)
     {
         var nickname = nicknameInput.text.Trim().CleanFromCode().CleanForPersian();
         if (nickname.HasContent(3))
         {
             if (nickname.IsLetterOrDigit() && BadWordsFinder.HasBadWord(nickname) == false)
             {
-                Popup_Loading.Display();
-                Network.SendNickname(nickname, msg =>
+                Game.SpendGem(GlobalConfig.Shop.nicknamePrice, () =>
                 {
-                    Popup_Loading.Hide();
-                    if (msg == Network.Message.ok)
+                    Popup_Loading.Display();
+                    Network.SendNickname(nickname, msg =>
                     {
-                        hasNickname = true;
-                        Profile.Name = nickname;
-                        sendNicknamebutton.transform.SetActiveChild(1);
-                    }
+                        Popup_Loading.Hide();
+                        if (msg == Network.Message.ok)
+                        {
+                            hasNickname = true;
+                            Profile.Name = nickname;
+                            sendNicknamebutton.transform.SetActiveChild(1);
+                        }
+                    });
                 });
             }
             else gameManager.OpenPopup<Popup_Confirm>().Setup(111121, false, true, null);
@@ -100,6 +101,6 @@ public class State_Profile : GameState
     public static void SendNickname()
     {
         if (gameManager.CurrentState is State_Profile)
-            gameManager.CurrentState.As<State_Profile>().OnSendNickname();
+            gameManager.CurrentState.As<State_Profile>().OnSendNickname(Profile.HasName);
     }
 }
