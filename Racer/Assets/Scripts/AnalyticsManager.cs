@@ -12,6 +12,6 @@ public class AnalyticsManager : MonoBehaviour
 
     public static void NewBuisinessEvent(int rialAmount, string itemType)
     {
-        GameAnalytics.NewBusinessEvent("USD", rialAmount / 100000, itemType, "1", "cartType");
+        GameAnalytics.NewBusinessEvent("USD", rialAmount / 100, itemType, "1", "cartType");
     }
 }
