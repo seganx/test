@@ -49,14 +49,14 @@ public class State_Garage : GameState
         if (selectSteeringMode)
         {
             steeringButton.gameObject.SetActive(true);
-            steeringImage.sprite = GlobalFactory.GetSteeringIcon(Settings.SteeringMode);
+            steeringImage.sprite = GlobalFactory.GetSteeringIcon(GameSettings.SteeringMode);
             steeringHelp.gameObject.SetActive(PlayerPrefs.GetInt("State_Garage.Steering.Help", 1) > 0);
             PlayerPrefs.SetInt("State_Garage.Steering.Help", 0);
 
             steeringButton.onClick.AddListener(() =>
             {
                 steeringHelp.gameObject.SetActive(false);
-                gameManager.OpenPopup<Popup_SteeringMode>().Setup(() => steeringImage.sprite = GlobalFactory.GetSteeringIcon(Settings.SteeringMode));
+                gameManager.OpenPopup<Popup_SteeringMode>().Setup(() => steeringImage.sprite = GlobalFactory.GetSteeringIcon(GameSettings.SteeringMode));
             });
         }
         else steeringButton.gameObject.SetActive(false);

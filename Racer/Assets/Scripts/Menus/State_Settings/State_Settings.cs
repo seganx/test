@@ -45,8 +45,8 @@ public class State_Settings : GameState
         matchMakingWaitMoreToggle.isOn = State_GoToRace.WaitMore;
         displayHudToggle.isOn = PlayerHud.DisplayBox;
 
-        steeringImage.sprite = GlobalFactory.GetSteeringIcon(Settings.SteeringMode);
-        steeringButton.onClick.AddListener(() => gameManager.OpenPopup<Popup_SteeringMode>().Setup(() => steeringImage.sprite = GlobalFactory.GetSteeringIcon(Settings.SteeringMode)));
+        steeringImage.sprite = GlobalFactory.GetSteeringIcon(GameSettings.SteeringMode);
+        steeringButton.onClick.AddListener(() => gameManager.OpenPopup<Popup_SteeringMode>().Setup(() => steeringImage.sprite = GlobalFactory.GetSteeringIcon(GameSettings.SteeringMode)));
 
         notifFullFuel.onValueChanged.AddListener((active) => IsFullFuelActiveNotificationActive = active);
         notifFreePackage.onValueChanged.AddListener((active) => IsFreePackageNotificationActive = active);
@@ -147,7 +147,7 @@ public class State_Settings : GameState
     }
 }
 
-public static class Settings
+public static class GameSettings
 {
     public static RaceModel.SteeringMode SteeringMode
     {

@@ -15,7 +15,7 @@ public class State_GameTutorial : GameState
 
     public void OnStartTutorial()
     {
-        Settings.SteeringMode = RaceModel.SteeringMode.Easy;
+        GameSettings.SteeringMode = RaceModel.SteeringMode.Easy;
 
         RaceModel.Reset(RaceModel.Mode.Tutorial);
         RaceModel.specs.steering = RaceModel.SteeringMode.Easy;
