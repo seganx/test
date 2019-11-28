@@ -150,7 +150,7 @@ public class State_LeagueStart : GameState
     private void StartOnlineGame(int racegroup)
     {
         RaceModel.Reset(RaceModel.Mode.Online);
-        RaceModel.specs.steering = Settings.SteeringMode;
+        RaceModel.specs.steering = GameSettings.SteeringMode;
         RaceModel.specs.mapId = RaceModel.SelectRandomMap();
         RaceModel.specs.racersGroup = racegroup;
         RaceModel.specs.maxPlayerCount = 4;
@@ -181,7 +181,7 @@ public class State_LeagueStart : GameState
         var playerdata = new PlayerData(Profile.Name, userscore, Profile.Position, racerdata);
 
         RaceModel.Reset(RaceModel.Mode.Online);
-        RaceModel.specs.steering = Settings.SteeringMode;
+        RaceModel.specs.steering = GameSettings.SteeringMode;
         RaceModel.specs.mapId = RaceModel.SelectRandomMap();
         RaceModel.specs.racersGroup = group;
         RaceModel.specs.maxPlayerCount = 4;

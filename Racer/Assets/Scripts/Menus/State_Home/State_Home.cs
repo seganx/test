@@ -128,7 +128,7 @@ public class State_Home : GameState
     {
         RaceModel.Reset(RaceModel.Mode.FreeDrive);
 
-        RaceModel.specs.steering = Settings.SteeringMode;
+        RaceModel.specs.steering = GameSettings.SteeringMode;
         RaceModel.specs.mapId = RaceModel.SelectRandomMap();
         //RaceModel.specs.skyId = Random.Range(0, 1000) % 2;
         RaceModel.specs.maxPlayerCount = 4;

@@ -44,7 +44,7 @@ public class Popup_ShopSpecialPackage : GameState
                 if (success)
                 {
                     DisplayRewards(pack);
-                    PurchaseSystem.Consume();
+                    PurchaseSystem.Consume(pack.item.sku);
 #if DATABEEN
                     DataBeen.SendPurchase(pack.item.sku, msg);
 #endif

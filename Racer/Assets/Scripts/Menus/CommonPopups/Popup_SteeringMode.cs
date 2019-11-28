@@ -27,7 +27,7 @@ public class Popup_SteeringMode : GameState
             tiltModeButton.SetInteractable(SystemInfo.supportsAccelerometer);
         }
 
-        switch (Settings.SteeringMode)
+        switch (GameSettings.SteeringMode)
         {
             case RaceModel.SteeringMode.Normal: selected.SetAnchordPositionX(defaultModeButton.transform.GetAnchordPosition().x); break;
             case RaceModel.SteeringMode.Easy: selected.SetAnchordPositionX(runnerModeButton.transform.GetAnchordPosition().x); break;
@@ -36,19 +36,19 @@ public class Popup_SteeringMode : GameState
 
         defaultModeButton.onClick.AddListener(() =>
         {
-            RaceModel.specs.steering = Settings.SteeringMode = RaceModel.SteeringMode.Normal;
+            RaceModel.specs.steering = GameSettings.SteeringMode = RaceModel.SteeringMode.Normal;
             Back();
         });
 
         runnerModeButton.onClick.AddListener(() =>
         {
-            RaceModel.specs.steering = Settings.SteeringMode = RaceModel.SteeringMode.Easy;
+            RaceModel.specs.steering = GameSettings.SteeringMode = RaceModel.SteeringMode.Easy;
             Back();
         });
 
         tiltModeButton.onClick.AddListener(() =>
         {
-            RaceModel.specs.steering = Settings.SteeringMode = RaceModel.SteeringMode.Tilt;
+            RaceModel.specs.steering = GameSettings.SteeringMode = RaceModel.SteeringMode.Tilt;
             Back();
         });
 

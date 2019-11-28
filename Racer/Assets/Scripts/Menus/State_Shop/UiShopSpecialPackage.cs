@@ -42,7 +42,7 @@ public class UiShopSpecialPackage : MonoBehaviour
                 if (success)
                 {
                     DisplayRewards(pack);
-                    PurchaseSystem.Consume();
+                    PurchaseSystem.Consume(pack.item.sku);
                     Destroy(gameObject);
 
 #if DATABEEN
