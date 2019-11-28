@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using SeganX;
 
 [DefaultExecutionOrder(10)]
 public class UiHomeLockItem : MonoBehaviour
