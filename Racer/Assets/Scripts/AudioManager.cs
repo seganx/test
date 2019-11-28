@@ -48,7 +48,7 @@ public class AudioManager : Base
 
         musicAudioSource.ignoreListenerPause = true;
         musicAudioSource.ignoreListenerVolume = true;
-        musicMaxVolume = musicAudioSource.volume;
+        //musicMaxVolume = musicAudioSource.volume;
         musicAudioSource.volume = 0;
 
         if (!IsMusicOn)

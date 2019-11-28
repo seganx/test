@@ -54,7 +54,7 @@ public class PlayNetwork : MonoBehaviour
         else
         {
             var eloScoreParams = GlobalConfig.MatchMaking.eloScoreParams[Mathf.Clamp(EloGroup, 0, GlobalConfig.MatchMaking.eloScoreParams.Length - 1)];
-            Debug.LogWarning("countOfPlayers: " + PhotonNetwork.countOfPlayers + "\ncountOfPlayersInRooms: " + PhotonNetwork.countOfPlayersInRooms + "\ncountOfPlayersOnMaster: " + PhotonNetwork.countOfPlayersOnMaster + "\ncountOfRooms: " + PhotonNetwork.countOfRooms);
+            //Debug.LogWarning("countOfPlayers: " + PhotonNetwork.countOfPlayers + "\ncountOfPlayersInRooms: " + PhotonNetwork.countOfPlayersInRooms + "\ncountOfPlayersOnMaster: " + PhotonNetwork.countOfPlayersOnMaster + "\ncountOfRooms: " + PhotonNetwork.countOfRooms);
             eloScoreMaxGap = Mathf.Max(GlobalConfig.MatchMaking.eloScoreCount, Mathf.RoundToInt(eloScoreParams.x * EloScore + eloScoreParams.y));
             eloScoreGap = eloScoreMaxGap / GlobalConfig.MatchMaking.eloScoreCount;
             eloPowerMaxGap = Mathf.RoundToInt(GlobalConfig.MatchMaking.eloPowerParams.x * EloPower + GlobalConfig.MatchMaking.eloPowerParams.y);
