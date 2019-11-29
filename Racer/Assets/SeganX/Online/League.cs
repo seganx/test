@@ -24,8 +24,8 @@ namespace SeganX
                 public string nickname = string.Empty;
                 public string status = string.Empty;
                 public string avatar = string.Empty;
-                public string score = string.Empty;
-                public string rank = string.Empty;
+                public int score = 0;
+                public int rank = 0;
             }
 
             [System.Serializable]

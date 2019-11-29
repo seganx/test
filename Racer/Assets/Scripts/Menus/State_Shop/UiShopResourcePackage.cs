@@ -27,7 +27,6 @@ public class UiShopResourcePackage : MonoBehaviour
             purchaseButton.SetInteractable(false);
             PurchaseSystem.Purchase(PurchaseProvider.Bazaar, pack.sku, (success, msg) =>
             {
-                purchaseButton.SetInteractable(true);
                 if (success)
                 {
                     Profile.EarnResouce(pack.gems, 0);
@@ -41,6 +40,7 @@ public class UiShopResourcePackage : MonoBehaviour
                     DataBeen.SendPurchase(pack.sku, msg);
 #endif
                 }
+                purchaseButton.SetInteractable(true);
             });
         });
 

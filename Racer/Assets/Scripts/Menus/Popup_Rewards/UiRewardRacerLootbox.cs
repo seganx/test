@@ -58,24 +58,33 @@ public class UiRewardRacerLootbox : Base
 
     private IEnumerator Start()
     {
-        circleImage.SetFillAmount(Profile.CardLootboxChance, 100);
-        circlePlusImage.SetFillAmount(Profile.CardLootboxChance, 100);
-        racerInfo.Setup(config);
-        spinButton.onClick.AddListener(() => StartCoroutine(DoSpin()));
-
-        // add loot reward
+        if (config == null || racerInfo == null)
         {
-            float currLootvalue = Profile.CardLootboxChance;
-            Profile.CardLootboxChance += rewardLootValue;
-            float nextLootValue = Profile.CardLootboxChance;
+            gameObject.SetActive(false);
+            yield break;
+        }
+        else
+        {
 
-            var wait = new WaitForEndOfFrame();
-            while (Mathf.Abs(currLootvalue - nextLootValue) > 1)
+            circleImage.SetFillAmount(Profile.CardLootboxChance, 100);
+            circlePlusImage.SetFillAmount(Profile.CardLootboxChance, 100);
+            racerInfo.Setup(config);
+            spinButton.onClick.AddListener(() => StartCoroutine(DoSpin()));
+
+            // add loot reward
             {
-                yield return wait;
-                currLootvalue = Mathf.Lerp(currLootvalue, nextLootValue, Time.deltaTime);
-                circlePlusImage.SetFillAmount(currLootvalue, 100);
-                chanceLabel.SetFormatedText(currLootvalue + 0.5f);
+                float currLootvalue = Profile.CardLootboxChance;
+                Profile.CardLootboxChance += rewardLootValue;
+                float nextLootValue = Profile.CardLootboxChance;
+
+                var wait = new WaitForEndOfFrame();
+                while (Mathf.Abs(currLootvalue - nextLootValue) > 1)
+                {
+                    yield return wait;
+                    currLootvalue = Mathf.Lerp(currLootvalue, nextLootValue, Time.deltaTime);
+                    circlePlusImage.SetFillAmount(currLootvalue, 100);
+                    chanceLabel.SetFormatedText(currLootvalue + 0.5f);
+                }
             }
         }
     }

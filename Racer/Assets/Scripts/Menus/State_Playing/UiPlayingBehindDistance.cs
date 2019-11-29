@@ -42,6 +42,12 @@ public class UiPlayingBehindDistance : MonoBehaviour
 
     private void UpdateData()
     {
+        if (PlayerPresenter.all.Count < 1)
+        {
+            holder.SetActive(false);
+            return;
+        }
+
         var local = PlayerPresenter.local;
         var index = PlayerPresenter.all.IndexOf(local);
         var nextOpp = PlayerPresenter.all[Mathf.Clamp(index - 1, 0, PlayerPresenter.all.LastIndex())];
