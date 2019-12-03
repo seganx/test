@@ -68,7 +68,7 @@ public class State_GoToRace : GameState
             countDownText.SetText(Mathf.Max(0, Mathf.RoundToInt(joinTimeout - waitTime)).ToString());
             pingLabel.SetFormatedText(LastPingValue);
             pingLabel.target.color = LastPingValue < 100 ? Color.green : (LastPingValue < 300 ? Color.yellow : Color.red);
-            tipsLabel.SetFormatedText(LocalizationService.Get(111020 + (TipsNumber % 9)));
+            tipsLabel.SetFormatedText(LocalizationService.Get(111020 + (TipsNumber % 11)));
             if (tipsCounter++ % 15 == 0) TipsNumber++;
             yield return new WaitForSeconds(1);
         }

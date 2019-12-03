@@ -45,10 +45,6 @@ public class UiShopSpecialPackage : MonoBehaviour
                     PurchaseSystem.Consume(pack.item.sku);
                     AnalyticsManager.NewBuisinessEvent(pack.item.price, pack.item.sku);
                     Destroy(gameObject);
-
-#if DATABEEN
-                    DataBeen.SendPurchase(pack.item.sku, msg);
-#endif
                 }
                 else purchaseButton.SetInteractable(true);
             });

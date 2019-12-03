@@ -59,9 +59,5 @@ public class UiShopCombinedPackage : Base
 
         Popup_Rewards.Display().DisplayPurchaseReward();
         ProfileLogic.SyncWidthServer(true, done => { });
-
-#if DATABEEN
-        DataBeen.SendContentView("CombinedPack_" + pack.price, "CombinedPack_" + pack.price);
-#endif
     }
 }

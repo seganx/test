@@ -1,5 +1,4 @@
 ﻿using SeganX;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -33,10 +32,6 @@ namespace SeganX
             yield return new WaitForSeconds(1);
             PurchaseSystem.Initialize(GlobalConfig.Instance.cafeBazaarKey, GlobalConfig.Socials.storeUrl, (success, msg) => Debug.Log("Purchase system initialized: " + success + " " + msg));
 
-#if DATABEEN
-            OnOpenState += gamestate => { if (gamestate != null) DataBeen.SendContentView(gamestate.name, "ok"); };
-#endif
-
             //  first try to connect to internet
             Http.requestTimeout = GlobalConfig.Server.requestTimeout / 2;
             ProfileLogic.SyncWidthServer(false, success =>
@@ -66,7 +61,7 @@ namespace SeganX
         }
 
 
-        public static void SpendGem(int value, Action onSuccess)
+        public static void SpendGem(int value, System.Action onSuccess)
         {
             if (Profile.SpendGem(value))
                 onSuccess();
@@ -78,7 +73,7 @@ namespace SeganX
             });
         }
 
-        public static void SpendCoin(int value, Action onSuccess)
+        public static void SpendCoin(int value, System.Action onSuccess)
         {
             if (Profile.SpendCoin(value))
                 onSuccess();

@@ -35,10 +35,6 @@ public class UiShopResourcePackage : MonoBehaviour
                     PurchaseSystem.Consume(pack.sku);
                     AnalyticsManager.NewBuisinessEvent(pack.price, pack.sku);
                     ProfileLogic.SyncWidthServer(true, done => { });
-
-#if DATABEEN
-                    DataBeen.SendPurchase(pack.sku, msg);
-#endif
                 }
                 purchaseButton.SetInteractable(true);
             });

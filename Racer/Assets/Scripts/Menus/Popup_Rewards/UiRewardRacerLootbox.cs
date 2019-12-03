@@ -39,10 +39,10 @@ public class UiRewardRacerLootbox : Base
             }
             else
             {
-                int rindex = Random.Range(0, 100) % 3;
-                config = Profile.IsUnlockedRacer(league.lootboxRacerIds[rindex]) ? null : RacerFactory.Racer.GetConfig(league.lootboxRacerIds[rindex]);
-                if (config == null) config = Profile.IsUnlockedRacer(league.lootboxRacerIds[++rindex % 3]) ? null : RacerFactory.Racer.GetConfig(league.lootboxRacerIds[rindex]);
-                if (config == null) config = Profile.IsUnlockedRacer(league.lootboxRacerIds[++rindex % 3]) ? null : RacerFactory.Racer.GetConfig(league.lootboxRacerIds[rindex]);
+                int rindex = Random.Range(0, 100);
+                config = Profile.IsUnlockedRacer(league.lootboxRacerIds[++rindex % 3]) ? null : RacerFactory.Racer.GetConfig(league.lootboxRacerIds[rindex % 3]);
+                if (config == null) config = Profile.IsUnlockedRacer(league.lootboxRacerIds[++rindex % 3]) ? null : RacerFactory.Racer.GetConfig(league.lootboxRacerIds[rindex % 3]);
+                if (config == null) config = Profile.IsUnlockedRacer(league.lootboxRacerIds[++rindex % 3]) ? null : RacerFactory.Racer.GetConfig(league.lootboxRacerIds[rindex % 3]);
             }
 
             if (config != null)
@@ -53,13 +53,17 @@ public class UiRewardRacerLootbox : Base
         }
 
         if (config == null)
+        {
+            IsOpened = true;
             gameObject.SetActive(false);
+        }
     }
 
     private IEnumerator Start()
     {
         if (config == null || racerInfo == null)
         {
+            IsOpened = true;
             gameObject.SetActive(false);
             yield break;
         }
