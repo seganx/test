@@ -103,11 +103,22 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
                 public float carsSpeed = 20;
                 public float startDistance = 256;
                 public float baseDistance = -10;
+                public float distanceRatio = 1;
                 public float distanceVariance = 0;
-                public float speedFactor = 1;
                 public float roadWidthFactor = 0.55f;
                 public float positionVariance = 0.5f;
                 public int doubleCarChance = 0;
+            }
+
+            [System.Serializable]
+            public class Obstacles
+            {
+                public float startDistance = 256;
+                public float baseDistance = -10;
+                public float distanceRatio = -10;
+                public float distanceVariance = 0;
+                public float roadWidthFactor = 0.55f;
+                public float positionVariance = 0.5f;
             }
 
             [System.Serializable]
@@ -137,6 +148,7 @@ public class GlobalConfig : StaticConfig<GlobalConfig>
             public float[] groupMaxSpeed = new float[] { 100 };
             public Bots bots = new Bots();
             public Traffics traffics = new Traffics();
+            public Obstacles obstacle = new Obstacles();
             public List<Rewards> rewardsOnline = new List<Rewards>();
             public List<Rewards> rewardsOffline = new List<Rewards>();
             public float GetGroupMaxSpeed(int groupIndex) { return groupMaxSpeed[Mathf.Clamp(groupIndex, 0, groupMaxSpeed.Length - 1)]; }

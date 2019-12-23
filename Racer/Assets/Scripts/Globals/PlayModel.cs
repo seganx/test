@@ -18,20 +18,26 @@ public static class RaceModel
         public int weatherId = 0;
         public bool nightMode = false;
 
+        public int startPlayerPosition = 0;
         public byte maxPlayerCount = 4;
         public float maxPlayTime = 60;
         public float minForwardSpeed = 50;
         public float maxForwardSpeed = 0;
         public int racersGroup = 0;
+        public float startRacersDistance = 0;
     }
 
     public class Stats
     {
+        public int playerRank = 0;
+        public int totalCrashes = 0;
+        public int totalOutpaces = 0;
+        public int totalObstacles = 0;
+        public float totalViraj = 0;
         public float playTime = 0;
         public float globalSpeed = 0;
         public float playerSpeed = 0;
         public float playerPosition = 0;
-        public int playerRank = 0;
         public float playerForwardDistance = 0;
         public float playerBehindDistance = 0;
     }
@@ -42,10 +48,33 @@ public static class RaceModel
         public float distanceRatio = 0;
     }
 
+    public class Obstacle
+    {
+        public int id = 0;
+        public float baseDistance = 0;
+        public float distanceRatio = 0;
+    }
+
+    public class Missin
+    {
+        public bool beTheFirst = false;
+        public bool donNotCrash = false;
+        public int distanceMoreThan = 0;
+        public int noMoreVirajThan = 0;
+        public int outpaceCount = 0;
+        public int collectionItems = 0;
+
+        public int rewardGems = 0;
+        public int rewardCoins = 0;
+        public int rewardRacerCardId = 0;
+        public int rewardRacerCardCount = 0;
+    }
 
     public static Specifications specs = new Specifications();
     public static Stats stats = new Stats();
     public static Traffic traffic = new Traffic();
+    public static Obstacle obstacle = new Obstacle();
+    public static Missin missin = new Missin();
 
 
     public static bool IsOnline { get { return mode == Mode.Online; } }
@@ -70,5 +99,7 @@ public static class RaceModel
         specs = new Specifications();
         stats = new Stats();
         traffic = new Traffic();
-    }
+        obstacle = new Obstacle();
+        missin = new Missin();
+}
 }

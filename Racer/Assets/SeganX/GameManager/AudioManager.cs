@@ -6,6 +6,12 @@ namespace SeganX
 {
     public class AudioManager : MonoBehaviour
     {
+        private class MusicSource
+        {
+            public float initVolume = 1;
+            public AudioSource source = null;
+        }
+
         [SerializeField] private AudioClip[] musics = null;
 
         private WaitForEndOfFrame waitForFrame = new WaitForEndOfFrame();
@@ -24,20 +30,21 @@ namespace SeganX
 
         private IEnumerator DoPlay(int index, float volume, float fadeInTime, float fadeOutTime)
         {
-            if (currentSource != null)
-                StartCoroutine(DoFadeOut(currentSource, fadeOutTime));
+            if (currentSource.source != null)
+                StartCoroutine(DoFadeOut(currentSource.source, fadeOutTime));
 
-            currentSource = gameObject.AddComponent<AudioSource>();
-            currentSource.ignoreListenerVolume = true;
-            currentSource.clip = musics[index];
-            currentSource.loop = true;
-            currentSource.volume = 0;
-            currentSource.Play();
+            currentSource.source = gameObject.AddComponent<AudioSource>();
+            currentSource.source.ignoreListenerVolume = true;
+            currentSource.source.clip = musics[index];
+            currentSource.source.loop = true;
+            currentSource.source.volume = 0;
+            currentSource.source.Play();
+            currentSource.initVolume = volume;
 
-            var targetMusic = volume * MusicVolume * 0.01f;
-            while (currentSource.volume < targetMusic)
+            var targetVolume = volume * MusicVolume * 0.01f;
+            while (currentSource.source.volume < targetVolume)
             {
-                currentSource.volume = Mathf.MoveTowards(currentSource.volume, targetMusic, Time.deltaTime / fadeInTime);
+                currentSource.source.volume = Mathf.MoveTowards(currentSource.source.volume, targetVolume, Time.deltaTime / fadeInTime);
                 yield return waitForFrame;
             }
         }
@@ -56,7 +63,7 @@ namespace SeganX
         /// STATIC MEMBERS
         //////////////////////////////////////////////////////////////
         private static AudioManager instance = null;
-        private static AudioSource currentSource = null;
+        private static MusicSource currentSource = new MusicSource();
         private static int lastRandomIndex = -1;
 
         public static int MusicVolume
@@ -64,7 +71,10 @@ namespace SeganX
             get { return PlayerPrefs.GetInt("GameSettings.MusicVolume", 100); }
             set
             {
-                if (currentSource != null) currentSource.volume = value * 0.01f;
+                if (currentSource != null)
+                {
+                    currentSource.source.volume = currentSource.initVolume * value * 0.01f;
+                }
                 PlayerPrefs.SetInt("GameSettings.MusicVolume", value);
             }
         }
@@ -84,12 +94,16 @@ namespace SeganX
             instance.Play(index, volume, fadeInTime, fadeOutTime);
         }
 
-        public static void PlayRandom(int fromIndex, int ToIndex, float volume = 0.2f, float fadeInTime = 1, float fadeOutTime = 1)
+        public static void PlayRandom(int fromIndex, int toIndex, float volume = 0.2f, float fadeInTime = 1, float fadeOutTime = 1)
         {
-            var index = Random.Range(fromIndex, ToIndex + 1);
+            fromIndex = Mathf.Clamp(fromIndex, 0, instance.musics.Length - 1);
+            toIndex = Mathf.Clamp(toIndex, 0, instance.musics.Length - 1);
+
+            var index = lastRandomIndex;
             while (index == lastRandomIndex)
-                index = Random.Range(fromIndex, ToIndex + 1);
+                index = Random.Range(fromIndex, toIndex + 1);
             lastRandomIndex = index;
+
             instance.Play(index, volume, fadeInTime, fadeOutTime);
         }
     }

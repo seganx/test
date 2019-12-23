@@ -176,7 +176,10 @@ public abstract class PlayerPresenter : Base
         var value = trafficNosPercent * GlobalConfig.Race.nosTrafficFactor * player.RacerNitrous;
         player.CurrNitrous += value;
         if (player.IsPlayer)
+        {
             PlayerHud.DisplaySideNitros(trafficNosPercent * 100, sender.SideLeft);
+            RaceModel.stats.totalOutpaces++;
+        }
     }
 
     ////////////////////////////////////////////////////////////
@@ -203,9 +206,15 @@ public abstract class PlayerPresenter : Base
     public static void SetReadyToRace()
     {
         all.Sort((x, y) => Random.Range(-99999, 99999));
+        if (RaceModel.specs.startPlayerPosition > 0)
+        {
+            all.Remove(local);
+            all.Insert(RaceModel.specs.startPlayerPosition - 1, local);
+        }
+
         for (int i = 0; i < all.Count; i++)
         {
-            float nospos = i * GlobalConfig.Race.startRacerDistance;
+            float nospos = i * RaceModel.specs.startRacersDistance;
             float rodseg = 2 * RoadPresenter.RoadWidth / 4;
             all[i].ReadyToRace(nospos, (i % 3) * rodseg - rodseg);
         }

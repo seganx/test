@@ -130,12 +130,17 @@ public class State_Home : GameState
 
         RaceModel.specs.steering = GameSettings.SteeringMode;
         RaceModel.specs.mapId = RaceModel.SelectRandomMap();
-        //RaceModel.specs.skyId = Random.Range(0, 1000) % 2;
+        RaceModel.specs.skyId = Random.Range(0, 1000) % 2;
         RaceModel.specs.maxPlayerCount = 4;
         RaceModel.specs.maxPlayTime = GlobalConfig.Race.maxTime;
+        RaceModel.specs.startRacersDistance = GlobalConfig.Race.startRacerDistance;
 
         RaceModel.traffic.baseDistance = GlobalConfig.Race.traffics.baseDistance;
-        RaceModel.traffic.distanceRatio = GlobalConfig.Race.traffics.speedFactor;
+        RaceModel.traffic.distanceRatio = GlobalConfig.Race.traffics.distanceRatio;
+
+        RaceModel.obstacle.id = 1;
+        RaceModel.obstacle.baseDistance = GlobalConfig.Race.traffics.baseDistance;
+        RaceModel.obstacle.distanceRatio = GlobalConfig.Race.traffics.distanceRatio;
 
         PlayNetwork.IsOffline = true;
         PlayNetwork.EloScore = Profile.EloScore;

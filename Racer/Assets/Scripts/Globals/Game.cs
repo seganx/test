@@ -12,7 +12,7 @@ namespace SeganX
         private void Awake()
         {
             Screen.sleepTimeout = SleepTimeout.NeverSleep;
-            Application.targetFrameRate = 25;
+            //Application.targetFrameRate = 25;
 
             SeganX.Console.Info.SetOnDisplayInfo(info =>
             {

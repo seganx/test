@@ -215,4 +215,32 @@ public class GlobalFactory : StaticConfig<GlobalFactory>
         }
     }
 
+
+    public static class Obstacles
+    {
+        private static string dire = "Obstacles";
+        private static List<Obstacle> all = null;
+
+        public static List<Obstacle> All
+        {
+            get
+            {
+                if (all == null)
+                    all = ResourceEx.LoadAllWithId<Obstacle>(dire, true);
+                return all;
+            }
+        }
+
+        public static Obstacle GetPrefab(int id)
+        {
+            return All.Find(x => x.Id == id);
+        }
+
+        public static Obstacle Create(int id, float line, float ditanceVariance, Transform parent)
+        {
+            var prefab = All.Find(x => x.Id == id);
+            if (prefab == null) return null;
+            return prefab.Clone<Obstacle>(parent).Setup(id, line, ditanceVariance);
+        }
+    }
 }

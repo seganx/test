@@ -15,6 +15,9 @@ public class UiLeaderboardItem : MonoBehaviour
 
     public UiLeaderboardItem Setup(string nickname, string userid, int score, int position)
     {
+        bool hasBadWord = BadWordsFinder.HasBadWord(nickname);
+        if (hasBadWord) nickname = LocalizationService.Get(111147);
+
         nicknameLabel.SetText(nickname);
         userIdLabel.text = userid;
         scoreLabel.SetText(score.ToString("#,0"));
@@ -27,19 +30,26 @@ public class UiLeaderboardItem : MonoBehaviour
         else
             garageButton.onClick.AddListener(() =>
             {
-                Popup_Loading.Display();
-                Network.GetPlayerInfo(userid, pdata =>
+                if (hasBadWord)
                 {
-                    Popup_Loading.Hide();
-
-                    if (pdata != null)
-                        Game.Instance.OpenState<State_OtherUserAccount>().Setup(pdata, nickname, score, position);
-                    else
+                    Game.Instance.OpenPopup<Popup_Confirm>().Setup(111148, true, false, null);
+                }
+                else
+                {
+                    Popup_Loading.Display();
+                    Network.GetPlayerInfo(userid, pdata =>
                     {
-                        var warning = string.Format(LocalizationService.Get(111143), nickname);
-                        Game.Instance.OpenPopup<Popup_Confirm>().Setup(warning, false, true, null);
-                    }
-                });
+                        Popup_Loading.Hide();
+
+                        if (pdata != null)
+                            Game.Instance.OpenState<State_OtherUserAccount>().Setup(pdata, nickname, score, position);
+                        else
+                        {
+                            var warning = string.Format(LocalizationService.Get(111143), nickname);
+                            Game.Instance.OpenPopup<Popup_Confirm>().Setup(warning, false, true, null);
+                        }
+                    });
+                }
             });
 
         return this;

@@ -107,9 +107,9 @@ public class State_Playing : GameState
         else
 #endif
             PlayerPresenter.local.SteeringValue = UiPlayingGesture.Steering;
-        //PlayerPresenter.local.SteeringValue = InputManager.Left.isPointerDown ? -1 : (InputManager.Right.isPointerDown ? 1 : 0);
         RacerCamera.steeringValue = PlayerPresenter.local.SteeringValue;
         PlayerPresenter.local.Horn(InputManager.Horn.isPointerDown);
+        RaceModel.stats.totalViraj += Mathf.Abs(UiPlayingGesture.Steering) * Time.deltaTime;
     }
 
     private void FinishRace()

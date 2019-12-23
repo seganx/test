@@ -20,14 +20,16 @@ public class State_GameTutorial : GameState
         RaceModel.Reset(RaceModel.Mode.Tutorial);
         RaceModel.specs.steering = RaceModel.SteeringMode.Easy;
         RaceModel.specs.mapId = 2;
+        RaceModel.specs.skyId = 0;
         RaceModel.specs.maxPlayerCount = 2;
         RaceModel.specs.maxPlayTime = 90;
+        RaceModel.specs.startRacersDistance = GlobalConfig.Race.startRacerDistance;
 #if UNITY_EDITOR
         RaceModel.specs.maxPlayTime = 90;
 #endif
 
         RaceModel.traffic.baseDistance = GlobalConfig.Race.traffics.baseDistance * 1.5f;
-        RaceModel.traffic.distanceRatio = GlobalConfig.Race.traffics.speedFactor;
+        RaceModel.traffic.distanceRatio = GlobalConfig.Race.traffics.distanceRatio;
 
         PlayNetwork.IsOffline = true;
         PlayNetwork.MapId = RaceModel.specs.mapId;

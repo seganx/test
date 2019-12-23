@@ -152,11 +152,14 @@ public class State_LeagueStart : GameState
         RaceModel.Reset(RaceModel.Mode.Online);
         RaceModel.specs.steering = GameSettings.SteeringMode;
         RaceModel.specs.mapId = RaceModel.SelectRandomMap();
+        RaceModel.specs.skyId = Random.Range(0, 1000) % 2;
         RaceModel.specs.racersGroup = racegroup;
         RaceModel.specs.maxPlayerCount = 4;
         RaceModel.specs.maxPlayTime = GlobalConfig.Race.maxTime;
+        RaceModel.specs.startRacersDistance = GlobalConfig.Race.startRacerDistance;
+
         RaceModel.traffic.baseDistance = GlobalConfig.Race.traffics.baseDistance;
-        RaceModel.traffic.distanceRatio = GlobalConfig.Race.traffics.speedFactor;
+        RaceModel.traffic.distanceRatio = GlobalConfig.Race.traffics.distanceRatio;
 
         PlayNetwork.IsOffline = PlayNetwork.IsDisconnectedOnLastOnline;
         PlayNetwork.IsDisconnectedOnLastOnline = false;
@@ -183,11 +186,14 @@ public class State_LeagueStart : GameState
         RaceModel.Reset(RaceModel.Mode.Online);
         RaceModel.specs.steering = GameSettings.SteeringMode;
         RaceModel.specs.mapId = RaceModel.SelectRandomMap();
+        RaceModel.specs.skyId = Random.Range(0, 1000) % 2;
         RaceModel.specs.racersGroup = group;
         RaceModel.specs.maxPlayerCount = 4;
         RaceModel.specs.maxPlayTime = GlobalConfig.Race.maxTime;
+        RaceModel.specs.startRacersDistance = GlobalConfig.Race.startRacerDistance;
+
         RaceModel.traffic.baseDistance = GlobalConfig.Race.traffics.baseDistance;
-        RaceModel.traffic.distanceRatio = GlobalConfig.Race.traffics.speedFactor;
+        RaceModel.traffic.distanceRatio = GlobalConfig.Race.traffics.distanceRatio;
 
         PlayNetwork.IsOffline = PlayNetwork.IsDisconnectedOnLastOnline;
         PlayNetwork.IsDisconnectedOnLastOnline = false;
