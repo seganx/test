@@ -128,13 +128,21 @@ public static class Network
         DownloadData<List<LeaderboardProfileResponse>>(uri, null, (msg, res) =>
         {
             if (res != null)
-            { 
+            {
+                res.RemoveAll(x => x.position < 1 || x.profileId.IsNullOrEmpty());
 
-                res.RemoveAll(x => x.position < 1);
-                res.Sort((x, y) => x.position - y.position);
-                foreach (var item in res)
-                    if (item.nickname.IsNullOrEmpty())
-                        item.nickname = item.profileId;
+                if (res.Count > 0)
+                {
+                    res.Sort((x, y) => x.position - y.position);
+                    var lowrank = res[0].position;
+                    res.Sort((x, y) => y.score - x.score);
+                    for (int i = 0; i < res.Count; i++)
+                    {
+                        res[i].position = i + lowrank;
+                        if (res[i].nickname.IsNullOrEmpty())
+                            res[i].nickname = res[i].profileId;
+                    }
+                }
             }
             callback(msg, res);
         });

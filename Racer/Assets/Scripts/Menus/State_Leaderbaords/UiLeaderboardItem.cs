@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class UiLeaderboardItem : MonoBehaviour
 {
+    [SerializeField] private Transform cupImages = null;
     [SerializeField] private Text nicknameLabel = null;
     [SerializeField] private Text userIdLabel = null;
     [SerializeField] private LocalText scoreLabel = null;
@@ -21,9 +22,10 @@ public class UiLeaderboardItem : MonoBehaviour
         nicknameLabel.SetText(nickname);
         userIdLabel.text = userid;
         scoreLabel.SetText(score.ToString("#,0"));
-        positionLabel.SetText(position.ToString("#,0"));
+        if (positionLabel) positionLabel.SetText(position.ToString("#,0"));
         int league = GlobalConfig.Leagues.GetIndex(score, position);
         leagueIcon.sprite = GlobalFactory.League.GetSmallIcon(league);
+        if (cupImages) cupImages.SetActiveChild(position - 1);
 
         if (userid == Profile.UserId)
             GetComponent<Image>().color = Color.red;

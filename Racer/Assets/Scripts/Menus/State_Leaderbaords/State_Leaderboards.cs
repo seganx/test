@@ -24,7 +24,6 @@ public class State_Leaderboards : GameState
     private void Start()
     {
         UiHeader.Show();
-        UiShowHide.ShowAll(transform);
         title.SetFormatedText(listUpdateDuration);
 
         ValidateLists();
@@ -32,38 +31,41 @@ public class State_Leaderboards : GameState
         PopupQueue.Add(.5f, () => Popup_Tutorial.Display(33));
 
         playerLeagueIcon.sprite = GlobalFactory.League.GetBigIcon(Profile.League);
-        prefabItem.gameObject.SetActive(false);
+        prefabItem.transform.parent.SetChilderenActive(false);
         topLeagueToggle.isOn = false;
         playerLeagueToggle.isOn = false;
 
         topLeagueToggle.onValueChanged.AddListener(ison =>
         {
+            if (ison == false) return;
             if (topList == null)
             {
                 Popup_Loading.Display();
                 Network.GetLeaderboard(true, (msg, res) =>
                 {
                     if (msg == Network.Message.ok)
-                        DisplayList(topList = res);
+                        DisplayList(topList = res, true);
                     Popup_Loading.Hide();
                 });
             }
-            else DisplayList(topList);
+            else DisplayList(topList, true);
         });
 
         playerLeagueToggle.onValueChanged.AddListener(ison =>
         {
+            if (ison == false) return;
+
             if (playerList == null)
             {
                 Popup_Loading.Display();
                 Network.GetLeaderboard(false, (msg, res) =>
                 {
                     if (msg == Network.Message.ok)
-                        DisplayList(playerList = res);
+                        DisplayList(playerList = res, false);
                     Popup_Loading.Hide();
                 });
             }
-            else DisplayList(playerList);
+            else DisplayList(playerList, false);
         });
 
         var tabIndex = PlayerPrefs.GetInt("Leaderboard.TabIndex", 0);
@@ -71,6 +73,8 @@ public class State_Leaderboards : GameState
             playerLeagueToggle.isOn = true;
         else
             topLeagueToggle.isOn = true;
+
+        UiShowHide.ShowAll(transform);
     }
 
     private void ValidateLists()
@@ -82,9 +86,12 @@ public class State_Leaderboards : GameState
         topList = null;
     }
 
-    private void DisplayList(List<LeaderboardProfileResponse> list)
+    private void DisplayList(List<LeaderboardProfileResponse> list, bool isTopList)
     {
-        prefabItem.transform.parent.RemoveChildrenBut(0);
+        var content = prefabItem.transform.parent.RemoveChildren(3);
+        content.GetChild(0).gameObject.SetActive(isTopList);
+        content.GetChild(1).gameObject.SetActive(isTopList);
+
         foreach (var item in list)
             prefabItem.Clone<UiLeaderboardItem>().Setup(item.nickname, item.profileId, item.score, item.position).gameObject.SetActive(true);
 
