@@ -63,7 +63,7 @@ public class ShopLogic : MonoBehaviour
             const string key = "ShopLogic.SpecialOffer.Data";
 
             //  load data
-            data = PlayerPrefsEx.Deserialize(key, data);
+            data = PlayerPrefsEx.GetObject(key, data);
             foreach (var pack in data.packages)
                 pack.item = GlobalConfig.Shop.leagueSpecialPackages[pack.packgIndex];
 
@@ -78,7 +78,7 @@ public class ShopLogic : MonoBehaviour
             }
 
             // save data
-            PlayerPrefsEx.Serialize(key, data);
+            PlayerPrefsEx.SetObject(key, data);
         }
 
         private static void CreatePackage(int index)

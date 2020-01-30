@@ -115,13 +115,13 @@ public class UiBlackMarketPackage : MonoBehaviour
 
     private static void LoadPackages()
     {
-        data = PlayerPrefsEx.Deserialize("UiBlackMarketPackage", new SerializableData());
+        data = PlayerPrefsEx.GetObject("UiBlackMarketPackage", new SerializableData());
         if (data.packages.Count < 1) CreatePackages();
     }
 
     private static void SavePackages()
     {
-        PlayerPrefsEx.Serialize("UiBlackMarketPackage", data);
+        PlayerPrefsEx.SetObject("UiBlackMarketPackage", data);
     }
 
     public static void CreatePackages()

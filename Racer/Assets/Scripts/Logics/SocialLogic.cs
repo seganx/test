@@ -95,12 +95,12 @@ public class SocialLogic : MonoBehaviour
 
     private static void SaveToLocal()
     {
-        PlayerPrefsEx.Serialize("SocialLogic.Data", data);
+        PlayerPrefsEx.SetObject("SocialLogic.Data", data);
     }
 
     private static void LoadFromLocal()
     {
-        data = PlayerPrefsEx.Deserialize("SocialLogic.Data", new SerializableData());
+        data = PlayerPrefsEx.GetObject("SocialLogic.Data", new SerializableData());
     }
 
     public static void SetData(List<LikeData> likeList)

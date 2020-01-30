@@ -189,13 +189,13 @@ public class ProfileLogic : MonoBehaviour
 
     private static void SaveToLocal()
     {
-        PlayerPrefsEx.Serialize("ProfileLogic.Data", Profile.Data);
-        PlayerPrefsEx.Serialize("ProfileLogic.LastData", lastdata);
+        PlayerPrefsEx.SetObject("ProfileLogic.Data", Profile.Data);
+        PlayerPrefsEx.SetObject("ProfileLogic.LastData", lastdata);
     }
 
     private static void LoadFromLocal()
     {
-        Profile.Data = PlayerPrefsEx.Deserialize("ProfileLogic.Data", new ProfileData());
-        lastdata = PlayerPrefsEx.Deserialize("ProfileLogic.LastData", new ProfileData.NetData());
+        Profile.Data = PlayerPrefsEx.GetObject("ProfileLogic.Data", new ProfileData());
+        lastdata = PlayerPrefsEx.GetObject("ProfileLogic.LastData", new ProfileData.NetData());
     }
 }

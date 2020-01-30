@@ -85,13 +85,13 @@ public class TimerManager : Base
         var data = new SerializableData();
         foreach (var item in timers)
             data.timers.Add(new Timer() { type = item.Key, startTime = item.Value.startTime, duration = item.Value.duration });
-        PlayerPrefsEx.Serialize(serializeKey, data);
+        PlayerPrefsEx.SetObject(serializeKey, data);
     }
 
     private static void Load()
     {
         // load data
-        var data = PlayerPrefsEx.Deserialize(serializeKey, new SerializableData());
+        var data = PlayerPrefsEx.GetObject(serializeKey, new SerializableData());
 
         // validate data
         foreach (Type timerType in Enum.GetValues(typeof(Type)))
