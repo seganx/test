@@ -76,7 +76,11 @@ public class State_Home : GameState
                 if (Profile.IsUnlockedRacer(rc.Id))
                     gameManager.OpenState<State_Custome>();
                 else
+#if UNITY_EDITOR
+                    gameManager.OpenState<State_Custome>();
+#else
                     gameManager.OpenState<State_PhotoMode>();
+#endif
             });
             PopupQueue.Add(.5f, () => Popup_Tutorial.Display(91));
         });

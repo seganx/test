@@ -25,7 +25,7 @@ public static class RacerMaterial
         res.reflection = src.GetFloat(Reflection + matId);
         res.specularValue = src.GetFloat(SpecularValue + matId);
         res.specularPower = src.GetFloat(SpecularPower + matId);
-        res.metalPower = src.GetFloat(MetalPower + matId);
+        if (src.HasProperty(MetalPower + matId)) res.metalPower = src.GetFloat(MetalPower + matId);
         return res;
     }
 
