@@ -22,6 +22,15 @@ namespace SeganX
                 str += "\nId: " + SeganX.Console.Info.DisplayDeviceID;
                 return str;
             });
+
+
+#if UNITY_EDITOR
+            {
+                int score = 1010;
+                var salt = TimerManager.ServerTime.Day.ToString() + TimerManager.ServerTime.Hour.ToString();
+                Debug.Log("Hash Rank: " + score.ToString().ComputeMD5(salt));
+            }
+#endif
         }
 
         private IEnumerator Start()
@@ -68,9 +77,9 @@ namespace SeganX
             else
                 Instance.OpenPopup<Popup_Shop>().SetupAsGems(() =>
                 {
-                //if (Profile.SpendGem(value))
-                //    onSuccess();
-            });
+                    //if (Profile.SpendGem(value))
+                    //    onSuccess();
+                });
         }
 
         public static void SpendCoin(int value, System.Action onSuccess)

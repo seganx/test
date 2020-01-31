@@ -134,7 +134,7 @@ public class State_Home : GameState
 
         RaceModel.specs.steering = GameSettings.SteeringMode;
         RaceModel.specs.mapId = RaceModel.SelectRandomMap();
-        RaceModel.specs.skyId = Random.Range(0, 1000) % 2;
+        RaceModel.specs.skyId = Random.Range(0, 100) < 20 ? 1 : 0;
         RaceModel.specs.maxPlayerCount = 4;
         RaceModel.specs.maxPlayTime = GlobalConfig.Race.maxTime;
         RaceModel.specs.startRacersDistance = GlobalConfig.Race.startRacerDistance;

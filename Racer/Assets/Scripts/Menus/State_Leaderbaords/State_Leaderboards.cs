@@ -47,7 +47,7 @@ public class State_Leaderboards : GameState
                     if (msg == Network.Message.ok)
                     {
                         topList = res;
-                        DisplayList(res.leagueData, res.leagueData);
+                        DisplayList(res.leagueData, res.legends);
                     }
                     Popup_Loading.Hide();
                 });
