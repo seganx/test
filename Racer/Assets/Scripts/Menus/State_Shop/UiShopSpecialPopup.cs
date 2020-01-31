@@ -32,7 +32,7 @@ public class UiShopSpecialPopup : MonoBehaviour
                 {
                     infoLabel.SetFormatedText(package.item.discount);
                     timer.timerType = ShopLogic.SpecialOffer.GetTimerType(package.packgIndex);
-                    button.onClick.AddListener(() => Game.Instance.OpenPopup<Popup_ShopSpecialPackage>().Setup(package, pack => Destroy(holder.gameObject)));
+                    button.onClick.AddListener(() => Game.Instance.OpenPopup<Popup_ShopSpecialPackage>().Setup(package, pack => Destroy(holder.gameObject, 0.5f)));
                     timer.gameObject.SetActive(true);
                     holder.gameObject.SetActive(true);
                     holder.Show();
@@ -50,7 +50,7 @@ public class UiShopSpecialPopup : MonoBehaviour
                         Game.Instance.OpenPopup<Popup_ShopSpecialPackage>().Setup(ShopLogic.SpecialOffer.Packages[i], pack =>
                         {
                             if (pack == package)
-                                Destroy(holder.gameObject);
+                                Destroy(holder.gameObject, 0.1f);
                         });
                     }
                 }

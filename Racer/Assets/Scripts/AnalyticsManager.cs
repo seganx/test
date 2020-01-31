@@ -1,17 +1,22 @@
-﻿using System.Collections;
+﻿using GameAnalyticsSDK;
+using SeganX;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using GameAnalyticsSDK;
 
 public class AnalyticsManager : MonoBehaviour
 {
-    void Start()
+    private void Start()
     {
         GameAnalytics.Initialize();
     }
 
-    public static void NewBuisinessEvent(int rialAmount, string itemType)
+    public static void NewBuisinessEvent(Online.Purchase.Provider provider, int rialAmount, string sku, string token)
     {
-        GameAnalytics.NewBusinessEvent("USD", rialAmount / 100, itemType, "1", "cartType");
+        Online.Purchase.Verify(provider, sku, token, (success, playload) =>
+        {
+            if (success)
+                GameAnalytics.NewBusinessEvent("USD", rialAmount / 100, sku, "1", "cartType");
+        });
     }
 }

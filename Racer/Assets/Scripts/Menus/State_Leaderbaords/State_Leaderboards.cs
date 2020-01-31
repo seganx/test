@@ -12,6 +12,7 @@ public class State_Leaderboards : GameState
     [SerializeField] private Toggle playerLeagueToggle = null;
     [SerializeField] private Toggle topLeagueToggle = null;
     [SerializeField] private UiLeaderboardItem prefabItem = null;
+    [SerializeField] private UiLeaderboardItem[] legendsItems = null;
 
     private const int listUpdateDuration = 5;
 
@@ -41,14 +42,17 @@ public class State_Leaderboards : GameState
             if (topList == null)
             {
                 Popup_Loading.Display();
-                Network.GetLeaderboard(true, (msg, res) =>
+                Network.GetTopPlayersAndLegends((msg, res) =>
                 {
                     if (msg == Network.Message.ok)
-                        DisplayList(topList = res, true);
+                    {
+                        topList = res;
+                        DisplayList(res.leagueData, res.leagueData);
+                    }
                     Popup_Loading.Hide();
                 });
             }
-            else DisplayList(topList, true);
+            else DisplayList(topList.leagueData, topList.legends);
         });
 
         playerLeagueToggle.onValueChanged.AddListener(ison =>
@@ -58,14 +62,14 @@ public class State_Leaderboards : GameState
             if (playerList == null)
             {
                 Popup_Loading.Display();
-                Network.GetLeaderboard(false, (msg, res) =>
+                Network.GetLeaderboard((msg, res) =>
                 {
                     if (msg == Network.Message.ok)
-                        DisplayList(playerList = res, false);
+                        DisplayList(playerList = res, new List<LeaderboardProfileResponse>());
                     Popup_Loading.Hide();
                 });
             }
-            else DisplayList(playerList, false);
+            else DisplayList(playerList, new List<LeaderboardProfileResponse>());
         });
 
         var tabIndex = PlayerPrefs.GetInt("Leaderboard.TabIndex", 0);
@@ -86,14 +90,17 @@ public class State_Leaderboards : GameState
         topList = null;
     }
 
-    private void DisplayList(List<LeaderboardProfileResponse> list, bool isTopList)
+    private void DisplayList(List<LeaderboardProfileResponse> list, List<LeaderboardProfileResponse> legends)
     {
         var content = prefabItem.transform.parent.RemoveChildren(3);
-        content.GetChild(0).gameObject.SetActive(isTopList);
-        content.GetChild(1).gameObject.SetActive(isTopList);
+        content.GetChild(0).gameObject.SetActive(legends.Count == 3);
+        content.GetChild(1).gameObject.SetActive(legends.Count == 3);
 
         foreach (var item in list)
             prefabItem.Clone<UiLeaderboardItem>().Setup(item.nickname, item.profileId, item.score, item.position).gameObject.SetActive(true);
+
+        for (int i = 0; i < legendsItems.Length && i < legends.Count; i++)
+            legendsItems[i].Setup(legends[i].nickname, legends[i].profileId, legends[i].score, legends[i].position);
 
         DelayCall(0.1f, () => prefabItem.transform.parent.SetAnchordPositionY(LastPosition));
     }
@@ -102,8 +109,8 @@ public class State_Leaderboards : GameState
     ///////////////////////////////////////////////////////////////////////////////////
     //  STATIC MEMBERS
     ///////////////////////////////////////////////////////////////////////////////////
+    private static TopPlayersAndLegendsResponse topList = null;
     private static List<LeaderboardProfileResponse> playerList = null;
-    private static List<LeaderboardProfileResponse> topList = null;
     private static System.DateTime lastListUpdate = new System.DateTime(0);
     private static float LastPosition { get; set; }
 

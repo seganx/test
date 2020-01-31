@@ -84,5 +84,18 @@ namespace SeganX
                         Instance.OpenState<State_Shop>();
                 });
         }
+
+
+#if UNITY_EDITOR
+        [Console("unlock", "racers")]
+        public static void UnlockRacers()
+        {
+            foreach (var racer in RacerFactory.Racer.AllConfigs)
+            {
+                if (Profile.IsUnlockedRacer(racer.Id)) continue;
+                Profile.AddRacerCard(racer.Id, racer.CardCount);
+            }
+        }
+#endif
     }
 }
