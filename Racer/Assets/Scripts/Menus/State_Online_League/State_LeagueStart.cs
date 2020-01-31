@@ -152,7 +152,7 @@ public class State_LeagueStart : GameState
         RaceModel.Reset(RaceModel.Mode.Online);
         RaceModel.specs.steering = GameSettings.SteeringMode;
         RaceModel.specs.mapId = RaceModel.SelectRandomMap();
-        RaceModel.specs.skyId = Random.Range(0, 1000) % 2;
+        RaceModel.specs.skyId = Random.Range(0, 100) < 20 ? 1 : 0;
         RaceModel.specs.racersGroup = racegroup;
         RaceModel.specs.maxPlayerCount = 4;
         RaceModel.specs.maxPlayTime = GlobalConfig.Race.maxTime;
@@ -186,7 +186,7 @@ public class State_LeagueStart : GameState
         RaceModel.Reset(RaceModel.Mode.Online);
         RaceModel.specs.steering = GameSettings.SteeringMode;
         RaceModel.specs.mapId = RaceModel.SelectRandomMap();
-        RaceModel.specs.skyId = Random.Range(0, 1000) % 2;
+        RaceModel.specs.skyId = Random.Range(0, 100) < 20 ? 1 : 0;
         RaceModel.specs.racersGroup = group;
         RaceModel.specs.maxPlayerCount = 4;
         RaceModel.specs.maxPlayTime = GlobalConfig.Race.maxTime;

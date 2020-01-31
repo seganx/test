@@ -77,6 +77,7 @@ public class State_OtherUserAccount : GameState
 
     private void DisplayRacer()
     {
+        if (racers == null) return;
         prevButton.gameObject.SetActive(currentRaceIndex > 0);
         nextButton.gameObject.SetActive(currentRaceIndex < racers.Count - 1);
         if (racers.Count < 1) return;
