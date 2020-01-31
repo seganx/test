@@ -20,6 +20,7 @@ public class Popup_ShopSpecialPackage : GameState
     [SerializeField] private LocalText coinsLabel = null;
 
     private RacerConfig config = null;
+    private static ShopLogic.SpecialOffer.Package purchasingPack = null;
 
     public Popup_ShopSpecialPackage Setup(ShopLogic.SpecialOffer.Package pack, System.Action<ShopLogic.SpecialOffer.Package> onPurchase)
     {
@@ -38,16 +39,18 @@ public class Popup_ShopSpecialPackage : GameState
 
         purchaseButton.onClick.AddListener(() =>
         {
+            purchasingPack = pack;
             purchaseButton.SetInteractable(false);
-            PurchaseSystem.Purchase(PurchaseProvider.Bazaar, pack.item.sku, (success, msg) =>
+
+            PurchaseSystem.Purchase(PurchaseProvider.Bazaar, pack.item.sku, (success, token) =>
             {
                 if (success)
                 {
-                    DisplayRewards(pack);
-                    PurchaseSystem.Consume(pack.item.sku);
-                    AnalyticsManager.NewBuisinessEvent(pack.item.price, pack.item.sku);
-                    Back();
-                    if (onPurchase != null) onPurchase(pack);
+                    DisplayRewards(purchasingPack);
+                    PurchaseSystem.Consume(purchasingPack.item.sku);
+                    AnalyticsManager.NewBuisinessEvent(Online.Purchase.Provider.Cafebazaar, purchasingPack.item.price, purchasingPack.item.sku, token);
+                    if (this != null) Back();
+                    if (onPurchase != null) onPurchase(purchasingPack);
                 }
                 else purchaseButton.SetInteractable(true);
             });

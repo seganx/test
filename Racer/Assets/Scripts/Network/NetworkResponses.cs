@@ -55,6 +55,14 @@ namespace SeganX.Network
     }
 
     [System.Serializable]
+    public class TopPlayersAndLegendsResponse
+    {
+        public List<LeaderboardProfileResponse> leagueData = new List<LeaderboardProfileResponse>();
+        public List<LeaderboardProfileResponse> legends = new List<LeaderboardProfileResponse>();
+    }
+
+
+    [System.Serializable]
     public class PlayerInfoResponse
     {
         public string profileId = string.Empty;

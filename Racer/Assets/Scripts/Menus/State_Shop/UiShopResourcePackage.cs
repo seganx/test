@@ -13,6 +13,8 @@ public class UiShopResourcePackage : MonoBehaviour
     [SerializeField] private Button purchaseButton = null;
     [SerializeField] private Sprite[] images = null;
 
+    private static GlobalConfig.Data.Shop.GemPackage purchasingPack = null;
+
     public UiShopResourcePackage SetupAsGemsPack(int index)
     {
         var pack = GlobalConfig.Shop.gemPackages[index % GlobalConfig.Shop.gemPackages.Count];
@@ -24,19 +26,22 @@ public class UiShopResourcePackage : MonoBehaviour
 
         purchaseButton.onClick.AddListener(() =>
         {
+            purchasingPack = pack;
             purchaseButton.SetInteractable(false);
-            PurchaseSystem.Purchase(PurchaseProvider.Bazaar, pack.sku, (success, msg) =>
+
+            PurchaseSystem.Purchase(PurchaseProvider.Bazaar, purchasingPack.sku, (success, token) =>
             {
                 if (success)
                 {
-                    Profile.EarnResouce(pack.gems, 0);
-                    Popup_Rewards.AddResource(pack.gems, 0);
+                    Profile.EarnResouce(purchasingPack.gems, 0);
+                    Popup_Rewards.AddResource(purchasingPack.gems, 0);
                     Popup_Rewards.Display().DisplayPurchaseReward();
-                    PurchaseSystem.Consume(pack.sku);
-                    AnalyticsManager.NewBuisinessEvent(pack.price, pack.sku);
+                    PurchaseSystem.Consume(purchasingPack.sku);
+                    AnalyticsManager.NewBuisinessEvent(Online.Purchase.Provider.Cafebazaar, purchasingPack.price, purchasingPack.sku, token);
                     ProfileLogic.SyncWidthServer(true, done => { });
                 }
-                purchaseButton.SetInteractable(true);
+
+                if (this != null) purchaseButton.SetInteractable(true);
             });
         });
 

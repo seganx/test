@@ -18,6 +18,7 @@ public class UiShopSpecialPackage : MonoBehaviour
     [SerializeField] private Image racerImage = null;
 
     private RacerConfig config = null;
+    private static ShopLogic.SpecialOffer.Package purchasingPack = null;
 
     public UiShopSpecialPackage Setup(ShopLogic.SpecialOffer.Package pack)
     {
@@ -36,15 +37,16 @@ public class UiShopSpecialPackage : MonoBehaviour
 
         purchaseButton.onClick.AddListener(() =>
         {
+            purchasingPack = pack;
             purchaseButton.SetInteractable(false);
-            PurchaseSystem.Purchase(PurchaseProvider.Bazaar, pack.item.sku, (success, msg) =>
+            PurchaseSystem.Purchase(PurchaseProvider.Bazaar, pack.item.sku, (success, token) =>
             {
                 if (success)
                 {
-                    DisplayRewards(pack);
-                    PurchaseSystem.Consume(pack.item.sku);
-                    AnalyticsManager.NewBuisinessEvent(pack.item.price, pack.item.sku);
-                    Destroy(gameObject);
+                    DisplayRewards(purchasingPack);
+                    PurchaseSystem.Consume(purchasingPack.item.sku);
+                    AnalyticsManager.NewBuisinessEvent(Online.Purchase.Provider.Cafebazaar, purchasingPack.item.price, purchasingPack.item.sku, token);
+                    if (this != null) Destroy(gameObject, 0.1f);
                 }
                 else purchaseButton.SetInteractable(true);
             });
@@ -70,6 +72,5 @@ public class UiShopSpecialPackage : MonoBehaviour
 
         Popup_Rewards.Display().DisplayPurchaseReward();
         ProfileLogic.SyncWidthServer(true, done => { });
-        Destroy(gameObject);
     }
 }

@@ -142,7 +142,7 @@ public class State_Home : GameState
         RaceModel.traffic.baseDistance = GlobalConfig.Race.traffics.baseDistance;
         RaceModel.traffic.distanceRatio = GlobalConfig.Race.traffics.distanceRatio;
 
-        RaceModel.obstacle.id = 1;
+        //RaceModel.obstacle.id = 1;
         RaceModel.obstacle.baseDistance = GlobalConfig.Race.traffics.baseDistance;
         RaceModel.obstacle.distanceRatio = GlobalConfig.Race.traffics.distanceRatio;
 

@@ -122,9 +122,9 @@ public static class Network
         DownloadData<string>(address + "Application/PrizeRecevied", new PrizeBody(), (msg, res) => callback(msg));
     }
 
-    public static void GetLeaderboard(bool topPlayers, System.Action<string, List<LeaderboardProfileResponse>> callback)
+    public static void GetLeaderboard(System.Action<string, List<LeaderboardProfileResponse>> callback)
     {
-        var uri = address + (topPlayers ? "Application/GetTopPlayers/" + GlobalConfig.Server.getTopPlayersCount : "Application/GetLeagueData");
+        var uri = address + "Application/GetLeagueData";
         DownloadData<List<LeaderboardProfileResponse>>(uri, null, (msg, res) =>
         {
             if (res != null)
@@ -142,6 +142,40 @@ public static class Network
                         if (res[i].nickname.IsNullOrEmpty())
                             res[i].nickname = res[i].profileId;
                     }
+                }
+            }
+            callback(msg, res);
+        });
+    }
+
+    public static void GetTopPlayersAndLegends(System.Action<string, TopPlayersAndLegendsResponse> callback)
+    {
+        var uri = address + "Application/GetTopPlayersAndLegends/" + GlobalConfig.Server.getTopPlayersCount;
+        DownloadData<TopPlayersAndLegendsResponse>(uri, null, (msg, res) =>
+        {
+            if (res != null)
+            {
+                res.leagueData.RemoveAll(x => x.position < 1 || x.profileId.IsNullOrEmpty());
+
+                if (res.leagueData.Count > 0)
+                {
+                    res.leagueData.Sort((x, y) => x.position - y.position);
+                    var lowrank = res.leagueData[0].position;
+                    res.leagueData.Sort((x, y) => y.score - x.score);
+                    for (int i = 0; i < res.leagueData.Count; i++)
+                    {
+                        res.leagueData[i].position = i + lowrank;
+                        if (res.leagueData[i].nickname.IsNullOrEmpty())
+                            res.leagueData[i].nickname = res.leagueData[i].profileId;
+                    }
+                }
+
+                if (res.legends.Count > 0)
+                {
+                    res.legends.Sort((x, y) => y.score - x.score);
+                    for (int i = 0; i < res.legends.Count; i++)
+                        if (res.legends[i].nickname.IsNullOrEmpty())
+                            res.legends[i].nickname = res.legends[i].profileId;
                 }
             }
             callback(msg, res);
