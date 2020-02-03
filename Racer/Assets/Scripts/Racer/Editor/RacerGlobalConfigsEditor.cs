@@ -44,6 +44,8 @@ public class RacerGlobalConfigsEditor : Editor
 
     public override void OnInspectorGUI()
     {
+        serializedObject.Update();
+
         var obj = target as RacerGlobalConfigs;
         var list = obj.data.racers;
         list.Sort((x, y) => x.id - y.id);
@@ -100,7 +102,9 @@ public class RacerGlobalConfigsEditor : Editor
                 obj.data = JsonUtility.FromJson<RacerGlobalConfigs.ConfigData>(File.ReadAllText(filename, System.Text.Encoding.UTF8));
         }
 
+        serializedObject.ApplyModifiedProperties();
         EditorUtility.SetDirty(obj);
+        EditorApplication.update.Invoke();
     }
 
     private static void DrawUpgradeLists(RacerGlobalConfigs obj)
