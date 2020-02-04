@@ -6,9 +6,11 @@ ModelImporter:
     100000: //RootNode
     100002: body
     100004: sp
+    100006: Sky001
     400000: //RootNode
     400002: body
     400004: sp
+    400006: Sky001
     2100000: M1
     2100002: LG
     2300000: body
